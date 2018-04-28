@@ -1,8 +1,5 @@
 package it.polimi.se2018.model.container;
 
-import it.polimi.se2018.model.Die;
-import it.polimi.se2018.model.DieColor;
-
 import java.util.ArrayList;
 
 public class DiceContainer {
@@ -22,6 +19,7 @@ public class DiceContainer {
         }
     }
 
+    /* TODO: tests and docs */
     public ArrayList<Die> getUnthrowedDice() {
         ArrayList<Die> bag = new ArrayList<>();
 
@@ -34,11 +32,17 @@ public class DiceContainer {
         return bag;
     }
 
+    /* TODO: tests and docs */
     public Die getDie(int id) throws DiceContainerUnsupportedIdException {
-        if(id >= NUMBER_OF_DICE || id < 0) {
+        if(!isIdValid(id)) {
             throw new DiceContainerUnsupportedIdException();
         } else {
             return dice[id];
         }
+    }
+
+    /* TODO: tests and docs */
+    public boolean isIdValid(int id) {
+       return (id < NUMBER_OF_DICE && id >= 0);
     }
 }

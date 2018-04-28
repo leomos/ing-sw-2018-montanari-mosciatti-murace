@@ -1,6 +1,6 @@
 package it.polimi.se2018.model.rounds;
 
-import it.polimi.se2018.model.Die;
+import it.polimi.se2018.model.container.Die;
 
 public class Round {
 
