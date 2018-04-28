@@ -8,7 +8,7 @@ public class PatternCardCell {
 
     private Die throwedDie;
 
-    public DieColor getColorConstraintContraint() {
+    public DieColor getColorConstraint() {
         return colorConstraint;
     }
 

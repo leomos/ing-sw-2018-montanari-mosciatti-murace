@@ -1,6 +1,6 @@
-package it.polimi.se2018.model.ToolCards;
+package it.polimi.se2018.model.toolcards;
 
-public abstract class ToolCardIndependent implements ToolCard {
+public abstract class ToolCardThrow implements ToolCard {
     protected String description;
     protected int id;
 

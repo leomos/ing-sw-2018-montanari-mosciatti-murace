@@ -1,4 +1,4 @@
-package it.polimi.se2018.model.ToolCards;
+package it.polimi.se2018.model.toolcards;
 
 public interface ToolCard {
 

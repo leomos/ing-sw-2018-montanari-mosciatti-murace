@@ -4,11 +4,11 @@ public class RoundTrack {
 
     private Round[] rounds;
 
-    public Round getRounds(int x) {
+    public Round getRound(int x) {
         return rounds[x];
     }
 
     public boolean isFinished(){
-        return (getRounds(9) != null);
+        return (getRound(9) != null);
     }
 }

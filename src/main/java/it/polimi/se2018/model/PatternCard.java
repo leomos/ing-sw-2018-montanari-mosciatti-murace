@@ -22,7 +22,7 @@ public class PatternCard {
         return difficulty;
     }
 
-    public PatternCardCell getPatterCardCell(int x, int y){
+    public PatternCardCell getPatternCardCell(int x, int y){
         return cell[x][y];
     }
 }
