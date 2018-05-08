@@ -36,25 +36,25 @@ public class PatternCard {
         ArrayList<Integer[]> i = new ArrayList<Integer[]>();
         Integer[] k = new Integer[2];
 
-        if( x+1 < 5 && !getPatternCardCell(x+1, y).isEmpy()) {
+        if( x+1 < 5 && !getPatternCardCell(x+1, y).isEmpty()) {
             k[0] = x+1;
             k[1] = y;
             i.add(k);
         }
 
-        if( x-1 > 0 && !getPatternCardCell(x-1, y).isEmpy()) {
+        if( x-1 > 0 && !getPatternCardCell(x-1, y).isEmpty()) {
             k[0] = x - 1;
             k[1] = y;
             i.add(k);
         }
 
-        if( y+1 < 4 && !getPatternCardCell(x, y+1).isEmpy()) {
+        if( y+1 < 4 && !getPatternCardCell(x, y+1).isEmpty()) {
             k[0] = x;
             k[1] = y + 1;
             i.add(k);
         }
 
-        if( y-1 > 0 && !getPatternCardCell(x, y-1).isEmpy()) {
+        if( y-1 > 0 && !getPatternCardCell(x, y-1).isEmpty()) {
             k[0] = x;
             k[1] = y - 1;
             i.add(k);

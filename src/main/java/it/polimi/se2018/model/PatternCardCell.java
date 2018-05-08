@@ -18,7 +18,7 @@ public class PatternCardCell {
         this.valueConstraint = valueConstraint;
     }
 
-    public boolean isEmpy(){
+    public boolean isEmpty(){
         return getThrowedDieId() == 0;
     }
 
