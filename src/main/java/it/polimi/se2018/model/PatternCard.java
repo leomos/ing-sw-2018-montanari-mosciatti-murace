@@ -33,7 +33,7 @@ public class PatternCard {
     }
 
     private ArrayList<Integer[]> checkProximityCells(int x, int y){
-        ArrayList<Integer[]> i = new ArrayList<Integer[]>();
+        ArrayList<Integer[]> i = new ArrayList<>();
         Integer[] k = new Integer[2];
 
         if( x+1 < 5 && !getPatternCardCell(x+1, y).isEmpty()) {
