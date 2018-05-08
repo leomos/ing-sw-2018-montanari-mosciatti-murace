@@ -18,6 +18,9 @@ public class PatternCardCell {
         this.valueConstraint = valueConstraint;
     }
 
+    public boolean isEmpy(){
+        return getThrowedDieId() == 0;
+    }
 
     public DieColor getColorConstraint() {
         return colorConstraint;
