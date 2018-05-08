@@ -34,7 +34,7 @@ public class PatternCard {
 
     private ArrayList<Integer[]> checkProximityCells(int x, int y){
         ArrayList<Integer[]> i = new ArrayList<Integer[]>();
-        Integer k[] = new Integer[2];
+        Integer[] k = new Integer[2];
 
         if( x+1 < 5 && !getPatternCardCell(x+1, y).isEmpy()) {
             k[0] = x+1;
@@ -68,7 +68,7 @@ public class PatternCard {
         Die d = diceContainer.getDie(throwedDieId);
         Die app;
 
-        for( Integer i[] : checkProximityCells(x, y) ) {
+        for( Integer[] i : checkProximityCells(x, y) ) {
             app = diceContainer.getDie(getPatternCardCell(i[0],i[1]).getThrowedDieId());
             if( app.getColor() == d.getColor() || app.getThrowedValue() == d.getThrowedValue()) {
                 return false;
