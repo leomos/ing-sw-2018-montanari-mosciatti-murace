@@ -9,7 +9,7 @@ public class PatternCardCell {
 
     private int valueConstraint;
 
-    private int throwedDieId = 0;
+    private int throwedDieId = -1;
 
     private DiceContainer diceContainer;
 
@@ -19,7 +19,7 @@ public class PatternCardCell {
     }
 
     public boolean isEmpty(){
-        return getThrowedDieId() == 0;
+        return throwedDieId == -1;
     }
 
     public DieColor getColorConstraint() {
