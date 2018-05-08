@@ -4,6 +4,7 @@ import it.polimi.se2018.model.container.*;
 
 import java.util.ArrayList;
 
+/* TODO: Create method to read PatternCards from JSON. */
 public class PatternCard {
 
     private int id;
@@ -64,13 +65,13 @@ public class PatternCard {
 
     }
 
-    public boolean checkProximityCellsValidity(int throwedDieId, int x, int y)throws DiceContainerUnsupportedIdException {
-        Die d = diceContainer.getDie(throwedDieId);
+    public boolean checkProximityCellsValidity(int rolledDieId, int x, int y)throws DiceContainerUnsupportedIdException {
+        Die d = diceContainer.getDie(rolledDieId);
         Die app;
 
         for( Integer[] i : checkProximityCells(x, y) ) {
-            app = diceContainer.getDie(getPatternCardCell(i[0],i[1]).getThrowedDieId());
-            if( app.getColor() == d.getColor() || app.getThrowedValue() == d.getThrowedValue()) {
+            app = diceContainer.getDie(getPatternCardCell(i[0],i[1]).getRolledDieId());
+            if( app.getColor() == d.getColor() || app.getRolledValue() == d.getRolledValue()) {
                 return false;
             }
         }

@@ -1,6 +1,5 @@
 package it.polimi.se2018.model;
 
-import com.sun.xml.internal.messaging.saaj.soap.ver1_1.DetailEntry1_1Impl;
 import it.polimi.se2018.model.container.*;
 
 public class PatternCardCell {
@@ -9,7 +8,7 @@ public class PatternCardCell {
 
     private int valueConstraint;
 
-    private int throwedDieId = -1;
+    private int rolledDieId = -1;
 
     private DiceContainer diceContainer;
 
@@ -19,7 +18,7 @@ public class PatternCardCell {
     }
 
     public boolean isEmpty(){
-        return throwedDieId == -1;
+        return rolledDieId == -1;
     }
 
     public DieColor getColorConstraint() {
@@ -30,48 +29,35 @@ public class PatternCardCell {
         return valueConstraint;
     }
 
-    public int getThrowedDieId() {
-        return throwedDieId;
+    public int getRolledDieId() {
+        return rolledDieId;
     }
 
-    /* TODO: check usefulness of this method, isn't getThrowedDieId enough?
     /**
-     * @return Die object associated with throwedDieId,
-     *         null if throwedDieId is unsupported.
+     * @param rolledDieId the id of the Die placed on the cell.
      *
-    public Die getThrowedDie() {
-        try {
-            return diceContainer.getDie(throwedDieId);
-        } catch (DiceContainerUnsupportedIdException e) {
-            return null;
-        }
-    }*/
-
-    /**
-     * @param throwedDieId the id of the Die placed on the cell.
-     *
-     * @throws DiceContainerUnsupportedIdException if one of throwedDieId
-     *                                             or this.throwedDieId
+     * @throws DiceContainerUnsupportedIdException if one of rolledDieId
+     *                                             or this.rolledDieId
      *                                             is not valid.
      */
-    private void setThrowedDieId(int throwedDieId) throws DiceContainerUnsupportedIdException {
-        if(!diceContainer.isIdValid(throwedDieId)) {
+    private void setRolledDieId(int rolledDieId) throws DiceContainerUnsupportedIdException {
+        if(!diceContainer.isIdValid(rolledDieId)) {
             throw new DiceContainerUnsupportedIdException();
         }
         try {
-            diceContainer.getDie(this.throwedDieId).setThrowed(false);
-            diceContainer.getDie(throwedDieId).setThrowed(true);
-            this.throwedDieId = throwedDieId;
-        } catch (DieSameThrowedValueException e) {
+            diceContainer.getDie(this.rolledDieId).setRolled(false);
+            diceContainer.getDie(rolledDieId).setRolled(true);
+            this.rolledDieId = rolledDieId;
+        } catch (DieSameRolledValueException e) {
             e.printStackTrace();
         }
     }
 
     /* TODO: tests, docs. Should it throw an exception? */
-    public void setThrowedDieId(int throwedDieId, boolean ignoreValueConstraint, boolean ignoreColorConstraint) throws DiceContainerUnsupportedIdException {
-        Die d = diceContainer.getDie(throwedDieId);
-        if(checkDieValidity(d.getThrowedValue(), d.getColor(), ignoreValueConstraint, ignoreColorConstraint)) {
-           setThrowedDieId(throwedDieId);
+    public void setRolledDieId(int rolledDieId, boolean ignoreValueConstraint, boolean ignoreColorConstraint) throws DiceContainerUnsupportedIdException {
+        Die d = diceContainer.getDie(rolledDieId);
+        if(checkDieValidity(d.getRolledValue(), d.getColor(), ignoreValueConstraint, ignoreColorConstraint)) {
+           setRolledDieId(rolledDieId);
         }
     }
 

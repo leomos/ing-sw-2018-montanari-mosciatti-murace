@@ -20,11 +20,11 @@ public class DiceContainer {
     }
 
     /* TODO: tests and docs */
-    public ArrayList<Die> getUnthrowedDice() {
+    public ArrayList<Die> getUnrolledDice() {
         ArrayList<Die> bag = new ArrayList<>();
 
         for(Die d : dice) {
-            if(!d.isThrowed()) {
+            if(!d.isRolled()) {
                 bag.add(d);
             }
         }

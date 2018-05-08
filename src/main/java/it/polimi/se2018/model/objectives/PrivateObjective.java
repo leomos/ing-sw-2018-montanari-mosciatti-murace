@@ -5,7 +5,6 @@ import it.polimi.se2018.model.container.DiceContainer;
 import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.container.Die;
 import it.polimi.se2018.model.container.DieColor;
-import javafx.scene.control.Cell;
 
 public class PrivateObjective implements Objective {
 
@@ -30,9 +29,9 @@ public class PrivateObjective implements Objective {
 
         for (int x=0; x<=5; x++) {
             for (int y=0; y<=4; y++) {
-                Die d = diceContainer.getDie(patternCard.getPatternCardCell(x,y).getThrowedDieId());
+                Die d = diceContainer.getDie(patternCard.getPatternCardCell(x,y).getRolledDieId());
                 if (this.color.equals(d.getColor()))
-                    result = result + d.getThrowedValue();
+                    result = result + d.getRolledValue();
             }
         }
         return result;

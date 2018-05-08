@@ -4,9 +4,9 @@ public class Die {
 
     private DieColor color;
 
-    private int throwedValue;
+    private int rolledValue;
 
-    private boolean throwed;
+    private boolean rolled;
 
     public Die(DieColor color) {
         this.color = color;
@@ -16,29 +16,29 @@ public class Die {
         return color;
     }
 
-    public int getThrowedValue() {
-        return throwedValue;
+    public int getRolledValue() {
+        return rolledValue;
     }
 
-    public boolean isThrowed() {
-        return throwed;
+    public boolean isRolled() {
+        return rolled;
     }
 
     /* TODO: tests and docs */
-    public void setThrowed(boolean throwed) throws DieSameThrowedValueException {
-        if(this.throwed == throwed) {
-            throw new DieSameThrowedValueException();
+    public void setRolled(boolean rolled) throws DieSameRolledValueException {
+        if(this.rolled == rolled) {
+            throw new DieSameRolledValueException();
         } else {
-            this.throwed = throwed;
+            this.rolled = rolled;
         }
     }
 
     /* TODO: tests and docs */
-    public void setThrowedValue(int throwedValue) throws DieThrowedValueOutOfBoundException {
-        if(throwedValue > 0 && throwedValue < 7) {
-            this.throwedValue = throwedValue;
+    public void setRolledValue(int rolledValue) throws DieRolledValueOutOfBoundException {
+        if(rolledValue > 0 && rolledValue < 7) {
+            this.rolledValue = rolledValue;
         } else {
-            throw new DieThrowedValueOutOfBoundException();
+            throw new DieRolledValueOutOfBoundException();
         }
     }
 

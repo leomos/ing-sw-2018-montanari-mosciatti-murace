@@ -8,7 +8,7 @@ public class Round {
 
     private int idPlayerPlaying;
 
-    private int[] throwedDiceLeft;
+    private int[] rolledDiceLeft;
 
     private DiceContainer diceContainer;
 
@@ -20,16 +20,16 @@ public class Round {
         return idPlayerPlaying;
     }
 
-    public int[] getThrowedDiceLeft() {
-        return throwedDiceLeft;
+    public int[] getRolledDiceLeft() {
+        return rolledDiceLeft;
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
-    public void setThrowedDiceLeft(int[] throwedDiceLeft) {
-        this.throwedDiceLeft = throwedDiceLeft;
+    public void setRolledDiceLeft(int[] rolledDiceLeft) {
+        this.rolledDiceLeft = rolledDiceLeft;
     }
 
     public DiceContainer getDiceContainer() { return diceContainer;}
