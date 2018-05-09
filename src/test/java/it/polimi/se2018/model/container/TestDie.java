@@ -1,8 +1,6 @@
 package it.polimi.se2018.model.container;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 import static org.junit.Assert.*;
 
@@ -11,21 +9,21 @@ import static org.junit.Assert.*;
  */
 public class TestDie {
 
-    private static Die die;
+    private Die die;
 
-    @BeforeClass
-    public static void setUpClass() {
+    @Before
+    public void setUp() {
         die = new Die(DieColor.BLUE);
     }
 
-    @AfterClass
-    public static void tearDownClass() {
+    @After
+    public void tearDown() {
         die = null;
         assertNull(die);
     }
 
     @Test
-    public void setRolled_TrueAs1stParam_isRolledShouldBeTrue() {
+    public void setRolled_TrueAsParam_isRolledShouldBeTrue() {
         try {
             die.setRolled(true);
         } catch (DieRolledStateNotChangedException e) {
@@ -35,12 +33,12 @@ public class TestDie {
     }
 
     @Test(expected = DieRolledStateNotChangedException.class)
-    public void setRolled_FalseAs1stParam_ExceptionThrown() throws DieRolledStateNotChangedException {
+    public void setRolled_FalseAsParam_ExceptionThrown() throws DieRolledStateNotChangedException {
         die.setRolled(false);
     }
 
     @Test
-    public void setRolledValue_5As1stParam_getRolledValueShouldBe5() {
+    public void setRolledValue_5AsParam_getRolledValueShouldBe5() {
         try {
             die.setRolledValue(5);
         } catch (DieRolledValueOutOfBoundException e) {
@@ -50,17 +48,17 @@ public class TestDie {
     }
 
     @Test(expected = DieRolledValueOutOfBoundException.class)
-    public void setRolledValue_NegativeNumberAs1stParam_ExcepionThrown() throws DieRolledValueOutOfBoundException {
+    public void setRolledValue_NegativeNumberAsParam_ExcepionThrown() throws DieRolledValueOutOfBoundException {
         die.setRolledValue(-1);
     }
 
     @Test(expected = DieRolledValueOutOfBoundException.class)
-    public void setRolledValue_7As1stParam_ExceptionThrown() throws DieRolledValueOutOfBoundException {
+    public void setRolledValue_7AsParam_ExceptionThrown() throws DieRolledValueOutOfBoundException {
         die.setRolledValue(7);
     }
 
     @Test(expected = DieRolledValueOutOfBoundException.class)
-    public void setRolledValue_0As1stParam_ExceptionThrown() throws DieRolledValueOutOfBoundException {
+    public void setRolledValue_0AsParam_ExceptionThrown() throws DieRolledValueOutOfBoundException {
         die.setRolledValue(0);
     }
 
