@@ -1,9 +1,5 @@
-package it.polimi.se2018.container;
+package it.polimi.se2018.model.container;
 
-import it.polimi.se2018.model.container.Die;
-import it.polimi.se2018.model.container.DieColor;
-import it.polimi.se2018.model.container.DieRolledStateNotChangedException;
-import it.polimi.se2018.model.container.DieRolledValueOutOfBoundException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
