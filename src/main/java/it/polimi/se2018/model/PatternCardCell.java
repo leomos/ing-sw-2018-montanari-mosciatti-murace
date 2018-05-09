@@ -48,7 +48,7 @@ public class PatternCardCell {
             diceContainer.getDie(this.rolledDieId).setRolled(false);
             diceContainer.getDie(rolledDieId).setRolled(true);
             this.rolledDieId = rolledDieId;
-        } catch (DieSameRolledValueException e) {
+        } catch (DieRolledStateNotChangedException e) {
             e.printStackTrace();
         }
     }

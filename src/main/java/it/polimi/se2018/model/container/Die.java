@@ -6,7 +6,7 @@ public class Die {
 
     private int rolledValue;
 
-    private boolean rolled;
+    private boolean rolled = false;
 
     public Die(DieColor color) {
         this.color = color;
@@ -24,16 +24,22 @@ public class Die {
         return rolled;
     }
 
-    /* TODO: tests and docs */
-    public void setRolled(boolean rolled) throws DieSameRolledValueException {
+    /**
+     * @param rolled
+     * @throws DieRolledStateNotChangedException if rolled parameter is equal to rolled property
+     */
+    public void setRolled(boolean rolled) throws DieRolledStateNotChangedException {
         if(this.rolled == rolled) {
-            throw new DieSameRolledValueException();
+            throw new DieRolledStateNotChangedException();
         } else {
             this.rolled = rolled;
         }
     }
 
-    /* TODO: tests and docs */
+    /**
+     * @param rolledValue
+     * @throws DieRolledValueOutOfBoundException if rolledValue > 6 or rolledValue < 1
+     */
     public void setRolledValue(int rolledValue) throws DieRolledValueOutOfBoundException {
         if(rolledValue > 0 && rolledValue < 7) {
             this.rolledValue = rolledValue;
