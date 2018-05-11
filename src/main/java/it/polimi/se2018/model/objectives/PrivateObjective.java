@@ -7,6 +7,7 @@ import it.polimi.se2018.model.container.Die;
 import it.polimi.se2018.model.container.DieColor;
 
 public class PrivateObjective implements Objective {
+    private String name;
 
     private String description;
 
