@@ -1,12 +1,14 @@
 package it.polimi.se2018.model.objectives;
 
 import it.polimi.se2018.model.PatternCard;
+import it.polimi.se2018.model.container.DiceContainer;
 import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.container.Die;
 
 public class PublicObjective2 extends PublicObjective {
 
-    public PublicObjective2() {
+    public PublicObjective2(DiceContainer diceContainer) {
+        super(diceContainer);
         this.name = "Colori diversi - Colonna";
         this.description = "Colonne senza colori ripetuti";
         this.id = 2;

@@ -19,7 +19,7 @@ public class DiceContainer {
         }
     }
 
-    /* TODO: tests and docs */
+    /* TODO: docs */
     public ArrayList<Die> getUnrolledDice() {
         ArrayList<Die> bag = new ArrayList<>();
 
@@ -32,7 +32,7 @@ public class DiceContainer {
         return bag;
     }
 
-    /* TODO: tests and docs */
+    /* TODO: docs */
     public Die getDie(int id) throws DiceContainerUnsupportedIdException {
         if(!isIdValid(id)) {
             throw new DiceContainerUnsupportedIdException();
@@ -41,7 +41,7 @@ public class DiceContainer {
         }
     }
 
-    /* TODO: tests and docs */
+    /* TODO: docs and change public to protected/private? */
     public boolean isIdValid(int id) {
        return (id < NUMBER_OF_DICE && id >= 0);
     }

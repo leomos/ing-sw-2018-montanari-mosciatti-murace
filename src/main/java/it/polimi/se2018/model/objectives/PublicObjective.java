@@ -20,5 +20,9 @@ public abstract class PublicObjective {
         return this.description;
     }
 
+    public PublicObjective(DiceContainer diceContainer) {
+        this.diceContainer = diceContainer;
+    }
+
     public abstract int calculateScore(PatternCard patternCard);
 }

@@ -7,14 +7,15 @@ import it.polimi.se2018.model.container.Die;
 
 public class PublicObjective1 extends PublicObjective {
 
-    public PublicObjective1() {
+    public PublicObjective1(DiceContainer diceContainer) {
+        super(diceContainer);
         this.name = "Colori diversi - Riga";
         this.description = "Righe senza colori ripetuti";
         this.id = 1;
     }
 
     @Override
-    /*TODO: tests. How can I solve warnings? */
+    /*TODO: tests */
     public int calculateScore(PatternCard patternCard) {
         int result = 0;
         boolean controllo = true;
@@ -44,13 +45,13 @@ public class PublicObjective1 extends PublicObjective {
                         Die t = null;
                         try {
                             t = diceContainer.getDie(patternCard.getPatternCardCell(i, j + m).getRolledDieId());
+                            /* Se i due dadi hanno colori diveri allora non serve che vada avanti con il confronto */
+                            if (d.getColor() == t.getColor()) {
+                                controllo = false;
+                                break;
+                            }
                         } catch (DiceContainerUnsupportedIdException e) {
                             e.printStackTrace();
-                        }
-                        /* Se i due dadi hanno colori diveri allora non serve che vada avanti con il confronto */
-                        if (d.getColor() == t.getColor()) {
-                            controllo = false;
-                            break;
                         }
                     }
 
