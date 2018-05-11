@@ -2,6 +2,7 @@ package it.polimi.se2018.model;
 
 import it.polimi.se2018.model.container.*;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /* TODO: Create method to read PatternCards from JSON. */
@@ -9,20 +10,32 @@ public class PatternCard {
 
     private int id;
 
-    private int favourTokens;
+    private String name;
 
-    private PatternCardCell[][] cell;
+    private PatternCardCell[][] cells;
 
     private int difficulty;
 
     private DiceContainer diceContainer;
 
+    public PatternCard(DiceContainer diceContainer, String patternCardRepresentation) {
+        String[] properties = patternCardRepresentation.split(",");
+        this.diceContainer = diceContainer;
+        this.id = Integer.parseInt(properties[0]);
+        this.name = properties[1];
+        this.difficulty = Integer.parseInt(properties[2]);
+        for(char c : properties[3].toCharArray()) {
+            if(c == '1') {
+            }
+        }
+    }
+
     public int getId() {
         return id;
     }
 
-    public int getFavourTokens() {
-        return favourTokens;
+    public String getName() {
+        return name;
     }
 
     public int getDifficulty() {
@@ -30,7 +43,7 @@ public class PatternCard {
     }
 
     public PatternCardCell getPatternCardCell(int x, int y){
-        return cell[x][y];
+        return cells[x][y];
     }
 
     private ArrayList<Integer[]> checkProximityCells(int x, int y){
