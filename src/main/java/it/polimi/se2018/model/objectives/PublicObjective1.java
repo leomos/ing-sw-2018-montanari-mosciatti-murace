@@ -4,6 +4,9 @@ import it.polimi.se2018.model.PatternCard;
 import it.polimi.se2018.model.container.DiceContainer;
 import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.container.Die;
+import it.polimi.se2018.model.container.DieColor;
+
+import java.util.ArrayList;
 
 public class PublicObjective1 extends PublicObjective {
 
@@ -17,52 +20,30 @@ public class PublicObjective1 extends PublicObjective {
     @Override
     /*TODO: tests */
     public int calculateScore(PatternCard patternCard) {
+        /* Genero un ArrayList che contiene la lista dei colori presenti in ogni riga */
+        ArrayList<DieColor> riga = new ArrayList<>();
         int result = 0;
-        boolean controllo = true;
 
-        /* Controllo la condizione per tutte le righe della PatternCard */
+        // Controllo la condizione per tutte le righe della PatternCard
         for (int i = 0; i < 4; i++) {
-
-            /* Comincio controllando che non ci siano celle vuote nella riga che sto considerando */
             for (int j = 0; j < 5; j++) {
-                if (patternCard.getPatternCardCell(i, j).isEmpty()) {
-                    controllo = false;
+                // Comincio controllando che la cella che sto esaminando non sia vuota
+                if (patternCard.getPatternCardCell(i, j).isEmpty())
                     break;
-                }
-            }
-
-            if (controllo) {
-                /* Controllo la condizione per tutte le celle di una riga della PatternCard */
-                for (int j = 0; j < 5; j++) {
-                    Die d = null;
-                    try {
-                        d = diceContainer.getDie(patternCard.getPatternCardCell(i, j).getRolledDieId());
-                    } catch (DiceContainerUnsupportedIdException e) {
-                        e.printStackTrace();
-                    }
-                    /* Controllo il colore del dado con ogni cella */
-                    for (int m = 1; m + j < 5; m++) {
-                        Die t = null;
-                        try {
-                            t = diceContainer.getDie(patternCard.getPatternCardCell(i, j + m).getRolledDieId());
-                            /* Se i due dadi hanno colori diveri allora non serve che vada avanti con il confronto */
-                            if (d.getColor() == t.getColor()) {
-                                controllo = false;
-                                break;
-                            }
-                        } catch (DiceContainerUnsupportedIdException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    /* Se ho trovato anche solo un mismatch allora non serve che vada avanti con il controllo della riga */
-                    if (!controllo)
+                try {
+                    Die d = diceContainer.getDie(patternCard.getPatternCardCell(i, j).getRolledDieId());
+                    // Se il colore del dado è già presente nell'ArrayList, allora esco, altrimenti aggiungo il suo colore
+                    if (riga.indexOf(d.getColor()) != -1)
                         break;
-
-                    result = result + 6;
+                    riga.add(d.getColor());
+                } catch (DiceContainerUnsupportedIdException e) {
+                    e.printStackTrace();
                 }
             }
+            //Se, alla fine, ho un ArrayList con lunghezza 5 allora ho 5 colori diversi e quindi aumento il punteggio
+            if (riga.size()==5)
+                result = result + 6;
         }
-        return result;
+    return result;
     }
 }
