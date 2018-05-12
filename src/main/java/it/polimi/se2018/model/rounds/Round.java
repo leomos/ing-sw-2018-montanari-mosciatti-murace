@@ -1,16 +1,19 @@
 package it.polimi.se2018.model.rounds;
 
-import it.polimi.se2018.model.container.*;
-
+/* TODO: tests and docs */
 public class Round {
 
     private int id;
 
-    private int idPlayerPlaying;
+    private int idPlayerPlaying = -1;
 
     private int[] rolledDiceLeft;
 
-    private DiceContainer diceContainer;
+    private int[] players;
+
+    public Round(int id) {
+        this.id = id;
+    }
 
     public int getId() {
         return id;
@@ -24,13 +27,24 @@ public class Round {
         return rolledDiceLeft;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setPlayers(int[] players) {
+        this.players = players;
     }
+
 
     public void setRolledDiceLeft(int[] rolledDiceLeft) {
         this.rolledDiceLeft = rolledDiceLeft;
     }
 
-    public DiceContainer getDiceContainer() { return diceContainer;}
+    public void setFirstPlayer(int idFirstPlayer) throws RoundFirstPlayerAlreadySet {
+        if(idPlayerPlaying != -1) {
+            throw new RoundFirstPlayerAlreadySet();
+        }
+        idPlayerPlaying = idFirstPlayer;
+    }
+
+    /* TODO: implement next player logic. */
+    public boolean setNextPlayer() {
+        return true;
+    }
 }
