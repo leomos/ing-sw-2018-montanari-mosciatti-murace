@@ -25,6 +25,12 @@ public class PrivateObjective implements Objective {
         return this.description;
     }
 
+    /**
+     *
+     * @param patternCard
+     * @return PatternCard score at the end of the game based on private objective of card
+     * @throws DiceContainerUnsupportedIdException if die's id is not valid
+     */
     public int calculateScore (PatternCard patternCard) throws DiceContainerUnsupportedIdException {
         int result=0;
 

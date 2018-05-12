@@ -17,6 +17,11 @@ public class PublicObjective2 extends PublicObjective {
         this.id = 2;
     }
 
+    /**
+     * @param patternCard
+     * @return PatternCard score at the end of the game based on public objective of card 2
+     * @throws DiceContainerUnsupportedIdException if die's id is not valid
+     */
     @Override
     /*TODO: tests*/
     public int calculateScore(PatternCard patternCard) {
@@ -28,7 +33,8 @@ public class PublicObjective2 extends PublicObjective {
                 if (patternCard.getPatternCardCell(i, j).isEmpty())
                     break;
                 try {
-                    Die d = diceContainer.getDie(patternCard.getPatternCardCell(i, j).getRolledDieId());if (riga.indexOf(d.getColor()) != -1)
+                    Die d = diceContainer.getDie(patternCard.getPatternCardCell(i, j).getRolledDieId());
+                    if (riga.indexOf(d.getColor()) != -1)
                         break;
                     riga.add(d.getColor());
                 } catch (DiceContainerUnsupportedIdException e) {

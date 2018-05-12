@@ -14,6 +14,12 @@ public class PublicObjective9 extends PublicObjective {
         this.id = 9;
     }
 
+    /**
+     *
+     * @param patternCard
+     * @return PatternCard score at the end of the game based on public objective of card 9
+     * @throws DiceContainerUnsupportedIdException If die's id is not valid
+     */
     @Override
     public int calculateScore(PatternCard patternCard) {
         int result = 0;
