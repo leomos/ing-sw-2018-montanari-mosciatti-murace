@@ -20,11 +20,9 @@ public class PublicObjective7 extends PublicObjective{
 
         for (int i=0; i<5; i++) {
             for (int j=0; j<4; j++) {
-                // Comincio controllando che la cella che sto esaminando non sia vuota
                 if (patternCard.getPatternCardCell(i, j).isEmpty())
                     break;
                 try {
-                    //Per ogni dado che trovo, controllo che questo sia 5 o 6
                     Die d = diceContainer.getDie(patternCard.getPatternCardCell(i, j).getRolledDieId());
                     if (d.getRolledValue()>=5)
                         result++;

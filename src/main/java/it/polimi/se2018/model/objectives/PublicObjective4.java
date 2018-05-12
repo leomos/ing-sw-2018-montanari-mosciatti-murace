@@ -19,19 +19,15 @@ public class PublicObjective4 extends PublicObjective {
 
     @Override
     public int calculateScore(PatternCard patternCard) {
-        /* Genero un ArrayList che contiene la lista dei colori presenti in ogni riga */
         ArrayList<Integer> riga = new ArrayList<>();
         int result = 0;
 
-        // Controllo la condizione per tutte le righe della PatternCard
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 5; j++) {
-                // Comincio controllando che la cella che sto esaminando non sia vuota
                 if (patternCard.getPatternCardCell(i, j).isEmpty())
                     break;
                 try {
                     Die d = diceContainer.getDie(patternCard.getPatternCardCell(i, j).getRolledDieId());
-                    // Se il colore del dado è già presente nell'ArrayList, allora esco, altrimenti aggiungo il suo colore
                     if (riga.indexOf(d.getRolledValue()) != -1)
                         break;
                     riga.add(d.getRolledValue());
@@ -39,7 +35,6 @@ public class PublicObjective4 extends PublicObjective {
                     e.printStackTrace();
                 }
             }
-            //Se, alla fine, ho un ArrayList con lunghezza 5 allora ho 5 colori diversi e quindi aumento il punteggio
             if (riga.size()==4)
                 result = result + 4;
         }

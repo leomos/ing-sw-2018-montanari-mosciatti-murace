@@ -2,6 +2,12 @@ package it.polimi.se2018.model.objectives;
 
 import it.polimi.se2018.model.PatternCard;
 import it.polimi.se2018.model.container.DiceContainer;
+import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
+import it.polimi.se2018.model.container.Die;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Hashtable;
 
 public class PublicObjective8 extends PublicObjective{
 
@@ -14,7 +20,33 @@ public class PublicObjective8 extends PublicObjective{
 
     @Override
     public int calculateScore(PatternCard patternCard) {
-        return 0;
-    }
+        int result = 0;
+        int[] shade = new int[5];
+        int min = 10;
 
+        for (int i=0; i<=5; i++) {
+            shade[i] = 0;
+        }
+        for (int i=0; i<5; i++) {
+            for (int j=0; j<4; j++) {
+                if (!patternCard.getPatternCardCell(i, j).isEmpty()) {
+                    try {
+                        Die d = diceContainer.getDie(patternCard.getPatternCardCell(i, j).getRolledDieId());
+                        shade[d.getRolledValue()-1]++;
+                    } catch (DiceContainerUnsupportedIdException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        for (int i=0; i<=5; i++) {
+            if (min==shade[i])
+                result++;
+            if (min>shade[i]) {
+                result = 1;
+                min = shade[i];
+            }
+        }
+        return result*5;
+    }
 }
