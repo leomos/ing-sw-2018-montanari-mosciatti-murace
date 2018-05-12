@@ -41,9 +41,6 @@ public class PatternCardCell {
      *                                             is not valid.
      */
     private void setRolledDieId(int rolledDieId) throws DiceContainerUnsupportedIdException {
-        if(!diceContainer.isIdValid(rolledDieId)) {
-            throw new DiceContainerUnsupportedIdException();
-        }
         try {
             diceContainer.getDie(this.rolledDieId).setRolled(false);
             diceContainer.getDie(rolledDieId).setRolled(true);
