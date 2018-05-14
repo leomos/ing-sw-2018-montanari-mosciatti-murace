@@ -38,6 +38,10 @@ public class Player {
         return chosenPatternCard;
     }
 
+    public PrivateObjective getPrivateObjective() {
+        return privateObjective;
+    }
+
     public void setTokens(int tokens) {
         this.tokens = tokens;
     }
