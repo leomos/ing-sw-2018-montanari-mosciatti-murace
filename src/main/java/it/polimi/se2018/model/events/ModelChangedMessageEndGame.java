@@ -1,4 +1,4 @@
-package it.polimi.se2018.model.Events;
+package it.polimi.se2018.model.events;
 
 import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model.Scoreboard;
