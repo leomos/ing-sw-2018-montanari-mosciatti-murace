@@ -46,38 +46,53 @@ public class PatternCard {
         return cells[x][y];
     }
 
+    /**
+     * @param x cell's abscissa
+     * @param y cell's ordinate
+     * @return proximityCellList list of available positions around the cell defined by x and y
+     * @throws
+     */
     private ArrayList<Integer[]> checkProximityCells(int x, int y){
-        ArrayList<Integer[]> i = new ArrayList<>();
+        ArrayList<Integer[]> proximityCellList = new ArrayList<>();
         Integer[] k = new Integer[2];
 
         if( x+1 < 5 && !getPatternCardCell(x+1, y).isEmpty()) {
             k[0] = x+1;
             k[1] = y;
-            i.add(k);
+            proximityCellList.add(k);
         }
 
         if( x-1 > 0 && !getPatternCardCell(x-1, y).isEmpty()) {
             k[0] = x - 1;
             k[1] = y;
-            i.add(k);
+            proximityCellList.add(k);
         }
 
         if( y+1 < 4 && !getPatternCardCell(x, y+1).isEmpty()) {
             k[0] = x;
             k[1] = y + 1;
-            i.add(k);
+            proximityCellList.add(k);
         }
 
         if( y-1 > 0 && !getPatternCardCell(x, y-1).isEmpty()) {
             k[0] = x;
             k[1] = y - 1;
-            i.add(k);
+            proximityCellList.add(k);
         }
 
-        return i;
+        return proximityCellList;
 
     }
 
+    /**
+     * @param rolledDieId die's Id
+     * @param x cell's abscissa
+     * @param y cell's ordinate
+     * @return proximityCellList list of available positions around the cell defined by x and y
+     * @throws
+     */
+
+    /*TODO: test */
     public boolean checkProximityCellsValidity(int rolledDieId, int x, int y)throws DiceContainerUnsupportedIdException {
         Die d = diceContainer.getDie(rolledDieId);
         Die app;

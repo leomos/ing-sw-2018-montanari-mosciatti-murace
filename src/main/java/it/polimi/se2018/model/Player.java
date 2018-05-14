@@ -12,7 +12,7 @@ public class Player {
 
     private ArrayList<PatternCard> patternCards;
 
-    private int chosenPatternCard;
+    private PatternCard chosenPatternCard;
 
     private int tokens;
 
@@ -34,7 +34,7 @@ public class Player {
         return patternCards;
     }
 
-    public int getChosenPatternCard() {
+    public PatternCard getChosenPatternCard() {
         return chosenPatternCard;
     }
 
@@ -50,7 +50,7 @@ public class Player {
         return tokens;
     }
 
-    public void setChosenPatternCard(int chosenPatternCard) {
+    public void setChosenPatternCard(PatternCard chosenPatternCard) {
         this.chosenPatternCard = chosenPatternCard;
     }
 }
