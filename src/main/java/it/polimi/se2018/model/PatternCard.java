@@ -58,25 +58,25 @@ public class PatternCard {
         ArrayList<Integer[]> proximityCellList = new ArrayList<>();
         Integer[] k = new Integer[2];
 
-        if( x+1 < 5 && !getPatternCardCell(x+1, y).isEmpty()) {
+        if( x+1 < 5 && !this.cells[x+1][y].isEmpty()) {
             k[0] = x+1;
             k[1] = y;
             proximityCellList.add(k);
         }
 
-        if( x-1 > 0 && !getPatternCardCell(x-1, y).isEmpty()) {
+        if( x-1 > 0 && !this.cells[x-1][y].isEmpty()) {
             k[0] = x - 1;
             k[1] = y;
             proximityCellList.add(k);
         }
 
-        if( y+1 < 4 && !getPatternCardCell(x, y+1).isEmpty()) {
+        if( y+1 < 4 && !this.cells[x][y+1].isEmpty()) {
             k[0] = x;
             k[1] = y + 1;
             proximityCellList.add(k);
         }
 
-        if( y-1 > 0 && !getPatternCardCell(x, y-1).isEmpty()) {
+        if( y-1 > 0 && !this.cells[x][y-1].isEmpty()) {
             k[0] = x;
             k[1] = y - 1;
             proximityCellList.add(k);
@@ -96,25 +96,25 @@ public class PatternCard {
         ArrayList<Integer[]> proximityCellList = new ArrayList<>();
         Integer[] k = new Integer[2];
 
-        if( x+1 < 5 && y+1 < 4 && !getPatternCardCell(x+1, y+1).isEmpty()) {
+        if( x+1 < 5 && y+1 < 4 && !this.cells[x+1][y+1].isEmpty()) {
             k[0] = x+1;
             k[1] = y+1;
             proximityCellList.add(k);
         }
 
-        if( x-1 >= 0 && y+1 < 4 && !getPatternCardCell(x-1, y+1).isEmpty()) {
+        if( x-1 >= 0 && y+1 < 4 && !this.cells[x-1][y+1].isEmpty()) {
             k[0] = x - 1;
             k[1] = y + 1;
             proximityCellList.add(k);
         }
 
-        if( x+1 < 4 && y-1 >= 0 && !getPatternCardCell(x+1, y-1).isEmpty()) {
+        if( x+1 < 4 && y-1 >= 0 && !this.cells[x+1][y-1].isEmpty()) {
             k[0] = x + 1;
             k[1] = y - 1;
             proximityCellList.add(k);
         }
 
-        if( x-1 >= 0 && y-1 >= 0 && !getPatternCardCell(x-1, y-1).isEmpty()) {
+        if( x-1 >= 0 && y-1 >= 0 && !this.cells[x-1][y-1].isEmpty()) {
             k[0] = x - 1;
             k[1] = y - 1;
             proximityCellList.add(k);
@@ -138,7 +138,7 @@ public class PatternCard {
         Die app;
 
         for( Integer[] i : checkProximityCells(x, y) ) {
-            app = diceContainer.getDie(getPatternCardCell(i[0],i[1]).getRolledDieId());
+            app = diceContainer.getDie(this.cells[i[0]][i[1]].getRolledDieId());
             if( app.getColor() == d.getColor() || app.getRolledValue() == d.getRolledValue()) {
                 return false;
             }
