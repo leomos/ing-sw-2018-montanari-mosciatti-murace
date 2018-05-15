@@ -3,6 +3,7 @@ package it.polimi.se2018.model;
 import it.polimi.se2018.model.container.DiceContainer;
 import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.container.DieRolledValueOutOfBoundException;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,6 +18,12 @@ public class TestPatternCard {
     public void setUp() {
         diceContainer = new DiceContainer();
         patternCard = new PatternCard(diceContainer, "0,Virtus,5,4025g006g203g405g100");
+    }
+
+    @After
+    public void tearDown(){
+        diceContainer = null;
+        patternCard = null;
     }
 
     @Test
