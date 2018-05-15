@@ -55,4 +55,5 @@ public class TestDiceContainer {
         }
         assertEquals(88, diceContainer.getUnrolledDice().size());
     }
+
 }

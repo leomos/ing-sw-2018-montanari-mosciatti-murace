@@ -6,6 +6,8 @@ import it.polimi.se2018.model.container.Die;
 
 import java.util.ArrayList;
 
+import static it.polimi.se2018.model.container.DieColor.*;
+
 /* TODO: Create method to read PatternCards from JSON. */
 public class PatternCard {
 
@@ -27,9 +29,55 @@ public class PatternCard {
         this.id = Integer.parseInt(properties[0]);
         this.name = properties[1];
         this.difficulty = Integer.parseInt(properties[2]);
+        int i = 0, j = 0;
         for(char c : properties[3].toCharArray()) {
             if(c == '1') {
+                cells[i][j] = new PatternCardCell(diceContainer, null, 1);
             }
+            if(c == '2') {
+                cells[i][j] = new PatternCardCell(diceContainer, null, 2);
+            }
+            if(c == '3') {
+                cells[i][j] = new PatternCardCell(diceContainer, null, 3);
+            }
+            if(c == '4') {
+                cells[i][j] = new PatternCardCell(diceContainer, null, 4);
+            }
+            if(c == '5') {
+                cells[i][j] = new PatternCardCell(diceContainer, null, 5);
+            }
+            if(c == '6') {
+                cells[i][j] = new PatternCardCell(diceContainer, null, 6);
+            }
+
+            if(c == 'g') {
+                cells[i][j] = new PatternCardCell(diceContainer, GREEN, 0);
+            }
+            if(c == 'y') {
+                cells[i][j] = new PatternCardCell(diceContainer, YELLOW, 0);
+            }
+            if(c == 'b') {
+                cells[i][j] = new PatternCardCell(diceContainer, BLUE, 0);
+            }
+            if(c == 'r') {
+                cells[i][j] = new PatternCardCell(diceContainer, RED, 0);
+            }
+            if(c == 'p') {
+                cells[i][j] = new PatternCardCell(diceContainer, PURPLE, 0);
+            }
+            if(c == '0') {
+                cells[i][j] = new PatternCardCell(diceContainer, null, 0);
+            }
+
+
+
+            if(j == 4){
+                j = 0;
+                i++;
+            }else {
+                j++;
+            }
+
         }
     }
 
