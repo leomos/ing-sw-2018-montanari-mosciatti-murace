@@ -17,7 +17,10 @@ public class PatternCard {
 
     private String name;
 
-    private PatternCardCell[][] cells;
+    private static final int NUMBER_OF_COLUMS= 5;
+    private static final int NUMBER_OF_ROW = 4;
+
+    private PatternCardCell[][] cells = new PatternCardCell[NUMBER_OF_COLUMS][NUMBER_OF_ROW];
 
     private int difficulty;
 
@@ -29,47 +32,49 @@ public class PatternCard {
         this.id = Integer.parseInt(properties[0]);
         this.name = properties[1];
         this.difficulty = Integer.parseInt(properties[2]);
-        int i = 0, j = 0;
+        int i, j;
+        i = 0;
+        j = 0;
         for(char c : properties[3].toCharArray()) {
+
             if(c == '1') {
-                cells[i][j] = new PatternCardCell(diceContainer, null, 1);
+                this.cells[j][i] = new PatternCardCell(diceContainer, null, 1);
             }
             if(c == '2') {
-                cells[i][j] = new PatternCardCell(diceContainer, null, 2);
+                this.cells[j][i] = new PatternCardCell(diceContainer, null, 2);
             }
             if(c == '3') {
-                cells[i][j] = new PatternCardCell(diceContainer, null, 3);
+                this.cells[j][i] = new PatternCardCell(diceContainer, null, 3);
             }
             if(c == '4') {
-                cells[i][j] = new PatternCardCell(diceContainer, null, 4);
+                this.cells[j][i] = new PatternCardCell(diceContainer, null, 4);
             }
             if(c == '5') {
-                cells[i][j] = new PatternCardCell(diceContainer, null, 5);
+                this.cells[j][i] = new PatternCardCell(diceContainer, null, 5);
             }
             if(c == '6') {
-                cells[i][j] = new PatternCardCell(diceContainer, null, 6);
+                this.cells[j][i] = new PatternCardCell(diceContainer, null, 6);
             }
 
             if(c == 'g') {
-                cells[i][j] = new PatternCardCell(diceContainer, GREEN, 0);
+                this.cells[j][i] = new PatternCardCell(diceContainer, GREEN, 0);
             }
             if(c == 'y') {
-                cells[i][j] = new PatternCardCell(diceContainer, YELLOW, 0);
+                this.cells[j][i] = new PatternCardCell(diceContainer, YELLOW, 0);
             }
             if(c == 'b') {
-                cells[i][j] = new PatternCardCell(diceContainer, BLUE, 0);
+                this.cells[j][i] = new PatternCardCell(diceContainer, BLUE, 0);
             }
             if(c == 'r') {
-                cells[i][j] = new PatternCardCell(diceContainer, RED, 0);
+                this.cells[j][i] = new PatternCardCell(diceContainer, RED, 0);
             }
             if(c == 'p') {
-                cells[i][j] = new PatternCardCell(diceContainer, PURPLE, 0);
+                this.cells[j][i] = new PatternCardCell(diceContainer, PURPLE, 0);
             }
+
             if(c == '0') {
-                cells[i][j] = new PatternCardCell(diceContainer, null, 0);
+                this.cells[j][i] = new PatternCardCell(diceContainer, null, 0);
             }
-
-
 
             if(j == 4){
                 j = 0;
@@ -114,30 +119,30 @@ public class PatternCard {
      */
     private ArrayList<Integer[]> checkProximityCells(int x, int y){
         ArrayList<Integer[]> proximityCellList = new ArrayList<>();
-        Integer[] k = new Integer[2];
+        Integer[][] k = new Integer[4][2];
 
         if( x+1 < 5 && !this.cells[x+1][y].isEmpty()) {
-            k[0] = x+1;
-            k[1] = y;
-            proximityCellList.add(k);
+            k[0][0] = x+1;
+            k[0][1] = y;
+            proximityCellList.add(k[0]);
         }
 
-        if( x-1 > 0 && !this.cells[x-1][y].isEmpty()) {
-            k[0] = x - 1;
-            k[1] = y;
-            proximityCellList.add(k);
+        if( x-1 >= 0 && !this.cells[x-1][y].isEmpty()) {
+            k[1][0] = x - 1;
+            k[1][1] = y;
+            proximityCellList.add(k[1]);
         }
 
         if( y+1 < 4 && !this.cells[x][y+1].isEmpty()) {
-            k[0] = x;
-            k[1] = y + 1;
-            proximityCellList.add(k);
+            k[2][0] = x;
+            k[2][1] = y + 1;
+            proximityCellList.add(k[2]);
         }
 
-        if( y-1 > 0 && !this.cells[x][y-1].isEmpty()) {
-            k[0] = x;
-            k[1] = y - 1;
-            proximityCellList.add(k);
+        if( y-1 >= 0 && !this.cells[x][y-1].isEmpty()) {
+            k[3][0] = x;
+            k[3][1] = y - 1;
+            proximityCellList.add(k[3]);
         }
 
         return proximityCellList;
@@ -152,30 +157,30 @@ public class PatternCard {
      */
     private ArrayList<Integer[]> checkDiagonalCells(int x, int y){
         ArrayList<Integer[]> proximityCellList = new ArrayList<>();
-        Integer[] k = new Integer[2];
+        Integer[][] k = new Integer[4][2];
 
-        if( x+1 < 5 && y+1 < 4 && !this.cells[x+1][y+1].isEmpty()) {
-            k[0] = x+1;
-            k[1] = y+1;
-            proximityCellList.add(k);
+        if( x+1 < 5 && y+1 < 4 ) {
+            k[0][0] = x+1;
+            k[0][1] = y+1;
+            proximityCellList.add(k[0]);
         }
 
-        if( x-1 >= 0 && y+1 < 4 && !this.cells[x-1][y+1].isEmpty()) {
-            k[0] = x - 1;
-            k[1] = y + 1;
-            proximityCellList.add(k);
+        if( x-1 >= 0 && y+1 < 4 ) {
+            k[1][0] = x - 1;
+            k[1][1] = y + 1;
+            proximityCellList.add(k[1]);
         }
 
-        if( x+1 < 4 && y-1 >= 0 && !this.cells[x+1][y-1].isEmpty()) {
-            k[0] = x + 1;
-            k[1] = y - 1;
-            proximityCellList.add(k);
+        if( x+1 < 4 && y-1 >= 0 ) {
+            k[2][0] = x + 1;
+            k[2][1] = y - 1;
+            proximityCellList.add(k[2]);
         }
 
-        if( x-1 >= 0 && y-1 >= 0 && !this.cells[x-1][y-1].isEmpty()) {
-            k[0] = x - 1;
-            k[1] = y - 1;
-            proximityCellList.add(k);
+        if( x-1 >= 0 && y-1 >= 0 ) {
+            k[3][0] = x - 1;
+            k[3][1] = y - 1;
+            proximityCellList.add(k[3]);
         }
 
         return proximityCellList;
@@ -190,7 +195,7 @@ public class PatternCard {
      * @throws DiceContainerUnsupportedIdException
      */
 
-    /*TODO: test */
+    /*TODO: test + change Proximity to Ortogonal */
     public boolean checkProximityCellsValidity(int rolledDieId, int x, int y)throws DiceContainerUnsupportedIdException {
         Die d = diceContainer.getDie(rolledDieId);
         Die app;
