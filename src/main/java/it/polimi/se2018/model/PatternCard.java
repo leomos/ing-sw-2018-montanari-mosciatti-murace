@@ -1,8 +1,9 @@
 package it.polimi.se2018.model;
 
-import it.polimi.se2018.model.container.*;
+import it.polimi.se2018.model.container.DiceContainer;
+import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
+import it.polimi.se2018.model.container.Die;
 
-import java.io.File;
 import java.util.ArrayList;
 
 /* TODO: Create method to read PatternCards from JSON. */
@@ -47,9 +48,10 @@ public class PatternCard {
     }
 
     /**
+     *
      * @param x cell's abscissa
      * @param y cell's ordinate
-     * @return proximityCellList list of available positions around the cell defined by x and y
+     * @return proximityCellList list of available positions above, under or next to the cell defined by x and y
      * @throws
      */
     private ArrayList<Integer[]> checkProximityCells(int x, int y){
@@ -85,11 +87,49 @@ public class PatternCard {
     }
 
     /**
+     *
+     * @param x cell's abscissa
+     * @param y cell's ordinate
+     * @return proximityCellList list of available positions diagonals to the cell defined by x and y
+     */
+    private ArrayList<Integer[]> checkDiagonalCells(int x, int y){
+        ArrayList<Integer[]> proximityCellList = new ArrayList<>();
+        Integer[] k = new Integer[2];
+
+        if( x+1 < 5 && y+1 < 4 && !getPatternCardCell(x+1, y+1).isEmpty()) {
+            k[0] = x+1;
+            k[1] = y+1;
+            proximityCellList.add(k);
+        }
+
+        if( x-1 >= 0 && y+1 < 4 && !getPatternCardCell(x-1, y+1).isEmpty()) {
+            k[0] = x - 1;
+            k[1] = y + 1;
+            proximityCellList.add(k);
+        }
+
+        if( x+1 < 4 && y-1 >= 0 && !getPatternCardCell(x+1, y-1).isEmpty()) {
+            k[0] = x + 1;
+            k[1] = y - 1;
+            proximityCellList.add(k);
+        }
+
+        if( x-1 >= 0 && y-1 >= 0 && !getPatternCardCell(x-1, y-1).isEmpty()) {
+            k[0] = x - 1;
+            k[1] = y - 1;
+            proximityCellList.add(k);
+        }
+
+        return proximityCellList;
+
+    }
+
+    /**
      * @param rolledDieId die's Id
      * @param x cell's abscissa
      * @param y cell's ordinate
      * @return proximityCellList list of available positions around the cell defined by x and y
-     * @throws
+     * @throws DiceContainerUnsupportedIdException
      */
 
     /*TODO: test */
@@ -107,5 +147,30 @@ public class PatternCard {
         return true;
     }
 
+    /**
+     * returns whether there is a die in one of the adjacent position to the cell defined by x and y
+     * @param x cell's abscissa
+     * @param y cell's ordinate
+     * @return
+     * @throws DiceContainerUnsupportedIdException
+     */
+    public boolean checkDieInAdjacentCells(int x, int y) throws DiceContainerUnsupportedIdException {
+
+        for( Integer[] i : checkProximityCells(x, y) ){
+            if(!getPatternCardCell(i[0],i[1]).isEmpty())
+                return true;
+        }
+
+        for( Integer[] i :checkDiagonalCells(x,y)){
+            if(!getPatternCardCell(i[0], i[1]).isEmpty())
+                return true;
+        }
+
+        return false;
+    }
+
+    public boolean checkFirstMove(int x, int y){
+        return x == 0 || x == 4 || y == 0 || y == 3;
+    }
 
 }

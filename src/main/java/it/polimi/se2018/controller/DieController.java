@@ -1,7 +1,6 @@
 package it.polimi.se2018.controller;
 
 import it.polimi.se2018.model.Model;
-import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.events.PlayerMessageDie;
 
 public class DieController extends Controller {
@@ -23,14 +22,7 @@ public class DieController extends Controller {
         int x = playerMessageDie.getPosition()[0];
         int y = playerMessageDie.getPosition()[1];
 
-        try {
-            if (this.model.getTable().getPlayers(idPlayer).getChosenPatternCard().checkProximityCellsValidity(idDie, x, y))
-                this.model.getTable().getPlayers(idPlayer).getChosenPatternCard()
-                        .getPatternCardCell(x, y)
-                        .setRolledDieId(idDie, false, false);
+        this.model.getTable().getPlayers(idPlayer).setDieInPatternCard(idDie, x, y, false, false);
 
-        } catch (DiceContainerUnsupportedIdException o){
-
-        }
     }
 }
