@@ -22,7 +22,7 @@ public class DieController extends Controller {
         int x = playerMessageDie.getPosition()[0];
         int y = playerMessageDie.getPosition()[1];
 
-        this.model.getTable().getPlayers(idPlayer).setDieInPatternCard(idDie, x, y, false, false);
+        this.model.setDieInPatternCard(idPlayer, idDie, x, y, false, false);
 
     }
 }

@@ -11,6 +11,8 @@ public class PatternCard {
 
     private int id;
 
+    private boolean firstMove = true;
+
     private String name;
 
     private PatternCardCell[][] cells;
@@ -29,6 +31,14 @@ public class PatternCard {
             if(c == '1') {
             }
         }
+    }
+
+    public boolean isFirstMove() {
+        return firstMove;
+    }
+
+    public void setFirstMove(){
+        firstMove = false;
     }
 
     public int getId() {
