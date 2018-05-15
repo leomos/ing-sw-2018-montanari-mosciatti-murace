@@ -3,8 +3,9 @@ package it.polimi.se2018.model.rounds;
 import it.polimi.se2018.model.Player;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
-/* TODO: tests and docs */
+/* TODO: docs */
 public class Round {
 
     private int id;
@@ -15,7 +16,7 @@ public class Round {
 
     private ArrayList<Integer> players;
 
-    private int numberOfTurnsPlayed = 1;
+    private ArrayList<Integer> turns = new ArrayList<>();
 
     public Round(int id) {
         this.id = id;
@@ -46,18 +47,25 @@ public class Round {
             throw new RoundFirstPlayerAlreadySet();
         }
         idPlayerPlaying = idFirstPlayer;
+        createTurns();
     }
 
     /* TODO: implement next player logic. */
-    public void setNextPlayer() {
-        int currentPlayerPositionInPlayersArray = players.indexOf(idPlayerPlaying);
-        numberOfTurnsPlayed++;
-        if(players.size() <= numberOfTurnsPlayed) {
-            idPlayerPlaying = players.get(currentPlayerPositionInPlayersArray + 1);
-        } else if(players.size() + 1 == numberOfTurnsPlayed) {
-            idPlayerPlaying = players.get(currentPlayerPositionInPlayersArray);
+    public void setNextPlayer() throws RoundFinishedException {
+        if(!turns.isEmpty()) {
+            idPlayerPlaying = turns.get(0);
+            turns.remove(0);
         } else {
-            idPlayerPlaying = players.get(currentPlayerPositionInPlayersArray - 1);
+            throw new RoundFinishedException();
         }
+    }
+
+    private void createTurns() {
+        ArrayList<Integer> chunk = (ArrayList<Integer>)players.clone();
+        Collections.rotate(chunk, players.size() - players.indexOf(idPlayerPlaying));
+        turns.addAll(chunk);
+        Collections.reverse(chunk);
+        turns.addAll(chunk);
+        turns.remove(0);
     }
 }
