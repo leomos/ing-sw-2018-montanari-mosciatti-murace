@@ -57,10 +57,6 @@ public class Player {
         this.chosenPatternCard = chosenPatternCard;
     }
 
-    private void setFirstMove(){
-        firstMove = false;
-    }
-
 
     /**
      *
@@ -76,7 +72,7 @@ public class Player {
         try {
             if (firstMove && chosenPatternCard.checkFirstMove(x,y)){
                 chosenPatternCard.getPatternCardCell(x, y).setRolledDieId(idDie, ignoreValueConstraint, ignoreColorConstraint);
-                setFirstMove();
+                firstMove = false;
             } else if (chosenPatternCard.checkProximityCellsValidity(idDie, x, y) && chosenPatternCard.checkDieInAdjacentCells(x, y))
                 chosenPatternCard.getPatternCardCell(x, y).setRolledDieId(idDie, ignoreValueConstraint, ignoreColorConstraint);
         } catch (DiceContainerUnsupportedIdException e){}

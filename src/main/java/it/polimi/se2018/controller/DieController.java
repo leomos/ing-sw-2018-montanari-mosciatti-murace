@@ -10,7 +10,7 @@ public class DieController extends Controller {
     }
 
     /**
-     * checks if the die placement is available and in that case performs the player move by modifying the model
+     * performs the player move by modifying the model
      * @param playerMessageDie message passed from controller containing the information required to perform the move
      * @throws
      */

@@ -157,12 +157,12 @@ public class PatternCard {
     public boolean checkDieInAdjacentCells(int x, int y) throws DiceContainerUnsupportedIdException {
 
         for( Integer[] i : checkProximityCells(x, y) ){
-            if(!getPatternCardCell(i[0],i[1]).isEmpty())
+            if(!this.cells[i[0]][i[1]].isEmpty())
                 return true;
         }
 
         for( Integer[] i :checkDiagonalCells(x,y)){
-            if(!getPatternCardCell(i[0], i[1]).isEmpty())
+            if(!this.cells[i[0]][i[1]].isEmpty())
                 return true;
         }
 
