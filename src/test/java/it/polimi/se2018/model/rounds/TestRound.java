@@ -30,14 +30,14 @@ public class TestRound {
         round.setPlayers(players);
         try {
             round.setFirstPlayer(5);
-        } catch (RoundFirstPlayerAlreadySet roundFirstPlayerAlreadySet) {
-            roundFirstPlayerAlreadySet.printStackTrace();
+        } catch (RoundFirstPlayerAlreadySetException roundFirstPlayerAlreadySet) {
+            fail();
         }
         assertEquals(5, round.getIdPlayerPlaying());
     }
 
-    @Test(expected = RoundFirstPlayerAlreadySet.class)
-    public void setFirstPlayer_1stParamAs6AfterIdAlreadySetTo5_ExcpetionThrown() throws RoundFirstPlayerAlreadySet {
+    @Test(expected = RoundFirstPlayerAlreadySetException.class)
+    public void setFirstPlayer_1stParamAs6AfterIdAlreadySetTo5_ExcpetionThrown() throws RoundFirstPlayerAlreadySetException {
         ArrayList<Integer> players = new ArrayList<>();
         players.add(34);
         players.add(5);
@@ -45,8 +45,8 @@ public class TestRound {
         round.setPlayers(players);
         try {
             round.setFirstPlayer(5);
-        } catch (RoundFirstPlayerAlreadySet roundFirstPlayerAlreadySet) {
-            roundFirstPlayerAlreadySet.printStackTrace();
+        } catch (RoundFirstPlayerAlreadySetException roundFirstPlayerAlreadySet) {
+            fail();
         }
 
         round.setFirstPlayer(6);
@@ -54,7 +54,7 @@ public class TestRound {
     }
 
     @Test
-    public void setNextPlayerCalled5Times_PlayersWith3Elements_ShouldNotThrowException() throws RoundFirstPlayerAlreadySet {
+    public void setNextPlayerCalled5Times_PlayersWith3Elements_ShouldNotThrowException() throws RoundFirstPlayerAlreadySetException {
         ArrayList<Integer> players = new ArrayList<>();
         players.add(34);
         players.add(1);
@@ -80,7 +80,7 @@ public class TestRound {
         round.setPlayers(players);
         try {
             round.setFirstPlayer(1);
-        } catch (RoundFirstPlayerAlreadySet roundFirstPlayerAlreadySet) {
+        } catch (RoundFirstPlayerAlreadySetException roundFirstPlayerAlreadySet) {
             fail();
         }
         for (int i = 0; i < 6; i++) {
@@ -88,5 +88,67 @@ public class TestRound {
         }
         fail();
         assertEquals(1, round.getIdPlayerPlaying());
+    }
+
+    @Test
+    public void turnsPlayedByPlayer_After1RoundPlayedByPlayerWithId34_turnsPlayedShouldBe1() {
+        ArrayList<Integer> players = new ArrayList<>();
+        players.add(34);
+        players.add(1);
+        players.add(0);
+        round.setPlayers(players);
+        try {
+            round.setFirstPlayer(0);
+        } catch (RoundFirstPlayerAlreadySetException roundFirstPlayerAlreadySet) {
+            fail();
+        }
+        try {
+            round.setNextPlayer();
+        } catch (RoundFinishedException e) {
+            fail();
+        }
+        assertEquals(1,round.turnsPlayedByPlayer(34));
+    }
+
+    @Test
+    public void turnsPlayedByPlayer_After1RoundStartingFrom34_turnsPlayedBy0ShouldBe0() {
+        ArrayList<Integer> players = new ArrayList<>();
+        players.add(34);
+        players.add(1);
+        players.add(0);
+        round.setPlayers(players);
+        try {
+            round.setFirstPlayer(34);
+        } catch (RoundFirstPlayerAlreadySetException roundFirstPlayerAlreadySet) {
+            fail();
+        }
+        try {
+            round.setNextPlayer();
+        } catch (RoundFinishedException e) {
+            fail();
+        }
+        assertEquals(0,round.turnsPlayedByPlayer(0));
+    }
+
+    @Test
+    public void turnsPlayedByPlayer_After4RoundsStartingFrom34_turnsPlayedBy1ShouldBe1(){
+        ArrayList<Integer> players = new ArrayList<>();
+        players.add(34);
+        players.add(1);
+        players.add(0);
+        round.setPlayers(players);
+        try {
+            round.setFirstPlayer(34);
+        } catch (RoundFirstPlayerAlreadySetException roundFirstPlayerAlreadySet) {
+            fail();
+        }
+        try {
+            round.setNextPlayer();
+            round.setNextPlayer();
+            round.setNextPlayer();
+        } catch (RoundFinishedException e) {
+            fail();
+        }
+        assertEquals(1, round.turnsPlayedByPlayer(1));
     }
 }
