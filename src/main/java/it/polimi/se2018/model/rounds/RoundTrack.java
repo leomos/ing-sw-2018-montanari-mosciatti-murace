@@ -1,7 +1,5 @@
 package it.polimi.se2018.model.rounds;
 
-import it.polimi.se2018.model.Player;
-
 import java.util.ArrayList;
 
 /* TODO: tests and docs*/
@@ -25,9 +23,9 @@ public class RoundTrack {
         return rounds[currentRoundId];
     }
 
-    public void startNextRound() throws RoundTrackNoMoreRounds {
+    public void startNextRound() throws RoundTrackNoMoreRoundsException {
         if(isLastRound()) {
-            throw new RoundTrackNoMoreRounds();
+            throw new RoundTrackNoMoreRoundsException();
         }
         currentRoundId++;
         initNewRound();
