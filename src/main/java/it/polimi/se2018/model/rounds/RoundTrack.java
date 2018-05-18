@@ -50,7 +50,7 @@ public class RoundTrack {
             newRound.setPlayers(players);
             newRound.setFirstPlayer( idFirstPlayerPlaying %  players.size() );
             rounds[currentRoundId] = newRound;
-        } catch (RoundFirstPlayerAlreadySet roundFirstPlayerAlreadySet) {
+        } catch (RoundFirstPlayerAlreadySetException roundFirstPlayerAlreadySet) {
             roundFirstPlayerAlreadySet.printStackTrace();
         }
     }
