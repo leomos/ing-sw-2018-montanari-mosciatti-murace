@@ -30,19 +30,19 @@ public class PublicObjective2 extends PublicObjective {
 
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 4; j++) {
-                if (patternCard.getPatternCardCell(i, j).isEmpty())
-                    break;
-                try {
-                    Die d = diceContainer.getDie(patternCard.getPatternCardCell(i, j).getRolledDieId());
-                    if (riga.indexOf(d.getColor()) != -1)
-                        break;
-                    riga.add(d.getColor());
-                } catch (DiceContainerUnsupportedIdException e) {
-                    e.printStackTrace();
+                if (!patternCard.getPatternCardCell(i, j).isEmpty()) {
+                    try {
+                        Die d = diceContainer.getDie(patternCard.getPatternCardCell(i, j).getRolledDieId());
+                        if (riga.indexOf(d.getColor()) == -1)
+                            riga.add(d.getColor());
+                    } catch (DiceContainerUnsupportedIdException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
             if (riga.size()==4)
                 result = result + 5;
+            riga.clear();
         }
         return result;
     }
