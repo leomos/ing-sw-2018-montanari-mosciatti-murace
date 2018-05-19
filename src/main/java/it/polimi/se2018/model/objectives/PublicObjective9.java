@@ -35,11 +35,12 @@ public class PublicObjective9 extends PublicObjective {
                         Die d = diceContainer.getDie(patternCard.getPatternCardCell(i, j).getRolledDieId());
                         ArrayList<Integer[]> diagonalsCellList = patternCard.checkDiagonalCells(i,j);
                         for (Integer k[]: diagonalsCellList)
-                            if (d.getColor() == diceContainer.getDie(patternCard.getPatternCardCell(k[0], k[1]).getRolledDieId()).getColor()
-                                    && bool == false) {
-                                result++;
-                                bool = true;
-                            }
+                            if (!patternCard.getPatternCardCell(k[0], k[1]).isEmpty())
+                                if (d.getColor() == diceContainer.getDie(patternCard.getPatternCardCell(k[0], k[1]).getRolledDieId()).getColor()
+                                        && bool == false) {
+                                    result++;
+                                    bool = true;
+                                }
                     } catch (DiceContainerUnsupportedIdException e) {
                         e.printStackTrace();
                     }
