@@ -9,16 +9,16 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class TestPublicObjective1 {
+public class TestPublicObjective6 {
     private DiceContainer diceContainer;
     private PatternCard patternCard;
-    private PublicObjective1 publicObjective1;
+    private PublicObjective6 publicObjective6;
 
     @Before
     public void setUp(){
         diceContainer = new DiceContainer();
         patternCard = new PatternCard(diceContainer, "13,FractalDrop,3,040y6r020000rp1by000");
-        publicObjective1 = new PublicObjective1(diceContainer);
+        publicObjective6 = new PublicObjective6(diceContainer);
     }
 
     @Test
@@ -41,17 +41,11 @@ public class TestPublicObjective1 {
         diceContainer.getDie(54).setRolledValue(1);
         diceContainer.getDie(55).setRolledValue(4);
         diceContainer.getDie(56).setRolledValue(2);
-        diceContainer.getDie(57).setRolledValue(1); //die added compared to the instruction's example
         //VIOLA
         diceContainer.getDie(72).setRolledValue(6);
         diceContainer.getDie(73).setRolledValue(5);
         diceContainer.getDie(74).setRolledValue(6);
-        diceContainer.getDie(75).setRolledValue(2); //die added compared to the instruction's example
-        //technically you shouldn't be able to insert this
-        //last die but for the sake of this example we ignored
-        //some positioning constraint
 
-        this.patternCard.getPatternCardCell(0,0).setRolledDieId(57, false, false);
         this.patternCard.getPatternCardCell(1, 0).setRolledDieId(36, false, false);
         this.patternCard.getPatternCardCell(2, 0).setRolledDieId(0, false, false);
         this.patternCard.getPatternCardCell(3, 0).setRolledDieId(18, false, false);
@@ -59,7 +53,6 @@ public class TestPublicObjective1 {
 
         this.patternCard.getPatternCardCell(0, 1).setRolledDieId(1, false, false);
         this.patternCard.getPatternCardCell(1, 1).setRolledDieId(54, false, false);
-        this.patternCard.getPatternCardCell(2,1).setRolledDieId(75, false, false);
         this.patternCard.getPatternCardCell(3,1).setRolledDieId(37, false, false);
         this.patternCard.getPatternCardCell(4,1).setRolledDieId(19, false, false);
 
@@ -74,6 +67,6 @@ public class TestPublicObjective1 {
         this.patternCard.getPatternCardCell(3,3).setRolledDieId(56, false, false);
         this.patternCard.getPatternCardCell(4,3).setRolledDieId(40, false, false);
 
-        assertEquals(12, publicObjective1.calculateScore(patternCard));
+        assertEquals(6, publicObjective6.calculateScore(patternCard));
     }
 }

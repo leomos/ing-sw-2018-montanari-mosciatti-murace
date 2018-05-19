@@ -23,7 +23,6 @@ public class PublicObjective2 extends PublicObjective {
      * @throws DiceContainerUnsupportedIdException if die's id is not valid
      */
     @Override
-    /*TODO: tests*/
     public int calculateScore(PatternCard patternCard) {
         ArrayList<DieColor> riga = new ArrayList<>();
         int result = 0;
