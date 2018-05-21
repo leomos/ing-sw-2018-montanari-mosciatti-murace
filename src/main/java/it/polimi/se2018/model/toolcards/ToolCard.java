@@ -10,6 +10,12 @@ public class ToolCard {
 
     private int tokensUsed;
 
+    public ToolCard(int toolCardId, String name, String description) {
+        this.toolCardId = toolCardId;
+        this.name = name;
+        this.description = description;
+    }
+
     public String getName() {
         return name;
     }
