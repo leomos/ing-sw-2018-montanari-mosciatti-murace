@@ -6,24 +6,23 @@ import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.container.DieRolledValueOutOfBoundException;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
-import static it.polimi.se2018.model.container.DieColor.*;
+import static org.junit.Assert.assertEquals;
 
-public class TestPrivateObjective {
+public class TestPublicObjective4 {
     private DiceContainer diceContainer;
     private PatternCard patternCard;
-    private PrivateObjective privateObjective;
+    private PublicObjective4 publicObjective4;
 
     @Before
     public void setUp(){
         diceContainer = new DiceContainer();
         patternCard = new PatternCard(diceContainer, "13,FractalDrop,3,040y6r020000rp1by000");
-        privateObjective = new PrivateObjective(1, PURPLE, diceContainer);
+        publicObjective4 = new PublicObjective4(diceContainer);
     }
 
     @Test
-    public void checkCalculateScore_ParamAsInstructionExample_ReturnShouldBe17() throws DiceContainerUnsupportedIdException, DieRolledValueOutOfBoundException {
+    public void checkCalculateScore_ParamAsInstructionExample_ReturnShouldBe10() throws DiceContainerUnsupportedIdException, DieRolledValueOutOfBoundException {
         //RED
         diceContainer.getDie(0).setRolledValue(2);
         diceContainer.getDie(1).setRolledValue(3);
@@ -46,7 +45,9 @@ public class TestPrivateObjective {
         diceContainer.getDie(72).setRolledValue(6);
         diceContainer.getDie(73).setRolledValue(5);
         diceContainer.getDie(74).setRolledValue(6);
+        diceContainer.getDie(75).setRolledValue(5); //die added compared to the instruction's example
 
+        this.patternCard.getPatternCardCell(0,0).setRolledDieId(75,false, false);
         this.patternCard.getPatternCardCell(1, 0).setRolledDieId(36, false, false);
         this.patternCard.getPatternCardCell(2, 0).setRolledDieId(0, false, false);
         this.patternCard.getPatternCardCell(3, 0).setRolledDieId(18, false, false);
@@ -68,6 +69,6 @@ public class TestPrivateObjective {
         this.patternCard.getPatternCardCell(3,3).setRolledDieId(56, false, false);
         this.patternCard.getPatternCardCell(4,3).setRolledDieId(40, false, false);
 
-        assertEquals(17, privateObjective.calculateScore(patternCard));
+        assertEquals(12, publicObjective4.calculateScore(patternCard));
     }
 }

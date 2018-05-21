@@ -22,22 +22,28 @@ public class PublicObjective6 extends PublicObjective{
      */
     @Override
     public int calculateScore(PatternCard patternCard) {
-        int result = 0;
+        int result3 = 0;
+        int result4 = 0;
 
         for (int i=0; i<5; i++) {
             for (int j=0; j<4; j++) {
-                if (patternCard.getPatternCardCell(i, j).isEmpty())
-                    break;
-                try {
-                    Die d = diceContainer.getDie(patternCard.getPatternCardCell(i, j).getRolledDieId());
-                    if (d.getRolledValue()==3 || d.getRolledValue()==4)
-                        result++;
-                } catch (DiceContainerUnsupportedIdException e) {
-                    e.printStackTrace();
+                if (!patternCard.getPatternCardCell(i, j).isEmpty()){
+                    try {
+                        Die d = diceContainer.getDie(patternCard.getPatternCardCell(i, j).getRolledDieId());
+                        if (d.getRolledValue() == 4)
+                            result4++;
+                        if (d.getRolledValue() == 3)
+                            result3++;
+                    } catch (DiceContainerUnsupportedIdException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
-        return (result/2)*2;
+        if(result3 > result4)
+           return result4 * 2;
+        else
+            return result3 * 2;
     }
 
 }

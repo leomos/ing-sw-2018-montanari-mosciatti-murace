@@ -155,35 +155,35 @@ public class PatternCard {
      * @param y cell's ordinate
      * @return proximityCellList list of available positions diagonals to the cell defined by x and y
      */
-    private ArrayList<Integer[]> checkDiagonalCells(int x, int y){
-        ArrayList<Integer[]> proximityCellList = new ArrayList<>();
+    public ArrayList<Integer[]> checkDiagonalCells(int x, int y){
+        ArrayList<Integer[]> diagonalsCellList = new ArrayList<>();
         Integer[][] k = new Integer[4][2];
 
         if( x+1 < 5 && y+1 < 4 ) {
             k[0][0] = x+1;
             k[0][1] = y+1;
-            proximityCellList.add(k[0]);
+            diagonalsCellList.add(k[0]);
         }
 
         if( x-1 >= 0 && y+1 < 4 ) {
             k[1][0] = x - 1;
             k[1][1] = y + 1;
-            proximityCellList.add(k[1]);
+            diagonalsCellList.add(k[1]);
         }
 
         if( x+1 < 4 && y-1 >= 0 ) {
             k[2][0] = x + 1;
             k[2][1] = y - 1;
-            proximityCellList.add(k[2]);
+            diagonalsCellList.add(k[2]);
         }
 
         if( x-1 >= 0 && y-1 >= 0 ) {
             k[3][0] = x - 1;
             k[3][1] = y - 1;
-            proximityCellList.add(k[3]);
+            diagonalsCellList.add(k[3]);
         }
 
-        return proximityCellList;
+        return diagonalsCellList;
 
     }
 

@@ -7,6 +7,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 import static junit.framework.TestCase.fail;
 import static org.junit.Assert.assertEquals;
 
@@ -82,6 +84,12 @@ public class TestPatternCard {
         patternCard.getPatternCardCell(2,1).setRolledDieId(5, false, false);
         assertEquals(true, patternCard.checkProximityCellsValidity(50,2,2));
         assertEquals(true, patternCard.checkProximityCellsValidity(6,2,2));
+    }
+
+    @Test
+    public void checkCheckDiagonalCells_FirstParamAs0SecondParamAs0_returnShouldBeTrue(){
+        ArrayList<Integer[]> diagonalsCellList = patternCard.checkDiagonalCells(0,0);
+        assertEquals(0, diagonalsCellList.get(0));
     }
 }
 

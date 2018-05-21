@@ -22,11 +22,10 @@ public class PublicObjective10 extends PublicObjective {
      */
     @Override
     public int calculateScore(PatternCard patternCard) {
-        int result = 0;
         int[] shade = new int[5];
-        int min = 10;
+        int min = 20;
 
-        for (int i=0; i<=5; i++) {
+        for (int i=0; i < 5; i++) {
             shade[i] = 0;
         }
         for (int i=0; i<5; i++) {
@@ -35,11 +34,12 @@ public class PublicObjective10 extends PublicObjective {
                     try {
                         Die d = diceContainer.getDie(patternCard.getPatternCardCell(i, j).getRolledDieId());
                         switch (d.getColor()) {
-                            case BLUE: shade[0]++;
-                            case GREEN: shade[1]++;
-                            case PURPLE: shade[3]++;
-                            case RED: shade[4]++;
-                            case YELLOW: shade[5]++;
+                            case BLUE: shade[0]++; break;
+                            case GREEN: shade[1]++; break;
+                            case PURPLE: shade[2]++; break;
+                            case RED: shade[3]++; break;
+                            case YELLOW: shade[4]++; break;
+                            default: break;
                         }
                     } catch (DiceContainerUnsupportedIdException e) {
                         e.printStackTrace();
@@ -47,14 +47,10 @@ public class PublicObjective10 extends PublicObjective {
                 }
             }
         }
-        for (int i=0; i<=5; i++) {
-            if (min==shade[i])
-                result++;
-            if (min>shade[i]) {
-                result = 1;
-                min = shade[i];
-            }
-        }
-        return result*4;
+
+        for(int i: shade)
+            min = Math.min(min, i);
+
+        return min*4;
     }
 }

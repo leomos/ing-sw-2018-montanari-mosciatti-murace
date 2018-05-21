@@ -7,6 +7,7 @@ import it.polimi.se2018.model.container.Die;
 import it.polimi.se2018.model.container.DieColor;
 
 public class PrivateObjective implements Objective {
+
     private String name;
 
     private String description;
@@ -16,6 +17,12 @@ public class PrivateObjective implements Objective {
     private DieColor color;
 
     private DiceContainer diceContainer;
+
+    public PrivateObjective(int id, DieColor Color, DiceContainer diceContainer){
+        this.id = id;
+        this.color = Color;
+        this.diceContainer = diceContainer;
+    }
 
     public int getId () {
         return this.id;
@@ -34,11 +41,13 @@ public class PrivateObjective implements Objective {
     public int calculateScore (PatternCard patternCard) throws DiceContainerUnsupportedIdException {
         int result=0;
 
-        for (int x=0; x<=5; x++) {
-            for (int y=0; y<=4; y++) {
-                Die d = diceContainer.getDie(patternCard.getPatternCardCell(x,y).getRolledDieId());
-                if (this.color.equals(d.getColor()))
-                    result = result + d.getRolledValue();
+        for (int x=0; x<5; x++) {
+            for (int y=0; y<4; y++) {
+                if(!patternCard.getPatternCardCell(x,y).isEmpty()) {
+                    Die d = diceContainer.getDie(patternCard.getPatternCardCell(x, y).getRolledDieId());
+                    if (this.color.equals(d.getColor()))
+                        result = result + d.getRolledValue();
+                }
             }
         }
         return result;

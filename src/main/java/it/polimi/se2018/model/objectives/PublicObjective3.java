@@ -4,7 +4,6 @@ import it.polimi.se2018.model.PatternCard;
 import it.polimi.se2018.model.container.DiceContainer;
 import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.container.Die;
-import it.polimi.se2018.model.container.DieColor;
 
 import java.util.ArrayList;
 
@@ -30,19 +29,19 @@ public class PublicObjective3 extends PublicObjective {
 
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 5; j++) {
-                if (patternCard.getPatternCardCell(i, j).isEmpty())
-                    break;
-                try {
-                    Die d = diceContainer.getDie(patternCard.getPatternCardCell(i, j).getRolledDieId());
-                    if (riga.indexOf(d.getRolledValue()) != -1)
-                        break;
-                    riga.add(d.getRolledValue());
-                } catch (DiceContainerUnsupportedIdException e) {
-                    e.printStackTrace();
+                if (!patternCard.getPatternCardCell(j, i).isEmpty()) {
+                    try {
+                        Die d = diceContainer.getDie(patternCard.getPatternCardCell(j, i).getRolledDieId());
+                        if (riga.indexOf(d.getRolledValue()) == -1)
+                            riga.add(d.getRolledValue());
+                    } catch (DiceContainerUnsupportedIdException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
-            if (riga.size()==5)
+            if (riga.size() == 5)
                 result = result + 5;
+            riga.clear();
         }
         return result;
     }
