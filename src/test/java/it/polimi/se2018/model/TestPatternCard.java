@@ -86,10 +86,5 @@ public class TestPatternCard {
         assertEquals(true, patternCard.checkProximityCellsValidity(6,2,2));
     }
 
-    @Test
-    public void checkCheckDiagonalCells_FirstParamAs0SecondParamAs0_returnShouldBeTrue(){
-        ArrayList<Integer[]> diagonalsCellList = patternCard.checkDiagonalCells(0,0);
-        assertEquals(0, diagonalsCellList.get(0));
-    }
 }
 
