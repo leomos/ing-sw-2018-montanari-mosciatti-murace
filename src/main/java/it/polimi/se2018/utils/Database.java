@@ -2,6 +2,7 @@ package it.polimi.se2018.utils;
 
 import it.polimi.se2018.model.PatternCard;
 import it.polimi.se2018.model.container.DiceContainer;
+import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.toolcards.ToolCard;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -79,5 +80,19 @@ public class Database {
                     currentPatternCard.getString("cells")));
         }
         return patternCard;
+    }
+
+    public ArrayList<PrivateObjective> loadPrivateObjective() {
+        ArrayList<PrivateObjective> privateObjectives = new ArrayList<>();
+
+        JSONArray privateObjectiveList = dbJsonObject.getJSONArray("privateobjectives");
+
+        for (int i = 0; i < privateObjectiveList.length(); i++) {
+            JSONObject currentPrivateObjective = privateObjectiveList.getJSONObject(i);
+            privateObjectives.add(new PrivateObjective(diceContainer, currentPrivateObjective.getInt("id"),
+                    currentPrivateObjective.getString("name"),
+                    currentPrivateObjective.getString("description")));
+        }
+        return privateObjectives;
     }
 }

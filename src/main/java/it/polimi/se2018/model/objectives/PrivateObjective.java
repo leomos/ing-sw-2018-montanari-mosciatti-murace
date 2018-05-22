@@ -6,6 +6,8 @@ import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.container.Die;
 import it.polimi.se2018.model.container.DieColor;
 
+import static it.polimi.se2018.model.container.DieColor.*;
+
 public class PrivateObjective implements Objective {
 
     private String name;
@@ -18,10 +20,19 @@ public class PrivateObjective implements Objective {
 
     private DiceContainer diceContainer;
 
-    public PrivateObjective(int id, DieColor Color, DiceContainer diceContainer){
-        this.id = id;
-        this.color = Color;
+    public PrivateObjective(DiceContainer diceContainer, int id, String name, String description){
         this.diceContainer = diceContainer;
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        switch (this.id){
+            case 1: color = RED; break;
+            case 2: color = YELLOW; break;
+            case 3: color = GREEN; break;
+            case 4: color = BLUE; break;
+            case 5: color = PURPLE; break;
+            default: color = null; break;
+        }
     }
 
     public int getId () {
