@@ -3,7 +3,7 @@
     {
       "id": 1,
       "name": "Pinza Sgrossatrice",
-      "description": "Dopo  aver  scelto  un  dado, aumenta o diminuisci il valore del dado scelto di 1. Non puoi cambiare un 6 in 1 o un 1 in 6."
+      "description": "Dopo aver scelto un dado, aumenta o diminuisci il valore del dado scelto di 1. Non puoi cambiare un 6 in 1 o un 1 in 6."
     },
     {
       "id": 2,
@@ -14,6 +14,197 @@
       "id": 3,
       "name": "Alesatore per lamina di rame",
       "description": "Muovi un qualsiasi dado nella tua vetrata ignorando le restrizioni di valore. Devi rispettare tutte le altre restrizioni di piazzamento."
+    },
+    {
+      "id": 4,
+      "name": "Lathekin",
+      "description": "Muovi esattamente due dadi, rispettando tutte le restrizioni di piazzamento"
+    },
+    {
+      "id": 5,
+      "name": "Taglierina circolare",
+      "description": "Dopo aver scelto un dado, scambia quel dado con un dado sul Tracciato del Round"
+    },
+    {
+      "id": 6,
+      "name": "Pennello per Pasta Salda",
+      "description": "Dopo aver scelto un dado, tira nuovamente quel dado. Se non puoi piazzarlo, riponilo nella Riserva"
+    },
+    {
+      "id": 7,
+      "name": "Martelletto",
+      "description": "Tira nuovamente tutti i dadi della Riserva. Questa carta può essere usata solo durante il secondo turno, prima di scegliere il secodno dado"
+    },
+    {
+      "id": 8,
+      "name": "Tenaglia a Rotelle",
+      "description": "Dopo il primo turno scegli immediatamente un altro dado. Salta il tuo secondo turno in questo round"
+    },
+    {
+      "id": 9,
+      "name": "Riga in sughero",
+      "description": "Dopo aver scelto un dado, piazzalo in una casella che non sia adiacente a un altro dado. Devi rispettare tutte le restrizioni di piazzamento"
+    },
+    {
+      "id": 10,
+      "name": "Tampone Diamantato",
+      "description": "Dopo aver scelto un dado, giralo sulla faccia opposta. 6 diventa 1, 5 diventa 2, 4 diventa 3 ecc."
+    },
+    {
+      "id": 11,
+      "name": "Diluente per Pasa Salda",
+      "description": "Dopo aver scelto un dado, riponilo nel Sacchetto, poi pescane uno dal Sacchetto. Scegli il valore del nuovo dado e piazzalo, rispettando tutte le restrizioni di piazzamento"
+    },
+    {
+      "id": 12,
+      "name": "Taglierina Manuale",
+      "description": "Muovi fino a due dadi dello stesso colore di un solo dado sul Tracciato dei Round. Devi rispettare tutte le restrizioni di piazzamento"
+    }
+  ],
+  "patterncards": [
+    {
+      "id": 1,
+      "name": "Virtus",
+      "difficulty": 5,
+      "cells": "4025g006g203g405g100"
+    },
+    {
+      "id": 2,
+      "name": "Via Lux",
+      "difficulty": 4,
+      "cells": "y0600015023yrp00043r"
+    },
+    {
+      "id": 3,
+      "name": "Bellesguard",
+      "difficulty": 3,
+      "cells": "b600y03b00056200401g"
+    },
+    {
+      "id": 4,
+      "name": "Kaleidoscopic Dream",
+      "difficulty": 4,
+      "cells": "yb001g050430r0g200by"
+    },
+    {
+      "id": 5,
+      "name": "Aurorae Magnificus",
+      "difficulty": 5,
+      "cells": "5gbp2p000yy060p100g4"
+    },
+    {
+      "id": 6,
+      "name": "Sun Catcher",
+      "difficulty": 3,
+      "cells": "0b20y040r0005y0g300p"
+    },
+    {
+      "id": 7,
+      "name": "Firmitas",
+      "difficulty": 5,
+      "cells": "p60035p30002p10015p4"
+    },
+    {
+      "id": 8,
+      "name": "Symphony of Light",
+      "difficulty": 6,
+      "cells": "20501y6p2r0b4g003050"
+    },
+    {
+      "id": 9,
+      "name": "Aurora Sagradis",
+      "difficulty": 4,
+      "cells": "r0b0y4p3g20105000600"
+    },
+    {
+      "id": 10,
+      "name": "Industria",
+      "difficulty": 5,
+      "cells": "1r30654r20005r10003r"
+    },
+    {
+      "id": 11,
+      "name": "Shadow Thief",
+      "difficulty": 5,
+      "cells": "6p00550p00r60p0yr543"
+    },
+    {
+      "id": 12,
+      "name": "Batllo",
+      "difficulty": 5,
+      "cells": "0060005b403gyp214r53"
+    },
+    {
+      "id": 13,
+      "name": "Gravitas",
+      "difficulty": 5,
+      "cells": "103b002b006b040b5201"
+    },
+    {
+      "id": 14,
+      "name": "Fractal Drops",
+      "difficulty": 3,
+      "cells": "040y6r020000rp1by000"
+    },
+    {
+      "id": 15,
+      "name": "Lux Astram",
+      "difficulty": 5,
+      "cells": "01gp46p25g1g53p00000"
+    },
+    {
+      "id": 16,
+      "name": "Chromatic Splendor",
+      "difficulty": 4,
+      "cells": "00g00245b10r3p010604"
+    },
+    {
+      "id": 17,
+      "name": "FireLight",
+      "difficulty": 5,
+      "cells": "341500620y000yr50yr6"
+    },
+    {
+      "id": 18,
+      "name": "Luz Celestial",
+      "difficulty": 3,
+      "cells": "00r50p40g3600b00y200"
+    },
+    {
+      "id": 19,
+      "name": "Water of Life",
+      "difficulty": 6,
+      "cells": "6b00105b004r2b0g6y3p"
+    },
+    {
+      "id": 20,
+      "name": "Riplles of Light",
+      "difficulty": 5,
+      "cells": "000r500p4b0b3y6y2g1r"
+    },
+    {
+      "id": 21,
+      "name": "Lux Mundi",
+      "difficulty": 6,
+      "cells": "001001g3b2b546g0b5g0"
+    },
+    {
+      "id": 22,
+      "name": "Comitas",
+      "difficulty": 5,
+      "cells": "y02060405y000y512y30"
+    },
+    {
+      "id": 23,
+      "name": "Sun's Glory",
+      "difficulty": 6,
+      "cells": "1py04py006y005305421"
+    },
+    {
+      "id": 24,
+      "name": "0br000450bb20r56r310",
+      "difficulty": 5,
+      "cells": "y0600015023yrp00043r"
     }
   ]
 }
