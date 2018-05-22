@@ -11,14 +11,20 @@ public class ToolCardContainer {
 
     private ArrayList<ToolCard> toolCards;
 
-    public ToolCard getToolCard(int id) {
-        return toolCards.get(id);
-    }
+    private ArrayList<Integer> toolCardsInPlay = new ArrayList<>();
 
     public ToolCardContainer() {
         DiceContainer diceContainer = new DiceContainer();
         Database database = new Database(diceContainer);
 
         this.toolCards = database.loadToolCards();
+    }
+
+    public ToolCard getToolCard(int id) {
+        return toolCards.get(id);
+    }
+
+    public void setToolCardInPlay(int toolCardId) {
+        toolCardsInPlay.add(toolCardId);
     }
 }
