@@ -8,12 +8,13 @@ public class ToolCard {
 
     private String description;
 
-    private int tokensUsed;
+    private boolean isUsedAtLeastOnce;
 
     public ToolCard(int toolCardId, String name, String description) {
         this.toolCardId = toolCardId;
         this.name = name;
         this.description = description;
+        this.isUsedAtLeastOnce = false;
     }
 
     public String getName() {
@@ -22,20 +23,27 @@ public class ToolCard {
 
     public String getDescription( ){return description; }
 
-    public int getTokensUsed() {
-        return tokensUsed;
+    public boolean isUsedAtLeastOnce() {
+        return isUsedAtLeastOnce;
     }
 
-    public void setTokensUsed(int tokensUsed){ this.tokensUsed = tokensUsed;}
+    public void setUsedAtLeastOnce(boolean usedAtLeastOnce){
+        isUsedAtLeastOnce = usedAtLeastOnce;
+    }
+
+    public void setUsed() {
+        isUsedAtLeastOnce = true;
+    }
 
     public int getToolCardId() {
         return toolCardId;
     }
 
     public int cost(){
-        if (tokensUsed == 0)
-            return 1;
-        else
+        if (isUsedAtLeastOnce)
             return 2;
+        else
+            return 1;
+
     }
 }
