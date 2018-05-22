@@ -1,62 +1,62 @@
 {
   "toolcards": [
     {
-      "id": 0,
+      "id": 1,
       "name": "Pinza Sgrossatrice",
       "description": "Dopo aver scelto un dado, aumenta o diminuisci il valore del dado scelto di 1. Non puoi cambiare un 6 in 1 o un 1 in 6."
     },
     {
-      "id": 1,
+      "id": 2,
       "name": "Pennello per Eglomise",
       "description": "Muovi un qualsiasi dado nella tua vetrata ignorando le restrizioni di colore. Devi rispettare tutte le altre restrizioni di piazzamento."
     },
     {
-      "id": 2,
+      "id": 3,
       "name": "Alesatore per lamina di rame",
       "description": "Muovi un qualsiasi dado nella tua vetrata ignorando le restrizioni di valore. Devi rispettare tutte le altre restrizioni di piazzamento."
     },
     {
-      "id": 3,
+      "id": 4,
       "name": "Lathekin",
       "description": "Muovi esattamente due dadi, rispettando tutte le restrizioni di piazzamento"
     },
     {
-      "id": 4,
+      "id": 5,
       "name": "Taglierina circolare",
       "description": "Dopo aver scelto un dado, scambia quel dado con un dado sul Tracciato dei Round"
     },
     {
-      "id": 5,
+      "id": 6,
       "name": "Pennello per Pasta Salda",
       "description": "Dopo aver scelto un dado, tira nuovamente quel dado. Se non puoi piazzarlo, riponilo nella Riserva"
     },
     {
-      "id": 6,
+      "id": 7,
       "name": "Martelletto",
       "description": "Tira nuovamente tutti i dadi della Riserva. Questa carta può essere usata solo durante il secondo turno, prima di scegliere il secondo dado"
     },
     {
-      "id": 7,
+      "id": 8,
       "name": "Tenaglia a Rotelle",
       "description": "Dopo il primo turno scegli immediatamente un altro dado. Salta il tuo secondo turno in questo round"
     },
     {
-      "id": 8,
+      "id": 9,
       "name": "Riga in sughero",
       "description": "Dopo aver scelto un dado, piazzalo in una casella che non sia adiacente a un altro dado. Devi rispettare tutte le restrizioni di piazzamento"
     },
     {
-      "id": 9,
+      "id": 10,
       "name": "Tampone Diamantato",
       "description": "Dopo aver scelto un dado, giralo sulla faccia opposta. 6 diventa 1, 5 diventa 2, 4 diventa 3 ecc."
     },
     {
-      "id": 10,
+      "id": 11,
       "name": "Diluente per Pasa Salda",
       "description": "Dopo aver scelto un dado, riponilo nel Sacchetto, poi pescane uno dal Sacchetto. Scegli il valore del nuovo dado e piazzalo, rispettando tutte le restrizioni di piazzamento"
     },
     {
-      "id": 11,
+      "id": 12,
       "name": "Taglierina Manuale",
       "description": "Muovi fino a due dadi dello stesso colore di un solo dado sul Tracciato dei Round. Devi rispettare tutte le restrizioni di piazzamento"
     }

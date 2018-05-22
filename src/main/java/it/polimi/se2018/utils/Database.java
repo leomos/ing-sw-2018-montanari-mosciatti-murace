@@ -21,6 +21,10 @@ public class Database {
 
     private JSONObject dbJsonObject;
 
+    /**
+     *
+     * @param diceContainer
+     */
     public Database(DiceContainer diceContainer) {
         this.diceContainer = diceContainer;
         ClassLoader classLoader = getClass().getClassLoader();
@@ -40,6 +44,10 @@ public class Database {
         dbJsonObject = new JSONObject(result.toString());
     }
 
+    /**
+     * Creates an ArrayList of ToolCards from db.json object defined in the contructor
+     * @return ArrayList containing all ToolCards
+     */
     public ArrayList<ToolCard> loadToolCards() {
         ArrayList<ToolCard> toolCards = new ArrayList<>();
 
@@ -54,6 +62,10 @@ public class Database {
         return toolCards;
     }
 
+    /**
+     * Creates an ArrayList of PatternCards from db.json object defined in the contructor
+     * @return ArrayList containing all PatternCards
+     */
     public ArrayList<PatternCard> loadPatternCard() {
         ArrayList<PatternCard> patternCard = new ArrayList<>();
 
@@ -68,5 +80,4 @@ public class Database {
         }
         return patternCard;
     }
-
 }
