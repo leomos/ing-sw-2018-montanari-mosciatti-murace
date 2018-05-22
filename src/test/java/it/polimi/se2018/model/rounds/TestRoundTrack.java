@@ -1,5 +1,6 @@
 package it.polimi.se2018.model.rounds;
 
+import it.polimi.se2018.model.Player;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,9 +17,9 @@ public class TestRoundTrack {
 
     @Before
     public void setUp() {
-        ArrayList<Integer> players = new ArrayList<>();
-        players.add(1);
-        players.add(2);
+        ArrayList<Player> players = new ArrayList<>();
+        players.add(new Player(0, "Gianni"));
+        players.add(new Player(1,"Fabrizio"));
         roundTrack = new RoundTrack(players);
     }
 
