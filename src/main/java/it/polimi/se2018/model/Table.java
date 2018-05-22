@@ -3,7 +3,6 @@ package it.polimi.se2018.model;
 import it.polimi.se2018.model.container.DiceContainer;
 import it.polimi.se2018.model.objectives.*;
 import it.polimi.se2018.model.rounds.RoundTrack;
-import it.polimi.se2018.model.toolcards.ToolCard;
 import it.polimi.se2018.model.toolcards.ToolCardContainer;
 import it.polimi.se2018.utils.Database;
 
@@ -35,7 +34,7 @@ public class Table {
     /* TODO: COSTRUTTORE che crei ogni attributo e che setti i Players + controllare se tipo PLayer  ok */
     public Table(int[] idPlayer, String[] name){
         for(int i = 0; i < idPlayer.length; i++) {
-            this.players.add(new Player(idPlayer[i], name[i]))
+            this.players.add(new Player(idPlayer[i], name[i]));
         }
         this.toolCardContainer = new ToolCardContainer();
         this.diceArena = new DiceArena(players.size() * 2 + 1);
@@ -46,8 +45,8 @@ public class Table {
         this.patternCards = database.loadPatternCard();
         this.privateObjectives = database.loadPrivateObjective();
 
-        this.setPatternCards();
-        this.setPrivateObjective();
+        this.setPatternCardsToPlayer();
+        this.setPrivateObjectiveToPlayers();
         this.setPublicObjective();
         this.setToolCards();
     }
@@ -119,6 +118,35 @@ public class Table {
             this.toolCardContainer.setToolCardInPlay(j);
     }
 
+    private void setPrivateObjectiveToPlayers(){
+        ArrayList<Integer> privateObjectiveList = new ArrayList<>();
+        for (Integer i = 0; i < 5; i++)
+            privateObjectiveList.add(i);
+
+        Collections.shuffle(privateObjectiveList);
+
+        for(int j = 0; j < players.size(); j++)
+            players.get(j).setPrivateObjective(privateObjectives.get(privateObjectiveList.get(j)));
+    }
+
+    private void setPatternCardsToPlayer(){
+        ArrayList<Integer> patternCardsList = new ArrayList<>();
+        for (Integer i = 0; i < 12; i++)
+            patternCardsList.add(i);
+
+        Collections.shuffle(patternCardsList);
+
+        for(int j = 0; j < players.size(); j++){
+            ArrayList<PatternCard> patternCardsToPlayer = new ArrayList<>();
+            int val = patternCardsList.get(j);
+            patternCardsToPlayer.add(patternCards.get(val));
+            patternCardsToPlayer.add(patternCards.get(val + 12));
+            val = patternCardsList.get(11 - j);
+            patternCardsToPlayer.add(patternCards.get(val));
+            patternCardsToPlayer.add(patternCards.get(val + 12));
+            players.get(j).setPatternCards(patternCardsToPlayer);
+        }
+    }
 
     /* TODO: toString */
     public String toString(){
