@@ -22,16 +22,12 @@ public class ToolCardController extends Controller {
             int[] finalPosition = actualView.getDiePosition();
 
             model.moveDieInsidePatternCard(player, startingPosition[0], startingPosition[1], finalPosition[0], finalPosition[1], false, true, 2);
-        }
-
-        if(toolCardId == 3) {
+        } else if(toolCardId == 3) {
             int[] startingPosition = actualView.getDiePosition();
             int[] finalPosition = actualView.getDiePosition();
 
             model.moveDieInsidePatternCard(player, startingPosition[0], startingPosition[1], finalPosition[0], finalPosition[1], true, false, 3);
-        }
-
-        if(toolCardId == 4) {
+        } else if(toolCardId == 4) {
             int[] startingPosition1 = actualView.getDiePosition();
             int[] finalPosition1 = actualView.getDiePosition();
 
