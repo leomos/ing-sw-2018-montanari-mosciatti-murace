@@ -31,4 +31,11 @@ public class ToolCard {
     public int getToolCardId() {
         return toolCardId;
     }
+
+    public int cost(){
+        if (tokensUsed == 0)
+            return 1;
+        else
+            return 2;
+    }
 }

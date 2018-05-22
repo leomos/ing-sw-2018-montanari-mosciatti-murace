@@ -22,7 +22,7 @@ public class Table {
 
     private Scoreboard scoreboard;
 
-    /* TODO: costruttore che crei ogni attributo e che setti i Players + controllare se tipo PLayer  ok*/
+    /* TODO: COSTRUTTORE che crei ogni attributo e che setti i Players + controllare se tipo PLayer  ok*/
 
     public DiceArena getDiceArena() {
         return diceArena;

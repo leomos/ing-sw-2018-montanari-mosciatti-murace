@@ -40,5 +40,32 @@ public class Model extends Observable<Object> {
                 patternCard.getPatternCardCell(x, y).setRolledDieId(idDie, ignoreValueConstraint, ignoreColorConstraint);
         } catch (DiceContainerUnsupportedIdException e){}
     }
+
+
+    /**
+     * @param player
+     * @param x_i
+     * @param y_i
+     * @param x_f
+     * @param y_f
+     * @param ignoreValueConstraint
+     * @param ignoreColorConstraint
+     * @param idToolCard
+     */
+    /*TODO: a seconda dell'esito di setRolledDieID dovremo creare notify diversi!*/
+    public void moveDie(int player, int x_i, int y_i, int x_f, int y_f, boolean ignoreValueConstraint, boolean ignoreColorConstraint, int idToolCard){
+        PatternCard patternCard = this.getTable().getPlayers(player).getChosenPatternCard();
+
+        /* TODO: controllo se toolCard è tra le toolcard disponibili */
+        if(this.getTable().getPlayers(player).getTokens() >= this.getTable().getToolCardContainer().getToolCard(idToolCard).cost())
+            if (!patternCard.getPatternCardCell(x_i, y_i).isEmpty() &&
+                    patternCard.getPatternCardCell(x_f, y_f).isEmpty()) {
+                int idDie = patternCard.getPatternCardCell(x_i, y_i).getRolledDieId();
+                this.setDieInPatternCard(player, idDie, x_i, y_i, ignoreValueConstraint, ignoreColorConstraint);
+                /*TODO: queso metodo sopra restituirà un bool e se è false, non farà le istruzioni seguenti*/
+                patternCard.getPatternCardCell(x_i, y_i).removeDie();
+                this.getTable().getToolCardContainer().getToolCard(idToolCard).setTokensUsed(1);
+            }
+    }
 }
 
