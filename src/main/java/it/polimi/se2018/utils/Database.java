@@ -1,5 +1,7 @@
 package it.polimi.se2018.utils;
 
+import it.polimi.se2018.model.PatternCard;
+import it.polimi.se2018.model.container.DiceContainer;
 import it.polimi.se2018.model.toolcards.ToolCard;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -15,9 +17,12 @@ public class Database {
 
     private File dbFile;
 
+    private DiceContainer diceContainer;
+
     private JSONObject dbJsonObject;
 
-    public Database() {
+    public Database(DiceContainer diceContainer) {
+        this.diceContainer = diceContainer;
         ClassLoader classLoader = getClass().getClassLoader();
         dbFile = new File(classLoader.getResource(dbName).getFile());
 
@@ -48,4 +53,20 @@ public class Database {
         }
         return toolCards;
     }
+
+    public ArrayList<PatternCard> loadPatternCard() {
+        ArrayList<PatternCard> patternCard = new ArrayList<>();
+
+        JSONArray patternCardList = dbJsonObject.getJSONArray("patterncards");
+
+        for (int i = 0; i < patternCardList.length(); i++) {
+            JSONObject currentPatternCard = patternCardList.getJSONObject(i);
+            patternCard.add(new PatternCard(diceContainer, currentPatternCard.getInt("id"),
+                    currentPatternCard.getString("name"),
+                    currentPatternCard.getInt("difficulty"),
+                    currentPatternCard.getString("cells")));
+        }
+        return patternCard;
+    }
+
 }

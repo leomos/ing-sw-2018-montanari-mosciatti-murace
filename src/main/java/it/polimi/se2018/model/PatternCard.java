@@ -26,16 +26,15 @@ public class PatternCard {
 
     private DiceContainer diceContainer;
 
-    public PatternCard(DiceContainer diceContainer, String patternCardRepresentation) {
-        String[] properties = patternCardRepresentation.split(",");
+    public PatternCard(DiceContainer diceContainer, int id, String name, int difficulty, String patternCardRepresentation) {
         this.diceContainer = diceContainer;
-        this.id = Integer.parseInt(properties[0]);
-        this.name = properties[1];
-        this.difficulty = Integer.parseInt(properties[2]);
+        this.id = id;
+        this.name = name;
+        this.difficulty = difficulty;
         int i, j;
         i = 0;
         j = 0;
-        for(char c : properties[3].toCharArray()) {
+        for(char c : patternCardRepresentation.toCharArray()) {
 
             if(c == '1') {
                 this.cells[j][i] = new PatternCardCell(diceContainer, null, 1);
