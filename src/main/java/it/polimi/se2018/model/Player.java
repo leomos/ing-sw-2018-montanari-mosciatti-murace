@@ -18,11 +18,9 @@ public class Player {
 
     private PrivateObjective privateObjective;
 
-    public Player(int id, String name, ArrayList<PatternCard> patternCards, PrivateObjective privateObjective) {
+    public Player(int id, String name) {
         this.id = id;
         this.name = name;
-        this.patternCards = patternCards;
-        this.privateObjective = privateObjective;
     }
 
     public int getId() {
@@ -45,18 +43,25 @@ public class Player {
         return privateObjective;
     }
 
-    public void setTokens(int tokens) {
-        this.tokens = tokens;
-    }
-
     public int getTokens() {
         return tokens;
+    }
+
+    public void setTokens(int tokens) {
+        this.tokens = tokens;
     }
 
     public void setChosenPatternCard(PatternCard chosenPatternCard) {
         this.chosenPatternCard = chosenPatternCard;
     }
 
+    public void setPatternCards(ArrayList<PatternCard> patternCards) {
+        this.patternCards = patternCards;
+    }
+
+    public void setPrivateObjective(PrivateObjective privateObjective) {
+        this.privateObjective = privateObjective;
+    }
 }
 
 
