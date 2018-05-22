@@ -19,7 +19,7 @@ public class TestPatternCard {
     @Before
     public void setUp() {
         diceContainer = new DiceContainer();
-        patternCard = new PatternCard(diceContainer, "0,Virtus,5,4025g006g203g405g100");
+        patternCard = new PatternCard(diceContainer, 0, "Virtus",5,"4025g006g203g405g100");
     }
 
     @After
@@ -87,4 +87,3 @@ public class TestPatternCard {
     }
 
 }
-

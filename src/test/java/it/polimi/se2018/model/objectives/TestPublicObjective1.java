@@ -17,7 +17,7 @@ public class TestPublicObjective1 {
     @Before
     public void setUp(){
         diceContainer = new DiceContainer();
-        patternCard = new PatternCard(diceContainer, "13,FractalDrop,3,040y6r020000rp1by000");
+        patternCard = new PatternCard(diceContainer, 13,"FractalDrop",3,"040y6r020000rp1by000");
         publicObjective1 = new PublicObjective1(diceContainer);
     }
 

@@ -18,7 +18,7 @@ public class TestPrivateObjective {
     @Before
     public void setUp(){
         diceContainer = new DiceContainer();
-        patternCard = new PatternCard(diceContainer, "13,FractalDrop,3,040y6r020000rp1by000");
+        patternCard = new PatternCard(diceContainer, 13,"FractalDrop",3,"040y6r020000rp1by000");
         privateObjective = new PrivateObjective(1, PURPLE, diceContainer);
     }
 
