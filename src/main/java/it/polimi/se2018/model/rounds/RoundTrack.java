@@ -1,12 +1,14 @@
 package it.polimi.se2018.model.rounds;
 
+import it.polimi.se2018.model.Player;
+
 import java.util.ArrayList;
 
 public class RoundTrack {
 
     public static final int NUMBER_OF_ROUNDS = 10;
 
-    private ArrayList<Integer> players;
+    private ArrayList<Integer> players = new ArrayList<>();
 
     private int idFirstPlayerPlaying = 0;
 
@@ -14,8 +16,10 @@ public class RoundTrack {
 
     private int currentRoundId = -1;
 
-    public RoundTrack(ArrayList<Integer> players) {
-        this.players = players;
+    public RoundTrack(ArrayList<Player> players) {
+        for(Player player : players) {
+            this.players.add(player.getId());
+        }
     }
 
     public Round getCurrentRound() {
