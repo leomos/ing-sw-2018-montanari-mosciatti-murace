@@ -21,14 +21,14 @@ public class ToolCardController extends Controller {
             int[] startingPosition = actualView.getDiePosition();
             int[] finalPosition = actualView.getDiePosition();
 
-            model.moveDie(player, startingPosition[0], startingPosition[1], finalPosition[0], finalPosition[1], false, true, 2);
+            model.moveDieInsidePatternCard(player, startingPosition[0], startingPosition[1], finalPosition[0], finalPosition[1], false, true, 2);
         }
 
         if(toolCardId == 3) {
             int[] startingPosition = actualView.getDiePosition();
             int[] finalPosition = actualView.getDiePosition();
 
-            model.moveDie(player, startingPosition[0], startingPosition[1], finalPosition[0], finalPosition[1], true, false, 3);
+            model.moveDieInsidePatternCard(player, startingPosition[0], startingPosition[1], finalPosition[0], finalPosition[1], true, false, 3);
         }
 
         if(toolCardId == 4) {
@@ -38,8 +38,8 @@ public class ToolCardController extends Controller {
             int[] startingPosition2 = actualView.getDiePosition();
             int[] finalPosition2 = actualView.getDiePosition();
 
-            model.moveDie(player, startingPosition1[0], startingPosition1[1], finalPosition1[0], finalPosition1[1], false, false,4);
-            model.moveDie(player, startingPosition2[0], startingPosition2[1], finalPosition2[0], finalPosition2[1], false, false,4);
+            model.moveDieInsidePatternCard(player, startingPosition1[0], startingPosition1[1], finalPosition1[0], finalPosition1[1], false, false,4);
+            model.moveDieInsidePatternCard(player, startingPosition2[0], startingPosition2[1], finalPosition2[0], finalPosition2[1], false, false,4);
         }
     }
 }
