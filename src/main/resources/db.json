@@ -23,7 +23,7 @@
     {
       "id": 5,
       "name": "Taglierina circolare",
-      "description": "Dopo aver scelto un dado, scambia quel dado con un dado sul Tracciato del Round"
+      "description": "Dopo aver scelto un dado, scambia quel dado con un dado sul Tracciato dei Round"
     },
     {
       "id": 6,
@@ -33,7 +33,7 @@
     {
       "id": 7,
       "name": "Martelletto",
-      "description": "Tira nuovamente tutti i dadi della Riserva. Questa carta può essere usata solo durante il secondo turno, prima di scegliere il secodno dado"
+      "description": "Tira nuovamente tutti i dadi della Riserva. Questa carta può essere usata solo durante il secondo turno, prima di scegliere il secondo dado"
     },
     {
       "id": 8,
