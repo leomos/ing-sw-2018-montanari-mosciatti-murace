@@ -13,8 +13,7 @@ public class ToolCardContainer {
 
     private ArrayList<Integer> toolCardsInPlay = new ArrayList<>();
 
-    public ToolCardContainer() {
-        DiceContainer diceContainer = new DiceContainer();
+    public ToolCardContainer(DiceContainer diceContainer) {
         Database database = new Database(diceContainer);
 
         this.toolCards = database.loadToolCards();

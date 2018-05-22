@@ -36,10 +36,10 @@ public class Table {
         for(int i = 0; i < idPlayer.length; i++) {
             this.players.add(new Player(idPlayer[i], name[i]));
         }
-        this.toolCardContainer = new ToolCardContainer();
+        this.diceContainer = new DiceContainer();
+        this.toolCardContainer = new ToolCardContainer(diceContainer);
         this.diceArena = new DiceArena(players.size() * 2 + 1);
         this.roundTrack = new RoundTrack(players);
-        this.diceContainer = new DiceContainer();
         this.database = new Database(diceContainer);
 
         this.patternCards = database.loadPatternCard();
