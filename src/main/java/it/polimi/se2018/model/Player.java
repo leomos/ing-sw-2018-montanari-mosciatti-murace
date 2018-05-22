@@ -18,12 +18,15 @@ public class Player {
 
     private PrivateObjective privateObjective;
 
-    public int getId() {
-        return id;
+    public Player(int id, String name, ArrayList<PatternCard> patternCards, PrivateObjective privateObjective) {
+        this.id = id;
+        this.name = name;
+        this.patternCards = patternCards;
+        this.privateObjective = privateObjective;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public int getId() {
+        return id;
     }
 
     public String getName() {
