@@ -27,4 +27,13 @@ public class ToolCardContainer {
     public void setToolCardInPlay(int toolCardId) {
         toolCardsInPlay.add(toolCardId);
     }
+
+    /* TODO: eccezione? */
+    public ToolCard getToolCardInPlay(int id) {
+        if(toolCardsInPlay.contains(id)) {
+            return toolCards.get(id);
+        } else {
+            return null;
+        }
+    }
 }
