@@ -64,7 +64,7 @@ public class Model extends Observable<Object> {
                 this.setDieInPatternCard(player, idDie, x_i, y_i, ignoreValueConstraint, ignoreColorConstraint);
                 /*TODO: queso metodo sopra restituirà un bool e se è false, non farà le istruzioni seguenti*/
                 patternCard.getPatternCardCell(x_i, y_i).removeDie();
-                this.getTable().getToolCardContainer().getToolCard(idToolCard).setTokensUsed(1);
+                this.getTable().getToolCardContainer().getToolCard(idToolCard).setUsed();
             }
     }
 }
