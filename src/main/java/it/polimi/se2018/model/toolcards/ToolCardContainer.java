@@ -28,12 +28,11 @@ public class ToolCardContainer {
         toolCardsInPlay.add(toolCardId);
     }
 
-    /* TODO: eccezione? */
-    public ToolCard getToolCardInPlay(int id) {
+    public ToolCard getToolCardInPlay(int id) throws ToolCardNotInPlayException {
         if(toolCardsInPlay.contains(id)) {
             return toolCards.get(id);
         } else {
-            return null;
+            throw new ToolCardNotInPlayException();
         }
     }
 }
