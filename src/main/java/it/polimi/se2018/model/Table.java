@@ -11,7 +11,8 @@ import java.util.Collections;
 
 public class Table {
 
-    private ArrayList<PublicObjective> publicObjectives;
+    private ArrayList<PublicObjective> publicObjectives = new ArrayList<PublicObjective>();
+
     private ToolCardContainer toolCardContainer;
 
     private DiceArena diceArena;
@@ -22,11 +23,11 @@ public class Table {
 
     private DiceContainer diceContainer;
 
-    private ArrayList<PatternCard> patternCards;
+    private ArrayList<PatternCard> patternCards = new ArrayList<PatternCard>();
 
-    private ArrayList<PrivateObjective> privateObjectives;
+    private ArrayList<PrivateObjective> privateObjectives = new ArrayList<PrivateObjective>();
 
-    private ArrayList<Player> players;
+    private ArrayList<Player> players = new ArrayList<Player>();
 
     private Scoreboard scoreboard;
 
@@ -38,7 +39,7 @@ public class Table {
         }
         this.diceContainer = new DiceContainer();
         this.toolCardContainer = new ToolCardContainer(diceContainer);
-        this.diceArena = new DiceArena(players.size() * 2 + 1);
+        this.diceArena = new DiceArena(players.size() * 2 + 1, diceContainer);
         this.roundTrack = new RoundTrack(players);
         this.database = new Database(diceContainer);
 
@@ -82,6 +83,10 @@ public class Table {
 
     public PatternCard getPatternCards(int i) {
         return patternCards.get(i);
+    }
+
+    public DiceContainer getDiceContainer() {
+        return diceContainer;
     }
 
     private void setPublicObjective(){

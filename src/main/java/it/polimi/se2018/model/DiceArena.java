@@ -13,7 +13,8 @@ public class DiceArena {
 
     private DiceContainer diceContainer;
 
-    public DiceArena(int numberOfDice) {
+    public DiceArena(int numberOfDice , DiceContainer diceContainer) {
+        this.diceContainer = diceContainer;
         HashMap<Integer, Die> unrolledDice = diceContainer.getUnrolledDice();
         ArrayList<Integer> unrolledDiceKeys = new ArrayList<>(unrolledDice.keySet());
         Collections.shuffle(unrolledDiceKeys);
