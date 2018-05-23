@@ -27,8 +27,8 @@ public class TestDatabase {
     }
 
     @Test
-    public void loadToolCards_ParamAs4_asd_getToolCardIdShouldBe4(){
-        assertEquals(4, database.loadToolCards().get(4).getToolCardId());
+    public void loadToolCards_ParamAs4_asd_getToolCardIdShouldBe5(){
+        assertEquals(5, database.loadToolCards().get(4).getToolCardId());
     }
 
     @Test

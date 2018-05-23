@@ -6,9 +6,8 @@ import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.container.DieRolledValueOutOfBoundException;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
-import static it.polimi.se2018.model.container.DieColor.*;
+import static org.junit.Assert.assertEquals;
 
 public class TestPrivateObjective {
     private DiceContainer diceContainer;
@@ -19,7 +18,7 @@ public class TestPrivateObjective {
     public void setUp(){
         diceContainer = new DiceContainer();
         patternCard = new PatternCard(diceContainer, 13,"FractalDrop",3,"040y6r020000rp1by000");
-        privateObjective = new PrivateObjective(1, PURPLE, diceContainer);
+        privateObjective = new PrivateObjective(diceContainer, 5, "Sfumature Viola - Privata", "Somma dei valori su tutti i dadi viola");
     }
 
     @Test
