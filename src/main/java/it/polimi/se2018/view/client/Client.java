@@ -6,19 +6,24 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
 public class Client {
 
     public static void main(String[] args) {
 
+        VirtualViewInterface virtualViewInterface;
+
         //if RMI
 
         try {
 
-            VirtualViewInterface virtualViewInterface = (VirtualViewInterface)Naming.lookup("//localhost/MyServer");
-            //ClientImplementationRMI clientImplementationRMI = new ClientImplementationRMI();
-            //ClientInterface remoteRef = (ClientInterface) UnicastRemoteObject.exportObject(clientImplementationRMI, 0);
-            //virtualViewInterface.addClient(remoteRef);
+            virtualViewInterface = (VirtualViewInterface)Naming.lookup("//localhost/MyServer2");
+            ClientImplementationRMI clientImplementationRMI = new ClientImplementationRMI();
+            ClientInterface remoteRef = (ClientInterface) UnicastRemoteObject.exportObject(clientImplementationRMI, 0);
+            virtualViewInterface.addClient(remoteRef);
+
+
 
         } catch (MalformedURLException e) {
             System.err.println("URL non trovato!");

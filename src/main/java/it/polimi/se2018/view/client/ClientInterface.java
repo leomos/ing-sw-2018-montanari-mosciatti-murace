@@ -2,7 +2,10 @@ package it.polimi.se2018.view.client;
 
 import it.polimi.se2018.model.events.ModelChangedMessage;
 
-public interface ClientInterface {
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 
-    public void update(ModelChangedMessage modelChangedMessage);
+public interface ClientInterface extends Remote {
+
+    public void update(ModelChangedMessage modelChangedMessage) throws RemoteException;
 }

@@ -7,6 +7,8 @@ import java.rmi.registry.LocateRegistry;
 
 public class Server {
 
+    private static int PORT = 1099; // porta di default
+
     public static void main(String[] args) {
 
         //if (stanza_ready)
@@ -17,7 +19,7 @@ public class Server {
 
             try {
 
-                LocateRegistry.createRegistry(1099);
+                LocateRegistry.createRegistry(PORT);
 
             } catch (RemoteException e) {
                 System.out.println("Registry già presente!");
@@ -25,9 +27,9 @@ public class Server {
 
             try {
 
-                VirtualViewRMI virtualViewRMI = new VirtualViewRMI();
-                Naming.rebind("//localhost/MyServer", virtualViewRMI);
-
+                VirtualViewRMI virtualViewRMI = new VirtualViewRMI(virtualView);
+                Naming.rebind("//localhost/MyServer2", virtualViewRMI);
+                System.out.println("Server ready");
             } catch (MalformedURLException e) {
                 System.err.println("Impossibile registrare l'oggetto indicato!");
             } catch (RemoteException e) {

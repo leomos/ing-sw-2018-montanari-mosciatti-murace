@@ -10,15 +10,16 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualViewIn
 
     private VirtualView virtualView;
 
-    public VirtualViewRMI() throws RemoteException {
+    public VirtualViewRMI(VirtualView virtualView) throws RemoteException {
         super(0);
+        this.virtualView = virtualView;
     }
 
-    public void notify(PlayerMessage playerMessage){
+    public void notify(PlayerMessage playerMessage) throws RemoteException{
         virtualView.notify(playerMessage);
     }
 
-    public void addClient(ClientInterface clientInterface){
+    public void addClient(ClientInterface clientInterface) throws RemoteException{
         virtualView.addClient(clientInterface);
     }
 

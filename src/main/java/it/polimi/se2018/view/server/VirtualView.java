@@ -22,6 +22,7 @@ public class VirtualView extends Observable<PlayerMessage> implements Observer<M
 
     public void addClient(ClientInterface clientInterface){
         clientInterfacesList.add(clientInterface);
+        System.out.println("Client added");
     }
 
 
