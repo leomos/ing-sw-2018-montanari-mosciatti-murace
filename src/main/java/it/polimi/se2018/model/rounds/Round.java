@@ -3,6 +3,8 @@ package it.polimi.se2018.model.rounds;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/*TODO: metodo per toolcard */
+
 public class Round {
 
     private int id;
@@ -104,4 +106,6 @@ public class Round {
         }
         return 2 - counter;
     }
+
+
 }

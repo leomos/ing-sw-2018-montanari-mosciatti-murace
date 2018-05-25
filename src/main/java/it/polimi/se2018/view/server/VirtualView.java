@@ -6,14 +6,21 @@ import it.polimi.se2018.utils.Observable;
 import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.view.client.ClientInterface;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public class VirtualView extends Observable<PlayerMessage> implements Observer<ModelChangedMessage>{
 
-    private ArrayList<ClientInterface> clientInterfacesList = new ArrayList<>();
+    private ArrayList<ClientInterface> clientInterfaceList = new ArrayList<>();
 
     public void update(ModelChangedMessage modelChangedMessage){
-
+        for(ClientInterface i: clientInterfaceList) {
+            try {
+                i.update(modelChangedMessage);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void notify(PlayerMessage playerMessage){
@@ -21,7 +28,7 @@ public class VirtualView extends Observable<PlayerMessage> implements Observer<M
     }
 
     public void addClient(ClientInterface clientInterface){
-        clientInterfacesList.add(clientInterface);
+        clientInterfaceList.add(clientInterface);
         System.out.println("Client added");
     }
 

@@ -8,7 +8,8 @@ public class ClientImplementationRMI implements ClientInterface{
 
     private ViewClient viewClient;
 
-    public ClientImplementationRMI() throws RemoteException {
+    public ClientImplementationRMI(ViewClient viewClient) throws RemoteException {
+        this.viewClient = viewClient;
     }
 
     public void update(ModelChangedMessage modelChangedMessage) throws RemoteException{

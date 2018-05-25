@@ -17,6 +17,8 @@ public class ToolCardController extends Controller {
         int toolCardId = playerMessageToolCard.getToolcard().getToolCardId();
         View actualView = view.get(player);
 
+        /*TODO: check segnalini prima di chiedere dati */
+
         if(toolCardId == 2) {
             int[] startingPosition = actualView.getDiePosition();
             int[] finalPosition = actualView.getDiePosition();
