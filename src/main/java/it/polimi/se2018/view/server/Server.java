@@ -36,6 +36,7 @@ public class Server {
                 System.err.println("Errore di connessione: " + e.getMessage() + "!");
             }
 
-
+            // Creo l'infrastruttura per il socket
+            (new ClientGatherer(1100, virtualView)).start();
     }
 }
