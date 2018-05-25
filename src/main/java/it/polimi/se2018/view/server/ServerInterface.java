@@ -6,7 +6,7 @@ import it.polimi.se2018.view.client.ClientInterface;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
-public interface VirtualViewInterface extends Remote {
+public interface ServerInterface extends Remote {
 
     public void notify(PlayerMessage playerMessage) throws RemoteException;
 

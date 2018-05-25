@@ -3,13 +3,12 @@ package it.polimi.se2018.view.server;
 import it.polimi.se2018.view.client.ClientInterface;
 
 import java.io.IOException;
-import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ClientGatherer extends Thread{
     private final int port;
-    private ServerSocket serverSocket;
-    private VirtualViewSocket virtualViewSocket;
+    private java.net.ServerSocket serverSocket;
+    private ServerSocket virtualViewSocket;
     private VirtualView virtualView;
 
     public ClientGatherer(int port, VirtualView virtualView) {
@@ -17,7 +16,7 @@ public class ClientGatherer extends Thread{
         this.virtualView = virtualView;
         // Inizializzo il server socket
         try {
-            this.serverSocket = new ServerSocket(port);
+            this.serverSocket = new java.net.ServerSocket(port);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -39,7 +38,7 @@ public class ClientGatherer extends Thread{
                 ClientInterface clientInterface;
                 newClientConnection = serverSocket.accept();
                 System.out.println("A new client connected.");
-                virtualViewSocket = new VirtualViewSocket(virtualView, newClientConnection);
+                virtualViewSocket = new ServerSocket(virtualView, newClientConnection);
                 virtualViewSocket.addClient(virtualViewSocket);
                 virtualViewSocket.start();
 

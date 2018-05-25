@@ -6,11 +6,11 @@ import it.polimi.se2018.view.client.ClientInterface;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-public class VirtualViewRMI extends UnicastRemoteObject implements VirtualViewInterface {
+public class ServerRMI extends UnicastRemoteObject implements ServerInterface {
 
     private VirtualView virtualView;
 
-    public VirtualViewRMI(VirtualView virtualView) throws RemoteException {
+    public ServerRMI(VirtualView virtualView) throws RemoteException {
         super(0);
         this.virtualView = virtualView;
     }

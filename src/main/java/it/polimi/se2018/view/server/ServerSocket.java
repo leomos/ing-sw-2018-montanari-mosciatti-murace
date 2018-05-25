@@ -11,12 +11,12 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.rmi.RemoteException;
 
-public class VirtualViewSocket extends Thread implements VirtualViewInterface, ClientInterface {
+public class ServerSocket extends Thread implements ServerInterface, ClientInterface {
     private VirtualView virtualView;
 
     private Socket clientConnection;
 
-    public VirtualViewSocket(VirtualView virtualView, Socket clientConnection) {
+    public ServerSocket(VirtualView virtualView, Socket clientConnection) {
         this.virtualView = virtualView;
         this.clientConnection = clientConnection;
     }
@@ -33,7 +33,7 @@ public class VirtualViewSocket extends Thread implements VirtualViewInterface, C
 
     @Override
     public void update(ModelChangedMessage modelChangedMessage) throws RemoteException {
-        //faccio la sendp
+        //faccio la send
         OutputStreamWriter writer;
 
         try {
@@ -59,7 +59,7 @@ public class VirtualViewSocket extends Thread implements VirtualViewInterface, C
                 if ( message == null ) {
                     loop = false;
                 } else {
-                    System.out.println("VirtualViewSocket: " + message);
+                    System.out.println("ServerSocket: " + message);
                 }
 
             }

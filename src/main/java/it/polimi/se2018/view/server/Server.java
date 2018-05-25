@@ -15,7 +15,7 @@ public class Server {
 
             VirtualView virtualView = new VirtualView();
 
-            //Creo la VirtualViewRMI
+            //Creo la ServerRMI
 
             try {
 
@@ -27,7 +27,7 @@ public class Server {
 
             try {
 
-                VirtualViewRMI virtualViewRMI = new VirtualViewRMI(virtualView);
+                ServerRMI virtualViewRMI = new ServerRMI(virtualView);
                 Naming.rebind("//localhost/MyServer2", virtualViewRMI);
                 System.out.println("Server ready");
             } catch (MalformedURLException e) {
@@ -37,6 +37,6 @@ public class Server {
             }
 
             // Creo l'infrastruttura per il socket
-            (new ClientGatherer(1100, virtualView)).start();
+            (new ClientGatherer(1111, virtualView)).start();
     }
 }
