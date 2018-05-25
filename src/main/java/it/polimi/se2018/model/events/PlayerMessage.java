@@ -1,4 +1,4 @@
 package it.polimi.se2018.model.events;
 
-abstract class PlayerMessage {
+public abstract class PlayerMessage {
 }

@@ -120,7 +120,7 @@ public class Table {
         Collections.shuffle(toolCardsList);
 
         for(int j = 0; j < 3; j++)
-            this.toolCardContainer.setToolCardInPlay(j);
+            toolCardContainer.setToolCardInPlay(toolCardsList.get(j));
     }
 
     private void setPrivateObjectiveToPlayers(){

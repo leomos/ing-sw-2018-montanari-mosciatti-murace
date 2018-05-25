@@ -9,7 +9,7 @@ public class ToolCardContainer {
 
     private static final int NUMBER_OF_TOOLCARDS = 12;
 
-    private ArrayList<ToolCard> toolCards;
+    private ArrayList<ToolCard> toolCards = new ArrayList<>();
 
     private ArrayList<Integer> toolCardsInPlay = new ArrayList<>();
 

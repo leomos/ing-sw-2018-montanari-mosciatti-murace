@@ -1,11 +1,11 @@
 package it.polimi.se2018.model;
 
-import it.polimi.se2018.model.toolcards.ToolCardNotInPlayException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 public class TestTable {
     private String[] names = new String[3];
@@ -16,9 +16,9 @@ public class TestTable {
     public void setup(){
         for(int i = 0; i < 3; i++)
             id[i] = i;
-        names[0] = "jesus";
+        names[0] = "Mat";
         names[1] = "Leo";
-        names[2] = "stupid";
+        names[2] = "Ale";
         table = new Table(id, names);
     }
 
@@ -76,15 +76,5 @@ public class TestTable {
         assertNotEquals(table.getPublicObjective(0), table.getPublicObjective(2));
         assertNotEquals(table.getPublicObjective(2), table.getPublicObjective(1));
     }
-
-    @Test
-    public void checkToolCardsInPlayAreDifferentFromEachOther_ParamAreGeneratedRandomly_ExpectedReturnsNotToBeEquals() throws ToolCardNotInPlayException {
-        assertNotEquals(table.getToolCardContainer().getToolCardInPlay(0), table.getToolCardContainer().getToolCardInPlay(1));
-        assertNotEquals(table.getToolCardContainer().getToolCardInPlay(0), table.getToolCardContainer().getToolCardInPlay(2));
-        assertNotEquals(table.getToolCardContainer().getToolCardInPlay(2), table.getToolCardContainer().getToolCardInPlay(1));
-    }
-
-
-
 
 }
