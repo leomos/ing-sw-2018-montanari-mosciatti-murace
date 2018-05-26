@@ -40,7 +40,7 @@ public class Controller implements Observer {
     }
 
     /**
-     * @param view view that sends the message
+     * @param view network that sends the message
      * @param playerMessage message containing the information about player's move
      */
     /* TODO: tests, finish update with instanceOf(). */
