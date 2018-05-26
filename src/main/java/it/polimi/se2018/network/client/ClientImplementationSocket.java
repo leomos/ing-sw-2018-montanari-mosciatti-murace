@@ -1,23 +1,29 @@
 package it.polimi.se2018.network.client;
 
+import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model.events.ModelChangedMessage;
+import it.polimi.se2018.model.events.PlayerMessage;
+import it.polimi.se2018.model.events.PlayerMessageDie;
 import it.polimi.se2018.view.ViewClient;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
-import java.util.Scanner;
 
 public class ClientImplementationSocket extends Thread implements ClientInterface {
     private ViewClient viewClient;
+    private Socket serverConnection;
+    private ObjectInputStream objectInputStream;
+    private ObjectOutputStream objectOutputStream;
 
-    private Socket socket;
-
-    public ClientImplementationSocket(ViewClient viewClient, Socket socket) {
+    public ClientImplementationSocket(ViewClient viewClient, Socket serverConnection) {
         this.viewClient = viewClient;
-        this.socket = socket;
+        this.serverConnection = serverConnection;
+        try {
+            this.objectInputStream = new ObjectInputStream(this.serverConnection.getInputStream());
+            this.objectOutputStream = new ObjectOutputStream(this.serverConnection.getOutputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -25,39 +31,32 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
         viewClient.update(modelChangedMessage);
     }
 
+    public void notify(PlayerMessage playerMessage) {
+        try {
+            objectOutputStream.writeObject(playerMessage);
+            objectOutputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     @Override
     public void run(){
-        Scanner scanner = new Scanner(System.in);
+        try {
+            ModelChangedMessage modelChangedMessage;
 
-        boolean loop = true;
-        while ( loop ) {
-
-            System.out.println("\nWrite a message: ");
-            String text = scanner.nextLine();
-
-            if ( text.equals("stop") )  {
-
-                scanner.close();
-                loop = false;
-
-            } else {
-
-                OutputStreamWriter writer;
-
-                try {
-
-                    writer = new OutputStreamWriter(this.socket.getOutputStream());
-                    BufferedWriter bw = new BufferedWriter(writer);
-                    PrintWriter pw = new PrintWriter(bw, true);
-
-                    pw.println(text);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
+            while((modelChangedMessage = (ModelChangedMessage) objectInputStream.readObject()) != null) {
+                /* TODO: devo fare qui la trasformazione nei vari ModelChangedMessage{*}? */
+                this.update(modelChangedMessage);
             }
 
+            serverConnection.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
