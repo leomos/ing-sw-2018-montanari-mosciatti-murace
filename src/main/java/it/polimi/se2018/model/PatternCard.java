@@ -237,7 +237,7 @@ public class PatternCard {
     }
 
 
-    public static String toString(PatternCard patternCard) throws DiceContainerUnsupportedIdException {
+    public String toString() {
         String ANSI_WHITE = "\u001b[4m" + "\u001B[107m";
         String ANSI_RED = "\u001b[4m" + "\u001B[41m";
         String ANSI_GREEN = "\u001b[4m" + "\u001B[42m";
@@ -253,9 +253,9 @@ public class PatternCard {
 
         for (int i=0; i<4; i++) {
             for (int j=0; j<5; j++) {
-                if (patternCard.getPatternCardCell(j, i).isEmpty()) {
-                    color = patternCard.getPatternCardCell(j, i).getColorConstraint();
-                    n = patternCard.getPatternCardCell(j, i).getValueConstraint();
+                if (this.getPatternCardCell(j, i).isEmpty()) {
+                    color = this.getPatternCardCell(j, i).getColorConstraint();
+                    n = this.getPatternCardCell(j, i).getValueConstraint();
 
                     if (color == YELLOW)
                         s = s + ANSI_YELLOW + "   " + ANSI_RESET;
@@ -285,7 +285,12 @@ public class PatternCard {
                     s = s + "|";
 
                 } else {
-                    Die die = diceContainer.getDie(patternCard.getPatternCardCell(j, i).getRolledDieId());
+                    Die die = null;
+                    try {
+                        die = diceContainer.getDie(this.getPatternCardCell(j, i).getRolledDieId());
+                    } catch (DiceContainerUnsupportedIdException e) {
+                        e.printStackTrace();
+                    }
                     color = die.getColor();
                     n = die.getRolledValue();
 
