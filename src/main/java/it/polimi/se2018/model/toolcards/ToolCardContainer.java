@@ -17,7 +17,6 @@ public class ToolCardContainer {
 
     public ToolCardContainer(DiceContainer diceContainer) {
         Database database = new Database(diceContainer);
-
         this.toolCards = database.loadToolCards();
     }
 

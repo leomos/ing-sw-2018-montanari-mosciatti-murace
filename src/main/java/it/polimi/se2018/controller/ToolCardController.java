@@ -2,7 +2,7 @@ package it.polimi.se2018.controller;
 
 import it.polimi.se2018.model.Model;
 import it.polimi.se2018.model.events.PlayerMessageToolCard;
-import it.polimi.se2018.view.View;
+import it.polimi.se2018.view.ViewClient;
 
 import java.util.HashMap;
 
@@ -12,15 +12,15 @@ public class ToolCardController extends Controller {
         super(model);
     }
 
-    public void execute(PlayerMessageToolCard playerMessageToolCard, HashMap<Integer, View> view) {
+    public void execute(PlayerMessageToolCard playerMessageToolCard, HashMap<Integer, ViewClient> view) {
         int player = playerMessageToolCard.getPlayer();
         int toolCardId = playerMessageToolCard.getToolcard().getToolCardId();
-        View actualView = view.get(player);
+        ViewClient actualView = view.get(player);
 
         /*TODO: check segnalini prima di chiedere dati */
         if( toolCardId == 1){
 
-            boolean incremented_value = actualView.getIncrementedValue();
+            int incremented_value = actualView.getIncrementedValue();
 
         }else if(toolCardId == 2) {
             int[] startingPosition = actualView.getDiePosition();
