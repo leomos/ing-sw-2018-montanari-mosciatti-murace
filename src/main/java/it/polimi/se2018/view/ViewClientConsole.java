@@ -68,12 +68,11 @@ public class ViewClientConsole extends ViewClient {
         return s;
     }
 
-    public String printPatternCard(PatternCard patternCard) {
+    public String printPatternCard(DiceContainer diceContainer, PatternCard patternCard) {
         String ANSI_WHITE = "\u001b[4m" + "\u001B[107m";
         String ANSI_RESET = "\u001b[4m" + "\u001b[0m";
         String ANSI_GREY = "\u001b[4m" + "\u001B[47m";
 
-        DiceContainer diceContainer = new DiceContainer();
         DieColor color;
         int n;
         String s = "";
@@ -145,7 +144,7 @@ public class ViewClientConsole extends ViewClient {
             Player player = model.getTable().getPlayers(i);
             if (this.id != player.getId()) {
                 System.out.println("\nPLAYER: " + player.getName() + "\n");
-                System.out.println(printPatternCard(player.getChosenPatternCard()));
+                System.out.println(printPatternCard(model.getTable().getDiceContainer(), player.getChosenPatternCard()));
             }
             else
                 myPlayer = player;
