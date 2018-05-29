@@ -62,4 +62,9 @@ public class TestDie {
         die.setRolledValue(0);
     }
 
+    @Test
+    public void roll_JustAfterInitializationOfDie_rolledValueShouldNotBe0() {
+        die.roll();
+        assertNotEquals(0, die.getRolledValue());
+    }
 }
