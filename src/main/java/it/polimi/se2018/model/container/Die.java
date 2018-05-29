@@ -55,7 +55,7 @@ public class Die {
      * from 0 to 6 included.
      */
     public void roll() {
-        rolledValue = ThreadLocalRandom.current().nextInt(0, 6 + 1);
+        rolledValue = ThreadLocalRandom.current().nextInt(1, 6 + 1);
     }
 
 }
