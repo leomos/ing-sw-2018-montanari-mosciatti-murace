@@ -1,5 +1,6 @@
 package it.polimi.se2018.model;
 
+import it.polimi.se2018.model.toolcards.ToolCardNotInPlayException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -75,6 +76,13 @@ public class TestTable {
         assertNotEquals(table.getPublicObjective(0), table.getPublicObjective(1));
         assertNotEquals(table.getPublicObjective(0), table.getPublicObjective(2));
         assertNotEquals(table.getPublicObjective(2), table.getPublicObjective(1));
+    }
+
+    @Test
+    public void checkToolCardInUseAreDifferentFromEachOther_ParamAreGeneratedRandomly_ExpectedReturnsNotToBeEquals() throws ToolCardNotInPlayException {
+        assertNotEquals(table.getToolCardContainer().getToolCardInPlay().get(0), table.getToolCardContainer().getToolCardInPlay().get(1));
+        assertNotEquals(table.getToolCardContainer().getToolCardInPlay().get(0), table.getToolCardContainer().getToolCardInPlay().get(2));
+        assertNotEquals(table.getToolCardContainer().getToolCardInPlay().get(2), table.getToolCardContainer().getToolCardInPlay().get(1));
     }
 
 }
