@@ -5,7 +5,6 @@ import it.polimi.se2018.model.Player;
 
 import java.util.ArrayList;
 
-/* TODO: test for swapDieInRound */
 public class RoundTrack {
 
     public static final int NUMBER_OF_ROUNDS = 10;
@@ -88,7 +87,7 @@ public class RoundTrack {
      * @throws DieNotPresentException if no Round has dieId in its rolledDiceLeft
      */
     private int getRoundIdForDieId(int dieId) throws DieNotPresentException {
-        for (int i = 0; i < rounds.length; i++) {
+        for (int i = 0; i <= currentRoundId; i++) {
             if(rounds[i].isDiePresentInLeftDice(dieId)) return i;
         }
         throw new DieNotPresentException();
@@ -101,6 +100,7 @@ public class RoundTrack {
      *          in any of round's rolledDiceLeft.
      */
     public void swapDieInRound(int dieIdToRemove, int dieIdToAdd) throws DieNotPresentException {
-        rounds[getRoundIdForDieId(dieIdToRemove)].swapDie(dieIdToRemove, dieIdToAdd);
+        int roundIdForDieIdToRemove = getRoundIdForDieId(dieIdToRemove);
+        rounds[roundIdForDieIdToRemove].swapDie(dieIdToRemove, dieIdToAdd);
     }
 }
