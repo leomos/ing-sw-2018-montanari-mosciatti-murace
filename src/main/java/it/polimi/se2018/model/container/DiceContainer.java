@@ -1,5 +1,6 @@
 package it.polimi.se2018.model.container;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class DiceContainer {
@@ -20,19 +21,16 @@ public class DiceContainer {
     }
 
     /**
-     * @return  an HashMap of all the dice that are not rolled,
-     *          with index the id of the die and key the die itself.
-     *          This can be considered as the abstraction of
-     *          the dice bag.
+     * @return an ArrayList containing the ids of all the unrolled dice.
      */
-    public HashMap<Integer, Die> getUnrolledDice() {
-        HashMap<Integer, Die> bag = new HashMap<>();
+    public ArrayList<Integer> getUnrolledDice() {
+        ArrayList<Integer> bag = new ArrayList<>();
 
         Die d;
         for (int i = 0; i < NUMBER_OF_DICE; i++) {
             d = dice[i];
             if(!d.isRolled()) {
-                bag.put(i,d);
+                bag.add(i);
             }
         }
 

@@ -1,7 +1,7 @@
 package it.polimi.se2018.model;
 
 import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
-import it.polimi.se2018.model.toolcards.ToolCard;
+import it.polimi.se2018.model.rounds.RoundTrack;
 import it.polimi.se2018.model.toolcards.ToolCardContainer;
 import it.polimi.se2018.model.toolcards.ToolCardNotInPlayException;
 import it.polimi.se2018.utils.Observable;
@@ -89,6 +89,26 @@ public class Model extends Observable<Object> {
             /* TODO: notify che toolcard non è in play? */
             e.printStackTrace();
         }
+    }
+
+    public void swapDieAmongRoundTrackAndDiceArena(int dieIdInRoundTrack, int dieIdInDiceArena) {
+        RoundTrack roundTrack = table.getRoundTrack();
+        DiceArena diceArena = table.getDiceArena();
+
+        try {
+            roundTrack.swapDieInRound(dieIdInRoundTrack, dieIdInDiceArena);
+        } catch (DieNotPresentException e) {
+            /* TODO: notify che il dado swappato non esiste nella RoundTrack */
+            e.printStackTrace();
+        }
+
+        try {
+            diceArena.swapDie(dieIdInDiceArena, dieIdInRoundTrack);
+        } catch (DieNotPresentException e) {
+            /* TODO: notify che il dado swappato non esiste nella DiceArena */
+            e.printStackTrace();
+        }
+
     }
 }
 

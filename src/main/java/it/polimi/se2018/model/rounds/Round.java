@@ -1,9 +1,12 @@
 package it.polimi.se2018.model.rounds;
 
+import it.polimi.se2018.model.DieNotPresentException;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
-/* TODO: aggiungere metodo per swappare un dado su rolledDiceLeft */
+/* TODO: test swapDie */
+/* TODO: test isDiePresentInLeftDice */
 /* TODO: aggiungere metodo per cambiare ordine dei turni */
 public class Round {
 
@@ -108,4 +111,30 @@ public class Round {
     }
 
 
+    /**
+     * @param dieIdToRemove
+     * @param dieIdToAdd
+     * This method expects that the two params are valid,
+     * that is, they need to be present in rolledDiceLeft.
+     */
+    public void swapDie(int dieIdToRemove, int dieIdToAdd) {
+        for (int i = 0; i < rolledDiceLeft.length; i++) {
+            if(dieIdToRemove == rolledDiceLeft[i]) {
+                rolledDiceLeft[i] = dieIdToAdd;
+                return;
+            }
+        }
+    }
+
+    /**
+     * @param dieId the id of the die to be searched
+     * @return      true if rolledDiceLeft contains dieId,
+     *              false otherwise
+     */
+    public boolean isDiePresentInLeftDice(int dieId) {
+        for (int id : rolledDiceLeft) {
+            if(id == dieId) return true;
+        }
+        return false;
+    }
 }
