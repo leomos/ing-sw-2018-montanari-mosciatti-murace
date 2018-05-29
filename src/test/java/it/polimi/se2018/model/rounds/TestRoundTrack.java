@@ -1,5 +1,6 @@
 package it.polimi.se2018.model.rounds;
 
+import it.polimi.se2018.model.DieNotPresentException;
 import it.polimi.se2018.model.Player;
 import org.junit.After;
 import org.junit.Before;
@@ -7,9 +8,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public class TestRoundTrack {
 
@@ -89,5 +88,48 @@ public class TestRoundTrack {
         diceLeft[4] = 35;
         diceLeft[5] = 89;
         roundTrack.setRolledDiceLeftForCurrentRound(diceLeft);
+    }
+
+    @Test
+    public void swapDieInRound_1stParamAsIdPresentInLeftDice2ndParamAsValidId_1stParamShouldNotBePresentAnd2ndParamShouldBePresent() {
+        int[] diceLeft = new int[3];
+        diceLeft[0] = 1;
+        diceLeft[1] = 23;
+        diceLeft[2] = 42;
+        try {
+            roundTrack.startNextRound();
+        } catch (RoundTrackNoMoreRoundsException e) {
+            fail();
+        }
+        try {
+            roundTrack.setRolledDiceLeftForCurrentRound(diceLeft);
+        } catch (RoundTrackTooManyDiceForCurrentPlayers roundTrackTooManyDiceForCurrentPlayers) {
+            fail();
+        }
+        try {
+            roundTrack.swapDieInRound(23,54);
+        } catch (DieNotPresentException e) {
+            fail();
+        }
+        assertTrue(roundTrack.getCurrentRound().isDiePresentInLeftDice(54));
+    }
+
+    @Test(expected = DieNotPresentException.class)
+    public void swapDieInRound_1stParamAsIdNotPresentInLetDice2ndParamAsValidId_ExceptionThrown() throws DieNotPresentException {
+        int[] diceLeft = new int[3];
+        diceLeft[0] = 1;
+        diceLeft[1] = 23;
+        diceLeft[2] = 42;
+        try {
+            roundTrack.startNextRound();
+        } catch (RoundTrackNoMoreRoundsException e) {
+            fail();
+        }
+        try {
+            roundTrack.setRolledDiceLeftForCurrentRound(diceLeft);
+        } catch (RoundTrackTooManyDiceForCurrentPlayers roundTrackTooManyDiceForCurrentPlayers) {
+            fail();
+        }
+        roundTrack.swapDieInRound(90,54);
     }
 }
