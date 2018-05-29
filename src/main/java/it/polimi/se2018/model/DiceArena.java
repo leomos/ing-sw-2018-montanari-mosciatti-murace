@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
+/* TODO: aggiungere metodo per settare singolo dado */
+/* TODO: aggiungere metodo per rollare tutti i dadi rimasti */
+/* TODO: aggiungere metodo per eliminare dado dall'arena */
 public class DiceArena {
 
     private HashMap<Integer, Die> arena;

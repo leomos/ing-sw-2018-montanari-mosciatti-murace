@@ -3,8 +3,8 @@ package it.polimi.se2018.model.rounds;
 import java.util.ArrayList;
 import java.util.Collections;
 
-/*TODO: metodo per toolcard */
-
+/* TODO: aggiungere metodo per swappare un dado su rolledDiceLeft */
+/* TODO: aggiungere metodo per cambiare ordine dei turni */
 public class Round {
 
     private int id;
