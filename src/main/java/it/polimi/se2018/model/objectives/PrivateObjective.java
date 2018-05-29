@@ -39,6 +39,14 @@ public class PrivateObjective implements Objective {
         return this.id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public DieColor getColor() {
+        return color;
+    }
+
     public String getDescription () {
         return this.description;
     }

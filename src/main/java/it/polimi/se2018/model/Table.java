@@ -31,7 +31,6 @@ public class Table {
 
     private Scoreboard scoreboard;
 
-
     /* TODO: COSTRUTTORE che crei ogni attributo e che setti i Players + controllare se tipo PLayer  ok */
     public Table(int[] idPlayer, String[] name){
         for(int i = 0; i < idPlayer.length; i++) {
@@ -52,6 +51,9 @@ public class Table {
         this.setToolCards();
     }
 
+    public int getNumberOfPlayers() {
+        return this.players.size();
+    }
 
     public DiceArena getDiceArena() {
         return diceArena;
