@@ -12,14 +12,17 @@ public class ToolCardController extends Controller {
         super(model);
     }
 
-    public void execute(PlayerMessageToolCard playerMessageToolCard, HashMap<Integer, View> view){
+    public void execute(PlayerMessageToolCard playerMessageToolCard, HashMap<Integer, View> view) {
         int player = playerMessageToolCard.getPlayer();
         int toolCardId = playerMessageToolCard.getToolcard().getToolCardId();
         View actualView = view.get(player);
 
         /*TODO: check segnalini prima di chiedere dati */
+        if( toolCardId == 1){
 
-        if(toolCardId == 2) {
+            int incremented_value = actualView.getIncrementedValue();
+
+        }else if(toolCardId == 2) {
             int[] startingPosition = actualView.getDiePosition();
             int[] finalPosition = actualView.getDiePosition();
 

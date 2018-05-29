@@ -8,6 +8,8 @@ public class ToolCard {
 
     private String description;
 
+    private boolean isInGame = false;
+
     private boolean isUsedAtLeastOnce;
 
     public ToolCard(int toolCardId, String name, String description) {
@@ -22,6 +24,14 @@ public class ToolCard {
     }
 
     public String getDescription( ){return description; }
+
+    public void setInGame(boolean inGame) {
+        isInGame = inGame;
+    }
+
+    public boolean isInGame() {
+        return isInGame;
+    }
 
     public boolean isUsedAtLeastOnce() {
         return isUsedAtLeastOnce;
