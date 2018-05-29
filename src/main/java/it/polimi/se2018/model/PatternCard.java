@@ -3,6 +3,7 @@ package it.polimi.se2018.model;
 import it.polimi.se2018.model.container.DiceContainer;
 import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.container.Die;
+import it.polimi.se2018.model.container.DieColor;
 
 import java.util.ArrayList;
 
@@ -233,6 +234,77 @@ public class PatternCard {
 
     public boolean checkFirstMove(int x, int y){
         return x == 0 || x == 4 || y == 0 || y == 3;
+    }
+
+
+    public static String toString(PatternCard patternCard) throws DiceContainerUnsupportedIdException {
+        String ANSI_WHITE = "\u001b[4m" + "\u001B[107m";
+        String ANSI_RED = "\u001b[4m" + "\u001B[41m";
+        String ANSI_GREEN = "\u001b[4m" + "\u001B[42m";
+        String ANSI_YELLOW = "\u001b[4m" + "\u001B[103m";
+        String ANSI_BLUE = "\u001b[4m" + "\u001B[44m";
+        String ANSI_PURPLE = "\u001b[4m" + "\u001B[105m";
+        String ANSI_RESET = "\u001b[4m" + "\u001b[0m";
+
+        DiceContainer diceContainer = new DiceContainer();
+        DieColor color;
+        int n;
+        String s = "";
+
+        for (int i=0; i<4; i++) {
+            for (int j=0; j<5; j++) {
+                if (patternCard.getPatternCardCell(j, i).isEmpty()) {
+                    color = patternCard.getPatternCardCell(j, i).getColorConstraint();
+                    n = patternCard.getPatternCardCell(j, i).getValueConstraint();
+
+                    if (color == YELLOW)
+                        s = s + ANSI_YELLOW + "   " + ANSI_RESET;
+                    if (color == RED)
+                        s = s + ANSI_RED + "   " + ANSI_RESET;
+                    if (color == BLUE)
+                        s = s + ANSI_BLUE + "   " + ANSI_RESET;
+                    if (color == PURPLE)
+                        s = s + ANSI_PURPLE + "   " + ANSI_RESET;
+                    if (color == GREEN)
+                        s = s + ANSI_GREEN + "   " + ANSI_RESET;
+
+                    if (n == 1)
+                        s = s + ANSI_WHITE + " 1 " + ANSI_RESET;
+                    if (n == 2)
+                        s = s + ANSI_WHITE + " 2 " + ANSI_RESET;
+                    if (n == 3)
+                        s = s + ANSI_WHITE + " 3 " + ANSI_RESET;
+                    if (n == 4)
+                        s = s + ANSI_WHITE + " 4 " + ANSI_RESET;
+                    if (n == 5)
+                        s = s + ANSI_WHITE + " 5 " + ANSI_RESET;
+                    if (n == 6)
+                        s = s + ANSI_WHITE + " 6 " + ANSI_RESET;
+                    if (n == 0 && color == null)
+                        s = s + ANSI_WHITE + "   " + ANSI_RESET;
+                    s = s + "|";
+
+                } else {
+                    Die die = diceContainer.getDie(patternCard.getPatternCardCell(j, i).getRolledDieId());
+                    color = die.getColor();
+                    n = die.getRolledValue();
+
+                    if (color == YELLOW)
+                        s = s + ANSI_YELLOW + " " + n + " " + ANSI_RESET;
+                    if (color == RED)
+                        s = s + ANSI_RED + " " + n + " " + ANSI_RESET;
+                    if (color == BLUE)
+                        s = s + ANSI_BLUE + " " + n + " " + ANSI_RESET;
+                    if (color == PURPLE)
+                        s = s + ANSI_PURPLE + " " + n + " " + ANSI_RESET;
+                    if (color == GREEN)
+                        s = s + ANSI_GREEN + " " + n + " " + ANSI_RESET;
+                    s = s + "|";
+                }
+            }
+            s = s + "\n";
+        }
+        return s;
     }
 
 }

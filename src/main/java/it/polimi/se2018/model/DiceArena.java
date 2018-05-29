@@ -23,7 +23,7 @@ public class DiceArena {
 
     /**
      *
-     * @param arena list of dice Id to trhwo in the arena
+     * @param arena list of dice Id to throw in the arena
      */
     public void setArena(HashMap<Integer, Die> arena) {
         this.arena = arena;
