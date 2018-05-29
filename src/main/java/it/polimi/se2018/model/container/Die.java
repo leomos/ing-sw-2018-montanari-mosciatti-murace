@@ -1,10 +1,12 @@
 package it.polimi.se2018.model.container;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class Die {
 
     private DieColor color;
 
-    private int rolledValue;
+    private int rolledValue = 0;
 
     private boolean rolled = false;
 
@@ -48,5 +50,12 @@ public class Die {
         }
     }
 
+    /**
+     * Rolls a die setting rolledValue to a random value ranging
+     * from 0 to 6 included.
+     */
+    public void roll() {
+        rolledValue = ThreadLocalRandom.current().nextInt(0, 6 + 1);
+    }
 
 }
