@@ -19,7 +19,7 @@ public class ViewClient {
         return 0;
     }
 
-    public int getIncrementedValue(){
-        return 0;
+    public boolean getIncrementedValue(){
+        return true;
     }
 }

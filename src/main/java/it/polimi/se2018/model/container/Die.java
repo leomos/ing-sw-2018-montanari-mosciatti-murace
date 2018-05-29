@@ -1,6 +1,7 @@
 package it.polimi.se2018.model.container;
 
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class Die {
 
@@ -55,7 +56,12 @@ public class Die {
      * from 0 to 6 included.
      */
     public void roll() {
-        this.rolledValue = ThreadLocalRandom.current().nextInt(1, 6 + 1);
+        ArrayList<Integer> possibleValues = new ArrayList<>();
+        for (Integer i = 1; i < 7; i++)
+            possibleValues.add(i);
+        Collections.shuffle(possibleValues);
+
+        this.rolledValue = possibleValues.get(0);
         this.rolled = true;
     }
 
