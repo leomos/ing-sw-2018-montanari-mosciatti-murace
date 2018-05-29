@@ -7,7 +7,7 @@ import java.util.Collections;
 
 /* TODO: test swapDie */
 /* TODO: test isDiePresentInLeftDice */
-/* TODO: aggiungere metodo per cambiare ordine dei turni */
+/* TODO: test giveConsecutiveTurnsToPlayer */
 public class Round {
 
     private int id;
@@ -136,5 +136,27 @@ public class Round {
             if(id == dieId) return true;
         }
         return false;
+    }
+
+    public void giveConsecutiveTurnsToPlayer(int playerId)
+            throws RoundPlayerIsNotCurrentlyPlayingException,
+                   RoundPlayerAlreadyPlayedSecondTurnException {
+        if(playerId != idPlayerPlaying) {
+            throw new RoundPlayerIsNotCurrentlyPlayingException();
+        }
+        if(turnsPlayedByPlayer(playerId) != 1) {
+            throw new RoundPlayerAlreadyPlayedSecondTurnException();
+        }
+
+        /* remove the player from turns array.
+         * Its id value should be contained
+         * in the array only once.
+         */
+        turns.remove(turns.indexOf(playerId));
+
+        /* adds playerId to the beginning of
+         * turns array
+         */
+        turns.add(0,playerId);
     }
 }
