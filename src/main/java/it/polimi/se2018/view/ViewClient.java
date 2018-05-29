@@ -11,4 +11,15 @@ public class ViewClient {
 
     }
 
+    public int[] getDiePosition(){
+        return null;
+    };
+
+    public int getDie(){
+        return 0;
+    }
+
+    public int getIncrementedValue(){
+        return 0;
+    }
 }

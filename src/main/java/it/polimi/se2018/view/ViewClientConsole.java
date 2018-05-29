@@ -9,15 +9,16 @@ import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.container.Die;
 import it.polimi.se2018.model.container.DieColor;
 import it.polimi.se2018.model.objectives.PublicObjective;
-import it.polimi.se2018.model.rounds.Round;
 import it.polimi.se2018.model.toolcards.ToolCard;
 import it.polimi.se2018.model.toolcards.ToolCardNotInPlayException;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import static it.polimi.se2018.model.container.DieColor.*;
 
 public class ViewClientConsole extends ViewClient {
+
     private int id;
 
     public String printColor(DieColor dieColor) {
@@ -191,5 +192,42 @@ public class ViewClientConsole extends ViewClient {
 
             printToolCards(model);
         }
+    }
+
+    public int[] getDiePosition(){
+        int position[] = null;
+
+        System.out.println("Insert position on PatternCard separated by a space");
+        Scanner input = new Scanner(System.in);
+        String s = input.nextLine();
+        position[0] = Integer.parseInt(s.split(" ")[0]);
+        position[1] = Integer.parseInt(s.split(" ")[1]);
+        input.close();
+
+        return position;
+    }
+
+    public int getDie(){
+        int dieId = 0;
+
+        System.out.println("Insert ID die");
+        Scanner input = new Scanner(System.in);
+        String s = input.nextLine();
+        dieId = Integer.parseInt(s);
+        input.close();
+
+        return dieId;
+    }
+
+    public int getIncrementedValue(){
+        int i;
+
+        System.out.println("Insert 1 to increment value, -1 to decrement");
+        Scanner input = new Scanner(System.in);
+        String s = input.nextLine();
+        i = Integer.parseInt(s);
+        input.close();
+
+        return i;
     }
 }

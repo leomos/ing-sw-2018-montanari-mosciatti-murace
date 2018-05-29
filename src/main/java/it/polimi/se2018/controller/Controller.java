@@ -1,8 +1,8 @@
 package it.polimi.se2018.controller;
 
 import it.polimi.se2018.model.Model;
-import it.polimi.se2018.view.View;
-import it.polimi.se2018.model.events.*;
+import it.polimi.se2018.model.events.PlayerMessageDie;
+import it.polimi.se2018.view.ViewClient;
 
 import java.util.HashMap;
 import java.util.Observable;
@@ -12,7 +12,7 @@ public class Controller implements Observer {
 
     protected Model model;
 
-    private HashMap<Integer, View> view;
+    private HashMap<Integer, ViewClient> view;
 
     private ToolCardController toolCardController;
 
@@ -27,7 +27,7 @@ public class Controller implements Observer {
      * @param view
      */
     /* TODO: tests, add for HashMap. */
-    public void addView(int idPlayer, View view){
+    public void addView(int idPlayer, ViewClient view){
         return;
     }
 

@@ -66,5 +66,6 @@ public class TestDie {
     public void roll_JustAfterInitializationOfDie_rolledValueShouldNotBe0() {
         die.roll();
         assertNotEquals(0, die.getRolledValue());
+        assertTrue(die.isRolled());
     }
 }
