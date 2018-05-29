@@ -23,6 +23,7 @@ public class VirtualView extends Observable<PlayerMessage> implements Observer<M
         }
     }
 
+
     public void notify(PlayerMessage playerMessage){
 
     }

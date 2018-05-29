@@ -199,8 +199,8 @@ public class ViewClientConsole extends ViewClient {
         return position;
     }
 
-    public int getDie(){
-        int dieId = 0;
+    public int getDieFromPatternCard(){
+        int dieId = -1;
 
         System.out.println("Insert ID die");
         Scanner input = new Scanner(System.in);
@@ -211,13 +211,29 @@ public class ViewClientConsole extends ViewClient {
         return dieId;
     }
 
-    public int getIncrementedValue(){
-        int i;
+    public int getDieFromRoundTrack(){
+        int dieId = -1;
 
-        System.out.println("Insert 1 to increment value, -1 to decrement");
+        System.out.println("Insert ID die");
         Scanner input = new Scanner(System.in);
         String s = input.nextLine();
-        i = Integer.parseInt(s);
+        dieId = Integer.parseInt(s);
+        input.close();
+
+        return dieId;
+    }
+
+    public boolean getIncrementedValue(){
+        boolean i = false;
+
+        System.out.println("Insert 1 to increment value, 0 to decrement");
+        Scanner input = new Scanner(System.in);
+        String s = input.nextLine();
+        int k = Integer.parseInt(s);
+        if(k == 1)
+            i = true;
+        else
+            i = false;
         input.close();
 
         return i;
