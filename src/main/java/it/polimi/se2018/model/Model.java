@@ -7,6 +7,7 @@ import it.polimi.se2018.model.toolcards.ToolCardNotInPlayException;
 import it.polimi.se2018.utils.Observable;
 
 public class Model extends Observable<Object> {
+    private GamePhase gamePhase = GamePhase.SETUPPHASE;
 
     private Table table;
 
@@ -16,6 +17,10 @@ public class Model extends Observable<Object> {
 
     public Table getTable() {
         return table;
+    }
+
+    public GamePhase getGamePhase() {
+        return gamePhase;
     }
 
     public void calculateScore() {

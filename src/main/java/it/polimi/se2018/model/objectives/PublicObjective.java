@@ -20,6 +20,10 @@ public abstract class PublicObjective {
         return this.description;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public PublicObjective(DiceContainer diceContainer) {
         this.diceContainer = diceContainer;
     }
