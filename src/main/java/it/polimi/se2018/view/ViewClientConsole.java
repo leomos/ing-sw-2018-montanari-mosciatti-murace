@@ -134,6 +134,7 @@ public class ViewClientConsole extends ViewClient {
         ArrayList<Integer> dice = model.getTable().getDiceArena().getArena();
         for (int i=0; i<dice.size(); i++) {
             Die die = model.getTable().getDiceContainer().getDie(dice.get(i));
+            System.out.println("ID: " + dice.get(i));
             System.out.println(printDie(die.getColor(), die.getRolledValue()));
         }
     }
