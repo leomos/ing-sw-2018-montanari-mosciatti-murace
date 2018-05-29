@@ -5,6 +5,8 @@ import it.polimi.se2018.utils.Database;
 
 import java.util.ArrayList;
 
+/* TODO: test and documentation */
+
 public class ToolCardContainer {
 
     private static final int NUMBER_OF_TOOLCARDS = 12;
@@ -24,13 +26,22 @@ public class ToolCardContainer {
     }
 
     public void setToolCardInPlay(int toolCardId) {
-        toolCardsInPlay.add(toolCardId);
+        this.getToolCard(toolCardId).setInGame(true);
+    }
+
+    public ArrayList<ToolCard> getToolCardInPlay() throws ToolCardNotInPlayException {
+        ArrayList<ToolCard> toolCardsInGame= new ArrayList<ToolCard>();
+        for( int i = 0; i < 12; i++)
+            if(toolCards.get(i).isInGame())
+                toolCardsInGame.add(toolCards.get(i));
+
+        return toolCardsInGame;
     }
 
     public ToolCard getToolCardInPlay(int id) throws ToolCardNotInPlayException {
         if(toolCardsInPlay.contains(id)) {
             return toolCards.get(id);
-        } else {
+        }else{
             throw new ToolCardNotInPlayException();
         }
     }
