@@ -51,6 +51,7 @@ public class ViewClientConsole extends ViewClient {
         String ANSI_BLUE = "\u001B[44m";
         String ANSI_PURPLE = "\u001B[105m";
         String ANSI_RESET = "\u001b[4m" + "\u001b[0m";
+        String ANSI_WHITE = "\u001B[107m";
 
         if (dieColor==RED)
             s = s + ANSI_RED + " " + value + " " + ANSI_RESET;
@@ -62,46 +63,38 @@ public class ViewClientConsole extends ViewClient {
             s = s + ANSI_BLUE + " " + value + " " + ANSI_RESET;
         if (dieColor==PURPLE)
             s = s + ANSI_PURPLE + " " + value + " " + ANSI_RESET;
+        if (dieColor==null)
+            s = s + ANSI_WHITE + " " + value + " " + ANSI_RESET;
         return s;
     }
 
-    /* TODO: METTERE I NUMERI DI RIGA E COLONNA SUL BORDO DELLA PATTERNCARD*/
     public String printPatternCard(PatternCard patternCard) {
         String ANSI_WHITE = "\u001b[4m" + "\u001B[107m";
-        String ANSI_RED = "\u001b[4m" + "\u001B[41m";
-        String ANSI_GREEN = "\u001b[4m" + "\u001B[42m";
-        String ANSI_YELLOW = "\u001b[4m" + "\u001B[103m";
-        String ANSI_BLUE = "\u001b[4m" + "\u001B[44m";
-        String ANSI_PURPLE = "\u001b[4m" + "\u001B[105m";
         String ANSI_RESET = "\u001b[4m" + "\u001b[0m";
+        String ANSI_GREY = "\u001b[4m" + "\u001B[47m";
 
         DiceContainer diceContainer = new DiceContainer();
         DieColor color;
         int n;
         String s = "";
 
+        System.out.print(ANSI_GREY + "   |" + ANSI_RESET);
+        for (int i=0; i<5; i++) {
+            System.out.print(ANSI_GREY + " " + i + " |" + ANSI_RESET);
+        }
+        System.out.print("\n");
+
         for (int i=0; i<4; i++) {
+            s = s + ANSI_GREY + " " + i + " |" + ANSI_RESET;
             for (int j=0; j<5; j++) {
                 if (patternCard.getPatternCardCell(j, i).isEmpty()) {
                     color = patternCard.getPatternCardCell(j, i).getColorConstraint();
                     n = patternCard.getPatternCardCell(j, i).getValueConstraint();
 
                     if (color != null && n == 0)
-                        s = s + printColor(color);
-                    else {
-                        if (n == 1)
-                            s = s + ANSI_WHITE + " 1 " + ANSI_RESET;
-                        if (n == 2)
-                            s = s + ANSI_WHITE + " 2 " + ANSI_RESET;
-                        if (n == 3)
-                            s = s + ANSI_WHITE + " 3 " + ANSI_RESET;
-                        if (n == 4)
-                            s = s + ANSI_WHITE + " 4 " + ANSI_RESET;
-                        if (n == 5)
-                            s = s + ANSI_WHITE + " 5 " + ANSI_RESET;
-                        if (n == 6)
-                            s = s + ANSI_WHITE + " 6 " + ANSI_RESET;
-                    }
+                        s = s + "\u001b[4m" + printColor(color);
+                    if (color == null && n != 0)
+                        s = s + "\u001b[4m" + printDie(null, n);
                     if (n == 0 && color == null)
                         s = s + ANSI_WHITE + "   " + ANSI_RESET;
                     s = s + "|";
@@ -116,8 +109,7 @@ public class ViewClientConsole extends ViewClient {
                     color = die.getColor();
                     n = die.getRolledValue();
 
-                    printDie(color, n);
-                    s = s + "|";
+                    s = s + printDie(color, n) + "|";
                 }
             }
             s = s + "\n";
@@ -125,64 +117,80 @@ public class ViewClientConsole extends ViewClient {
         return s;
     }
 
+    public void printRoundTrack(Model model) throws DiceContainerUnsupportedIdException {
+        System.out.println("\nROUNDTRACK\n");
+        DiceContainer diceContainer = model.getTable().getDiceContainer();
+        for (int i=0; i<10; i++) {
+            System.out.println("ROUND " + i++);
+            int[] array = model.getTable().getRoundTrack().getRound(i).getRolledDiceLeft();
+            for (int j=0; j<array.length; j++) {
+                Die die = diceContainer.getDie(array[j]);
+                System.out.println(printDie(die.getColor(), die.getRolledValue()));
+            }
+        }
+    }
+
+    public void printDiceArena(Model model) throws DiceContainerUnsupportedIdException {
+        System.out.println("\nDICEARENA\n");
+        ArrayList<Integer> dice = model.getTable().getDiceArena().getArena();
+        for (int i=0; i<dice.size(); i++) {
+            Die die = model.getTable().getDiceContainer().getDie(dice.get(i));
+            System.out.println(printDie(die.getColor(), die.getRolledValue()));
+        }
+    }
+
+    public void printPlayer(Model model) {
+        Player myPlayer = new Player(0, null);
+        for (int i = 0; i < model.getTable().getNumberOfPlayers(); i++) {
+            Player player = model.getTable().getPlayers(i);
+            if (this.id != player.getId()) {
+                System.out.println("\nPLAYER: " + player.getName() + "\n");
+                System.out.println(printPatternCard(player.getChosenPatternCard()));
+            }
+            else
+                myPlayer = player;
+        }
+        System.out.println("\nPLAYER: " + myPlayer.getName() + "\n");
+        System.out.println(myPlayer.getChosenPatternCard());
+
+        System.out.println("\nPRIVATE OBJECTIVES: " + "\t" + printColor(myPlayer.getPrivateObjective().getColor())
+                + "\tNAME: " + myPlayer.getPrivateObjective().getName()
+                + "\tDESCRIPTION: \t" + myPlayer.getPrivateObjective().getDescription());
+    }
+
+    public void printPublicObjective(Model model) {
+        System.out.println("\nPUBLIC OBJECTIVE: \n");
+        for (int i=0; i<3; i++) {
+            PublicObjective publicObjective = model.getTable().getPublicObjective(i);
+            System.out.println("NAME: " + publicObjective.getName()
+                    + "\tDESCRIPTION: " + publicObjective.getDescription());
+        }
+    }
+
+    public void printToolCards(Model model) throws ToolCardNotInPlayException {
+        System.out.println("\nTOOLCARDS: \n");
+        for (int i=0; i<3; i++) {
+            ToolCard toolCard = model.getTable().getToolCardContainer().getToolCardInPlay().get(i);
+            System.out.println("ID: " + toolCard.getToolCardId()
+                    + "\tNAME: " + toolCard.getName()
+                    + "\tDESCRIPTION: " + toolCard.getDescription());
+        }
+    }
+
     public void print(Model model) throws ToolCardNotInPlayException, DiceContainerUnsupportedIdException {
         if (model.getGamePhase() == GamePhase.SETUPPHASE) {
 
 
         } else if (model.getGamePhase() == GamePhase.GAMEPHASE) {
+            printRoundTrack(model);
 
+            printPlayer(model);
 
-            System.out.println("\nROUNDTRACK\n");
-            DiceContainer diceContainer = model.getTable().getDiceContainer();
-            for (int i=0; i<10; i++) {
-                System.out.println("ROUND " + i++);
-                int[] array = model.getTable().getRoundTrack().getRound(i).getRolledDiceLeft();
-                for (int j=0; j<array.length; j++) {
-                    Die die = diceContainer.getDie(array[j]);
-                    System.out.println(printDie(die.getColor(), die.getRolledValue()));
-                }
-            }
+            printDiceArena(model);
 
+            printPublicObjective(model);
 
-
-            Player myPlayer = new Player(0, null);
-            for (int i = 0; i < model.getTable().getNumberOfPlayers(); i++) {
-                Player player = model.getTable().getPlayers(i);
-                if (this.id != player.getId()) {
-                    System.out.println("\nPLAYER: " + player.getName() + "\n");
-                    System.out.println(printPatternCard(player.getChosenPatternCard()));
-                }
-                else
-                    myPlayer = player;
-            }
-            System.out.println("\nPLAYER: " + myPlayer.getName() + "\n");
-            System.out.println(myPlayer.getChosenPatternCard());
-
-            System.out.println("\nDICEARENA\n");
-            ArrayList<Integer> dice = model.getTable().getDiceArena().getArena();
-            for (int i=0; i<dice.size(); i++) {
-                Die die = model.getTable().getDiceContainer().getDie(dice.get(i));
-                System.out.println(printDie(die.getColor(), die.getRolledValue()));
-            }
-
-            System.out.println("\nPRIVATE OBJECTIVES: " + "\t" + printColor(myPlayer.getPrivateObjective().getColor())
-                    + "\tNAME: " + myPlayer.getPrivateObjective().getName()
-                    + "\tDESCRIPTION: \t" + myPlayer.getPrivateObjective().getDescription());
-
-            System.out.println("\nPUBLIC OBJECTIVE: \n");
-            for (int i=0; i<3; i++) {
-                PublicObjective publicObjective = model.getTable().getPublicObjective(i);
-                System.out.println("NAME: " + publicObjective.getName()
-                        + "\tDESCRIPTION: " + publicObjective.getDescription());
-            }
-
-            System.out.println("\nTOOLCARDS: \n");
-            for (int i=0; i<3; i++) {
-                ToolCard toolCard = model.getTable().getToolCardContainer().getToolCardInPlay().get(i);
-                System.out.println("ID: " + toolCard.getToolCardId()
-                        + "\tNAME: " + toolCard.getName()
-                        + "\tDESCRIPTION: " + toolCard.getDescription());
-            }
+            printToolCards(model);
         }
     }
 
