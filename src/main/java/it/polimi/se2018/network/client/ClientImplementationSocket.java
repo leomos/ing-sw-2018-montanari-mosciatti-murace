@@ -4,10 +4,13 @@ import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model.events.ModelChangedMessage;
 import it.polimi.se2018.model.events.PlayerMessage;
 import it.polimi.se2018.model.events.PlayerMessageDie;
+import it.polimi.se2018.network.ControllerActionEnum;
+import it.polimi.se2018.network.SocketMessage;
 import it.polimi.se2018.view.ViewClient;
 
 import java.io.*;
 import java.net.Socket;
+import java.rmi.RemoteException;
 
 public class ClientImplementationSocket extends Thread implements ClientInterface {
     private ViewClient viewClient;
@@ -31,9 +34,15 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
         viewClient.update(modelChangedMessage);
     }
 
+    @Override
+    public int getDieFromPatternCard() throws RemoteException {
+        return 0;
+    }
+
     public void notify(PlayerMessage playerMessage) {
+        SocketMessage<PlayerMessage> socketMessage = new SocketMessage<>(playerMessage);
         try {
-            objectOutputStream.writeObject(playerMessage);
+            objectOutputStream.writeObject(socketMessage);
             objectOutputStream.flush();
         } catch (IOException e) {
             e.printStackTrace();
@@ -44,11 +53,36 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
     @Override
     public void run(){
         try {
-            ModelChangedMessage modelChangedMessage;
+            SocketMessage<?> inputMessage;
 
-            while((modelChangedMessage = (ModelChangedMessage) objectInputStream.readObject()) != null) {
-                /* TODO: devo fare qui la trasformazione nei vari ModelChangedMessage{*}? */
-                this.update(modelChangedMessage);
+            while((inputMessage = (SocketMessage<?>) objectInputStream.readObject()) != null) {
+                if(inputMessage.isModelChangedMessage()) {
+                    this.update((ModelChangedMessage)inputMessage.getObject());
+                } else if(inputMessage.isControllerActionEnum()) {
+                    SocketMessage<?> responseMessage = null;
+                    ControllerActionEnum controllerActionEnum = (ControllerActionEnum)inputMessage.getObject();
+                    switch (controllerActionEnum) {
+                        case GET_VALUE_FOR_DIE:
+                            //responseMessage = new SocketMessage<Integer>(viewClient.getValueForDie(), true);
+                            break;
+                        case GET_INCREMENTED_VALUE:
+                            //responseMessage = new SocketMessage<Boolean>(viewClient.getIncrementedValue(), true);
+                            break;
+                        case GET_DIE_FROM_ROUNDTRACK:
+                            //responseMessage = new SocketMessage<Integer>(viewClient.getDieFromRoundTrack(), true);
+                            break;
+                        case GET_DIE_FROM_PATTERNCARD:
+                            responseMessage = new SocketMessage<Integer>(getDieFromPatternCard(), true);
+                            break;
+                        case GET_POSITION_IN_PATTERNCARD:
+                            //responseMessage = new SocketMessage<Integer[]>(viewClient.getPositionInPatternCard(), true);
+                            break;
+                        default:
+                            break;
+                    }
+                    objectOutputStream.writeObject(responseMessage);
+                    objectOutputStream.flush();
+                }
             }
 
             serverConnection.close();

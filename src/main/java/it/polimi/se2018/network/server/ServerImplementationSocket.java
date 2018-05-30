@@ -2,6 +2,8 @@ package it.polimi.se2018.network.server;
 
 import it.polimi.se2018.model.events.ModelChangedMessage;
 import it.polimi.se2018.model.events.PlayerMessage;
+import it.polimi.se2018.network.ControllerActionEnum;
+import it.polimi.se2018.network.SocketMessage;
 import it.polimi.se2018.network.client.ClientInterface;
 import it.polimi.se2018.view.VirtualView;
 
@@ -16,6 +18,10 @@ public class ServerImplementationSocket extends Thread implements ServerInterfac
     private Socket clientConnection;
     private ObjectOutputStream objectOutputStream;
     private ObjectInputStream objectInputStream;
+
+    private Object controllerActionResult;
+
+    private boolean lock = true;
 
     public ServerImplementationSocket(VirtualView virtualView, Socket clientConnection) {
         this.virtualView = virtualView;
@@ -40,26 +46,83 @@ public class ServerImplementationSocket extends Thread implements ServerInterfac
 
     @Override
     public void update(ModelChangedMessage modelChangedMessage) throws RemoteException {
-
+        SocketMessage<ModelChangedMessage> socketMessage = new SocketMessage<>(modelChangedMessage);
         try {
-            objectOutputStream.writeObject(modelChangedMessage);
+            objectOutputStream.writeObject(socketMessage);
             objectOutputStream.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    private synchronized void waitForLock() {
+        while(lock) {
+            try {
+                wait(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        lock = true;
+    }
+
+    private void sendAction(ControllerActionEnum controllerActionEnum) {
+        SocketMessage<ControllerActionEnum> socketMessage = new SocketMessage<>(controllerActionEnum);
+        try {
+            objectOutputStream.writeObject(socketMessage);
+            objectOutputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public int getDieFromPatternCard() throws RemoteException {
+        sendAction(ControllerActionEnum.GET_DIE_FROM_PATTERNCARD);
+        waitForLock();
+        return (int)controllerActionResult;
+    }
+
+    public int getDieFromRoundTrack() {
+        sendAction(ControllerActionEnum.GET_DIE_FROM_ROUNDTRACK);
+        waitForLock();
+        return (int)controllerActionResult;
+    }
+
+    public boolean getIncrementedValue() throws RemoteException {
+        sendAction(ControllerActionEnum.GET_INCREMENTED_VALUE);
+        waitForLock();
+        return (boolean)controllerActionResult;
+    }
+
+    public int[] getPositionInPatternCard() {
+        sendAction(ControllerActionEnum.GET_POSITION_IN_PATTERNCARD);
+        waitForLock();
+        /* TODO: transform from Integer[] to int[] */
+        return (int[])controllerActionResult;
+    }
+
+    public int getValueForDie() {
+        sendAction(ControllerActionEnum.GET_VALUE_FOR_DIE);
+        waitForLock();
+        return (int)controllerActionResult;
+    }
+
+
     @Override
     public void run(){
-
         try {
-            PlayerMessage playerMessage;
+            SocketMessage<?> inputMessage;
 
-            while((playerMessage = (PlayerMessage) objectInputStream.readObject()) != null) {
-                /* TODO: devo fare qui la trasformazione nei vari PlayerMessage{*}? */
-                this.notify(playerMessage);
+            while((inputMessage = (SocketMessage<?>) objectInputStream.readObject()) != null) {
+                if (inputMessage.isPlayerMessage()) {
+                    this.notify((PlayerMessage) inputMessage.getObject());
+                } else if(inputMessage.isControllerActionResponse()){
+                    controllerActionResult = inputMessage.getObject();
+                    lock = false;
+                }
             }
-
             clientConnection.close();
 
         } catch (IOException e) {
@@ -67,8 +130,6 @@ public class ServerImplementationSocket extends Thread implements ServerInterfac
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-
     }
-
 
 }
