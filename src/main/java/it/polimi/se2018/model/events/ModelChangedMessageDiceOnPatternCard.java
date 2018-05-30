@@ -1,6 +1,6 @@
 package it.polimi.se2018.model.events;
 
-public class ModelChangedMessageDice {
+public class ModelChangedMessageDiceOnPatternCard {
 
     private String idPlayer;
 
@@ -8,7 +8,7 @@ public class ModelChangedMessageDice {
 
     private String representation;
 
-    public ModelChangedMessageDice(String idPlayer, String idPatternCard,String representation) {
+    public ModelChangedMessageDiceOnPatternCard(String idPlayer, String idPatternCard, String representation) {
         this.idPlayer = idPlayer;
         this.idPatternCard = idPatternCard;
         this.representation = representation;
