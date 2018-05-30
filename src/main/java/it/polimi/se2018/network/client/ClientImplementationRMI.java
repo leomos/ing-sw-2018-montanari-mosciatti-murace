@@ -13,8 +13,14 @@ public class ClientImplementationRMI implements ClientInterface{
         this.viewClient = viewClient;
     }
 
+    @Override
     public void update(ModelChangedMessage modelChangedMessage) throws RemoteException{
         viewClient.update(modelChangedMessage);
+    }
+
+    @Override
+    public int getDieFromPatternCard() throws RemoteException {
+        return viewClient.getDieFromPatternCard();
     }
 
 }

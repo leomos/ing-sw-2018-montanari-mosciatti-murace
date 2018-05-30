@@ -11,6 +11,10 @@ public class ViewClient {
 
     }
 
+    public int getDieFromPatternCard() {
+        return 0;
+    }
+
     public int[] getDiePosition(){
         return null;
     };
