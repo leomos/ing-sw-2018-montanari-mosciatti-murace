@@ -20,7 +20,7 @@ public class ToolCardController extends Controller {
         /*TODO: check segnalini prima di chiedere dati */
         if( toolCardId == 1){
 
-            int incremented_value = actualView.getIncrementedValue();
+            boolean incremented_value = actualView.getIncrementedValue();
 
         }else if(toolCardId == 2) {
             int[] startingPosition = actualView.getDiePosition();
