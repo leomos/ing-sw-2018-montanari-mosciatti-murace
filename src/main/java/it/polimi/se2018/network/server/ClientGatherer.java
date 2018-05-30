@@ -1,6 +1,5 @@
 package it.polimi.se2018.network.server;
 
-import it.polimi.se2018.network.client.ClientInterface;
 import it.polimi.se2018.view.VirtualView;
 
 import java.io.IOException;
@@ -36,7 +35,6 @@ public class ClientGatherer extends Thread{
             LOGGER.info("Waiting for a new client.");
 
             try {
-                ClientInterface clientInterface;
                 newClientConnection = serverSocket.accept();
                 LOGGER.info("A new client connected: " + newClientConnection.getInetAddress());
                 serverImplementationSocket = new ServerImplementationSocket(virtualView, newClientConnection);
