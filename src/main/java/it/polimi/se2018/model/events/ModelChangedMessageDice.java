@@ -8,7 +8,7 @@ public class ModelChangedMessageDice {
 
     private String representation;
 
-    public ModelChangedMessageDice(String idPlayer, String idPatternCard,String representation) {
+    public ModelChangedMessageDice(String idPlayer, String idPatternCard, String representation) {
         this.idPlayer = idPlayer;
         this.idPatternCard = idPatternCard;
         this.representation = representation;
