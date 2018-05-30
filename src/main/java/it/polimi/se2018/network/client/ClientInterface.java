@@ -9,9 +9,9 @@ public interface ClientInterface extends Remote {
 
     public void update(ModelChangedMessage modelChangedMessage) throws RemoteException;
 
-    /*
-    public int getDieFromPatternCard() throws RemoteException;
 
+    public int getDieFromPatternCard() throws RemoteException;
+/*
     public int getDieFromRoundTrack() throws RemoteException;
 
     public boolean getIncrementedValue() throws RemoteException;
