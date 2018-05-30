@@ -1,13 +1,10 @@
 package it.polimi.se2018.view;
 
-import it.polimi.se2018.model.GamePhase;
-import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.events.*;
-import it.polimi.se2018.model.toolcards.ToolCardNotInPlayException;
 
 import java.util.ArrayList;
 
-public class ViewClientConsoleGame {
+public class ViewClientConsoleGame extends ViewClientConsole {
 
     private ArrayList<ModelChangedMessagePatternCard> patternCards = new ArrayList<ModelChangedMessagePatternCard>();
 
@@ -26,7 +23,7 @@ public class ViewClientConsoleGame {
     public void print() {
 
         for (int i = 0; i < patternCards.size(); i++)
-            printPatternCards(patternCards.get(i));
+            printPatternCard(patternCards.get(i), diceOnPatternCards.get(i));
 
         for (int i = 0; i < 10; i++)
             printRoundTrack(roundTrack.get(i));

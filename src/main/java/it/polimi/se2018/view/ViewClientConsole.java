@@ -1,22 +1,8 @@
 package it.polimi.se2018.view;
 
-import it.polimi.se2018.model.GamePhase;
-import it.polimi.se2018.model.Model;
-import it.polimi.se2018.model.PatternCard;
-import it.polimi.se2018.model.Player;
-import it.polimi.se2018.model.container.DiceContainer;
-import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
-import it.polimi.se2018.model.container.Die;
-import it.polimi.se2018.model.container.DieColor;
 import it.polimi.se2018.model.events.*;
-import it.polimi.se2018.model.objectives.PublicObjective;
-import it.polimi.se2018.model.toolcards.ToolCard;
-import it.polimi.se2018.model.toolcards.ToolCardNotInPlayException;
 
-import java.util.ArrayList;
 import java.util.Scanner;
-
-import static it.polimi.se2018.model.container.DieColor.*;
 
 public class ViewClientConsole extends ViewClient {
 
@@ -73,7 +59,7 @@ public class ViewClientConsole extends ViewClient {
         return (c=='r') || (c=='y') || (c=='g') || (c=='b') || (c=='p') || (c=='w');
     }
 
-    public void printPatternCard(ModelChangedMessagePatternCard messagePatternCard, ModelChangedMessageDice messageDice) {
+    public void printPatternCard(ModelChangedMessagePatternCard messagePatternCard, ModelChangedMessageDiceOnPatternCard messageDice) {
         String ANSI_WHITE = "\u001b[4m" + "\u001B[107m";
         String ANSI_RESET = "\u001b[0m";
         String ANSI_GREY = "\u001b[4m" + "\u001B[47m";
