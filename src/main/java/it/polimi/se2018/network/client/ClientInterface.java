@@ -11,12 +11,12 @@ public interface ClientInterface extends Remote {
 
 
     public int getDieFromPatternCard() throws RemoteException;
-/*
+
     public int getDieFromRoundTrack() throws RemoteException;
 
     public boolean getIncrementedValue() throws RemoteException;
 
-    public int[] getPositionInPatternCard() throws RemoteException;
+    public Integer[] getPositionInPatternCard() throws RemoteException;
 
-    public int getValueForDie() throws RemoteException; */
+    public int getValueForDie() throws RemoteException;
 }
