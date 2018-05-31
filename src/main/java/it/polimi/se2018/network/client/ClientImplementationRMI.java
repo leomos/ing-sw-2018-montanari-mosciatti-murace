@@ -23,4 +23,24 @@ public class ClientImplementationRMI implements ClientInterface{
         return viewClient.getDieFromPatternCard();
     }
 
+    @Override
+    public int getDieFromRoundTrack() throws RemoteException {
+        return viewClient.getDieFromRoundTrack();
+    }
+
+    @Override
+    public boolean getIncrementedValue() throws RemoteException {
+        return viewClient.getIncrementedValue();
+    }
+
+    @Override
+    public Integer[] getPositionInPatternCard() throws RemoteException {
+        return viewClient.getPositionInPatternCard();
+    }
+
+    @Override
+    public int getValueForDie() throws RemoteException {
+        return viewClient.getValueForDie();
+    }
+
 }

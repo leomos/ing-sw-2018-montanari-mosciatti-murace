@@ -1,9 +1,7 @@
 package it.polimi.se2018.network.client;
 
-import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model.events.ModelChangedMessage;
 import it.polimi.se2018.model.events.PlayerMessage;
-import it.polimi.se2018.model.events.PlayerMessageDie;
 import it.polimi.se2018.network.ControllerActionEnum;
 import it.polimi.se2018.network.SocketMessage;
 import it.polimi.se2018.view.ViewClient;
@@ -36,7 +34,27 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
 
     @Override
     public int getDieFromPatternCard() throws RemoteException {
-        return 0;
+        return viewClient.getDieFromPatternCard();
+    }
+
+    @Override
+    public int getDieFromRoundTrack() throws RemoteException {
+        return viewClient.getDieFromRoundTrack();
+    }
+
+    @Override
+    public boolean getIncrementedValue() throws RemoteException {
+        return viewClient.getIncrementedValue();
+    }
+
+    @Override
+    public Integer[] getPositionInPatternCard() throws RemoteException {
+        return viewClient.getPositionInPatternCard();
+    }
+
+    @Override
+    public int getValueForDie() throws RemoteException {
+        return viewClient.getValueForDie();
     }
 
     public void notify(PlayerMessage playerMessage) {
@@ -63,19 +81,19 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
                     ControllerActionEnum controllerActionEnum = (ControllerActionEnum)inputMessage.getObject();
                     switch (controllerActionEnum) {
                         case GET_VALUE_FOR_DIE:
-                            //responseMessage = new SocketMessage<Integer>(viewClient.getValueForDie(), true);
+                            responseMessage = new SocketMessage<Integer>(getValueForDie(), true);
                             break;
                         case GET_INCREMENTED_VALUE:
-                            //responseMessage = new SocketMessage<Boolean>(viewClient.getIncrementedValue(), true);
+                            responseMessage = new SocketMessage<Boolean>(getIncrementedValue(), true);
                             break;
                         case GET_DIE_FROM_ROUNDTRACK:
-                            //responseMessage = new SocketMessage<Integer>(viewClient.getDieFromRoundTrack(), true);
+                            responseMessage = new SocketMessage<Integer>(getDieFromRoundTrack(), true);
                             break;
                         case GET_DIE_FROM_PATTERNCARD:
                             responseMessage = new SocketMessage<Integer>(getDieFromPatternCard(), true);
                             break;
                         case GET_POSITION_IN_PATTERNCARD:
-                            //responseMessage = new SocketMessage<Integer[]>(viewClient.getPositionInPatternCard(), true);
+                            responseMessage = new SocketMessage<Integer[]>(getPositionInPatternCard(), true);
                             break;
                         default:
                             break;
