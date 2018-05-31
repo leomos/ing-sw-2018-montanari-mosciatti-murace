@@ -96,11 +96,11 @@ public class ServerImplementationSocket extends Thread implements ServerInterfac
         return (boolean)controllerActionResult;
     }
 
-    public int[] getPositionInPatternCard() {
+    public Integer[] getPositionInPatternCard() {
         sendAction(ControllerActionEnum.GET_POSITION_IN_PATTERNCARD);
         waitForLock();
         /* TODO: transform from Integer[] to int[] */
-        return (int[])controllerActionResult;
+        return (Integer[])controllerActionResult;
     }
 
     public int getValueForDie() {
