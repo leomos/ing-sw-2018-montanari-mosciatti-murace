@@ -15,15 +15,19 @@ public class ViewClient {
         return 0;
     }
 
-    public int[] getDiePosition(){
-        return null;
-    };
-
-    public int getDie(){
+    public int getDieFromRoundTrack() {
         return 0;
     }
 
-    public boolean getIncrementedValue(){
+    public boolean getIncrementedValue() {
         return true;
+    }
+
+    public Integer[] getPositionInPatternCard(){
+        return null;
+    }
+
+    public int getValueForDie(){
+        return 0;
     }
 }
