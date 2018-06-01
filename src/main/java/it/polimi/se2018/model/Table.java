@@ -74,8 +74,8 @@ public class Table {
 
     /* TODO: exception for non existent id */
     public Player getPlayers(int i) {
-        for(Player player : players) {
-            if(player.getId() == i) return player;
+        for (Player player : players) {
+            if (player.getId() == i) return player;
         }
         return null;
     }
@@ -158,10 +158,5 @@ public class Table {
             patternCardsToPlayer.add(patternCards.get(val + 12));
             players.get(j).setPatternCards(patternCardsToPlayer);
         }
-    }
-
-    /* TODO: toString */
-    public String toString(){
-        return null;
     }
 }

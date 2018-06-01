@@ -63,7 +63,7 @@ public abstract class ViewClientConsolePrint {
         int n = 0, m = 0;
         String s = "";
 
-        System.out.print("PLAYER " + messagePatternCard.getIdPlayer() + ": PATTERNCARD\n");
+        System.out.print("ID PATTERNCARD " + messagePatternCard.getIdPatternCard() + "\n");
         System.out.print(ANSI_GREY + "   |" + ANSI_RESET);
         for (int i=0; i<5; i++) {
             System.out.print(ANSI_GREY + " " + i + " |" + ANSI_RESET);
@@ -151,7 +151,7 @@ public abstract class ViewClientConsolePrint {
         int m = 0;
         String s = "";
 
-        System.out.print("PLAYER " + messagePatternCard.getIdPlayer() + ": PATTERNCARD\n");
+        System.out.print("ID PATTERNCARD: " + messagePatternCard.getIdPatternCard() + "\n");
         System.out.print(ANSI_GREY + "   |" + ANSI_RESET);
         for (int i=0; i<5; i++) {
             System.out.print(ANSI_GREY + " " + i + " |" + ANSI_RESET);
