@@ -1,6 +1,7 @@
 package it.polimi.se2018.controller;
 
 import it.polimi.se2018.model.Model;
+import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.events.PlayerMessageToolCard;
 import it.polimi.se2018.view.ViewClient;
 
@@ -12,7 +13,7 @@ public class ToolCardController extends Controller {
         super(model);
     }
 
-    public void execute(PlayerMessageToolCard playerMessageToolCard, HashMap<Integer, ViewClient> view) {
+    public void execute(PlayerMessageToolCard playerMessageToolCard, HashMap<Integer, ViewClient> view) throws DiceContainerUnsupportedIdException {
         int player = playerMessageToolCard.getPlayer();
         int toolCardId = playerMessageToolCard.getToolcard().getToolCardId();
         ViewClient actualView = view.get(player);

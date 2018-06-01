@@ -1,18 +1,34 @@
 package it.polimi.se2018.model;
 
 import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
+import it.polimi.se2018.model.events.ModelChangedMessageDiceArena;
+import it.polimi.se2018.model.events.ModelChangedMessageDiceOnPatternCard;
+import it.polimi.se2018.model.events.ModelChangedMessagePatternCard;
+import it.polimi.se2018.model.events.ModelChangedRefresh;
 import it.polimi.se2018.model.rounds.RoundTrack;
 import it.polimi.se2018.model.toolcards.ToolCardContainer;
 import it.polimi.se2018.model.toolcards.ToolCardNotInPlayException;
 import it.polimi.se2018.utils.Observable;
 
 public class Model extends Observable<Object> {
+
     private GamePhase gamePhase = GamePhase.SETUPPHASE;
 
     private Table table;
 
-    public Model(){
+    /*TODO: costruttore */
 
+    public Model( int[] idPlayer, String[] name){
+        table = new Table(idPlayer, name);
+        for(int i = 0; i < idPlayer.length; i++)
+            for(int j = 0; j < 4; j++){
+                PatternCard patternCard = table.getPlayers(i).getPatternCards().get(j);
+                notify(new ModelChangedMessagePatternCard(  Integer.toString(idPlayer[i]),
+                                                            Integer.toString(patternCard.getId()),
+                                                            patternCard.getName(),
+                                                            Integer.toString(patternCard.getDifficulty()),
+                                                            patternCard.getPatternCardRepresentation()));
+            }
     }
 
     public Table getTable() {
@@ -32,21 +48,36 @@ public class Model extends Observable<Object> {
      * @param idDie id to identify the die
      * @param x cell's abscissa
      * @param y cell's ordinate
-     * @param ignoreValueConstraint boolean necessary for tool cards to ignore positioning constraint
-     * @param ignoreColorConstraint boolean necessary for tool cards to ignore positioning constraint
+     * @param ignoreValueConstraint boolean necessary for tool cards to ignore positioning value constraint
+     * @param ignoreColorConstraint boolean necessary for tool cards to ignore positioning color constraint
      * @throws
      */
     /*TODO: a seconda dell'esito di setRolledDieID dovremo creare notify diversi!*/
-    public void setDieInPatternCard(int idPlayer, int idDie, int x, int y, boolean ignoreValueConstraint, boolean ignoreColorConstraint) {
+    public void setDieInPatternCard(int idPlayer, int idDie, int x, int y, boolean ignoreValueConstraint, boolean ignoreColorConstraint) throws DiceContainerUnsupportedIdException {
         PatternCard patternCard = table.getPlayers(idPlayer).getChosenPatternCard();
 
-        try {
-            if (patternCard.isFirstMove() && patternCard.checkFirstMove(x,y)){
-                patternCard.getPatternCardCell(x, y).setRolledDieId(idDie, ignoreValueConstraint, ignoreColorConstraint);
-                patternCard.setFirstMove();
-            } else if (patternCard.checkProximityCellsValidity(idDie, x, y) && patternCard.checkDieInAdjacentCells(x, y))
-                patternCard.getPatternCardCell(x, y).setRolledDieId(idDie, ignoreValueConstraint, ignoreColorConstraint);
-        } catch (DiceContainerUnsupportedIdException e){}
+        if(table.getDiceArena().getArena().contains(idDie)) {
+
+            try {
+                if (patternCard.isFirstMove() && patternCard.checkFirstMove(x, y)) {
+                    patternCard.getPatternCardCell(x, y).setRolledDieId(idDie, ignoreValueConstraint, ignoreColorConstraint);
+                    patternCard.setFirstMove();
+                } else if (patternCard.checkProximityCellsValidity(idDie, x, y) && patternCard.checkDieInAdjacentCells(x, y))
+                    patternCard.getPatternCardCell(x, y).setRolledDieId(idDie, ignoreValueConstraint, ignoreColorConstraint);
+            } catch (DiceContainerUnsupportedIdException e) {
+            }
+
+            table.getDiceArena().getArena().remove(idDie);
+            table.getDiceArena().updateRepresentation();
+            patternCard.updateDiceRepresentation();
+            String idPL = "" + idPlayer;
+            String idPC = "" + patternCard.getId();
+
+
+            notify(new ModelChangedMessageDiceOnPatternCard(idPL, idPC, patternCard.getDiceRepresentation()));
+            notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
+            notify(new ModelChangedRefresh(this.gamePhase));
+        }
     }
 
 
@@ -68,7 +99,7 @@ public class Model extends Observable<Object> {
                                          int y_f,
                                          boolean ignoreValueConstraint,
                                          boolean ignoreColorConstraint,
-                                         int idToolCard) {
+                                         int idToolCard) throws DiceContainerUnsupportedIdException {
 
         Player currentPlayer = this.table.getPlayers(player);
         PatternCard patternCard = currentPlayer.getChosenPatternCard();

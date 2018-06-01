@@ -2,6 +2,7 @@ package it.polimi.se2018.model;
 
 import it.polimi.se2018.model.container.DiceContainer;
 import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
+import it.polimi.se2018.model.container.Die;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,6 +18,8 @@ public class DiceArena {
 
     private int numberOfDice;
 
+    private String representation;
+
     public DiceArena(int numberOfDice , DiceContainer diceContainer) {
         this.diceContainer = diceContainer;
         this.numberOfDice = numberOfDice;
@@ -24,6 +27,10 @@ public class DiceArena {
 
     public ArrayList<Integer> getArena() {
         return arena;
+    }
+
+    public String getRepresentation() {
+        return representation;
     }
 
     public void rollDiceIntoArena() throws DiceContainerUnsupportedIdException {
@@ -44,6 +51,17 @@ public class DiceArena {
     public void swapDie(int dieIdToRemove, int dieIdToAdd) throws DieNotPresentException {
         if(!arena.contains(dieIdToRemove)) throw new DieNotPresentException();
         arena.set(arena.indexOf(dieIdToRemove), dieIdToAdd);
+    }
+
+    public void updateRepresentation() throws DiceContainerUnsupportedIdException {
+        representation = "";
+        for(int i = 0; i < arena.size(); i++){
+            Die d = diceContainer.getDie(arena.get(i));
+            if(arena.get(i) < 10)
+                representation = representation + "0";
+            representation = representation + arena.get(i).toString() + d.getColorChar() + d.getRolledValue();
+        }
+
     }
 
 }

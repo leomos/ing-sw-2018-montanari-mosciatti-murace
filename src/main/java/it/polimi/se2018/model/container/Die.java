@@ -3,6 +3,8 @@ package it.polimi.se2018.model.container;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import static it.polimi.se2018.model.container.DieColor.*;
+
 public class Die {
 
     private DieColor color;
@@ -63,6 +65,20 @@ public class Die {
 
         this.rolledValue = possibleValues.get(0);
         this.rolled = true;
+    }
+
+    public String getColorChar(){
+        if(color == RED)
+            return "r";
+        if(color == YELLOW)
+            return "y";
+        if(color == BLUE)
+            return "b";
+        if(color == PURPLE)
+            return "p";
+        if(color == GREEN)
+            return "g";
+        return null;
     }
 
 }

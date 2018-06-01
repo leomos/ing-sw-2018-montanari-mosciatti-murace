@@ -1,6 +1,7 @@
 package it.polimi.se2018.controller;
 
 import it.polimi.se2018.model.Model;
+import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.events.PlayerMessageDie;
 import it.polimi.se2018.view.ViewClient;
 
@@ -49,7 +50,11 @@ public class Controller implements Observer {
 
         if(playerMessage instanceof PlayerMessageDie) {
             PlayerMessageDie playerMessageDie = (PlayerMessageDie) playerMessage;
-            this.dieController.execute(playerMessageDie);
+            try {
+                this.dieController.execute(playerMessageDie);
+            } catch (DiceContainerUnsupportedIdException e) {
+                e.printStackTrace();
+            }
         }
 
     }

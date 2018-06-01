@@ -12,7 +12,6 @@ public class ViewClientConsoleSetup extends ViewClientConsole {
 
     private ArrayList<ModelChangedMessageDiceOnPatternCard> diceOnPatternCards = new ArrayList<ModelChangedMessageDiceOnPatternCard>();
 
-
     private ModelChangedMessagePrivateObjective privateObjective;
 
     public void print() {

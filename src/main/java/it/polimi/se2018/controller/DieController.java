@@ -1,6 +1,7 @@
 package it.polimi.se2018.controller;
 
 import it.polimi.se2018.model.Model;
+import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.events.PlayerMessageDie;
 
 public class DieController extends Controller {
@@ -15,7 +16,7 @@ public class DieController extends Controller {
      * @throws
      */
     /* TODO: tests, check if there is a die in adjacent position + exception*/
-    public void execute(PlayerMessageDie playerMessageDie) {
+    public void execute(PlayerMessageDie playerMessageDie) throws DiceContainerUnsupportedIdException {
 
         int idPlayer = playerMessageDie.getPlayer();
         int idDie = playerMessageDie.getDie();

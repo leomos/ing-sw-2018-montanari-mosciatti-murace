@@ -3,7 +3,6 @@ package it.polimi.se2018.model;
 import it.polimi.se2018.model.container.DiceContainer;
 import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.container.Die;
-import it.polimi.se2018.model.container.DieColor;
 
 import java.util.ArrayList;
 
@@ -27,11 +26,16 @@ public class PatternCard {
 
     private DiceContainer diceContainer;
 
+    private String patternCardRepresentation;
+
+    private String diceRepresentation;
+
     public PatternCard(DiceContainer diceContainer, int id, String name, int difficulty, String patternCardRepresentation) {
         this.diceContainer = diceContainer;
         this.id = id;
         this.name = name;
         this.difficulty = difficulty;
+        this.patternCardRepresentation = patternCardRepresentation;
         int i, j;
         i = 0;
         j = 0;
@@ -104,6 +108,14 @@ public class PatternCard {
 
     public int getDifficulty() {
         return difficulty;
+    }
+
+    public String getDiceRepresentation() {
+        return diceRepresentation;
+    }
+
+    public String getPatternCardRepresentation() {
+        return patternCardRepresentation;
     }
 
     public PatternCardCell getPatternCardCell(int x, int y){
@@ -236,6 +248,22 @@ public class PatternCard {
         return x == 0 || x == 4 || y == 0 || y == 3;
     }
 
+    public void updateDiceRepresentation() throws DiceContainerUnsupportedIdException {
+        diceRepresentation = "";
+        for(int i = 0; i < 5; i++)
+            for(int j = 0; j < 4; j++){
+                PatternCardCell c = cells[i][j];
+                if(c.isEmpty())
+                    diceRepresentation = diceRepresentation + "****";
+                else {
+                    if (c.getRolledDieId() < 10)
+                        diceRepresentation = diceRepresentation + "0";
+                    diceRepresentation = diceRepresentation + c.getRolledDieId()
+                            + diceContainer.getDie(c.getRolledDieId()).getColorChar()
+                            + diceContainer.getDie(c.getRolledDieId()).getRolledValue();
+                }
+            }
+    }
 
 
 
