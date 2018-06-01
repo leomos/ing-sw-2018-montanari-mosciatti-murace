@@ -19,4 +19,6 @@ public interface ClientInterface extends Remote {
     public Integer[] getPositionInPatternCard() throws RemoteException;
 
     public int getValueForDie() throws RemoteException;
+
+    public String askForName() throws RemoteException;
 }

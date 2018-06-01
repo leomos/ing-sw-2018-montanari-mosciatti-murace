@@ -1,6 +1,8 @@
 package it.polimi.se2018.model.events;
 
-public class ModelChangedMessageConnected extends ModelChangedMessage {
+import java.io.Serializable;
+
+public class ModelChangedMessageConnected extends ModelChangedMessage implements Serializable {
 
     private int idClient;
 

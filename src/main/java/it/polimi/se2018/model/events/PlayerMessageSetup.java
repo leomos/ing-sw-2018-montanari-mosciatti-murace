@@ -2,7 +2,7 @@ package it.polimi.se2018.model.events;
 
 import it.polimi.se2018.model.Player;
 
-public class PlayerMessageSetup {
+public class PlayerMessageSetup extends PlayerMessage {
 
     private Player player;
 

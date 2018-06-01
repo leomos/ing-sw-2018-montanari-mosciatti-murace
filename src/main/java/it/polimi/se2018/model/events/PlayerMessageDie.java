@@ -1,7 +1,7 @@
 package it.polimi.se2018.model.events;
 
 
-public class PlayerMessageDie {
+public class PlayerMessageDie extends PlayerMessage {
 
     private int player;
 

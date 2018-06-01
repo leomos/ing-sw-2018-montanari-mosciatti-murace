@@ -15,7 +15,7 @@ public class ViewClientConsole extends ViewClient {
 
     private GamePhase gamePhase = GamePhase.SETUPPHASE;
 
-    private ViewClientConsolePrint viewClientConsolePrint = new ViewClientConsoleSetup(idClient);
+    private ViewClientConsolePrint viewClientConsolePrint;
 
     public ViewClientConsole(){
     }
@@ -24,12 +24,13 @@ public class ViewClientConsole extends ViewClient {
     public void update(ModelChangedMessage message){
         if(message instanceof ModelChangedMessageConnected){
             this.idClient = ((ModelChangedMessageConnected) message).getIdClient();
+            viewClientConsolePrint = new ViewClientConsoleSetup(this.idClient);
         }
         else if(message instanceof ModelChangedMessageRefresh) {
             if (((ModelChangedMessageRefresh) message).getGamePhase() != gamePhase) {
                 gamePhase = ((ModelChangedMessageRefresh) message).getGamePhase(); //cambia anche per end game
                 if(gamePhase == GAMEPHASE)
-                    viewClientConsolePrint = new ViewClientConsoleGame(idClient);
+                    viewClientConsolePrint = new ViewClientConsoleGame(this.idClient);
             }
             viewClientConsolePrint.print();
         } else {
@@ -40,7 +41,7 @@ public class ViewClientConsole extends ViewClient {
     public String askForName(){
         String name = "";
 
-        System.out.println("Insert ID die");
+        System.out.println("name");
         Scanner input = new Scanner(System.in);
         String s = input.nextLine();
         name = s;

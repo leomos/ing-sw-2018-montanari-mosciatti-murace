@@ -1,5 +1,6 @@
 package it.polimi.se2018.network.server;
 
+import it.polimi.se2018.network.client.ClientInterface;
 import it.polimi.se2018.view.VirtualView;
 
 import java.net.MalformedURLException;
@@ -13,32 +14,31 @@ public class Server {
 
     public static void main(String[] args) {
 
-        //if (stanza_ready)
+        VirtualView virtualView = new VirtualView();
 
-            VirtualView virtualView = new VirtualView();
+        //Creo la ServerImplementationRMI
 
-            //Creo la ServerImplementationRMI
+        try {
 
-            try {
+            LocateRegistry.createRegistry(PORT);
 
-                LocateRegistry.createRegistry(PORT);
+        } catch (RemoteException e) {
+            System.out.println("Registry già presente!");
+        }
 
-            } catch (RemoteException e) {
-                System.out.println("Registry già presente!");
-            }
+        try {
 
-            try {
+            ServerImplementationRMI serverImplementationRMI = new ServerImplementationRMI(virtualView);
+            Naming.rebind("//localhost/MyServer2", serverImplementationRMI);
+            System.out.println("Server ready");
+        } catch (MalformedURLException e) {
+            System.err.println("Impossibile registrare l'oggetto indicato!");
+        } catch (RemoteException e) {
+            System.err.println("Errore di connessione: " + e.getMessage() + "!");
+        }
 
-                ServerImplementationRMI virtualViewRMI = new ServerImplementationRMI(virtualView);
-                Naming.rebind("//localhost/MyServer2", virtualViewRMI);
-                System.out.println("Server ready");
-            } catch (MalformedURLException e) {
-                System.err.println("Impossibile registrare l'oggetto indicato!");
-            } catch (RemoteException e) {
-                System.err.println("Errore di connessione: " + e.getMessage() + "!");
-            }
-
-            // Creo l'infrastruttura per il socket
-            (new ClientGatherer(1111, virtualView)).start();
+        // Creo l'infrastruttura per il socket
+        (new ClientGatherer(1111, virtualView)).start();
     }
+
 }

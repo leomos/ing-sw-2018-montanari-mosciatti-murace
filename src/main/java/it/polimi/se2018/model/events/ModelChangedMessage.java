@@ -1,4 +1,6 @@
 package it.polimi.se2018.model.events;
 
-public abstract class ModelChangedMessage {
+import java.io.Serializable;
+
+public abstract class ModelChangedMessage implements Serializable {
 }

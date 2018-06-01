@@ -1,10 +1,7 @@
 package it.polimi.se2018.model;
 
 import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
-import it.polimi.se2018.model.events.ModelChangedMessageDiceArena;
-import it.polimi.se2018.model.events.ModelChangedMessageDiceOnPatternCard;
-import it.polimi.se2018.model.events.ModelChangedMessagePatternCard;
-import it.polimi.se2018.model.events.ModelChangedMessageRefresh;
+import it.polimi.se2018.model.events.*;
 import it.polimi.se2018.model.rounds.RoundTrack;
 import it.polimi.se2018.model.toolcards.ToolCardContainer;
 import it.polimi.se2018.model.toolcards.ToolCardNotInPlayException;
@@ -12,7 +9,7 @@ import it.polimi.se2018.utils.Observable;
 
 import java.util.HashMap;
 
-public class Model extends Observable<Object> {
+public class Model extends Observable<ModelChangedMessage> {
 
     private GamePhase gamePhase = GamePhase.SETUPPHASE;
 
@@ -20,17 +17,24 @@ public class Model extends Observable<Object> {
 
     /*TODO: costruttore */
 
-    public Model(HashMap<Integer, String> players){
+    public Model(){
+    }
+
+    public void init(HashMap<Integer, String> players) {
+        ModelChangedMessageRefresh modelChangedMessageRefresh;
         table = new Table(players);
-        for(Integer key : players.keySet())
-            for(int j = 0; j < 4; j++){
+        for(Integer key : players.keySet()) {
+            for (int j = 0; j < 4; j++) {
                 PatternCard patternCard = table.getPlayers(key).getPatternCards().get(j);
-                notify(new ModelChangedMessagePatternCard(  Integer.toString(key),
-                                                            Integer.toString(patternCard.getId()),
-                                                            patternCard.getName(),
-                                                            Integer.toString(patternCard.getDifficulty()),
-                                                            patternCard.getPatternCardRepresentation()));
+                notify(new ModelChangedMessagePatternCard(Integer.toString(key),
+                        Integer.toString(patternCard.getId()),
+                        patternCard.getName(),
+                        Integer.toString(patternCard.getDifficulty()),
+                        patternCard.getPatternCardRepresentation()));
             }
+        }
+        modelChangedMessageRefresh = new ModelChangedMessageRefresh(gamePhase);
+        notify(modelChangedMessageRefresh);
     }
 
     public Table getTable() {

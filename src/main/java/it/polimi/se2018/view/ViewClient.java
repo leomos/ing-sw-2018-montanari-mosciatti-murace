@@ -11,6 +11,8 @@ public class ViewClient {
 
     }
 
+    public String askForName() { return null; }
+
     public int getDieFromPatternCard() {
         return 0;
     }

@@ -2,14 +2,15 @@ package it.polimi.se2018.controller;
 
 import it.polimi.se2018.model.Model;
 import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
+import it.polimi.se2018.model.events.PlayerMessage;
 import it.polimi.se2018.model.events.PlayerMessageDie;
+import it.polimi.se2018.utils.Observable;
+import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.view.ViewClient;
 
 import java.util.HashMap;
-import java.util.Observable;
-import java.util.Observer;
 
-public class Controller implements Observer {
+public class Controller implements Observer<PlayerMessage> {
 
     protected Model model;
 
@@ -34,10 +35,10 @@ public class Controller implements Observer {
 
     public Controller(Model model){
         this.model = model;
-        this.dieController = new DieController(model);
+        /*this.dieController = new DieController(model);
         this.setUpController = new SetUpController(model);
         this.endTurnController = new EndTurnController(model);
-        this.toolCardController = new ToolCardController(model);
+        this.toolCardController = new ToolCardController(model);*/
     }
 
     /**
@@ -46,7 +47,7 @@ public class Controller implements Observer {
      */
     /* TODO: tests, finish update with instanceOf(). */
     @Override
-    public void update(Observable view, Object playerMessage){
+    public void update(PlayerMessage playerMessage){
 
         if(playerMessage instanceof PlayerMessageDie) {
             PlayerMessageDie playerMessageDie = (PlayerMessageDie) playerMessage;

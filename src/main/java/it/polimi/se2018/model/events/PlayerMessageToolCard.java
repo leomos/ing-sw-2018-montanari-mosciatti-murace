@@ -2,7 +2,7 @@ package it.polimi.se2018.model.events;
 
 import it.polimi.se2018.model.toolcards.ToolCard;
 
-public class PlayerMessageToolCard {
+public class PlayerMessageToolCard extends PlayerMessage {
 
     private int player;
 

@@ -109,6 +109,11 @@ public class ServerImplementationSocket extends Thread implements ServerInterfac
         return (int)controllerActionResult;
     }
 
+    @Override
+    public String askForName() throws RemoteException {
+        return null;
+    }
+
 
     @Override
     public void run(){

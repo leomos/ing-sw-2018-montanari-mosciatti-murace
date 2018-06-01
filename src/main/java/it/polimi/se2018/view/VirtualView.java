@@ -2,6 +2,7 @@ package it.polimi.se2018.view;
 
 import it.polimi.se2018.model.events.ModelChangedMessage;
 import it.polimi.se2018.model.events.PlayerMessage;
+import it.polimi.se2018.network.server.Room;
 import it.polimi.se2018.utils.Observable;
 import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.network.client.ClientInterface;
@@ -29,9 +30,19 @@ public class VirtualView extends Observable<PlayerMessage> implements Observer<M
     }
 
     public void addClient(ClientInterface clientInterface){
+        Room room = new Room(this);
         clientInterfaceList.add(clientInterface);
         System.out.println("Client added");
+
+        if(clientInterfaceList.size() == 2) {
+            System.out.println("Room started!");
+            room.initGame();
+            room.start();
+        }
+
     }
 
-
+    public ArrayList<ClientInterface> getClientInterfaceList() {
+        return clientInterfaceList;
+    }
 }

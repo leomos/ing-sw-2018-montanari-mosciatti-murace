@@ -43,4 +43,9 @@ public class ClientImplementationRMI implements ClientInterface{
         return viewClient.getValueForDie();
     }
 
+    @Override
+    public String askForName() throws RemoteException {
+        return viewClient.askForName();
+    }
+
 }

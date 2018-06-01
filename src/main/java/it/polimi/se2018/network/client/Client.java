@@ -22,7 +22,7 @@ public class Client {
         ViewClient viewClient = new ViewClient();
 
         System.out.println("0: RMI \n1: SOCKET \n\n");
-        int i = 1;
+        int i = 0;
 
         System.out.println("0: CONSOLE \n1: GUI \n\n");
         int j = 0;
@@ -35,7 +35,7 @@ public class Client {
         if(i == 0) {
 
             try {
-
+                viewClient = new ViewClientConsole();
                 serverInterface = (ServerInterface) Naming.lookup("//localhost/MyServer2");
                 ClientImplementationRMI clientImplementationRMI = new ClientImplementationRMI(viewClient);
                 ClientInterface remoteRef = (ClientInterface) UnicastRemoteObject.exportObject(clientImplementationRMI, 0);

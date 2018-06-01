@@ -21,7 +21,7 @@ public class ViewClientConsoleSetup extends ViewClientConsolePrint {
     @Override
     public void update(ModelChangedMessage message){
         if(message instanceof ModelChangedMessagePatternCard)
-            if(((ModelChangedMessagePatternCard) message).getIdPlayer() == Integer.toString(idClient))
+            if(((ModelChangedMessagePatternCard) message).getIdPlayer().equals(Integer.toString(idClient)))
                 patternCards.add((ModelChangedMessagePatternCard)message);
         else if(message instanceof ModelChangedMessagePrivateObjective)
             if(((ModelChangedMessagePrivateObjective)message).getIdPlayer() == Integer.toString(idClient))
@@ -31,9 +31,9 @@ public class ViewClientConsoleSetup extends ViewClientConsolePrint {
 
     @Override
     public void print() {
-
+        System.out.println("SETUP: print");
         for (int i = 0; i < patternCards.size(); i++)
-            printPatternCard(patternCards.get(i), null);
+            printPatternCard(patternCards.get(i));
 
         /* private objective? devo usare id view per stampare quello giusto*/
 

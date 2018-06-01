@@ -57,6 +57,11 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
         return viewClient.getValueForDie();
     }
 
+    @Override
+    public String askForName() throws RemoteException {
+        return null;
+    }
+
     public void notify(PlayerMessage playerMessage) {
         SocketMessage<PlayerMessage> socketMessage = new SocketMessage<>(playerMessage);
         try {
