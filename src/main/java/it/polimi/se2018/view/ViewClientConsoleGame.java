@@ -4,7 +4,7 @@ import it.polimi.se2018.model.events.*;
 
 import java.util.ArrayList;
 
-public class ViewClientConsoleGame extends ViewClientConsole {
+public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
     private ArrayList<ModelChangedMessagePatternCard> patternCards = new ArrayList<ModelChangedMessagePatternCard>();
 
@@ -20,6 +20,7 @@ public class ViewClientConsoleGame extends ViewClientConsole {
 
     private ArrayList<ModelChangedMessageRound> roundTrack = new ArrayList<ModelChangedMessageRound>();
 
+    @Override
     public void print() {
 
         for (int i = 0; i < patternCards.size(); i++)

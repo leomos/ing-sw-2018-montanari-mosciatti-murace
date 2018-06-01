@@ -2,11 +2,11 @@ package it.polimi.se2018.model.events;
 
 import it.polimi.se2018.model.GamePhase;
 
-public class ModelChangedRefresh {
+public class ModelChangedMessageRefresh extends ModelChangedMessage{
 
     GamePhase gamePhase;
 
-    public ModelChangedRefresh(GamePhase gamePhase){
+    public ModelChangedMessageRefresh(GamePhase gamePhase){
         this.gamePhase = gamePhase;
     }
 

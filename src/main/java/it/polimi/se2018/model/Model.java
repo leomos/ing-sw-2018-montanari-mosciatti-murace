@@ -4,7 +4,7 @@ import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.events.ModelChangedMessageDiceArena;
 import it.polimi.se2018.model.events.ModelChangedMessageDiceOnPatternCard;
 import it.polimi.se2018.model.events.ModelChangedMessagePatternCard;
-import it.polimi.se2018.model.events.ModelChangedRefresh;
+import it.polimi.se2018.model.events.ModelChangedMessageRefresh;
 import it.polimi.se2018.model.rounds.RoundTrack;
 import it.polimi.se2018.model.toolcards.ToolCardContainer;
 import it.polimi.se2018.model.toolcards.ToolCardNotInPlayException;
@@ -76,7 +76,7 @@ public class Model extends Observable<Object> {
 
             notify(new ModelChangedMessageDiceOnPatternCard(idPL, idPC, patternCard.getDiceRepresentation()));
             notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
-            notify(new ModelChangedRefresh(this.gamePhase));
+            notify(new ModelChangedMessageRefresh(this.gamePhase));
         }
     }
 
