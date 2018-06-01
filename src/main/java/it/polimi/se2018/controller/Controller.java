@@ -35,10 +35,10 @@ public class Controller implements Observer<PlayerMessage> {
 
     public Controller(Model model){
         this.model = model;
-        /*this.dieController = new DieController(model);
+        this.dieController = new DieController(model);
         this.setUpController = new SetUpController(model);
         this.endTurnController = new EndTurnController(model);
-        this.toolCardController = new ToolCardController(model);*/
+        this.toolCardController = new ToolCardController(model);
     }
 
     /**

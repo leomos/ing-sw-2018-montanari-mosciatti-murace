@@ -4,6 +4,7 @@ import it.polimi.se2018.model.events.ModelChangedMessage;
 import it.polimi.se2018.view.ViewClient;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 public class ClientImplementationRMI implements ClientInterface{
 
@@ -48,4 +49,8 @@ public class ClientImplementationRMI implements ClientInterface{
         return viewClient.askForName();
     }
 
+    @Override
+    public ArrayList<Integer> askForPatternCard()throws RemoteException{
+        return viewClient.askForPatternCard();
+    }
 }

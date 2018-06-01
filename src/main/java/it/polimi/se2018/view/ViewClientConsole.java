@@ -4,7 +4,9 @@ import it.polimi.se2018.model.GamePhase;
 import it.polimi.se2018.model.events.ModelChangedMessage;
 import it.polimi.se2018.model.events.ModelChangedMessageConnected;
 import it.polimi.se2018.model.events.ModelChangedMessageRefresh;
+import it.polimi.se2018.network.server.ServerInterface;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import static it.polimi.se2018.model.GamePhase.GAMEPHASE;
@@ -17,7 +19,9 @@ public class ViewClientConsole extends ViewClient {
 
     private ViewClientConsolePrint viewClientConsolePrint;
 
-    public ViewClientConsole(){
+    ServerInterface serverInterface;
+
+    public ViewClientConsole( ){
     }
 
 
@@ -33,22 +37,36 @@ public class ViewClientConsole extends ViewClient {
                     viewClientConsolePrint = new ViewClientConsoleGame(this.idClient);
             }
             viewClientConsolePrint.print();
+
+
         } else {
             viewClientConsolePrint.update(message);
         }
     }
 
     public String askForName(){
-        String name = "";
 
         System.out.println("name");
         Scanner input = new Scanner(System.in);
         String s = input.nextLine();
-        name = s;
+
+        return s;
+
+    }
+
+    public ArrayList<Integer> askForPatternCard()  {
+        ArrayList<Integer> data = new ArrayList<Integer>();
+
+        System.out.println("id PatternCard");
+        Scanner input = new Scanner(System.in);
+        String s = input.nextLine();
+        int idPatternCard = Integer.parseInt(s);
         input.close();
 
-        return name;
+        data.add(idClient);
+        data.add(idPatternCard);
 
+        return data;
     }
 
     public int[] getDiePosition(){
@@ -65,15 +83,15 @@ public class ViewClientConsole extends ViewClient {
     }
 
     public int getDieFromPatternCard(){
-        int dieId = -1;
+        int idDie = -1;
 
         System.out.println("Insert ID die");
         Scanner input = new Scanner(System.in);
         String s = input.nextLine();
-        dieId = Integer.parseInt(s);
+        idDie = Integer.parseInt(s);
         input.close();
 
-        return dieId;
+        return idDie;
     }
 
     public int getDieFromRoundTrack(){

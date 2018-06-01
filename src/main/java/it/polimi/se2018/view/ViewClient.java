@@ -3,11 +3,13 @@ package it.polimi.se2018.view;
 import it.polimi.se2018.model.events.ModelChangedMessage;
 import it.polimi.se2018.network.server.ServerInterface;
 
-public class ViewClient {
+import java.util.ArrayList;
+
+public abstract class ViewClient {
 
     private ServerInterface serverInterface;
 
-    public void update(ModelChangedMessage modelChangedMessage){
+    public void update(ModelChangedMessage modelChangedMessage) {
 
     }
 
@@ -31,5 +33,9 @@ public class ViewClient {
 
     public int getValueForDie(){
         return 0;
+    }
+
+    public ArrayList<Integer> askForPatternCard(){
+        return null;
     }
 }

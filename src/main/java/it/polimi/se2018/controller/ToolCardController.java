@@ -7,10 +7,12 @@ import it.polimi.se2018.view.ViewClient;
 
 import java.util.HashMap;
 
-public class ToolCardController extends Controller {
+public class ToolCardController{
+
+    private Model model;
 
     public ToolCardController(Model model){
-        super(model);
+        this.model = model;
     }
 
     public void execute(PlayerMessageToolCard playerMessageToolCard, HashMap<Integer, ViewClient> view) throws DiceContainerUnsupportedIdException {

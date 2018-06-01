@@ -1,19 +1,19 @@
 package it.polimi.se2018.model.events;
 
-import it.polimi.se2018.model.Player;
+import java.io.Serializable;
 
-public class PlayerMessageSetup extends PlayerMessage {
+public class PlayerMessageSetup extends PlayerMessage implements Serializable {
 
-    private Player player;
+    private int player;
 
     private int patternCardId;
 
-    public PlayerMessageSetup(Player player, int patternCardId){
+    public PlayerMessageSetup(int player, int patternCardId){
         this.player = player;
         this.patternCardId = patternCardId;
     }
 
-    public Player getPlayer() {
+    public int getPlayer() {
         return player;
     }
 

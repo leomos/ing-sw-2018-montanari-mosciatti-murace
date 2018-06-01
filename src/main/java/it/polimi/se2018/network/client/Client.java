@@ -19,7 +19,7 @@ public class Client {
 
     public static void main(String[] args) {
 
-        ViewClient viewClient = new ViewClient();
+        ViewClient viewClient;
 
         System.out.println("0: RMI \n1: SOCKET \n\n");
         int i = 0;
@@ -27,44 +27,47 @@ public class Client {
         System.out.println("0: CONSOLE \n1: GUI \n\n");
         int j = 0;
 
-        if(j == 0)
-            viewClient = new ViewClientConsole();
 
         ServerInterface serverInterface;
+        if (j == 0){
+            if (i == 0) {
 
-        if(i == 0) {
+                try {
 
-            try {
-                viewClient = new ViewClientConsole();
-                serverInterface = (ServerInterface) Naming.lookup("//localhost/MyServer2");
-                ClientImplementationRMI clientImplementationRMI = new ClientImplementationRMI(viewClient);
-                ClientInterface remoteRef = (ClientInterface) UnicastRemoteObject.exportObject(clientImplementationRMI, 0);
-                serverInterface.addClient(remoteRef);
+                    serverInterface = (ServerInterface) Naming.lookup("//localhost/MyServer2");
+                    viewClient = new ViewClientConsole();
+                    ClientImplementationRMI clientImplementationRMI = new ClientImplementationRMI(viewClient);
+                    ClientInterface remoteRef = (ClientInterface) UnicastRemoteObject.exportObject(clientImplementationRMI, 0);
+                    serverInterface.addClient(remoteRef);
 
 
-            } catch (MalformedURLException e) {
-                System.err.println("URL non trovato!");
-            } catch (RemoteException e) {
-                System.err.println("Errore di connessione: " + e.getMessage() + "!");
-            } catch (NotBoundException e) {
-                System.err.println("Il riferimento passato non è associato a nulla!");
+                } catch (MalformedURLException e) {
+                    System.err.println("URL non trovato!");
+                } catch (RemoteException e) {
+                    System.err.println("Errore di connessione: " + e.getMessage() + "!");
+                } catch (NotBoundException e) {
+                    System.err.println("Il riferimento passato non è associato a nulla!");
+                }
             }
         }
 
         if(i == 1){
+            if(j == 0){
 
-            Socket socket = null;
+                viewClient = new ViewClientConsole();
+                Socket socket = null;
 
-            try {
-                socket = new Socket(HOST, PORT);
-            } catch (IOException e) {
-                e.printStackTrace();
+                try {
+                    socket = new Socket(HOST, PORT);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                ClientImplementationSocket clientImplementationSocket = new ClientImplementationSocket(viewClient, socket);
+                clientImplementationSocket.start();
+                // stops the connection
+
             }
-
-            ClientImplementationSocket clientImplementationSocket = new ClientImplementationSocket(viewClient, socket);
-            clientImplementationSocket.start();
-            // stops the connection
-
         }
     }
 }

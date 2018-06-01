@@ -4,10 +4,12 @@ import it.polimi.se2018.model.Model;
 import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.events.PlayerMessageDie;
 
-public class DieController extends Controller {
+public class DieController  {
+
+    private Model model;
 
     public DieController(Model model){
-        super(model);
+        this.model = model;
     }
 
     /**

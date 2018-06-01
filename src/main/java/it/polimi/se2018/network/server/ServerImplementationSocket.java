@@ -10,6 +10,7 @@ import it.polimi.se2018.view.VirtualView;
 import java.io.*;
 import java.net.Socket;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class ServerImplementationSocket extends Thread implements ServerInterface, ClientInterface {
@@ -111,6 +112,11 @@ public class ServerImplementationSocket extends Thread implements ServerInterfac
 
     @Override
     public String askForName() throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Integer> askForPatternCard(){
         return null;
     }
 

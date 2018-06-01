@@ -49,6 +49,18 @@ public class Model extends Observable<ModelChangedMessage> {
         return;
     }
 
+    public void setChosenPatternCard(int idPatternCard, int idPlayer){
+
+        Player player = table.getPlayers(idPlayer);
+
+        for(PatternCard patternCard : player.getPatternCards())
+            if(idPatternCard == patternCard.getId())
+                table.getPlayers(idPlayer).setChosenPatternCard(patternCard);
+
+        //notify(new ModelChangedMessagePatternCard(idPlayer, idPatternCard));
+    }
+
+
     /**
      *
      * @param idDie id to identify the die
