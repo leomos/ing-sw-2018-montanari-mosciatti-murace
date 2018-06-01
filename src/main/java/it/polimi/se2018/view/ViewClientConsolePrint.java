@@ -143,6 +143,40 @@ public abstract class ViewClientConsolePrint {
                 + "\tCOST: " + message.getCost());
     }
 
+    protected void printPatternCard(ModelChangedMessagePatternCard messagePatternCard) {
+        String ANSI_WHITE = "\u001b[4m" + "\u001B[107m";
+        String ANSI_RESET = "\u001b[0m";
+        String ANSI_GREY = "\u001b[4m" + "\u001B[47m";
+
+        int m = 0;
+        String s = "";
+
+        System.out.print("PLAYER " + messagePatternCard.getIdPlayer() + ": PATTERNCARD\n");
+        System.out.print(ANSI_GREY + "   |" + ANSI_RESET);
+        for (int i=0; i<5; i++) {
+            System.out.print(ANSI_GREY + " " + i + " |" + ANSI_RESET);
+        }
+        System.out.print("\n");
+
+        for (int i=0; i<4; i++) {
+            s = s + ANSI_GREY + " " + i + " |" + ANSI_RESET;
+            for (int j=0; j<5; j++) {
+                char c = messagePatternCard.getRepresentation().charAt(j+m);
+
+                if (isColor(c))
+                    s = s + "\u001b[4m" + printColor(c);
+                else if (c == '0')
+                    s = s + ANSI_WHITE + "   " + ANSI_RESET;
+                else
+                    s = s + "\u001b[4m" + printDie('w', c);
+                s = s + "|";
+            }
+            s = s + "\n";
+            m += 5;
+        }
+        System.out.println(s);
+    }
+
     public abstract void update(ModelChangedMessage message);
 
     public abstract void print();
