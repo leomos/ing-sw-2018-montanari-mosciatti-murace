@@ -23,6 +23,9 @@ public class ViewClientConsoleSetup extends ViewClientConsolePrint {
         if(message instanceof ModelChangedMessagePatternCard)
             if(((ModelChangedMessagePatternCard) message).getIdPlayer() == Integer.toString(idClient))
                 patternCards.add((ModelChangedMessagePatternCard)message);
+        else if(message instanceof ModelChangedMessagePrivateObjective)
+            if(((ModelChangedMessagePrivateObjective)message).getIdPlayer() == Integer.toString(idClient))
+                    privateObjective = ((ModelChangedMessagePrivateObjective)message);
 
     }
 

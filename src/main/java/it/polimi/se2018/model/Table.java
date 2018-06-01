@@ -8,6 +8,7 @@ import it.polimi.se2018.utils.Database;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 
 public class Table {
 
@@ -32,9 +33,9 @@ public class Table {
     private Scoreboard scoreboard;
 
     /* TODO: COSTRUTTORE che crei ogni attributo e che setti i Players + controllare se tipo PLayer  ok */
-    public Table(int[] idPlayer, String[] name){
-        for(int i = 0; i < idPlayer.length; i++) {
-            this.players.add(new Player(idPlayer[i], name[i]));
+    public Table(HashMap<Integer, String> HM){
+        for(Integer key : HM.keySet()) {
+            this.players.add(new Player(key, HM.get(key)));
         }
         this.diceContainer = new DiceContainer();
         this.toolCardContainer = new ToolCardContainer(diceContainer);

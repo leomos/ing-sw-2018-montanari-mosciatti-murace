@@ -1,6 +1,6 @@
 package it.polimi.se2018.model.events;
 
-public class ModelChangedMessagePublicObjective {
+public class ModelChangedMessagePublicObjective extends ModelChangedMessage{
 
     private String idPublicObjective;
 

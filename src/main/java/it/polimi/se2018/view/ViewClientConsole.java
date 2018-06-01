@@ -6,6 +6,8 @@ import it.polimi.se2018.model.events.ModelChangedMessageRefresh;
 
 import java.util.Scanner;
 
+import static it.polimi.se2018.model.GamePhase.GAMEPHASE;
+
 public class ViewClientConsole extends ViewClient {
 
     private int idClient;
@@ -15,15 +17,16 @@ public class ViewClientConsole extends ViewClient {
     private ViewClientConsolePrint viewClientConsolePrint = new ViewClientConsoleSetup(idClient);
 
     public ViewClientConsole(){
-
     }
 
 
     public void update(ModelChangedMessage message){
         if(message instanceof ModelChangedMessageRefresh) {
-            if (((ModelChangedMessageRefresh) message).getGamePhase() != gamePhase)
-                gamePhase = ((ModelChangedMessageRefresh) message).getGamePhase(); //cambia anche la viewClientConsolePrint
-
+            if (((ModelChangedMessageRefresh) message).getGamePhase() != gamePhase) {
+                gamePhase = ((ModelChangedMessageRefresh) message).getGamePhase(); //cambia anche per end game
+                if(gamePhase == GAMEPHASE)
+                    viewClientConsolePrint = new ViewClientConsoleGame(idClient);
+            }
             viewClientConsolePrint.print();
         } else {
             viewClientConsolePrint.update(message);

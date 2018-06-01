@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
+    int idClient;
+
     private ArrayList<ModelChangedMessagePatternCard> patternCards = new ArrayList<ModelChangedMessagePatternCard>();
 
     private ArrayList<ModelChangedMessageDiceOnPatternCard> diceOnPatternCards = new ArrayList<ModelChangedMessageDiceOnPatternCard>();
@@ -19,6 +21,15 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
     private ModelChangedMessagePrivateObjective privateObjective;
 
     private ArrayList<ModelChangedMessageRound> roundTrack = new ArrayList<ModelChangedMessageRound>();
+
+    public ViewClientConsoleGame(int idClient){
+        this.idClient = idClient;
+    }
+
+    @Override
+    public void update(ModelChangedMessage message){
+
+    }
 
     @Override
     public void print() {

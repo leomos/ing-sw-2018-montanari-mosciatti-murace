@@ -1,6 +1,6 @@
 package it.polimi.se2018.model.events;
 
-public class ModelChangedMessageRound {
+public class ModelChangedMessageRound extends ModelChangedMessage{
 
     private String idRound;
 
@@ -10,6 +10,7 @@ public class ModelChangedMessageRound {
         this.idRound = idRound;
         this.representation = representation;
     }
+
     public String getIdRound() {
         return idRound;
     }

@@ -1,6 +1,6 @@
 package it.polimi.se2018.model.events;
 
-public class ModelChangedMessageDiceOnPatternCard {
+public class ModelChangedMessageDiceOnPatternCard extends ModelChangedMessage{
 
     private String idPlayer;
 

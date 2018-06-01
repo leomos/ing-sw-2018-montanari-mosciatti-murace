@@ -1,6 +1,6 @@
 package it.polimi.se2018.model.events;
 
-public class ModelChangedMessageDiceArena {
+public class ModelChangedMessageDiceArena extends ModelChangedMessage{
 
     private String representation;
 

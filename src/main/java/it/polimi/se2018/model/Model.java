@@ -10,6 +10,8 @@ import it.polimi.se2018.model.toolcards.ToolCardContainer;
 import it.polimi.se2018.model.toolcards.ToolCardNotInPlayException;
 import it.polimi.se2018.utils.Observable;
 
+import java.util.HashMap;
+
 public class Model extends Observable<Object> {
 
     private GamePhase gamePhase = GamePhase.SETUPPHASE;
@@ -18,12 +20,12 @@ public class Model extends Observable<Object> {
 
     /*TODO: costruttore */
 
-    public Model( int[] idPlayer, String[] name){
-        table = new Table(idPlayer, name);
-        for(int i = 0; i < idPlayer.length; i++)
+    public Model(HashMap<Integer, String> players){
+        table = new Table(players);
+        for(Integer key : players.keySet())
             for(int j = 0; j < 4; j++){
-                PatternCard patternCard = table.getPlayers(i).getPatternCards().get(j);
-                notify(new ModelChangedMessagePatternCard(  Integer.toString(idPlayer[i]),
+                PatternCard patternCard = table.getPlayers(key).getPatternCards().get(j);
+                notify(new ModelChangedMessagePatternCard(  Integer.toString(key),
                                                             Integer.toString(patternCard.getId()),
                                                             patternCard.getName(),
                                                             Integer.toString(patternCard.getDifficulty()),
