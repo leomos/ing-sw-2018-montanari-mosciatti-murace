@@ -5,28 +5,26 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.HashMap;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 public class TestTable {
-    private String[] names = new String[3];
-    private int[] id = new int[3];
+    HashMap<Integer, String> HM = new HashMap<>();
     private Table table;
 
     @Before
     public void setup(){
-        for(int i = 0; i < 3; i++)
-            id[i] = i;
-        names[0] = "Mat";
-        names[1] = "Leo";
-        names[2] = "Ale";
-        table = new Table(id, names);
+        HM.put(0, "Mat");
+        HM.put(1, "Leo");
+        HM.put(2, "Ale");
+        table = new Table(HM);
     }
 
     @After
     public void teardown(){
-        id = null;
-        names = null;
+        HM = null;
         table = null;
     }
 
