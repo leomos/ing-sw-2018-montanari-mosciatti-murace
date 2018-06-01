@@ -2,6 +2,7 @@ package it.polimi.se2018.view;
 
 import it.polimi.se2018.model.GamePhase;
 import it.polimi.se2018.model.events.ModelChangedMessage;
+import it.polimi.se2018.model.events.ModelChangedMessageConnected;
 import it.polimi.se2018.model.events.ModelChangedMessageRefresh;
 
 import java.util.Scanner;
@@ -21,7 +22,10 @@ public class ViewClientConsole extends ViewClient {
 
 
     public void update(ModelChangedMessage message){
-        if(message instanceof ModelChangedMessageRefresh) {
+        if(message instanceof ModelChangedMessageConnected){
+            this.idClient = ((ModelChangedMessageConnected) message).getIdClient();
+        }
+        else if(message instanceof ModelChangedMessageRefresh) {
             if (((ModelChangedMessageRefresh) message).getGamePhase() != gamePhase) {
                 gamePhase = ((ModelChangedMessageRefresh) message).getGamePhase(); //cambia anche per end game
                 if(gamePhase == GAMEPHASE)
@@ -31,6 +35,19 @@ public class ViewClientConsole extends ViewClient {
         } else {
             viewClientConsolePrint.update(message);
         }
+    }
+
+    public String askForName(){
+        String name = "";
+
+        System.out.println("Insert ID die");
+        Scanner input = new Scanner(System.in);
+        String s = input.nextLine();
+        name = s;
+        input.close();
+
+        return name;
+
     }
 
     public int[] getDiePosition(){
