@@ -9,6 +9,11 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -29,7 +34,15 @@ public class Database {
     public Database(DiceContainer diceContainer) {
         this.diceContainer = diceContainer;
         ClassLoader classLoader = getClass().getClassLoader();
-        dbFile = new File(classLoader.getResource(dbName).getFile());
+        String s = null;
+        try {
+            s = URLDecoder.decode(classLoader.getResource(dbName).toString(),"UTF-8");
+            dbFile = new File((new URL(s)).getFile());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
 
         StringBuilder result = new StringBuilder("");
         try (Scanner scanner = new Scanner(dbFile)) {
@@ -57,8 +70,8 @@ public class Database {
         for (int i = 0; i < toolCardObjects.length(); i++) {
             JSONObject currentToolCardObject = toolCardObjects.getJSONObject(i);
             toolCards.add(new ToolCard( currentToolCardObject.getInt("id"),
-                                        currentToolCardObject.getString("name"),
-                                        currentToolCardObject.getString("description")));
+                    currentToolCardObject.getString("name"),
+                    currentToolCardObject.getString("description")));
         }
         return toolCards;
     }
