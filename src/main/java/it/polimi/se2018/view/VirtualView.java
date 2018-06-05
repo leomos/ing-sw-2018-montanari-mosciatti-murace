@@ -5,7 +5,7 @@ import it.polimi.se2018.model.events.PlayerMessage;
 import it.polimi.se2018.network.server.Room;
 import it.polimi.se2018.utils.Observable;
 import it.polimi.se2018.utils.Observer;
-import it.polimi.se2018.network.client.ClientInterface;
+import it.polimi.se2018.network.ClientInterface;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;

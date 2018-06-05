@@ -1,7 +1,6 @@
-package it.polimi.se2018.network.server;
+package it.polimi.se2018.network;
 
 import it.polimi.se2018.model.events.PlayerMessage;
-import it.polimi.se2018.network.client.ClientInterface;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;

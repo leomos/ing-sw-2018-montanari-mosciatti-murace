@@ -1,6 +1,7 @@
 package it.polimi.se2018.network.client;
 
-import it.polimi.se2018.network.server.ServerInterface;
+import it.polimi.se2018.network.ClientInterface;
+import it.polimi.se2018.network.ServerInterface;
 import it.polimi.se2018.view.ViewClient;
 import it.polimi.se2018.view.ViewClientConsole;
 

@@ -2,6 +2,7 @@ package it.polimi.se2018.network.client;
 
 import it.polimi.se2018.model.events.ModelChangedMessage;
 import it.polimi.se2018.model.events.PlayerMessage;
+import it.polimi.se2018.network.ClientInterface;
 import it.polimi.se2018.network.ControllerActionEnum;
 import it.polimi.se2018.network.SocketMessage;
 import it.polimi.se2018.view.ViewClient;

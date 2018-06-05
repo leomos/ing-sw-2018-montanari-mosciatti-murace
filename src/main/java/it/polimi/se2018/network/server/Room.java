@@ -5,7 +5,7 @@ import it.polimi.se2018.model.Model;
 import it.polimi.se2018.model.events.ModelChangedMessage;
 import it.polimi.se2018.model.events.ModelChangedMessageConnected;
 import it.polimi.se2018.model.events.PlayerMessageSetup;
-import it.polimi.se2018.network.client.ClientInterface;
+import it.polimi.se2018.network.ClientInterface;
 import it.polimi.se2018.view.VirtualView;
 
 import java.rmi.RemoteException;

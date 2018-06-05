@@ -1,4 +1,4 @@
-package it.polimi.se2018.network.client;
+package it.polimi.se2018.network;
 
 import it.polimi.se2018.model.events.ModelChangedMessage;
 

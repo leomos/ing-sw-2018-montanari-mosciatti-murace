@@ -4,7 +4,7 @@ import it.polimi.se2018.model.GamePhase;
 import it.polimi.se2018.model.events.ModelChangedMessage;
 import it.polimi.se2018.model.events.ModelChangedMessageConnected;
 import it.polimi.se2018.model.events.ModelChangedMessageRefresh;
-import it.polimi.se2018.network.server.ServerInterface;
+import it.polimi.se2018.network.ServerInterface;
 
 import java.util.ArrayList;
 import java.util.Scanner;
