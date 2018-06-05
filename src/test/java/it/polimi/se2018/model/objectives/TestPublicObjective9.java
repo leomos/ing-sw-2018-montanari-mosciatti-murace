@@ -4,6 +4,7 @@ import it.polimi.se2018.model.PatternCard;
 import it.polimi.se2018.model.container.DiceContainer;
 import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.container.DieRolledValueOutOfBoundException;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,6 +20,13 @@ public class TestPublicObjective9 {
         diceContainer = new DiceContainer();
         patternCard = new PatternCard(diceContainer, 13,"FractalDrop",3,"040y6r020000rp1by000");
         publicObjective9 = new PublicObjective9(diceContainer);
+    }
+
+    @After
+    public void tearDown() {
+        diceContainer = null;
+        patternCard = null;
+        publicObjective9 = null;
     }
 
     @Test
