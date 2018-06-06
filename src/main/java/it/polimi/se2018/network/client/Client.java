@@ -2,7 +2,7 @@ package it.polimi.se2018.network.client;
 
 import it.polimi.se2018.network.server.ServerInterface;
 import it.polimi.se2018.view.ViewClient;
-import it.polimi.se2018.view.ViewClientConsole;
+import it.polimi.se2018.view.console.ViewClientConsole;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
