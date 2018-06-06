@@ -68,4 +68,33 @@ public class TestDie {
         assertNotEquals(0, die.getRolledValue());
         assertTrue(die.isRolled());
     }
+
+    @Test
+    public void getColorChar_ReturnShouldBeb() {
+        assertEquals("b", die.getColorChar());
+    }
+
+    @Test
+    public void getColorChar_ReturnShouldBer() {
+        Die d = new Die(DieColor.RED);
+        assertEquals("r", d.getColorChar());
+    }
+
+    @Test
+    public void getColorChar_ReturnShouldBey() {
+        Die d = new Die(DieColor.YELLOW);
+        assertEquals("y", d.getColorChar());
+    }
+
+    @Test
+    public void getColorChar_ReturnShouldBep() {
+        Die d = new Die(DieColor.PURPLE);
+        assertEquals("p", d.getColorChar());
+    }
+
+    @Test
+    public void getColorChar_ReturnShouldBeg() {
+        Die d = new Die(DieColor.GREEN);
+        assertEquals("g", d.getColorChar());
+    }
 }

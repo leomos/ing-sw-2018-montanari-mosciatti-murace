@@ -76,9 +76,7 @@ public class Die {
             return "b";
         if(color == PURPLE)
             return "p";
-        if(color == GREEN)
-            return "g";
-        return null;
+        return "g";
     }
 
 }
