@@ -62,4 +62,11 @@ public class TestPatternCardCell {
         }
         assertEquals(5, patternCardCell.getRolledDieId());
     }
+
+    @Test
+    public void removeDie() throws DiceContainerUnsupportedIdException {
+        patternCardCell.setRolledDieId(0, false, false);
+        patternCardCell.removeDie();
+        assertEquals(-1, patternCardCell.getRolledDieId());
+    }
 }

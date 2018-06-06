@@ -63,8 +63,5 @@ public class PatternCardCell {
      */
     public void removeDie(){
         this.rolledDieId = -1;
-        return;
     }
-
-
 }
