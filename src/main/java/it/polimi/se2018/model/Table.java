@@ -40,7 +40,7 @@ public class Table {
         this.diceContainer = new DiceContainer();
         this.toolCardContainer = new ToolCardContainer(diceContainer);
         this.diceArena = new DiceArena(players.size() * 2 + 1, diceContainer);
-        this.roundTrack = new RoundTrack(players);
+        this.roundTrack = new RoundTrack(players, diceContainer);
         this.database = new Database(diceContainer);
 
         this.patternCards = database.loadPatternCard();
@@ -53,6 +53,7 @@ public class Table {
 
         this.diceArena.rollDiceIntoArena();
         this.diceArena.updateRepresentation();
+        this.getRoundTrack().startNextRound();
     }
 
     public int getNumberOfPlayers() {

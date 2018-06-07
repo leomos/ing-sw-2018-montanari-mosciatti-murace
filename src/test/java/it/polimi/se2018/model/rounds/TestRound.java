@@ -1,5 +1,6 @@
 package it.polimi.se2018.model.rounds;
 
+import it.polimi.se2018.model.container.DiceContainer;
 import org.junit.*;
 
 import java.util.ArrayList;
@@ -10,13 +11,17 @@ public class TestRound {
 
     private Round round;
 
+    private DiceContainer diceContainer;
+
     @Before
     public void setUp() {
-        round = new Round(0);
+        diceContainer = new DiceContainer();
+        round = new Round(0, diceContainer);
     }
 
     @After
     public void tearDown() {
+        diceContainer = null;
         round = null;
         assertNull(round);
     }

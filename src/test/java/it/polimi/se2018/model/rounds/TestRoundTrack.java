@@ -2,6 +2,7 @@ package it.polimi.se2018.model.rounds;
 
 import it.polimi.se2018.model.DieNotPresentException;
 import it.polimi.se2018.model.Player;
+import it.polimi.se2018.model.container.DiceContainer;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,12 +15,15 @@ public class TestRoundTrack {
 
     private RoundTrack roundTrack;
 
+    private DiceContainer diceContainer;
+
     @Before
     public void setUp() {
+        diceContainer = new DiceContainer();
         ArrayList<Player> players = new ArrayList<>();
         players.add(new Player(0, "Gianni"));
         players.add(new Player(1,"Fabrizio"));
-        roundTrack = new RoundTrack(players);
+        roundTrack = new RoundTrack(players, diceContainer);
     }
 
     @After
@@ -30,22 +34,14 @@ public class TestRoundTrack {
 
     @Test
     public void startNextRound_CalledOneTime_currentRoundIdShouldBe0() {
-        try {
-            roundTrack.startNextRound();
-        } catch (RoundTrackNoMoreRoundsException e) {
-            fail();
-        }
+        roundTrack.startNextRound();
         assertEquals(0,roundTrack.getCurrentRound().getId());
     }
 
     @Test
     public void startNextRound_Called10Times_currentRoundIdShouldBe9() {
         for (int i = 0; i < 10; i++) {
-            try {
-                roundTrack.startNextRound();
-            } catch (RoundTrackNoMoreRoundsException e) {
-                fail();
-            }
+            roundTrack.startNextRound();
         }
         assertEquals(9,roundTrack.getCurrentRound().getId());
     }
@@ -64,11 +60,7 @@ public class TestRoundTrack {
         diceLeft[0] = 34;
         diceLeft[1] = 22;
         diceLeft[2] = 90;
-        try {
-            roundTrack.startNextRound();
-        } catch (RoundTrackNoMoreRoundsException e) {
-            fail();
-        }
+        roundTrack.startNextRound();
         try {
             roundTrack.setRolledDiceLeftForCurrentRound(diceLeft);
         } catch (RoundTrackTooManyDiceForCurrentPlayers roundTrackTooManyDiceForCurrentPlayers) {
@@ -96,11 +88,7 @@ public class TestRoundTrack {
         diceLeft[0] = 1;
         diceLeft[1] = 23;
         diceLeft[2] = 42;
-        try {
-            roundTrack.startNextRound();
-        } catch (RoundTrackNoMoreRoundsException e) {
-            fail();
-        }
+        roundTrack.startNextRound();
         try {
             roundTrack.setRolledDiceLeftForCurrentRound(diceLeft);
         } catch (RoundTrackTooManyDiceForCurrentPlayers roundTrackTooManyDiceForCurrentPlayers) {
@@ -120,11 +108,7 @@ public class TestRoundTrack {
         diceLeft[0] = 1;
         diceLeft[1] = 23;
         diceLeft[2] = 42;
-        try {
-            roundTrack.startNextRound();
-        } catch (RoundTrackNoMoreRoundsException e) {
-            fail();
-        }
+        roundTrack.startNextRound();
         try {
             roundTrack.setRolledDiceLeftForCurrentRound(diceLeft);
         } catch (RoundTrackTooManyDiceForCurrentPlayers roundTrackTooManyDiceForCurrentPlayers) {

@@ -4,6 +4,7 @@ import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.events.*;
 import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.objectives.PublicObjective;
+import it.polimi.se2018.model.rounds.Round;
 import it.polimi.se2018.model.rounds.RoundTrack;
 import it.polimi.se2018.model.toolcards.ToolCard;
 import it.polimi.se2018.model.toolcards.ToolCardContainer;
@@ -54,8 +55,6 @@ public class Model extends Observable<ModelChangedMessage> {
         modelChangedMessageRefresh = new ModelChangedMessageRefresh(gamePhase);
         notify(modelChangedMessageRefresh);
 
-        System.out.println("qui ci arriva? SI");
-
         for(Integer key : players.keySet()) {
             PatternCard patternCard = table.getPlayers(key).getChosenPatternCard();
             notify(new ModelChangedMessagePatternCard(Integer.toString(key),
@@ -89,7 +88,10 @@ public class Model extends Observable<ModelChangedMessage> {
                     Integer.toString(toolCard.cost())));
         }
 
-        System.out.println(table.getDiceArena().getRepresentation());
+        Round round = table.getRoundTrack().getRound(0);
+        notify(new ModelChangedMessageRound(Integer.toString(round.getId()),
+                round.getRepresentation()));
+
         notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
 
         modelChangedMessageRefresh = new ModelChangedMessageRefresh(gamePhase);

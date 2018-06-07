@@ -55,7 +55,7 @@ public abstract class ViewClientConsolePrint {
         return (c=='r') || (c=='y') || (c=='g') || (c=='b') || (c=='p') || (c=='w');
     }
 
-    protected void printPatternCard(ModelChangedMessagePatternCard messagePatternCard, ModelChangedMessageDiceOnPatternCard messageDice) {
+    protected void printPatternCard(String idPlayer, ModelChangedMessagePatternCard messagePatternCard, ModelChangedMessageDiceOnPatternCard messageDice) {
         String ANSI_WHITE = "\u001b[4m" + "\u001B[107m";
         String ANSI_RESET = "\u001b[0m";
         String ANSI_GREY = "\u001b[4m" + "\u001B[47m";
@@ -63,7 +63,8 @@ public abstract class ViewClientConsolePrint {
         int n = 0, m = 0;
         String s = "";
 
-        System.out.print("ID PATTERNCARD " + messagePatternCard.getIdPatternCard() + "\n");
+        System.out.print("ID Player " + idPlayer + "\n");
+        System.out.println("Name\t" + messagePatternCard.getName() + "\tDifficulty\t" + messagePatternCard.getDifficulty());
         System.out.print(ANSI_GREY + "   |" + ANSI_RESET);
         for (int i=0; i<5; i++) {
             System.out.print(ANSI_GREY + " " + i + " |" + ANSI_RESET);
@@ -99,7 +100,7 @@ public abstract class ViewClientConsolePrint {
 
     protected void printRoundTrack(ModelChangedMessageRound message) {
 
-        System.out.print("ROUND " + message.getIdRound() + ":\t");
+        System.out.print("\nROUND " + message.getIdRound() + ":\t");
         for (int j=0; j<message.getRepresentation().length(); j+=4) {
             char color = message.getRepresentation().charAt(j+2);
             char value = message.getRepresentation().charAt(j+3);
@@ -122,7 +123,7 @@ public abstract class ViewClientConsolePrint {
     }
 
     protected void printPrivateObjective(ModelChangedMessagePrivateObjective message) {
-        System.out.print("\nPRIVATE OBJECTIVES: "
+        System.out.print("PRIVATE OBJECTIVES: "
                 + "\tNAME: " + message.getName()
                 + "\tDESCRIPTION: " + message.getDescription() + "\n");
     }
@@ -131,7 +132,7 @@ public abstract class ViewClientConsolePrint {
         System.out.print("\nPUBLIC OBJECTIVE: ");
 
         System.out.print("\tNAME: " + message.getName()
-                + "\tDESCRIPTION: " + message.getDescription() + "\n");
+                + "\tDESCRIPTION: " + message.getDescription());
     }
 
     protected void printToolCards(ModelChangedMessageToolCard message) {
@@ -152,6 +153,7 @@ public abstract class ViewClientConsolePrint {
         String s = "";
 
         System.out.print("ID PATTERNCARD: " + messagePatternCard.getIdPatternCard() + "\n");
+        System.out.println("Name\t" + messagePatternCard.getName() + "\tDifficulty\t" + messagePatternCard.getDifficulty());
         System.out.print(ANSI_GREY + "   |" + ANSI_RESET);
         for (int i=0; i<5; i++) {
             System.out.print(ANSI_GREY + " " + i + " |" + ANSI_RESET);

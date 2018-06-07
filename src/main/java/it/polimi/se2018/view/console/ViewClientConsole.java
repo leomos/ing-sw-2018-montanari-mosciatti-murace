@@ -49,7 +49,7 @@ public class ViewClientConsole extends ViewClient {
 
     public String askForName(){
 
-        System.out.println("name");
+        System.out.println("\nname");
         Scanner input = new Scanner(System.in);
         String s = input.nextLine();
 
@@ -60,7 +60,7 @@ public class ViewClientConsole extends ViewClient {
     public ArrayList<Integer> askForPatternCard()  {
         ArrayList<Integer> data = new ArrayList<Integer>();
 
-        System.out.println("id PatternCard");
+        System.out.println("\nid PatternCard");
         Scanner input = new Scanner(System.in);
         String s = input.nextLine();
         int idPatternCard = Integer.parseInt(s);
@@ -74,7 +74,7 @@ public class ViewClientConsole extends ViewClient {
     public int[] getDiePosition(){
         int position[] = null;
 
-        System.out.println("Insert position on PatternCard separated by a space");
+        System.out.println("\nInsert position on PatternCard separated by a space");
         Scanner input = new Scanner(System.in);
         String s = input.nextLine();
         position[0] = Integer.parseInt(s.split(" ")[0]);
@@ -86,7 +86,7 @@ public class ViewClientConsole extends ViewClient {
     public int getDieFromPatternCard(){
         int idDie = -1;
 
-        System.out.println("Insert ID die");
+        System.out.println("\nInsert ID die");
         Scanner input = new Scanner(System.in);
         String s = input.nextLine();
         idDie = Integer.parseInt(s);
@@ -97,7 +97,7 @@ public class ViewClientConsole extends ViewClient {
     public int getDieFromRoundTrack(){
         int dieId = -1;
 
-        System.out.println("Insert ID die");
+        System.out.println("\nInsert ID die");
         Scanner input = new Scanner(System.in);
         String s = input.nextLine();
         dieId = Integer.parseInt(s);
@@ -109,7 +109,7 @@ public class ViewClientConsole extends ViewClient {
     public boolean getIncrementedValue(){
         boolean i = false;
 
-        System.out.println("Insert 1 to increment value, 0 to decrement");
+        System.out.println("\nInsert 1 to increment value, 0 to decrement");
         Scanner input = new Scanner(System.in);
         String s = input.nextLine();
         int k = Integer.parseInt(s);

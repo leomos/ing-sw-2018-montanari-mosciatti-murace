@@ -1,6 +1,9 @@
 package it.polimi.se2018.model.rounds;
 
-import it.polimi.se2018.model.DieNotPresentException;
+
+import it.polimi.se2018.model.container.DiceContainer;
+import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
+import it.polimi.se2018.model.container.Die;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,12 +19,17 @@ public class Round {
 
     private int[] rolledDiceLeft;
 
+    private String representation = "";
+
     private ArrayList<Integer> players;
 
     private ArrayList<Integer> turns = new ArrayList<>();
 
-    public Round(int id) {
+    private DiceContainer diceContainer;
+
+    public Round(int id, DiceContainer diceContainer) {
         this.id = id;
+        this.diceContainer = diceContainer;
     }
 
     public int getId() {
@@ -35,6 +43,8 @@ public class Round {
     public int[] getRolledDiceLeft() {
         return rolledDiceLeft;
     }
+
+    public String getRepresentation(){return representation;}
 
     public void setPlayers(ArrayList<Integer> players) {
         this.players = players;
@@ -92,6 +102,21 @@ public class Round {
         Collections.reverse(chunk);
         turns.addAll(chunk);
         turns.remove(0);
+    }
+
+    public void updateRepresentation(){
+        representation = "";
+        for(int i = 0; i < rolledDiceLeft.length; i++){
+            Die d = null;
+            try {
+                d = diceContainer.getDie(rolledDiceLeft[i]);
+            } catch (DiceContainerUnsupportedIdException e) {
+                e.printStackTrace();
+            }
+            if(rolledDiceLeft[i] < 10)
+                representation = representation + "0";
+            representation = representation + Integer.toString(rolledDiceLeft[i]) + d.getColorChar() + d.getRolledValue();
+        }
     }
 
     /**

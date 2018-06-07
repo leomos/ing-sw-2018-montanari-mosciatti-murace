@@ -5,7 +5,6 @@ import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.events.PlayerMessage;
 import it.polimi.se2018.model.events.PlayerMessageDie;
 import it.polimi.se2018.model.events.PlayerMessageSetup;
-import it.polimi.se2018.utils.Observable;
 import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.view.ViewClient;
 
@@ -43,10 +42,10 @@ public class Controller implements Observer<PlayerMessage> {
     }
 
     /**
-     * @param view network that sends the message
+     * @param /view network that sends the message
      * @param playerMessage message containing the information about player's move
      */
-    /* TODO: tests, finish update with instanceOf(). */
+    /* TODO: tests, finish update without instanceOf(). */
     @Override
     public void update(PlayerMessage playerMessage){
 
@@ -56,7 +55,6 @@ public class Controller implements Observer<PlayerMessage> {
             setUpController.execute(playerMessageSetup);
 
         }
-
 
 
         if(playerMessage instanceof PlayerMessageDie) {

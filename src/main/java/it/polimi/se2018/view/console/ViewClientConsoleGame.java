@@ -8,6 +8,8 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
     int idClient;
 
+    private ArrayList<String> idPlayers = new ArrayList<String>();
+
     private ArrayList<ModelChangedMessagePatternCard> patternCards = new ArrayList<ModelChangedMessagePatternCard>();
 
     private ArrayList<ModelChangedMessageDiceOnPatternCard> diceOnPatternCards = new ArrayList<ModelChangedMessageDiceOnPatternCard>();
@@ -29,9 +31,18 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
     //VA BENE SOLO PER IL PRIMO GIRO//
     @Override
-    public void update(ModelChangedMessage message){
-        if(message instanceof ModelChangedMessagePatternCard)
-            patternCards.add((ModelChangedMessagePatternCard)message);
+    public void update(ModelChangedMessage message) {
+
+        if (message instanceof ModelChangedMessagePatternCard){
+            int i = 0;
+            if (!idPlayers.contains(((ModelChangedMessagePatternCard) message).getIdPlayer())) {
+                idPlayers.add(((ModelChangedMessagePatternCard) message).getIdPlayer());
+                patternCards.add((ModelChangedMessagePatternCard) message);
+            }  else {
+                i = idPlayers.indexOf(((ModelChangedMessagePatternCard) message).getIdPlayer());
+                patternCards.add(i, (ModelChangedMessagePatternCard) message);
+            }
+        }
         else if(message instanceof ModelChangedMessagePrivateObjective) {
             if (((ModelChangedMessagePrivateObjective) message).getIdPlayer().equals(Integer.toString(idClient)))
                 privateObjective = ((ModelChangedMessagePrivateObjective) message);
@@ -44,6 +55,9 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
             toolCards.add((ModelChangedMessageToolCard)message);
         else if(message instanceof ModelChangedMessageDiceArena)
             diceArena = ((ModelChangedMessageDiceArena)message);
+        else if(message instanceof ModelChangedMessageRound) {
+            roundTrack.add((ModelChangedMessageRound) message);
+        }
 
 
     }
@@ -51,13 +65,21 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
     @Override
     public void print() {
 
+        int myPatternCardId = -1;
         for (int i = 0; i < patternCards.size(); i++)
-            printPatternCard(patternCards.get(i), diceOnPatternCards.get(i));
+            if(!(Integer.toString(idClient).equals(idPlayers.get(i))))
+                printPatternCard(idPlayers.get(i), patternCards.get(i), diceOnPatternCards.get(i));
+            else
+                myPatternCardId = i;
+
+        System.out.println("\nYour PatternCard");
+        printPatternCard(idPlayers.get(myPatternCardId), patternCards.get(myPatternCardId), diceOnPatternCards.get(myPatternCardId));
+
 
         printPrivateObjective(privateObjective);
 
-        //for (int i = 0; i < 10; i++)
-            //printRoundTrack(roundTrack.get(i));
+        for (int i = 0; i < roundTrack.size(); i++)
+            printRoundTrack(roundTrack.get(i));
 
         printDiceArena(diceArena);
 
@@ -66,6 +88,8 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
         for (int i = 0; i < 3; i++)
             printToolCards(toolCards.get(i));
+
+        System.out.println("\n\n/help: get List of moves");
     }
 
 }
