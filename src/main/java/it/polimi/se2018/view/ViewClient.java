@@ -1,9 +1,8 @@
 package it.polimi.se2018.view;
 
 import it.polimi.se2018.model.events.ModelChangedMessage;
+import it.polimi.se2018.model.events.PlayerMessageSetup;
 import it.polimi.se2018.network.server.ServerInterface;
-
-import java.util.ArrayList;
 
 public abstract class ViewClient {
 
@@ -35,7 +34,7 @@ public abstract class ViewClient {
         return 0;
     }
 
-    public ArrayList<Integer> askForPatternCard(){
+    public PlayerMessageSetup askForPatternCard(){
         return null;
     }
 }

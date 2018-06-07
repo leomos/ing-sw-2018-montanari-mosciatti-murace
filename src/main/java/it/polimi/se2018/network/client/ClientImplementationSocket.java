@@ -2,14 +2,16 @@ package it.polimi.se2018.network.client;
 
 import it.polimi.se2018.model.events.ModelChangedMessage;
 import it.polimi.se2018.model.events.PlayerMessage;
+import it.polimi.se2018.model.events.PlayerMessageSetup;
 import it.polimi.se2018.network.ControllerActionEnum;
 import it.polimi.se2018.network.SocketMessage;
 import it.polimi.se2018.view.ViewClient;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 
 public class ClientImplementationSocket extends Thread implements ClientInterface {
     private ViewClient viewClient;
@@ -64,7 +66,7 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
     }
 
     @Override
-    public ArrayList<Integer> askForPatternCard(){
+    public PlayerMessageSetup askForPatternCard(){
         return null;
     }
 

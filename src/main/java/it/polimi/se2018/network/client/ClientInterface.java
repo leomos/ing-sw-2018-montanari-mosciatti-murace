@@ -1,10 +1,10 @@
 package it.polimi.se2018.network.client;
 
 import it.polimi.se2018.model.events.ModelChangedMessage;
+import it.polimi.se2018.model.events.PlayerMessageSetup;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 
 public interface ClientInterface extends Remote {
 
@@ -23,5 +23,5 @@ public interface ClientInterface extends Remote {
 
     public String askForName() throws RemoteException;
 
-    public ArrayList<Integer> askForPatternCard() throws RemoteException;
+    public PlayerMessageSetup askForPatternCard() throws RemoteException;
 }

@@ -4,6 +4,7 @@ import it.polimi.se2018.model.GamePhase;
 import it.polimi.se2018.model.events.ModelChangedMessage;
 import it.polimi.se2018.model.events.ModelChangedMessageConnected;
 import it.polimi.se2018.model.events.ModelChangedMessageRefresh;
+import it.polimi.se2018.model.events.PlayerMessageSetup;
 import it.polimi.se2018.network.server.ServerInterface;
 import it.polimi.se2018.view.ViewClient;
 
@@ -57,7 +58,7 @@ public class ViewClientConsole extends ViewClient {
 
     }
 
-    public ArrayList<Integer> askForPatternCard()  {
+    public PlayerMessageSetup askForPatternCard()  {
         ArrayList<Integer> data = new ArrayList<Integer>();
 
         System.out.println("\nid PatternCard");
@@ -65,10 +66,9 @@ public class ViewClientConsole extends ViewClient {
         String s = input.nextLine();
         int idPatternCard = Integer.parseInt(s);
 
-        data.add(idClient);
-        data.add(idPatternCard);
+        PlayerMessageSetup messageSetup = new PlayerMessageSetup(idClient, idPatternCard);
 
-        return data;
+        return messageSetup;
     }
 
     public int[] getDiePosition(){

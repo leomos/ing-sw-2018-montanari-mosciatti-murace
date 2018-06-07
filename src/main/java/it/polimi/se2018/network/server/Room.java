@@ -9,7 +9,6 @@ import it.polimi.se2018.network.client.ClientInterface;
 import it.polimi.se2018.view.VirtualView;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Room extends Thread {
@@ -53,9 +52,8 @@ public class Room extends Thread {
 
             for(ClientInterface clientInterface: virtualView.getClientInterfaceList()){
                 try {
-                    ArrayList<Integer> data = clientInterface.askForPatternCard();
-                    virtualView.callNotify(new PlayerMessageSetup(data.get(0),
-                                        data.get(1)));
+                    PlayerMessageSetup data = clientInterface.askForPatternCard();
+                    virtualView.callNotify(data);
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }

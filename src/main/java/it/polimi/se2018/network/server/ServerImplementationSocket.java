@@ -2,15 +2,17 @@ package it.polimi.se2018.network.server;
 
 import it.polimi.se2018.model.events.ModelChangedMessage;
 import it.polimi.se2018.model.events.PlayerMessage;
+import it.polimi.se2018.model.events.PlayerMessageSetup;
 import it.polimi.se2018.network.ControllerActionEnum;
 import it.polimi.se2018.network.SocketMessage;
 import it.polimi.se2018.network.client.ClientInterface;
 import it.polimi.se2018.view.VirtualView;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class ServerImplementationSocket extends Thread implements ServerInterface, ClientInterface {
@@ -116,7 +118,7 @@ public class ServerImplementationSocket extends Thread implements ServerInterfac
     }
 
     @Override
-    public ArrayList<Integer> askForPatternCard(){
+    public PlayerMessageSetup askForPatternCard(){
         return null;
     }
 
