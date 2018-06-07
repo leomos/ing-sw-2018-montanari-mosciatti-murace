@@ -42,23 +42,28 @@ public class Room extends Thread {
 
     public void run() {
         //while(gamePlaying) {
-            System.out.println("arrivato");
             Model model = new Model();
             Controller controller = new Controller(model);
             model.register(virtualView);
             virtualView.register(controller);
 
-            model.init(clientsList);
+            model.initSetup(clientsList);
+
+            //patterncard choise
 
             for(ClientInterface clientInterface: virtualView.getClientInterfaceList()){
                 try {
                     ArrayList<Integer> data = clientInterface.askForPatternCard();
-                    virtualView.notify(new PlayerMessageSetup(data.get(0),
+                    virtualView.callNotify(new PlayerMessageSetup(data.get(0),
                                         data.get(1)));
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
             }
+
+            model.initGame(clientsList);
+
+
 
 
 

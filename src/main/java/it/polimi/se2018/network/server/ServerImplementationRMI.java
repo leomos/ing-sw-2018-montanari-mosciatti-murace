@@ -17,7 +17,7 @@ public class ServerImplementationRMI extends UnicastRemoteObject implements Serv
     }
 
     public void notify(PlayerMessage playerMessage) throws RemoteException{
-        virtualView.notify(playerMessage);
+        virtualView.callNotify(playerMessage);
     }
 
     public void addClient(ClientInterface clientInterface) throws RemoteException{

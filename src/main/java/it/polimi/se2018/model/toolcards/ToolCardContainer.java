@@ -28,7 +28,7 @@ public class ToolCardContainer {
         this.getToolCard(toolCardId).setInGame(true);
     }
 
-    public ArrayList<ToolCard> getToolCardInPlay() throws ToolCardNotInPlayException {
+    public ArrayList<ToolCard> getToolCardInPlay() {
         ArrayList<ToolCard> toolCardsInGame= new ArrayList<ToolCard>();
         for( int i = 0; i < 12; i++)
             if(toolCards.get(i).isInGame())

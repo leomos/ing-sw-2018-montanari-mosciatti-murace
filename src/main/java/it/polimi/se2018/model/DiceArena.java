@@ -33,11 +33,15 @@ public class DiceArena {
         return representation;
     }
 
-    public void rollDiceIntoArena() throws DiceContainerUnsupportedIdException {
+    public void rollDiceIntoArena()  {
         ArrayList<Integer> diceToRoll = diceContainer.getUnrolledDice();
         Collections.shuffle(diceToRoll);
         for(int i = 0; i < numberOfDice; i++){
-            diceContainer.getDie(diceToRoll.get(i)).roll();
+            try {
+                diceContainer.getDie(diceToRoll.get(i)).roll();
+            } catch (DiceContainerUnsupportedIdException e) {
+                e.printStackTrace();
+            }
             arena.add(diceToRoll.get(i));
         }
     }
@@ -53,10 +57,15 @@ public class DiceArena {
         arena.set(arena.indexOf(dieIdToRemove), dieIdToAdd);
     }
 
-    public void updateRepresentation() throws DiceContainerUnsupportedIdException {
+    public void updateRepresentation(){
         representation = "";
         for(int i = 0; i < arena.size(); i++){
-            Die d = diceContainer.getDie(arena.get(i));
+            Die d = null;
+            try {
+                d = diceContainer.getDie(arena.get(i));
+            } catch (DiceContainerUnsupportedIdException e) {
+                e.printStackTrace();
+            }
             if(arena.get(i) < 10)
                 representation = representation + "0";
             representation = representation + arena.get(i).toString() + d.getColorChar() + d.getRolledValue();

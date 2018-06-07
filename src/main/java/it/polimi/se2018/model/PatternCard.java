@@ -28,7 +28,7 @@ public class PatternCard {
 
     private String patternCardRepresentation;
 
-    private String diceRepresentation;
+    private String diceRepresentation = "********************************************************************************";
 
     public PatternCard(DiceContainer diceContainer, int id, String name, int difficulty, String patternCardRepresentation) {
         this.diceContainer = diceContainer;

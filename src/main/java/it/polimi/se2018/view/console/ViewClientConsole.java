@@ -16,6 +16,8 @@ public class ViewClientConsole extends ViewClient {
 
     private int idClient;
 
+    private boolean isMyTurn;
+
     private GamePhase gamePhase = GamePhase.SETUPPHASE;
 
     private ViewClientConsolePrint viewClientConsolePrint;
@@ -36,9 +38,9 @@ public class ViewClientConsole extends ViewClient {
                 gamePhase = ((ModelChangedMessageRefresh) message).getGamePhase(); //cambia anche per end game
                 if(gamePhase == GAMEPHASE)
                     viewClientConsolePrint = new ViewClientConsoleGame(this.idClient);
+            }else {
+                viewClientConsolePrint.print();
             }
-            viewClientConsolePrint.print();
-
 
         } else {
             viewClientConsolePrint.update(message);
@@ -62,7 +64,6 @@ public class ViewClientConsole extends ViewClient {
         Scanner input = new Scanner(System.in);
         String s = input.nextLine();
         int idPatternCard = Integer.parseInt(s);
-        input.close();
 
         data.add(idClient);
         data.add(idPatternCard);
@@ -78,7 +79,6 @@ public class ViewClientConsole extends ViewClient {
         String s = input.nextLine();
         position[0] = Integer.parseInt(s.split(" ")[0]);
         position[1] = Integer.parseInt(s.split(" ")[1]);
-        input.close();
 
         return position;
     }
@@ -90,7 +90,6 @@ public class ViewClientConsole extends ViewClient {
         Scanner input = new Scanner(System.in);
         String s = input.nextLine();
         idDie = Integer.parseInt(s);
-        input.close();
 
         return idDie;
     }
@@ -102,7 +101,7 @@ public class ViewClientConsole extends ViewClient {
         Scanner input = new Scanner(System.in);
         String s = input.nextLine();
         dieId = Integer.parseInt(s);
-        input.close();
+
 
         return dieId;
     }
@@ -118,7 +117,6 @@ public class ViewClientConsole extends ViewClient {
             i = true;
         else
             i = false;
-        input.close();
 
         return i;
     }

@@ -21,11 +21,8 @@ public class TestDiceArena {
 
     @Test
     public void checkRollDiceIntoArena_NumberOfPlayersAs7_NoDiceShouldHaveValueStillAt0() throws DiceContainerUnsupportedIdException {
-        try {
-            diceArena.rollDiceIntoArena();
-        } catch (DiceContainerUnsupportedIdException e) {
-            e.printStackTrace();
-        }
+
+        diceArena.rollDiceIntoArena();
         assertNotEquals(0, diceContainer.getDie(diceArena.getArena().get(0)).getRolledValue());
         assertNotEquals(0, diceContainer.getDie(diceArena.getArena().get(1)).getRolledValue());
         assertNotEquals(0, diceContainer.getDie(diceArena.getArena().get(2)).getRolledValue());
@@ -57,11 +54,8 @@ public class TestDiceArena {
     /*TODO: giocare in 4 giocatori, fare 10 turni e assicurarsi che escano tutti e 90 i valori */
     @Test
     public void checkUpdateRepresentation_ParamsAreRandom_CheckValuesAreAcceptable() throws DiceContainerUnsupportedIdException {
-        try {
-            diceArena.rollDiceIntoArena();
-        } catch (DiceContainerUnsupportedIdException e) {
-            e.printStackTrace();
-        }
+
+        diceArena.rollDiceIntoArena();
         diceArena.updateRepresentation();
         for(int i = 0; i < diceArena.getRepresentation().length(); i+=4){
             int k = Integer.parseInt(diceArena.getRepresentation().substring(i, i + 2));

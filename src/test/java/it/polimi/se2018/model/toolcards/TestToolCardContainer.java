@@ -28,21 +28,14 @@ public class TestToolCardContainer {
     @Test
     public void setToolCardInPlay_ControlName() {
         toolCardContainer.setToolCardInPlay(0);
-        try {
             assertEquals("Pinza Sgrossatrice", toolCardContainer.getToolCardInPlay().get(0).getName());
-        } catch (ToolCardNotInPlayException e) {
-            fail();
-        }
     }
 
     @Test
     public void setToolCardInPlay_ControlDescription() {
         toolCardContainer.setToolCardInPlay(0);
-        try {
             assertEquals("Dopo aver scelto un dado, aumenta o diminuisci il valore del dado scelto di 1. Non puoi cambiare un 6 in 1 o un 1 in 6.", toolCardContainer.getToolCardInPlay().get(0).getDescription());
-        } catch (ToolCardNotInPlayException e) {
-            fail();
-        }
+
     }
 
     @Test (expected = java.lang.Exception.class)

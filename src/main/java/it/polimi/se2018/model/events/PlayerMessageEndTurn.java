@@ -1,16 +1,14 @@
 package it.polimi.se2018.model.events;
 
-import it.polimi.se2018.model.Player;
-
 public class PlayerMessageEndTurn extends PlayerMessage {
 
-    private Player player;
+    private int player;
 
-    public PlayerMessageEndTurn(Player player){
+    public PlayerMessageEndTurn(int player){
         this.player = player;
     }
 
-    public Player getPlayer() {
+    public int getPlayer() {
         return player;
     }
 }

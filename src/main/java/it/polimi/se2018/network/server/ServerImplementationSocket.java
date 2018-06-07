@@ -37,7 +37,7 @@ public class ServerImplementationSocket extends Thread implements ServerInterfac
 
     @Override
     public void notify(PlayerMessage playerMessage) {
-        virtualView.notify(playerMessage);
+        virtualView.callNotify(playerMessage);
     }
 
     @Override

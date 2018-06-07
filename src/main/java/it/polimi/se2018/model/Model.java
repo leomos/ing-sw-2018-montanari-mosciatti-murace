@@ -2,7 +2,10 @@ package it.polimi.se2018.model;
 
 import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.events.*;
+import it.polimi.se2018.model.objectives.PrivateObjective;
+import it.polimi.se2018.model.objectives.PublicObjective;
 import it.polimi.se2018.model.rounds.RoundTrack;
+import it.polimi.se2018.model.toolcards.ToolCard;
 import it.polimi.se2018.model.toolcards.ToolCardContainer;
 import it.polimi.se2018.model.toolcards.ToolCardNotInPlayException;
 import it.polimi.se2018.utils.Observable;
@@ -20,9 +23,10 @@ public class Model extends Observable<ModelChangedMessage> {
     public Model(){
     }
 
-    public void init(HashMap<Integer, String> players) {
+    public void initSetup(HashMap<Integer, String> players) {
         ModelChangedMessageRefresh modelChangedMessageRefresh;
         table = new Table(players);
+
         for(Integer key : players.keySet()) {
             for (int j = 0; j < 4; j++) {
                 PatternCard patternCard = table.getPlayers(key).getPatternCards().get(j);
@@ -32,9 +36,65 @@ public class Model extends Observable<ModelChangedMessage> {
                         Integer.toString(patternCard.getDifficulty()),
                         patternCard.getPatternCardRepresentation()));
             }
+
+            PrivateObjective privateObjective = table.getPlayers(key).getPrivateObjective();
+            notify(new ModelChangedMessagePrivateObjective(Integer.toString(key),
+                    Integer.toString(privateObjective.getId()),
+                    privateObjective.getName(),
+                    privateObjective.getDescription()));
+
         }
         modelChangedMessageRefresh = new ModelChangedMessageRefresh(gamePhase);
         notify(modelChangedMessageRefresh);
+    }
+
+    public void initGame(HashMap<Integer, String> players) {
+        ModelChangedMessageRefresh modelChangedMessageRefresh;
+        this.gamePhase = GamePhase.GAMEPHASE;
+        modelChangedMessageRefresh = new ModelChangedMessageRefresh(gamePhase);
+        notify(modelChangedMessageRefresh);
+
+        System.out.println("qui ci arriva? SI");
+
+        for(Integer key : players.keySet()) {
+            PatternCard patternCard = table.getPlayers(key).getChosenPatternCard();
+            notify(new ModelChangedMessagePatternCard(Integer.toString(key),
+                    Integer.toString(patternCard.getId()),
+                    patternCard.getName(),
+                    Integer.toString(patternCard.getDifficulty()),
+                    patternCard.getPatternCardRepresentation()));
+
+            notify(new ModelChangedMessageDiceOnPatternCard(Integer.toString(key),
+                    Integer.toString(patternCard.getId()),
+                    patternCard.getDiceRepresentation()));
+
+            PrivateObjective privateObjective = table.getPlayers(key).getPrivateObjective();
+            notify(new ModelChangedMessagePrivateObjective(Integer.toString(key),
+                    Integer.toString(privateObjective.getId()),
+                    privateObjective.getName(),
+                    privateObjective.getDescription()));
+
+        }
+
+        for(int j = 0; j < 3; j ++) {
+            PublicObjective publicObjective = table.getPublicObjective(j);
+            notify(new ModelChangedMessagePublicObjective(Integer.toString(publicObjective.getId()),
+                    publicObjective.getName(),
+                    publicObjective.getDescription()));
+
+            ToolCard toolCard = table.getToolCardContainer().getToolCardInPlay().get(j);
+            notify(new ModelChangedMessageToolCard(Integer.toString(toolCard.getToolCardId()),
+                    toolCard.getName(),
+                    toolCard.getDescription(),
+                    Integer.toString(toolCard.cost())));
+        }
+
+        System.out.println(table.getDiceArena().getRepresentation());
+        notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
+
+        modelChangedMessageRefresh = new ModelChangedMessageRefresh(gamePhase);
+        notify(modelChangedMessageRefresh);
+
     }
 
     public Table getTable() {
@@ -51,9 +111,7 @@ public class Model extends Observable<ModelChangedMessage> {
 
     public void setChosenPatternCard(int idPatternCard, int idPlayer){
 
-        Player player = table.getPlayers(idPlayer);
-
-        for(PatternCard patternCard : player.getPatternCards())
+        for(PatternCard patternCard : table.getPlayers(idPlayer).getPatternCards())
             if(idPatternCard == patternCard.getId())
                 table.getPlayers(idPlayer).setChosenPatternCard(patternCard);
 
@@ -98,6 +156,9 @@ public class Model extends Observable<ModelChangedMessage> {
         }
     }
 
+    public void endTurn(){
+        //table.getRoundTrack().getCurrentRound().setNextPlayer();
+    }
 
     /**
      * @param player

@@ -50,6 +50,9 @@ public class Table {
         this.setPrivateObjectiveToPlayers();
         this.setPublicObjective();
         this.setToolCards();
+
+        this.diceArena.rollDiceIntoArena();
+        this.diceArena.updateRepresentation();
     }
 
     public int getNumberOfPlayers() {

@@ -25,8 +25,8 @@ public class VirtualView extends Observable<PlayerMessage> implements Observer<M
     }
 
 
-    public void notify(PlayerMessage playerMessage){
-
+    public void callNotify(PlayerMessage playerMessage){
+        notify(playerMessage);
     }
 
     public void addClient(ClientInterface clientInterface){
