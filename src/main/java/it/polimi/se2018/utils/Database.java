@@ -101,7 +101,4 @@ public class Database {
         return privateObjectives;
     }
 
-    private String escapeSingleQuote(String toEscape) {
-
-    }
 }

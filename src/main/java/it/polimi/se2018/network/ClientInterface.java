@@ -1,12 +1,15 @@
 package it.polimi.se2018.network;
 
 import it.polimi.se2018.model.events.ModelChangedMessage;
+import it.polimi.se2018.network.server.Room;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 
 public interface ClientInterface extends Remote {
+
+    public void setRoom(Room room) throws RemoteException;
 
     public void update(ModelChangedMessage modelChangedMessage) throws RemoteException;
 
@@ -19,8 +22,6 @@ public interface ClientInterface extends Remote {
     public Integer[] getPositionInPatternCard() throws RemoteException;
 
     public Integer getValueForDie() throws RemoteException;
-
-    public String askForName() throws RemoteException;
 
     public List<Integer> askForPatternCard() throws RemoteException;
 }

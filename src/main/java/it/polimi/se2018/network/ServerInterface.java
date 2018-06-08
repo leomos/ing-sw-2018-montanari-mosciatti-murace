@@ -9,6 +9,6 @@ public interface ServerInterface<T> extends Remote {
 
     public void notify(PlayerMessage playerMessage) throws RemoteException;
 
-    public void registerClient(T client, String name) throws RemoteException;
+    public Integer registerClient(T client, String name) throws RemoteException;
 
 }
