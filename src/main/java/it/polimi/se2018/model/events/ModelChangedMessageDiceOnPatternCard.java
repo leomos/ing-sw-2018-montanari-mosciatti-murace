@@ -1,6 +1,8 @@
 package it.polimi.se2018.model.events;
 
-public class ModelChangedMessageDiceOnPatternCard extends ModelChangedMessage{
+import it.polimi.se2018.network.visitor.MessageVisitorInterface;
+
+public class ModelChangedMessageDiceOnPatternCard extends ModelChangedMessage implements Message {
 
     private String idPlayer;
 
@@ -24,5 +26,10 @@ public class ModelChangedMessageDiceOnPatternCard extends ModelChangedMessage{
 
     public String getRepresentation() {
         return representation;
+    }
+
+    @Override
+    public void accept(MessageVisitorInterface messageVisitorInterface) {
+        messageVisitorInterface.visitModelChangedMessageDiceOnPatternCard(this);
     }
 }

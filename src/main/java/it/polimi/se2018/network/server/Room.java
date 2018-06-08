@@ -2,6 +2,7 @@ package it.polimi.se2018.network.server;
 
 import it.polimi.se2018.controller.Controller;
 import it.polimi.se2018.model.Model;
+import it.polimi.se2018.model.events.Message;
 import it.polimi.se2018.model.events.PlayerMessage;
 import it.polimi.se2018.network.ClientInterface;
 import it.polimi.se2018.view.VirtualView;
@@ -48,7 +49,7 @@ public class Room {
         }
     }
 
-    public void notifyView(Object playerMessage) {
+    public void notifyView(Message playerMessage) {
         System.out.println("arrivato " + playerMessage.toString());
         //view.notify((PlayerMessage) playerMessage);
     }

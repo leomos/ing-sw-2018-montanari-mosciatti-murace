@@ -1,6 +1,8 @@
 package it.polimi.se2018.model.events;
 
-public class ModelChangedMessageToolCard extends ModelChangedMessage{
+import it.polimi.se2018.network.visitor.MessageVisitorInterface;
+
+public class ModelChangedMessageToolCard extends ModelChangedMessage implements Message {
 
     private String idToolCard;
 
@@ -31,5 +33,10 @@ public class ModelChangedMessageToolCard extends ModelChangedMessage{
 
     public String getCost() {
         return cost;
+    }
+
+    @Override
+    public void accept(MessageVisitorInterface messageVisitorInterface) {
+        messageVisitorInterface.visitModelChangedMessageToolCard(this);
     }
 }

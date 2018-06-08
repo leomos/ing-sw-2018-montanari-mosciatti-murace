@@ -74,7 +74,7 @@ public class MessageVisitorImplementationClient implements MessageVisitorInterfa
 
     @Override
     public void visitPlayerMessageDie(PlayerMessageDie playerMessageDie) {
-
+        clientImplementationSocket.getRoom().notifyView(playerMessageDie);
     }
 
     @Override

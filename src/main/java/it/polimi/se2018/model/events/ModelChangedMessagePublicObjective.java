@@ -1,6 +1,8 @@
 package it.polimi.se2018.model.events;
 
-public class ModelChangedMessagePublicObjective extends ModelChangedMessage{
+import it.polimi.se2018.network.visitor.MessageVisitorInterface;
+
+public class ModelChangedMessagePublicObjective extends ModelChangedMessage implements Message {
 
     private String idPublicObjective;
 
@@ -24,5 +26,10 @@ public class ModelChangedMessagePublicObjective extends ModelChangedMessage{
 
     public String getDescription() {
         return description;
+    }
+
+    @Override
+    public void accept(MessageVisitorInterface messageVisitorInterface) {
+        messageVisitorInterface.visitModelChangedMessagePublicObjective(this);
     }
 }

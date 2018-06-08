@@ -1,6 +1,8 @@
 package it.polimi.se2018.model.events;
 
-public class ModelChangedMessageDiceArena extends ModelChangedMessage{
+import it.polimi.se2018.network.visitor.MessageVisitorInterface;
+
+public class ModelChangedMessageDiceArena extends ModelChangedMessage implements Message {
 
     private String representation;
 
@@ -12,4 +14,8 @@ public class ModelChangedMessageDiceArena extends ModelChangedMessage{
         return representation;
     }
 
+    @Override
+    public void accept(MessageVisitorInterface messageVisitorInterface) {
+        messageVisitorInterface.visitModelChangedMessageDiceArena(this);
+    }
 }

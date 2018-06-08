@@ -1,7 +1,9 @@
 package it.polimi.se2018.model.events;
 
 
-public class PlayerMessageDie extends PlayerMessage {
+import it.polimi.se2018.network.visitor.MessageVisitorInterface;
+
+public class PlayerMessageDie extends PlayerMessage implements Message {
 
     private int player;
 
@@ -26,5 +28,10 @@ public class PlayerMessageDie extends PlayerMessage {
 
     public int[] getPosition() {
         return position;
+    }
+
+    @Override
+    public void accept(MessageVisitorInterface messageVisitorInterface) {
+        messageVisitorInterface.visitPlayerMessageDie(this);
     }
 }

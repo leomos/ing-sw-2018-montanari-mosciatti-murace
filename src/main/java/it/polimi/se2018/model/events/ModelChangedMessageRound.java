@@ -1,6 +1,8 @@
 package it.polimi.se2018.model.events;
 
-public class ModelChangedMessageRound extends ModelChangedMessage{
+import it.polimi.se2018.network.visitor.MessageVisitorInterface;
+
+public class ModelChangedMessageRound extends ModelChangedMessage implements Message {
 
     private String idRound;
 
@@ -17,5 +19,10 @@ public class ModelChangedMessageRound extends ModelChangedMessage{
 
     public String getRepresentation() {
         return representation;
+    }
+
+    @Override
+    public void accept(MessageVisitorInterface messageVisitorInterface) {
+        messageVisitorInterface.visitModelChangedMessageRound(this);
     }
 }

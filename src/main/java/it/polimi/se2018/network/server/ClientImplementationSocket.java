@@ -57,6 +57,10 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
         }
     }
 
+    public Room getRoom() {
+        return room;
+    }
+
     @Override
     public void setRoom(Room room) throws RemoteException {
         this.room = room;
