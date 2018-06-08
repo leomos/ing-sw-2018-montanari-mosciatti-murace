@@ -18,13 +18,8 @@ public class Client {
             id = serverInterface.registerClient(socket, "piero");
             System.out.println(id);
             ((ServerImplementationSocket)serverInterface).start();
-
-            PlayerMessage playerMessage = new PlayerMessageSetup(0,0);
-            serverInterface.notify(playerMessage);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 }

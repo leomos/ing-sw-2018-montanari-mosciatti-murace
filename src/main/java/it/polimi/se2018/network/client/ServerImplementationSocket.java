@@ -1,8 +1,13 @@
 package it.polimi.se2018.network.client;
 
+import it.polimi.se2018.model.events.Message;
 import it.polimi.se2018.model.events.MethodCallMessage;
+import it.polimi.se2018.model.events.ModelChangedMessage;
 import it.polimi.se2018.model.events.PlayerMessage;
 import it.polimi.se2018.network.ServerInterface;
+import it.polimi.se2018.network.visitor.MessageVisitorImplementationServer;
+import it.polimi.se2018.network.visitor.MessageVisitorInterface;
+import it.polimi.se2018.view.ViewClient;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -15,6 +20,18 @@ public class ServerImplementationSocket extends Thread implements ServerInterfac
     private ObjectInputStream objectInputStream;
 
     private ObjectOutputStream objectOutputStream;
+
+    private Message inputMessage;
+
+    private MessageVisitorInterface messageVisitorInterface = new MessageVisitorImplementationServer(this);
+
+    private ViewClient viewClient;
+
+
+    /*
+    public ServerImplementationSocket(ViewClient viewClient) {
+        this.viewClient = viewClient;
+    }*/
 
     @Override
     public void notify(PlayerMessage playerMessage) throws RemoteException {
@@ -48,12 +65,9 @@ public class ServerImplementationSocket extends Thread implements ServerInterfac
 
     @Override
     public void run() {
-        MethodCallMessage mc;
         try {
-            while (null != (mc = (MethodCallMessage) objectInputStream.readObject())) {
-                System.out.println(mc.getMethodName());
-                mc = new MethodCallMessage("getDieFromPatternCard", 3);
-                objectOutputStream.writeObject(mc);
+            while (null != (inputMessage = (Message) objectInputStream.readObject())) {
+                inputMessage.accept(messageVisitorInterface);
             }
         } catch (IOException e) {
 
@@ -61,4 +75,21 @@ public class ServerImplementationSocket extends Thread implements ServerInterfac
 
         }
     }
+
+    public ViewClient getViewClient() {
+        return viewClient;
+    }
+
+    public void updateView(Message message) {
+        viewClient.update((ModelChangedMessage) message);
+    }
+
+    public void writeMessage(Message message) {
+        try {
+            this.objectOutputStream.writeObject(message);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

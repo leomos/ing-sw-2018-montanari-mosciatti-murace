@@ -12,8 +12,27 @@ public class MessageVisitorImplementationClient implements MessageVisitorInterfa
     }
 
     @Override
+    public void visitPlayerMessageDie(PlayerMessageDie playerMessageDie) {
+        clientImplementationSocket.notifyRoom(playerMessageDie);
+    }
+
+    @Override
+    public void visitPlayerMessageEndTurn(PlayerMessageEndTurn playerMessageEndTurn) {
+        clientImplementationSocket.notifyRoom(playerMessageEndTurn);
+    }
+
+    @Override
+    public void visitPlayerMessageSetup(PlayerMessageSetup playerMessageSetup) {
+        clientImplementationSocket.notifyRoom(playerMessageSetup);
+    }
+
+    @Override
+    public void visitPlayerMessageToolCard(PlayerMessageToolCard playerMessageToolCard) {
+        clientImplementationSocket.notifyRoom(playerMessageToolCard);
+    }
+
+    @Override
     public void visitMethodCallMessage(MethodCallMessage methodCallMessage) {
-        System.out.println("MethodCallMessage");
         clientImplementationSocket.unlockAndSetReady();
     }
 
@@ -69,26 +88,6 @@ public class MessageVisitorImplementationClient implements MessageVisitorInterfa
 
     @Override
     public void visitModelChangedMessageToolCard(ModelChangedMessageToolCard modelChangedMessageToolCard) {
-
-    }
-
-    @Override
-    public void visitPlayerMessageDie(PlayerMessageDie playerMessageDie) {
-        clientImplementationSocket.getRoom().notifyView(playerMessageDie);
-    }
-
-    @Override
-    public void visitPlayerMessageEndTurn(PlayerMessageEndTurn playerMessageEndTurn) {
-
-    }
-
-    @Override
-    public void visitPlayerMessageSetup(PlayerMessageSetup playerMessageSetup) {
-
-    }
-
-    @Override
-    public void visitPlayerMessageToolCard(PlayerMessageToolCard playerMessageToolCard) {
 
     }
 }

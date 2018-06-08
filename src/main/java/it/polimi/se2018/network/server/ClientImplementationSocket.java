@@ -57,8 +57,8 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
         }
     }
 
-    public Room getRoom() {
-        return room;
+    public void notifyRoom(Message message) {
+        room.notifyView(message);
     }
 
     @Override
