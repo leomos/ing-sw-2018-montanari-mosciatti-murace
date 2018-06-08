@@ -17,7 +17,7 @@ public class Round {
 
     private int idPlayerPlaying = -1;
 
-    private int[] rolledDiceLeft;
+    private ArrayList<Integer> rolledDiceLeft = new ArrayList<Integer>();
 
     private String representation = "";
 
@@ -40,7 +40,7 @@ public class Round {
         return idPlayerPlaying;
     }
 
-    public int[] getRolledDiceLeft() {
+    public ArrayList<Integer> getRolledDiceLeft() {
         return rolledDiceLeft;
     }
 
@@ -50,7 +50,7 @@ public class Round {
         this.players = players;
     }
 
-    public void setRolledDiceLeft(int[] rolledDiceLeft) {
+    public void setRolledDiceLeft(ArrayList<Integer> rolledDiceLeft) {
         this.rolledDiceLeft = rolledDiceLeft;
     }
 
@@ -63,7 +63,10 @@ public class Round {
         if(idPlayerPlaying != -1) {
             throw new RoundFirstPlayerAlreadySetException();
         }
-        idPlayerPlaying = idFirstPlayer;
+        if(idFirstPlayer == 0)
+            idPlayerPlaying = players.size();
+        else
+            idPlayerPlaying = idFirstPlayer;
         createTurns();
     }
 
@@ -110,16 +113,16 @@ public class Round {
 
     public void updateRepresentation(){
         representation = "";
-        for(int i = 0; i < rolledDiceLeft.length; i++){
+        for(int i = 0; i < rolledDiceLeft.size(); i++){
             Die d = null;
             try {
-                d = diceContainer.getDie(rolledDiceLeft[i]);
+                d = diceContainer.getDie(rolledDiceLeft.get(i));
             } catch (DiceContainerUnsupportedIdException e) {
                 e.printStackTrace();
             }
-            if(rolledDiceLeft[i] < 10)
+            if(rolledDiceLeft.get(i) < 10)
                 representation = representation + "0";
-            representation = representation + Integer.toString(rolledDiceLeft[i]) + d.getColorChar() + d.getRolledValue();
+            representation = representation + Integer.toString(rolledDiceLeft.get(i)) + d.getColorChar() + d.getRolledValue();
         }
     }
 
@@ -147,9 +150,9 @@ public class Round {
      * that is, they need to be present in rolledDiceLeft.
      */
     public void swapDie(int dieIdToRemove, int dieIdToAdd) {
-        for (int i = 0; i < rolledDiceLeft.length; i++) {
-            if(dieIdToRemove == rolledDiceLeft[i]) {
-                rolledDiceLeft[i] = dieIdToAdd;
+        for (int i = 0; i < rolledDiceLeft.size(); i++) {
+            if(dieIdToRemove == rolledDiceLeft.get(i)) {
+                rolledDiceLeft.add(i, dieIdToAdd);
                 return;
             }
         }
@@ -165,6 +168,10 @@ public class Round {
             if(id == dieId) return true;
         }
         return false;
+    }
+
+    public boolean isRoundOver(){
+        return turns.isEmpty();
     }
 
     public void giveConsecutiveTurnsToPlayer(int playerId)

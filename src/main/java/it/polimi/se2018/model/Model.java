@@ -90,8 +90,9 @@ public class Model extends Observable<ModelChangedMessage> {
         }
 
         Round round = table.getRoundTrack().getRound(0);
-        notify(new ModelChangedMessageRound(Integer.toString(round.getId()),
-                round.getRepresentation()));
+
+        //notify(new ModelChangedMessageRound(Integer.toString(round.getId()),
+        //        round.getRepresentation()));
 
         notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
 
@@ -172,6 +173,7 @@ public class Model extends Observable<ModelChangedMessage> {
                 patternCard.updateDiceRepresentation();
                 String idPL = "" + idPlayer;
                 String idPC = "" + patternCard.getId();
+
                 notify(new ModelChangedMessageDiceOnPatternCard(idPL, idPC, patternCard.getDiceRepresentation()));
                 notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
                 notify(new ModelChangedMessageRefresh(this.gamePhase, Integer.toString(table.getRoundTrack().getCurrentRound().getIdPlayerPlaying())));
@@ -182,7 +184,22 @@ public class Model extends Observable<ModelChangedMessage> {
     }
 
     public void endTurn(){
-        table.getRoundTrack().getCurrentRound().setNextPlayer();
+        if(!table.getRoundTrack().getCurrentRound().isRoundOver()) {
+            table.getRoundTrack().getCurrentRound().setNextPlayer();
+        }
+        else {
+            Round round = table.getRoundTrack().getCurrentRound();
+            table.getRoundTrack().setRolledDiceLeftForCurrentRound(table.getDiceArena().getArena());
+            round.updateRepresentation();
+            table.getDiceArena().rollDiceIntoArena();
+            table.getDiceArena().updateRepresentation();
+
+            notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
+            notify(new ModelChangedMessageRound(Integer.toString(round.getId()), round.getRepresentation()));
+
+            table.getRoundTrack().startNextRound();
+        }
+
         notify(new ModelChangedMessageRefresh(this.gamePhase, Integer.toString((table.getRoundTrack().getCurrentRound().getIdPlayerPlaying()))));
     }
 

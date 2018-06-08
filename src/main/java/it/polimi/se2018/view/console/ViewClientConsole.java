@@ -54,6 +54,8 @@ public class ViewClientConsole extends ViewClient {
         }
     }
 
+    /*TODO: need to check if the type of the input is correct somehow*/
+
     public String askForName(){
 
         System.out.println("\nname");
@@ -65,34 +67,66 @@ public class ViewClientConsole extends ViewClient {
     }
 
     public PlayerMessageSetup askForPatternCard()  {
-
-        System.out.println("\nid PatternCard");
         Scanner input = new Scanner(System.in);
-        String s = input.nextLine();
-        int idPatternCard = Integer.parseInt(s);
+        boolean moveOk = true;
+        do {
+            System.out.println("\nChoose a PatternCard by selecting one of the PatternCardId");
 
-        PlayerMessageSetup messageSetup = new PlayerMessageSetup(idClient, idPatternCard);
+            String s = input.nextLine();
+            int idPatternCard = Integer.parseInt(s);
 
-        return messageSetup;
+            if(idPatternCard >= 0 && idPatternCard < 24) {
+                moveOk = false;
+                return new PlayerMessageSetup(idClient, idPatternCard);
+
+            }
+
+            if(moveOk)
+                System.out.println("Try Again!");
+        }
+        while(moveOk);
+
+        return null;
     }
 
     public PlayerMessage askForMove(){
         if(isMyTurn) {
-            System.out.println("\nIt's your turn");
+            boolean moveOk = true;
 
-            Scanner input = new Scanner(System.in);
-            String s = input.nextLine();
-            String[] parts = s.split(" ");
+            do{
 
-            if(parts[0].equals("end")){
-                return new PlayerMessageEndTurn(idClient);
-            } else {
-                int idDie = Integer.parseInt(parts[0]);
-                int x = Integer.parseInt(parts[1]);
-                int y = Integer.parseInt(parts[2]);
+                System.out.println("\n\nIt's your turn");
+                System.out.println("/help: get List of moves");
+                Scanner input = new Scanner(System.in);
+                String s = input.nextLine();
+                String[] parts = s.split(" ");
 
-                return new PlayerMessageDie(idClient, idDie, x, y);
+                if(parts[0].equals("/help"))
+                    System.out.println("\nDieId x_position y_position  -> to position a die from the dice arena to the patterncard\nend  -> to end the turn");
+
+                if(parts.length == 3) {
+                    int idDie = Integer.parseInt(parts[0]);
+                    int x = Integer.parseInt(parts[1]);
+                    int y = Integer.parseInt(parts[2]);
+                    if (idDie >= 0 && idDie < 90) {
+                        if(x >= 0 && x < 5 && y >= 0 && y < 4) {
+                            moveOk = false;
+                            return new PlayerMessageDie(idClient, idDie, x, y);
+                        } else
+                            System.out.println("X must be between 0 and 4 while Y must be between 0 and 3");
+                    } else
+                        System.out.println("Die Id must be between 0 and 90");
+                }
+
+                if (parts[0].equals("end")) {
+                    moveOk = false;
+                    return new PlayerMessageEndTurn(idClient);
+                }
+
+                if(moveOk == true)
+                    System.out.println("Try Again!");
             }
+            while(moveOk);
         }
         return null;
     }

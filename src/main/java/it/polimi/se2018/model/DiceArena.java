@@ -34,6 +34,7 @@ public class DiceArena {
     }
 
     public void rollDiceIntoArena()  {
+        arena.clear();
         ArrayList<Integer> diceToRoll = diceContainer.getUnrolledDice();
         Collections.shuffle(diceToRoll);
         for(int i = 0; i < numberOfDice; i++){

@@ -61,7 +61,7 @@ public class Room extends Thread {
 
             //start rounds
 
-            for(int i = 0; i < clientsList.size() * 2 * 10; i++) //SBAGLIATO
+            for(int i = 0; i < clientsList.size() * 2 * 10; i++) //SBAGLIATO?
                 for(ClientInterface clientInterface: virtualView.getClientInterfaceList()){
                     PlayerMessage data;
                     try {

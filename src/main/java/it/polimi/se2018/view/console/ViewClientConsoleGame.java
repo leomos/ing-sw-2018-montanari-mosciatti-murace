@@ -22,7 +22,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
     private ModelChangedMessagePrivateObjective privateObjective;
 
-    private ArrayList<ModelChangedMessageRound> roundTrack = new ArrayList<ModelChangedMessageRound>();
+    private ArrayList<ModelChangedMessageRound> roundTrack = new ArrayList<ModelChangedMessageRound>(10);
 
     public ViewClientConsoleGame(int idClient){
         this.idClient = idClient;
@@ -58,7 +58,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
         else if(message instanceof ModelChangedMessageDiceArena)
             diceArena = ((ModelChangedMessageDiceArena)message);
         else if(message instanceof ModelChangedMessageRound) {
-            roundTrack.add((ModelChangedMessageRound) message);
+            roundTrack.add(Integer.parseInt(((ModelChangedMessageRound) message).getIdRound()), (ModelChangedMessageRound) message);
         }
 
 
@@ -66,6 +66,10 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
     @Override
     public void print() {
+
+        System.out.println("/°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°/");
+        System.out.println("/°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°/");
+        System.out.println("/°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°/");
 
         int myPatternCardId = -1;
         for (int i = 0; i < patternCards.size(); i++)
@@ -82,6 +86,8 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
         for (int i = 0; i < roundTrack.size(); i++)
             printRoundTrack(roundTrack.get(i));
+        int app = roundTrack.size() + 1;
+        System.out.println("\n\nCURRENT ROUND IS:\t" + app );
 
         printDiceArena(diceArena);
 
@@ -91,7 +97,6 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
         for (int i = 0; i < 3; i++)
             printToolCards(toolCards.get(i));
 
-        System.out.println("\n\n/help: get List of moves");
     }
 
 }

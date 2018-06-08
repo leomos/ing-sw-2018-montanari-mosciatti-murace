@@ -56,9 +56,13 @@ public class RoundTrack {
      * @throws  RoundTrackTooManyDiceForCurrentPlayers if rolledDiceLeft
      *          parameter' size is bigger than (players.size()*2 + 1)
      */
-    public void setRolledDiceLeftForCurrentRound(int[] rolledDiceLeft) throws RoundTrackTooManyDiceForCurrentPlayers {
-        if(rolledDiceLeft.length > (players.size()*2 + 1)) {
-            throw new RoundTrackTooManyDiceForCurrentPlayers();
+    public void setRolledDiceLeftForCurrentRound(ArrayList<Integer> rolledDiceLeft) {
+        if(rolledDiceLeft.size() > (players.size()*2 + 1)) {
+            try {
+                throw new RoundTrackTooManyDiceForCurrentPlayers();
+            } catch (RoundTrackTooManyDiceForCurrentPlayers roundTrackTooManyDiceForCurrentPlayers) {
+                roundTrackTooManyDiceForCurrentPlayers.printStackTrace();
+            }
         }
         rounds[currentRoundId].setRolledDiceLeft(rolledDiceLeft);
     }

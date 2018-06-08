@@ -100,7 +100,10 @@ public abstract class ViewClientConsolePrint {
 
     protected void printRoundTrack(ModelChangedMessageRound message) {
 
-        System.out.print("\nROUND " + message.getIdRound() + ":\t");
+        int app = Integer.parseInt(message.getIdRound()) + 1;
+        System.out.print("\nROUND " + app  + ":\t");
+        if(message.getRepresentation().length() == 0)
+            System.out.println("\tCURRENT ROUND\t");
         for (int j=0; j<message.getRepresentation().length(); j+=4) {
             char color = message.getRepresentation().charAt(j+2);
             char value = message.getRepresentation().charAt(j+3);

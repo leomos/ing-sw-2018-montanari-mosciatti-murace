@@ -56,44 +56,36 @@ public class TestRoundTrack {
 
     @Test
     public void setRolledDiceLeftForCurrentRound_1stParamAsCustomMadeArrayOfInt_currentRoundRolledDiceLeftShouldBeEqualsToCustomMadeArray(){
-        int[] diceLeft = new int[3];
-        diceLeft[0] = 34;
-        diceLeft[1] = 22;
-        diceLeft[2] = 90;
+        ArrayList<Integer> diceLeft = new ArrayList<Integer>();
+        diceLeft.add(34);
+        diceLeft.add(22);
+        diceLeft.add(90);
         roundTrack.startNextRound();
-        try {
-            roundTrack.setRolledDiceLeftForCurrentRound(diceLeft);
-        } catch (RoundTrackTooManyDiceForCurrentPlayers roundTrackTooManyDiceForCurrentPlayers) {
-            fail();
-        }
+        roundTrack.setRolledDiceLeftForCurrentRound(diceLeft);
         assertEquals(diceLeft, roundTrack.getCurrentRound().getRolledDiceLeft());
     }
 
     @Test(expected = RoundTrackTooManyDiceForCurrentPlayers.class)
     public void setRolledDiceLeftForCurrentRound_1stParamAsInvalidArrayOfInt_ExceptionThrown()
             throws RoundTrackTooManyDiceForCurrentPlayers {
-        int[] diceLeft = new int[6];
-        diceLeft[0] = 34;
-        diceLeft[1] = 22;
-        diceLeft[2] = 90;
-        diceLeft[3] = 23;
-        diceLeft[4] = 35;
-        diceLeft[5] = 89;
+        ArrayList<Integer> diceLeft = new ArrayList<Integer>();
+        diceLeft.add(34);
+        diceLeft.add(22);
+        diceLeft.add(90);
+        diceLeft.add(23);
+        diceLeft.add(35);
+        diceLeft.add(89);
         roundTrack.setRolledDiceLeftForCurrentRound(diceLeft);
     }
 
     @Test
     public void swapDieInRound_1stParamAsIdPresentInLeftDice2ndParamAsValidId_1stParamShouldNotBePresentAnd2ndParamShouldBePresent() {
-        int[] diceLeft = new int[3];
-        diceLeft[0] = 1;
-        diceLeft[1] = 23;
-        diceLeft[2] = 42;
+        ArrayList<Integer> diceLeft = new ArrayList<Integer>();
+        diceLeft.add(1);
+        diceLeft.add(23);
+        diceLeft.add(42);
         roundTrack.startNextRound();
-        try {
-            roundTrack.setRolledDiceLeftForCurrentRound(diceLeft);
-        } catch (RoundTrackTooManyDiceForCurrentPlayers roundTrackTooManyDiceForCurrentPlayers) {
-            fail();
-        }
+        roundTrack.setRolledDiceLeftForCurrentRound(diceLeft);
         try {
             roundTrack.swapDieInRound(23,54);
         } catch (DieNotPresentException e) {
@@ -104,16 +96,12 @@ public class TestRoundTrack {
 
     @Test(expected = DieNotPresentException.class)
     public void swapDieInRound_1stParamAsIdNotPresentInLetDice2ndParamAsValidId_ExceptionThrown() throws DieNotPresentException {
-        int[] diceLeft = new int[3];
-        diceLeft[0] = 1;
-        diceLeft[1] = 23;
-        diceLeft[2] = 42;
+        ArrayList<Integer> diceLeft = new ArrayList<Integer>();
+        diceLeft.add(1);
+        diceLeft.add(23);
+        diceLeft.add(42);
         roundTrack.startNextRound();
-        try {
-            roundTrack.setRolledDiceLeftForCurrentRound(diceLeft);
-        } catch (RoundTrackTooManyDiceForCurrentPlayers roundTrackTooManyDiceForCurrentPlayers) {
-            fail();
-        }
+        roundTrack.setRolledDiceLeftForCurrentRound(diceLeft);
         roundTrack.swapDieInRound(90,54);
     }
 }
