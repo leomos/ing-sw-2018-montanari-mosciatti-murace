@@ -34,21 +34,23 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
     public void update(ModelChangedMessage message) {
 
         if (message instanceof ModelChangedMessagePatternCard){
-            int i = 0;
-            if (!idPlayers.contains(((ModelChangedMessagePatternCard) message).getIdPlayer())) {
                 idPlayers.add(((ModelChangedMessagePatternCard) message).getIdPlayer());
                 patternCards.add((ModelChangedMessagePatternCard) message);
+        }
+        else if (message instanceof ModelChangedMessageDiceOnPatternCard){
+            int i = 0;
+            if (!idPlayers.contains(((ModelChangedMessageDiceOnPatternCard) message).getIdPlayer())) {
+                idPlayers.add(((ModelChangedMessageDiceOnPatternCard) message).getIdPlayer());
+                diceOnPatternCards.add((ModelChangedMessageDiceOnPatternCard) message);
             }  else {
-                i = idPlayers.indexOf(((ModelChangedMessagePatternCard) message).getIdPlayer());
-                patternCards.add(i, (ModelChangedMessagePatternCard) message);
+                i = idPlayers.indexOf(((ModelChangedMessageDiceOnPatternCard) message).getIdPlayer());
+                diceOnPatternCards.add(i, (ModelChangedMessageDiceOnPatternCard) message);
             }
         }
         else if(message instanceof ModelChangedMessagePrivateObjective) {
             if (((ModelChangedMessagePrivateObjective) message).getIdPlayer().equals(Integer.toString(idClient)))
                 privateObjective = ((ModelChangedMessagePrivateObjective) message);
         }
-        else if(message instanceof ModelChangedMessageDiceOnPatternCard)
-            diceOnPatternCards.add((ModelChangedMessageDiceOnPatternCard)message);
         else if(message instanceof ModelChangedMessagePublicObjective)
             publicObjectives.add((ModelChangedMessagePublicObjective)message);
         else if(message instanceof ModelChangedMessageToolCard)

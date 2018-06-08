@@ -1,19 +1,17 @@
 package it.polimi.se2018.model.events;
 
-import it.polimi.se2018.model.Player;
-
 public class ModelChangedMessageMoveFailed extends ModelChangedMessage{
 
-    private Player player;
+    private String player;
 
     private String errorMessage;
 
-    public ModelChangedMessageMoveFailed(Player player, String errorMessage){
+    public ModelChangedMessageMoveFailed(String player, String errorMessage){
         this.player = player;
         this.errorMessage = errorMessage;
     }
 
-    public Player getPlayer() {
+    public String getPlayer() {
         return player;
     }
 

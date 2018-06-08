@@ -1,14 +1,10 @@
 package it.polimi.se2018.view.console;
 
 import it.polimi.se2018.model.GamePhase;
-import it.polimi.se2018.model.events.ModelChangedMessage;
-import it.polimi.se2018.model.events.ModelChangedMessageConnected;
-import it.polimi.se2018.model.events.ModelChangedMessageRefresh;
-import it.polimi.se2018.model.events.PlayerMessageSetup;
+import it.polimi.se2018.model.events.*;
 import it.polimi.se2018.network.server.ServerInterface;
 import it.polimi.se2018.view.ViewClient;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 import static it.polimi.se2018.model.GamePhase.GAMEPHASE;
@@ -17,7 +13,7 @@ public class ViewClientConsole extends ViewClient {
 
     private int idClient;
 
-    private boolean isMyTurn;
+    private boolean isMyTurn = false;
 
     private GamePhase gamePhase = GamePhase.SETUPPHASE;
 
@@ -34,6 +30,10 @@ public class ViewClientConsole extends ViewClient {
             this.idClient = ((ModelChangedMessageConnected) message).getIdClient();
             viewClientConsolePrint = new ViewClientConsoleSetup(this.idClient);
         }
+        else if(message instanceof ModelChangedMessageMoveFailed){
+            if(((ModelChangedMessageMoveFailed) message).getPlayer().equals(Integer.toString(idClient)))
+                System.out.println(((ModelChangedMessageMoveFailed) message).getErrorMessage());
+        }
         else if(message instanceof ModelChangedMessageRefresh) {
             if (((ModelChangedMessageRefresh) message).getGamePhase() != gamePhase) {
                 gamePhase = ((ModelChangedMessageRefresh) message).getGamePhase(); //cambia anche per end game
@@ -41,6 +41,12 @@ public class ViewClientConsole extends ViewClient {
                     viewClientConsolePrint = new ViewClientConsoleGame(this.idClient);
             }else {
                 viewClientConsolePrint.print();
+                if(((ModelChangedMessageRefresh) message).getIdPlayerPlaying() != null)
+                    if(((ModelChangedMessageRefresh) message).getIdPlayerPlaying().equals(Integer.toString(idClient)))
+                        isMyTurn = true;
+                    else
+                        isMyTurn = false;
+
             }
 
         } else {
@@ -59,7 +65,6 @@ public class ViewClientConsole extends ViewClient {
     }
 
     public PlayerMessageSetup askForPatternCard()  {
-        ArrayList<Integer> data = new ArrayList<Integer>();
 
         System.out.println("\nid PatternCard");
         Scanner input = new Scanner(System.in);
@@ -69,6 +74,27 @@ public class ViewClientConsole extends ViewClient {
         PlayerMessageSetup messageSetup = new PlayerMessageSetup(idClient, idPatternCard);
 
         return messageSetup;
+    }
+
+    public PlayerMessage askForMove(){
+        if(isMyTurn) {
+            System.out.println("\nIt's your turn");
+
+            Scanner input = new Scanner(System.in);
+            String s = input.nextLine();
+            String[] parts = s.split(" ");
+
+            if(parts[0].equals("end")){
+                return new PlayerMessageEndTurn(idClient);
+            } else {
+                int idDie = Integer.parseInt(parts[0]);
+                int x = Integer.parseInt(parts[1]);
+                int y = Integer.parseInt(parts[2]);
+
+                return new PlayerMessageDie(idClient, idDie, x, y);
+            }
+        }
+        return null;
     }
 
     public int[] getDiePosition(){

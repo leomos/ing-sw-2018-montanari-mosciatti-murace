@@ -22,8 +22,8 @@ public class DieController  {
 
         int idPlayer = playerMessageDie.getPlayer();
         int idDie = playerMessageDie.getDie();
-        int x = playerMessageDie.getPosition()[0];
-        int y = playerMessageDie.getPosition()[1];
+        int x = playerMessageDie.getX_position();
+        int y = playerMessageDie.getY_position();
 
         this.model.setDieInPatternCard(idPlayer, idDie, x, y, false, false);
 

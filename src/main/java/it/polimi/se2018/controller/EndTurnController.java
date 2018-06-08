@@ -11,8 +11,9 @@ public class EndTurnController  {
         this.model = model;
     }
 
-    public void excute(PlayerMessageEndTurn playerMessageEndTurn){
+    public void execute(PlayerMessageEndTurn playerMessageEndTurn){
 
+        System.out.println("magia");
         int idPlayer = playerMessageEndTurn.getPlayer();
 
         model.endTurn();

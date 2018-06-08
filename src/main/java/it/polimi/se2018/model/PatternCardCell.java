@@ -36,14 +36,12 @@ public class PatternCardCell {
 
     /* TODO: tests, docs. Void to boolean!!!! */
     public void setRolledDieId(int rolledDieId, boolean ignoreValueConstraint, boolean ignoreColorConstraint) throws DiceContainerUnsupportedIdException {
-        Die d = diceContainer.getDie(rolledDieId);
-        if(checkDieValidity(d.getRolledValue(), d.getColor(), ignoreValueConstraint, ignoreColorConstraint)) {
-            this.rolledDieId = rolledDieId;
-        }
+        this.rolledDieId = rolledDieId;
+
     }
 
     /* TODO: tests, docs and refactor with minimization. */
-    private boolean checkDieValidity(int dieValue, DieColor dieColor, boolean ignoreValueConstraint, boolean ignoreColorConstraint) {
+    public boolean checkDieValidity(int dieValue, DieColor dieColor, boolean ignoreValueConstraint, boolean ignoreColorConstraint) {
 
         if(this.valueConstraint != 0)
             if(!ignoreValueConstraint)

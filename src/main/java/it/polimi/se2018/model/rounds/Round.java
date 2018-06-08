@@ -72,12 +72,16 @@ public class Round {
      * from the turns array and then removing it.
      * @throws RoundFinishedException if no more rounds are available.
      */
-    public void setNextPlayer() throws RoundFinishedException {
+    public void setNextPlayer(){
         if(!turns.isEmpty()) {
             idPlayerPlaying = turns.get(0);
             turns.remove(0);
         } else {
-            throw new RoundFinishedException();
+            try {
+                throw new RoundFinishedException();
+            } catch (RoundFinishedException e) {
+                e.printStackTrace();
+            }
         }
     }
 

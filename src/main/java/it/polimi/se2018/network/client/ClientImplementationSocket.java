@@ -66,7 +66,12 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
     }
 
     @Override
-    public PlayerMessageSetup askForPatternCard(){
+    public PlayerMessage askForMove() throws RemoteException{
+        return null;
+    }
+
+    @Override
+    public PlayerMessageSetup askForPatternCard() throws RemoteException{
         return null;
     }
 

@@ -4,6 +4,7 @@ import it.polimi.se2018.model.Model;
 import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.events.PlayerMessage;
 import it.polimi.se2018.model.events.PlayerMessageDie;
+import it.polimi.se2018.model.events.PlayerMessageEndTurn;
 import it.polimi.se2018.model.events.PlayerMessageSetup;
 import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.view.ViewClient;
@@ -64,6 +65,11 @@ public class Controller implements Observer<PlayerMessage> {
             } catch (DiceContainerUnsupportedIdException e) {
                 e.printStackTrace();
             }
+        }
+
+        if(playerMessage instanceof PlayerMessageEndTurn) {
+            PlayerMessageEndTurn playerMessageEndTurn = (PlayerMessageEndTurn) playerMessage;
+            this.endTurnController.execute(playerMessageEndTurn);
         }
 
     }

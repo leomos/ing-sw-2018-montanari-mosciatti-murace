@@ -122,6 +122,8 @@ public class ServerImplementationSocket extends Thread implements ServerInterfac
         return null;
     }
 
+    @Override
+    public PlayerMessage askForMove() { return null;}
 
     @Override
     public void run(){

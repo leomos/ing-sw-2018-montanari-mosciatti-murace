@@ -206,7 +206,6 @@ public class PatternCard {
      * @return proximityCellList list of available positions around the cell defined by x and y
      * @throws DiceContainerUnsupportedIdException
      */
-
     /*TODO: test + change Proximity to Ortogonal */
     public boolean checkProximityCellsValidity(int rolledDieId, int x, int y)throws DiceContainerUnsupportedIdException {
         Die d = diceContainer.getDie(rolledDieId);

@@ -67,11 +67,7 @@ public class TestRound {
         round.setPlayers(players);
         round.setFirstPlayer(0);
         for (int i = 0; i < 5; i++) {
-            try {
-                round.setNextPlayer();
-            } catch (RoundFinishedException e) {
-                fail();
-            }
+            round.setNextPlayer();
         }
         assertEquals(0, round.getIdPlayerPlaying());
     }
@@ -107,11 +103,7 @@ public class TestRound {
         } catch (RoundFirstPlayerAlreadySetException roundFirstPlayerAlreadySet) {
             fail();
         }
-        try {
-            round.setNextPlayer();
-        } catch (RoundFinishedException e) {
-            fail();
-        }
+        round.setNextPlayer();
         assertEquals(1,round.turnsPlayedByPlayer(34));
     }
 
@@ -127,11 +119,7 @@ public class TestRound {
         } catch (RoundFirstPlayerAlreadySetException roundFirstPlayerAlreadySet) {
             fail();
         }
-        try {
-            round.setNextPlayer();
-        } catch (RoundFinishedException e) {
-            fail();
-        }
+        round.setNextPlayer();
         assertEquals(0,round.turnsPlayedByPlayer(0));
     }
 
@@ -147,13 +135,9 @@ public class TestRound {
         } catch (RoundFirstPlayerAlreadySetException roundFirstPlayerAlreadySet) {
             fail();
         }
-        try {
-            round.setNextPlayer();
-            round.setNextPlayer();
-            round.setNextPlayer();
-        } catch (RoundFinishedException e) {
-            fail();
-        }
+        round.setNextPlayer();
+        round.setNextPlayer();
+        round.setNextPlayer();
         assertEquals(1, round.turnsPlayedByPlayer(1));
     }
 }

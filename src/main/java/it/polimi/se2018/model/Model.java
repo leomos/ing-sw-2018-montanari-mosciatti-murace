@@ -1,6 +1,7 @@
 package it.polimi.se2018.model;
 
 import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
+import it.polimi.se2018.model.container.Die;
 import it.polimi.se2018.model.events.*;
 import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.objectives.PublicObjective;
@@ -45,14 +46,14 @@ public class Model extends Observable<ModelChangedMessage> {
                     privateObjective.getDescription()));
 
         }
-        modelChangedMessageRefresh = new ModelChangedMessageRefresh(gamePhase);
+        modelChangedMessageRefresh = new ModelChangedMessageRefresh(gamePhase, null);
         notify(modelChangedMessageRefresh);
     }
 
     public void initGame(HashMap<Integer, String> players) {
         ModelChangedMessageRefresh modelChangedMessageRefresh;
         this.gamePhase = GamePhase.GAMEPHASE;
-        modelChangedMessageRefresh = new ModelChangedMessageRefresh(gamePhase);
+        modelChangedMessageRefresh = new ModelChangedMessageRefresh(gamePhase, null);
         notify(modelChangedMessageRefresh);
 
         for(Integer key : players.keySet()) {
@@ -94,7 +95,7 @@ public class Model extends Observable<ModelChangedMessage> {
 
         notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
 
-        modelChangedMessageRefresh = new ModelChangedMessageRefresh(gamePhase);
+        modelChangedMessageRefresh = new ModelChangedMessageRefresh(gamePhase, Integer.toString(table.getRoundTrack().getCurrentRound().getIdPlayerPlaying()));
         notify(modelChangedMessageRefresh);
 
     }
@@ -133,33 +134,56 @@ public class Model extends Observable<ModelChangedMessage> {
     /*TODO: a seconda dell'esito di setRolledDieID dovremo creare notify diversi!*/
     public void setDieInPatternCard(int idPlayer, int idDie, int x, int y, boolean ignoreValueConstraint, boolean ignoreColorConstraint) throws DiceContainerUnsupportedIdException {
         PatternCard patternCard = table.getPlayers(idPlayer).getChosenPatternCard();
-
+        boolean moveOk = true;
+        Die d = table.getDiceContainer().getDie(idDie);
         if(table.getDiceArena().getArena().contains(idDie)) {
-
             try {
-                if (patternCard.isFirstMove() && patternCard.checkFirstMove(x, y)) {
-                    patternCard.getPatternCardCell(x, y).setRolledDieId(idDie, ignoreValueConstraint, ignoreColorConstraint);
-                    patternCard.setFirstMove();
-                } else if (patternCard.checkProximityCellsValidity(idDie, x, y) && patternCard.checkDieInAdjacentCells(x, y))
-                    patternCard.getPatternCardCell(x, y).setRolledDieId(idDie, ignoreValueConstraint, ignoreColorConstraint);
+                if(patternCard.getPatternCardCell(x,y).checkDieValidity(d.getRolledValue(), d.getColor(), ignoreValueConstraint, ignoreColorConstraint)){
+                    if (patternCard.getPatternCardCell(x, y).isEmpty()) {
+                        if (patternCard.isFirstMove()) {
+                            if (patternCard.checkFirstMove(x, y)) {
+                                patternCard.getPatternCardCell(x, y).setRolledDieId(idDie, ignoreValueConstraint, ignoreColorConstraint);
+                                patternCard.setFirstMove();
+                            } else {
+                                notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Did not respect First Move rules"));
+                                moveOk = false;
+                            }
+                        } else if (patternCard.checkProximityCellsValidity(idDie, x, y) && patternCard.checkDieInAdjacentCells(x, y))
+                            patternCard.getPatternCardCell(x, y).setRolledDieId(idDie, ignoreValueConstraint, ignoreColorConstraint);
+                        else {
+                            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Did not respect Proximity or Adj"));
+                            moveOk = false;
+                        }
+                    } else {
+                        notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Cell is already occupied"));
+                        moveOk = false;
+                    }
+                } else {
+                    notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Not respetting cell constraint"));
+                    moveOk = false;
+                }
             } catch (DiceContainerUnsupportedIdException e) {
             }
 
-            table.getDiceArena().getArena().remove(idDie);
-            table.getDiceArena().updateRepresentation();
-            patternCard.updateDiceRepresentation();
-            String idPL = "" + idPlayer;
-            String idPC = "" + patternCard.getId();
-
-
-            notify(new ModelChangedMessageDiceOnPatternCard(idPL, idPC, patternCard.getDiceRepresentation()));
-            notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
-            notify(new ModelChangedMessageRefresh(this.gamePhase));
+            if(moveOk) {
+                int app = table.getDiceArena().getArena().indexOf(idDie);
+                table.getDiceArena().getArena().remove(app);
+                table.getDiceArena().updateRepresentation();
+                patternCard.updateDiceRepresentation();
+                String idPL = "" + idPlayer;
+                String idPC = "" + patternCard.getId();
+                notify(new ModelChangedMessageDiceOnPatternCard(idPL, idPC, patternCard.getDiceRepresentation()));
+                notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
+                notify(new ModelChangedMessageRefresh(this.gamePhase, Integer.toString(table.getRoundTrack().getCurrentRound().getIdPlayerPlaying())));
+            }
+        } else {
+            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Die not in Dice Arema"));
         }
     }
 
     public void endTurn(){
-        //table.getRoundTrack().getCurrentRound().setNextPlayer();
+        table.getRoundTrack().getCurrentRound().setNextPlayer();
+        notify(new ModelChangedMessageRefresh(this.gamePhase, Integer.toString((table.getRoundTrack().getCurrentRound().getIdPlayerPlaying()))));
     }
 
     /**

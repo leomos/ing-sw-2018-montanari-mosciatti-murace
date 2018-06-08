@@ -1,6 +1,7 @@
 package it.polimi.se2018.network.client;
 
 import it.polimi.se2018.model.events.ModelChangedMessage;
+import it.polimi.se2018.model.events.PlayerMessage;
 import it.polimi.se2018.model.events.PlayerMessageSetup;
 
 import java.rmi.Remote;
@@ -24,4 +25,6 @@ public interface ClientInterface extends Remote {
     public String askForName() throws RemoteException;
 
     public PlayerMessageSetup askForPatternCard() throws RemoteException;
+
+    public PlayerMessage askForMove() throws RemoteException;
 }

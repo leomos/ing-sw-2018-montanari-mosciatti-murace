@@ -2,9 +2,7 @@ package it.polimi.se2018.network.server;
 
 import it.polimi.se2018.controller.Controller;
 import it.polimi.se2018.model.Model;
-import it.polimi.se2018.model.events.ModelChangedMessage;
-import it.polimi.se2018.model.events.ModelChangedMessageConnected;
-import it.polimi.se2018.model.events.PlayerMessageSetup;
+import it.polimi.se2018.model.events.*;
 import it.polimi.se2018.network.client.ClientInterface;
 import it.polimi.se2018.view.VirtualView;
 
@@ -61,6 +59,21 @@ public class Room extends Thread {
 
             model.initGame(clientsList);
 
+            //start rounds
+
+            for(int i = 0; i < clientsList.size() * 2 * 10; i++) //SBAGLIATO
+                for(ClientInterface clientInterface: virtualView.getClientInterfaceList()){
+                    PlayerMessage data;
+                    try {
+                        do {
+                            data = clientInterface.askForMove();
+                            virtualView.callNotify(data);
+                        }
+                        while(data instanceof PlayerMessageEndTurn);
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                }
 
 
 

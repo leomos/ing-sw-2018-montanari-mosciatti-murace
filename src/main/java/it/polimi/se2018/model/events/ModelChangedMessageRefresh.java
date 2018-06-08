@@ -6,12 +6,18 @@ public class ModelChangedMessageRefresh extends ModelChangedMessage{
 
     GamePhase gamePhase;
 
-    public ModelChangedMessageRefresh(GamePhase gamePhase){
+    String idPlayerPlaying;
+
+    public ModelChangedMessageRefresh(GamePhase gamePhase, String idPlayerPlaying){
         this.gamePhase = gamePhase;
+        this.idPlayerPlaying = idPlayerPlaying;
     }
 
     public GamePhase getGamePhase() {
         return gamePhase;
     }
 
+    public String getIdPlayerPlaying() {
+        return idPlayerPlaying;
+    }
 }

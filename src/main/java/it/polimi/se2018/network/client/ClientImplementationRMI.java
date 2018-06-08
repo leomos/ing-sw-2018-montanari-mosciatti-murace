@@ -1,6 +1,7 @@
 package it.polimi.se2018.network.client;
 
 import it.polimi.se2018.model.events.ModelChangedMessage;
+import it.polimi.se2018.model.events.PlayerMessage;
 import it.polimi.se2018.model.events.PlayerMessageSetup;
 import it.polimi.se2018.view.ViewClient;
 
@@ -52,5 +53,10 @@ public class ClientImplementationRMI implements ClientInterface{
     @Override
     public PlayerMessageSetup askForPatternCard()throws RemoteException{
         return viewClient.askForPatternCard();
+    }
+
+    @Override
+    public PlayerMessage askForMove() throws RemoteException{
+        return viewClient.askForMove();
     }
 }
