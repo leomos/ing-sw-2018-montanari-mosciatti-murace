@@ -105,17 +105,11 @@ public class Model extends Observable<ModelChangedMessage> {
         return gamePhase;
     }
 
-    public void calculateScore() {
-        return;
-    }
-
     public void setChosenPatternCard(int idPatternCard, int idPlayer){
 
         for(PatternCard patternCard : table.getPlayers(idPlayer).getPatternCards())
             if(idPatternCard == patternCard.getId())
                 table.getPlayers(idPlayer).setChosenPatternCard(patternCard);
-
-        //notify(new ModelChangedMessagePatternCard(idPlayer, idPatternCard));
     }
 
 
@@ -133,53 +127,60 @@ public class Model extends Observable<ModelChangedMessage> {
         PatternCard patternCard = table.getPlayers(idPlayer).getChosenPatternCard();
         boolean moveOk = true;
         Die d = table.getDiceContainer().getDie(idDie);
-        if(table.getDiceArena().getArena().contains(idDie)) {
-            try {
-                if(patternCard.getPatternCardCell(x,y).checkDieValidity(d.getRolledValue(), d.getColor(), ignoreValueConstraint, ignoreColorConstraint)){
-                    if (patternCard.getPatternCardCell(x, y).isEmpty()) {
-                        if (patternCard.isFirstMove()) {
-                            if (patternCard.checkFirstMove(x, y)) {
+        if (!table.getPlayers(idPlayer).hasSetDieThisTurn()){
+            if (table.getDiceArena().getArena().contains(idDie)) {
+                try {
+                    if (patternCard.getPatternCardCell(x, y).checkDieValidity(d.getRolledValue(), d.getColor(), ignoreValueConstraint, ignoreColorConstraint)) {
+                        if (patternCard.getPatternCardCell(x, y).isEmpty()) {
+                            if (patternCard.isFirstMove()) {
+                                if (patternCard.checkFirstMove(x, y)) {
+                                    patternCard.getPatternCardCell(x, y).setRolledDieId(idDie, ignoreValueConstraint, ignoreColorConstraint);
+                                    patternCard.setFirstMove();
+                                    table.getPlayers(idPlayer).setHasSetDieThisTurn(true);
+                                } else {
+                                    notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Did not respect First Move rules"));
+                                    moveOk = false;
+                                }
+                            } else if (patternCard.checkProximityCellsValidity(idDie, x, y) && patternCard.checkDieInAdjacentCells(x, y)) {
                                 patternCard.getPatternCardCell(x, y).setRolledDieId(idDie, ignoreValueConstraint, ignoreColorConstraint);
-                                patternCard.setFirstMove();
+                                table.getPlayers(idPlayer).setHasSetDieThisTurn(true);
                             } else {
-                                notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Did not respect First Move rules"));
+                                notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Did not respect Proximity or Adj"));
                                 moveOk = false;
                             }
-                        } else if (patternCard.checkProximityCellsValidity(idDie, x, y) && patternCard.checkDieInAdjacentCells(x, y))
-                            patternCard.getPatternCardCell(x, y).setRolledDieId(idDie, ignoreValueConstraint, ignoreColorConstraint);
-                        else {
-                            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Did not respect Proximity or Adj"));
+                        } else {
+                            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Cell is already occupied"));
                             moveOk = false;
                         }
                     } else {
-                        notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Cell is already occupied"));
+                        notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Not respetting cell constraint"));
                         moveOk = false;
                     }
-                } else {
-                    notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Not respetting cell constraint"));
-                    moveOk = false;
+                } catch (DiceContainerUnsupportedIdException e) {
                 }
-            } catch (DiceContainerUnsupportedIdException e) {
-            }
 
-            if(moveOk) {
-                int app = table.getDiceArena().getArena().indexOf(idDie);
-                table.getDiceArena().getArena().remove(app);
-                table.getDiceArena().updateRepresentation();
-                patternCard.updateDiceRepresentation();
-                String idPL = "" + idPlayer;
-                String idPC = "" + patternCard.getId();
+                if (moveOk) {
+                    int app = table.getDiceArena().getArena().indexOf(idDie);
+                    table.getDiceArena().getArena().remove(app);
+                    table.getDiceArena().updateRepresentation();
+                    patternCard.updateDiceRepresentation();
+                    String idPL = "" + idPlayer;
+                    String idPC = "" + patternCard.getId();
 
-                notify(new ModelChangedMessageDiceOnPatternCard(idPL, idPC, patternCard.getDiceRepresentation()));
-                notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
-                notify(new ModelChangedMessageRefresh(this.gamePhase, Integer.toString(table.getRoundTrack().getCurrentRound().getIdPlayerPlaying())));
+                    notify(new ModelChangedMessageDiceOnPatternCard(idPL, idPC, patternCard.getDiceRepresentation()));
+                    notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
+                    notify(new ModelChangedMessageRefresh(this.gamePhase, Integer.toString(table.getRoundTrack().getCurrentRound().getIdPlayerPlaying())));
+                }
+            } else {
+                notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Die not in Dice Arema"));
             }
-        } else {
-            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Die not in Dice Arema"));
+        } else{
+            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Already set a Die this turn"));
         }
+
     }
 
-    public void endTurn(){
+    public void endTurn(PlayerMessageEndTurn playerMessageEndTurn){
         if(!table.getRoundTrack().getCurrentRound().isRoundOver()) {
             table.getRoundTrack().getCurrentRound().setNextPlayer();
         }
@@ -195,6 +196,7 @@ public class Model extends Observable<ModelChangedMessage> {
 
             table.getRoundTrack().startNextRound();
         }
+        table.getPlayers(playerMessageEndTurn.getPlayer()).setHasSetDieThisTurn(false);
 
         notify(new ModelChangedMessageRefresh(this.gamePhase, Integer.toString((table.getRoundTrack().getCurrentRound().getIdPlayerPlaying()))));
     }

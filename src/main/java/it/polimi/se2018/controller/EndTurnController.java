@@ -15,6 +15,6 @@ public class EndTurnController  {
 
         int idPlayer = playerMessageEndTurn.getPlayer();
 
-        model.endTurn();
+        model.endTurn(playerMessageEndTurn);
     }
 }

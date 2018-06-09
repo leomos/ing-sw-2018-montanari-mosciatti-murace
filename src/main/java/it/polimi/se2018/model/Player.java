@@ -18,9 +18,12 @@ public class Player {
 
     private PrivateObjective privateObjective;
 
+    private boolean hasSetDieThisTurn;
+
     public Player(int id, String name) {
         this.id = id;
         this.name = name;
+        hasSetDieThisTurn = false;
     }
 
     public int getId() {
@@ -47,6 +50,10 @@ public class Player {
         return tokens;
     }
 
+    public boolean hasSetDieThisTurn() {
+        return hasSetDieThisTurn;
+    }
+
     public void setTokens(int tokens) {
         this.tokens = tokens;
     }
@@ -61,6 +68,10 @@ public class Player {
 
     public void setPrivateObjective(PrivateObjective privateObjective) {
         this.privateObjective = privateObjective;
+    }
+
+    public void setHasSetDieThisTurn(boolean hasSetDieThisTurn) {
+        this.hasSetDieThisTurn = hasSetDieThisTurn;
     }
 }
 
