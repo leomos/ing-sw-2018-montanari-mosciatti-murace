@@ -49,10 +49,13 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
         else if(message instanceof ModelChangedMessagePublicObjective)
             publicObjectives.add((ModelChangedMessagePublicObjective)message);
         else if(message instanceof ModelChangedMessageToolCard) {
-            int i = toolCards.indexOf(((ModelChangedMessageToolCard) message));
-            if(i != -1) {
-                toolCards.remove(i);
-                toolCards.add(i, (ModelChangedMessageToolCard) message);
+            if(toolCards.size() == 3) {
+                for(int i = 0; i < 3; i++)
+                    if(toolCards.get(i).getIdToolCard().equals(((ModelChangedMessageToolCard) message).getIdToolCard())) {
+                        toolCards.remove(i);
+                        toolCards.add(i, (ModelChangedMessageToolCard) message);
+                        System.out.println("\nentra e cost" + ((ModelChangedMessageToolCard) message).getCost() + "\n");
+                    }
             } else {
                 toolCards.add((ModelChangedMessageToolCard) message);
             }

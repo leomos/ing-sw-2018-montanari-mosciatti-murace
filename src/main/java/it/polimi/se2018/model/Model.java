@@ -277,12 +277,13 @@ public class Model extends Observable<ModelChangedMessage> {
 
                         patternCard.updateDiceRepresentation();
                         String idPC = "" + patternCard.getId();
+                        ToolCard toolCard = table.getToolCardContainer().getToolCard(idToolCard);
 
                         notify(new ModelChangedMessageDiceOnPatternCard(idPL, idPC, patternCard.getDiceRepresentation()));
-                        notify(new ModelChangedMessageRefresh(gamePhase, idPL));
-                        ToolCard toolCard = table.getToolCardContainer().getToolCard(idToolCard);
                         notify(new ModelChangedMessageToolCard(Integer.toString(idToolCard), toolCard.getName(), toolCard.getDescription(), Integer.toString(toolCard.cost())));
-                    }
+                        notify(new ModelChangedMessageRefresh(gamePhase, idPL));
+
+                        }
                 } catch (DiceContainerUnsupportedIdException e) {
                     e.printStackTrace();
                 }
