@@ -45,4 +45,19 @@ public class VirtualView extends Observable<PlayerMessage> implements Observer<M
     public ArrayList<ClientInterface> getClientInterfaceList() {
         return clientInterfaceList;
     }
+
+    public ArrayList<Integer> getPositionInPatternCard(int idClient){
+        ArrayList<Integer> app = new ArrayList<Integer>();
+        ArrayList<Integer> correctClientInterface = new ArrayList<Integer>();
+        for(ClientInterface i: clientInterfaceList) {
+                try {
+                    app = i.getPositionInPatternCard();
+                    if(app != null)
+                        correctClientInterface = app;
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+        }
+        return correctClientInterface;
+    }
 }

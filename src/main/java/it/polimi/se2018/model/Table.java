@@ -130,6 +130,9 @@ public class Table {
 
         Collections.shuffle(toolCardsList);
 
+        //TO FORCE A PATTERNCARD FOR TESTS
+        toolCardsList.add(0,2);
+
         for(int j = 0; j < 3; j++)
             toolCardContainer.setToolCardInPlay(toolCardsList.get(j));
     }

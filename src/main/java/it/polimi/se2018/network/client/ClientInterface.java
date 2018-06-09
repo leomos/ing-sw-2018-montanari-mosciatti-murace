@@ -6,6 +6,7 @@ import it.polimi.se2018.model.events.PlayerMessageSetup;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 public interface ClientInterface extends Remote {
 
@@ -18,7 +19,7 @@ public interface ClientInterface extends Remote {
 
     public boolean getIncrementedValue() throws RemoteException;
 
-    public Integer[] getPositionInPatternCard() throws RemoteException;
+    public ArrayList<Integer> getPositionInPatternCard() throws RemoteException;
 
     public int getValueForDie() throws RemoteException;
 

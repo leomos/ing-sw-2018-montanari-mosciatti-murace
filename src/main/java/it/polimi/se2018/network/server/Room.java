@@ -43,6 +43,8 @@ public class Room extends Thread {
             Controller controller = new Controller(model);
             model.register(virtualView);
             virtualView.register(controller);
+            controller.addView(virtualView);
+            //need to add view to controller!!
 
             model.initSetup(clientsList);
 

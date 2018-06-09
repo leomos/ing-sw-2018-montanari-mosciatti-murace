@@ -5,6 +5,7 @@ import it.polimi.se2018.model.events.*;
 import it.polimi.se2018.network.server.ServerInterface;
 import it.polimi.se2018.view.ViewClient;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import static it.polimi.se2018.model.GamePhase.GAMEPHASE;
@@ -73,12 +74,14 @@ public class ViewClientConsole extends ViewClient {
             System.out.println("\nChoose a PatternCard by selecting one of the PatternCardId");
 
             String s = input.nextLine();
-            int idPatternCard = Integer.parseInt(s);
 
-            if(idPatternCard >= 0 && idPatternCard < 24) {
-                moveOk = false;
-                return new PlayerMessageSetup(idClient, idPatternCard);
-
+            for(int i = 0; i < 24; i++){
+                String app = "" + i;
+                if(app.equals(s)) {
+                    int idPatternCard = Integer.parseInt(s);
+                    moveOk = false;
+                    return new PlayerMessageSetup(idClient, idPatternCard);
+                }
             }
 
             if(moveOk)
@@ -101,24 +104,39 @@ public class ViewClientConsole extends ViewClient {
                 String s = input.nextLine();
                 String[] parts = s.split(" ");
 
-                if(parts[0].equals("/help"))
-                    System.out.println("\nDieId x_position y_position  -> to position a die from the dice arena to the patterncard\nend  -> to end the turn");
-
-                if(parts.length == 3) {
-                    int idDie = Integer.parseInt(parts[0]);
-                    int x = Integer.parseInt(parts[1]);
-                    int y = Integer.parseInt(parts[2]);
-                    if (idDie >= 0 && idDie < 90) {
-                        if(x >= 0 && x < 5 && y >= 0 && y < 4) {
-                            moveOk = false;
-                            return new PlayerMessageDie(idClient, idDie, x, y);
-                        } else
-                            System.out.println("X must be between 0 and 4 while Y must be between 0 and 3");
-                    } else
-                        System.out.println("Die Id must be between 0 and 90");
+                if(s.equals("/help")) {
+                    System.out.println("\nset + DieId + x_position + y_position  -> to position a die from the dice arena to the patterncard\n" +
+                            "use + toolCardID -> to use the toolCard\nend  -> to end the turn");
+                    moveOk = false;
                 }
 
-                if (parts[0].equals("end")) {
+                if(parts.length == 4) {
+                    for (int i = 0; i < 89; i++)
+                        for (int j = 0; j < 5; j++)
+                            for(int k = 0; k < 4; k++){
+                                String app = "set " + i + " " + j + " " + k;
+                                if (s.equals(app)) {
+                                    moveOk = false;
+                                    int idDie = Integer.parseInt(parts[1]);
+                                    int x = Integer.parseInt(parts[2]);
+                                    int y = Integer.parseInt(parts[3]);
+                                    return new PlayerMessageDie(idClient, idDie, x, y);
+                                }
+                            }
+                }
+
+                if(parts.length == 2){
+                    for(int i = 1; i < 13; i++){
+                        String app = "use " + i;
+                        if(s.equals(app)){
+                            int idToolCard = Integer.parseInt(parts[1]);
+                            moveOk = false;
+                            return new PlayerMessageToolCard(idClient, idToolCard);
+                        }
+                    }
+                }
+
+                if (s.equals("end")) {
                     moveOk = false;
                     return new PlayerMessageEndTurn(idClient);
                 }
@@ -127,22 +145,40 @@ public class ViewClientConsole extends ViewClient {
                     System.out.println("Try Again!");
             }
             while(moveOk);
-        } else {
-            System.out.println("It's not you turn");
         }
         return null;
     }
 
-    public int[] getDiePosition(){
-        int position[] = null;
+    public ArrayList<Integer> getPositionInPatternCard(){
+        if(isMyTurn){
+            ArrayList<Integer> position = new ArrayList<Integer>();
+            boolean moveOk = true;
 
-        System.out.println("\nInsert position on PatternCard separated by a space");
-        Scanner input = new Scanner(System.in);
-        String s = input.nextLine();
-        position[0] = Integer.parseInt(s.split(" ")[0]);
-        position[1] = Integer.parseInt(s.split(" ")[1]);
+            do {
+                System.out.println("\nInsert position on PatternCard separated by a space");
 
-        return position;
+                Scanner input = new Scanner(System.in);
+                String s = input.nextLine();
+
+                for(int i = 0; i < 5; i++) {
+                    for (int j = 0; j < 4; j++) {
+                        String app = "" + i + " " + j;
+                        if (app.equals(s)) {
+                            moveOk = false;
+                            position.add(Integer.parseInt(s.split(" ")[0]));
+                            position.add(Integer.parseInt(s.split(" ")[1]));
+                        }
+                    }
+                }
+
+                if(moveOk)
+                    System.out.println("Try Again!");
+            }
+            while(moveOk);
+
+            return position;
+        }else
+            return null;
     }
 
     public int getDieFromPatternCard(){

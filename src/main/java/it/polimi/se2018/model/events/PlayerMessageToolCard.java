@@ -1,14 +1,12 @@
 package it.polimi.se2018.model.events;
 
-import it.polimi.se2018.model.toolcards.ToolCard;
-
 public class PlayerMessageToolCard extends PlayerMessage {
 
     private int player;
 
-    private ToolCard toolcard;
+    private int toolcard;
 
-    public PlayerMessageToolCard(int player, ToolCard toolCard){
+    public PlayerMessageToolCard(int player, int toolCard){
         this.player = player;
         this.toolcard = toolCard;
     }
@@ -17,7 +15,7 @@ public class PlayerMessageToolCard extends PlayerMessage {
         return player;
     }
 
-    public ToolCard getToolcard() {
+    public int getToolcard() {
         return toolcard;
     }
 }

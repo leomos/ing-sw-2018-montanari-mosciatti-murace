@@ -48,8 +48,15 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
         }
         else if(message instanceof ModelChangedMessagePublicObjective)
             publicObjectives.add((ModelChangedMessagePublicObjective)message);
-        else if(message instanceof ModelChangedMessageToolCard)
-            toolCards.add((ModelChangedMessageToolCard)message);
+        else if(message instanceof ModelChangedMessageToolCard) {
+            int i = toolCards.indexOf(((ModelChangedMessageToolCard) message));
+            if(i != -1) {
+                toolCards.remove(i);
+                toolCards.add(i, (ModelChangedMessageToolCard) message);
+            } else {
+                toolCards.add((ModelChangedMessageToolCard) message);
+            }
+        }
         else if(message instanceof ModelChangedMessageDiceArena)
             diceArena = ((ModelChangedMessageDiceArena)message);
         else if(message instanceof ModelChangedMessageRound) {

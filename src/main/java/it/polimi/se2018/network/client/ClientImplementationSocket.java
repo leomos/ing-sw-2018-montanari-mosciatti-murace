@@ -12,6 +12,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 public class ClientImplementationSocket extends Thread implements ClientInterface {
     private ViewClient viewClient;
@@ -51,7 +52,7 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
     }
 
     @Override
-    public Integer[] getPositionInPatternCard() throws RemoteException {
+    public ArrayList<Integer> getPositionInPatternCard() throws RemoteException {
         return viewClient.getPositionInPatternCard();
     }
 
@@ -111,7 +112,7 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
                             responseMessage = new SocketMessage<Integer>(getDieFromPatternCard(), true);
                             break;
                         case GET_POSITION_IN_PATTERNCARD:
-                            responseMessage = new SocketMessage<Integer[]>(getPositionInPatternCard(), true);
+                            responseMessage = new SocketMessage<ArrayList<Integer>>(getPositionInPatternCard(), true);
                             break;
                         default:
                             break;

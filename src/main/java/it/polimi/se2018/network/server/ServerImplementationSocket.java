@@ -13,6 +13,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class ServerImplementationSocket extends Thread implements ServerInterface, ClientInterface {
@@ -99,11 +100,11 @@ public class ServerImplementationSocket extends Thread implements ServerInterfac
         return (boolean)controllerActionResult;
     }
 
-    public Integer[] getPositionInPatternCard() {
+    public ArrayList<Integer> getPositionInPatternCard() {
         sendAction(ControllerActionEnum.GET_POSITION_IN_PATTERNCARD);
         waitForLock();
         /* TODO: transform from Integer[] to int[] */
-        return (Integer[])controllerActionResult;
+        return (ArrayList<Integer>) controllerActionResult;
     }
 
     public int getValueForDie() {

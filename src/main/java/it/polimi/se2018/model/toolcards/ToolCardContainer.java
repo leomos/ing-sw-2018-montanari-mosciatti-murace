@@ -37,11 +37,12 @@ public class ToolCardContainer {
         return toolCardsInGame;
     }
 
-    public ToolCard getToolCardInPlay(int id) throws ToolCardNotInPlayException {
+    public ToolCard getToolCardInPlay(int id)
+    {
         if(toolCardsInPlay.contains(id)) {
             return toolCards.get(id);
-        }else{
-            throw new ToolCardNotInPlayException();
+
         }
+        return null;
     }
 }

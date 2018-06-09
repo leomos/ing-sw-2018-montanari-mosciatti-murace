@@ -6,6 +6,7 @@ import it.polimi.se2018.model.events.PlayerMessageSetup;
 import it.polimi.se2018.view.ViewClient;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 public class ClientImplementationRMI implements ClientInterface{
 
@@ -36,7 +37,7 @@ public class ClientImplementationRMI implements ClientInterface{
     }
 
     @Override
-    public Integer[] getPositionInPatternCard() throws RemoteException {
+    public ArrayList<Integer> getPositionInPatternCard() throws RemoteException {
         return viewClient.getPositionInPatternCard();
     }
 

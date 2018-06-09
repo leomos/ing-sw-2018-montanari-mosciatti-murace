@@ -5,6 +5,8 @@ import it.polimi.se2018.model.events.PlayerMessage;
 import it.polimi.se2018.model.events.PlayerMessageSetup;
 import it.polimi.se2018.network.server.ServerInterface;
 
+import java.util.ArrayList;
+
 public abstract class ViewClient {
 
     private ServerInterface serverInterface;
@@ -27,7 +29,7 @@ public abstract class ViewClient {
         return true;
     }
 
-    public Integer[] getPositionInPatternCard(){
+    public ArrayList<Integer> getPositionInPatternCard(){
         return null;
     }
 

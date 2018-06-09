@@ -247,7 +247,7 @@ public class PatternCard {
         return x == 0 || x == 4 || y == 0 || y == 3;
     }
 
-    public void updateDiceRepresentation() throws DiceContainerUnsupportedIdException {
+    public void updateDiceRepresentation() {
         diceRepresentation = "";
         for(int i = 0; i < 4; i++)
             for(int j = 0; j < 5; j++){
@@ -257,9 +257,13 @@ public class PatternCard {
                 else {
                     if (c.getRolledDieId() < 10)
                         diceRepresentation = diceRepresentation + "0";
-                    diceRepresentation = diceRepresentation + c.getRolledDieId()
-                            + diceContainer.getDie(c.getRolledDieId()).getColorChar()
-                            + diceContainer.getDie(c.getRolledDieId()).getRolledValue();
+                    try {
+                        diceRepresentation = diceRepresentation + c.getRolledDieId()
+                                + diceContainer.getDie(c.getRolledDieId()).getColorChar()
+                                + diceContainer.getDie(c.getRolledDieId()).getRolledValue();
+                    } catch (DiceContainerUnsupportedIdException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
     }
