@@ -29,7 +29,6 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
     }
 
 
-    //VA BENE SOLO PER IL PRIMO GIRO//
     @Override
     public void update(ModelChangedMessage message) {
 
@@ -80,6 +79,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
         System.out.println("\nYour PatternCard");
         printPatternCard(idPlayers.get(myPatternCardId), patternCards.get(myPatternCardId), diceOnPatternCards.get(myPatternCardId));
+
 
 
         printPrivateObjective(privateObjective);

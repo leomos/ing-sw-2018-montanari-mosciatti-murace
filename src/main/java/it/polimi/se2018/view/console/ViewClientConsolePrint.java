@@ -85,12 +85,12 @@ public abstract class ViewClientConsolePrint {
                         s = s + "\u001b[4m" + printDie('w', c);
                     s = s + "|";
                 } else {
-                    char color = messageDice.getRepresentation().charAt(n);
-                    char value = messageDice.getRepresentation().charAt(n+1);
+                    char color = messageDice.getRepresentation().charAt(n+2);
+                    char value = messageDice.getRepresentation().charAt(n+3);
 
                     s = s + printDie(color, value) + "|";
                 }
-                n += 2;
+                n += 4;
             }
             m = m + 5;
             s = s + "\n";

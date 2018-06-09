@@ -89,11 +89,6 @@ public class Model extends Observable<ModelChangedMessage> {
                     Integer.toString(toolCard.cost())));
         }
 
-        Round round = table.getRoundTrack().getRound(0);
-
-        //notify(new ModelChangedMessageRound(Integer.toString(round.getId()),
-        //        round.getRepresentation()));
-
         notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
 
         modelChangedMessageRefresh = new ModelChangedMessageRefresh(gamePhase, Integer.toString(table.getRoundTrack().getCurrentRound().getIdPlayerPlaying()));

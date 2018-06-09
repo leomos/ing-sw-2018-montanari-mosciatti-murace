@@ -54,7 +54,7 @@ public class ViewClientConsole extends ViewClient {
         }
     }
 
-    /*TODO: need to check if the type of the input is correct somehow*/
+    /*TODO: need to check if the type of the input is correct somehow in all of them*/
 
     public String askForName(){
 
@@ -127,6 +127,8 @@ public class ViewClientConsole extends ViewClient {
                     System.out.println("Try Again!");
             }
             while(moveOk);
+        } else {
+            System.out.println("It's not you turn");
         }
         return null;
     }
