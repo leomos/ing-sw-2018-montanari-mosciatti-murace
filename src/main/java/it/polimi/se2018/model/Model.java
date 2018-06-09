@@ -58,6 +58,7 @@ public class Model extends Observable<ModelChangedMessage> {
 
         for(Integer key : players.keySet()) {
             PatternCard patternCard = table.getPlayers(key).getChosenPatternCard();
+
             notify(new ModelChangedMessagePatternCard(Integer.toString(key),
                     Integer.toString(patternCard.getId()),
                     patternCard.getName(),

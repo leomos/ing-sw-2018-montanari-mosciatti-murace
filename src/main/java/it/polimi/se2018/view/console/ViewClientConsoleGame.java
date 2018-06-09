@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
-    int idClient;
+    private int idClient;
 
     private ArrayList<String> idPlayers = new ArrayList<String>();
 
@@ -35,16 +35,12 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
         if (message instanceof ModelChangedMessagePatternCard){
                 idPlayers.add(((ModelChangedMessagePatternCard) message).getIdPlayer());
                 patternCards.add((ModelChangedMessagePatternCard) message);
+                diceOnPatternCards.add(null);
         }
         else if (message instanceof ModelChangedMessageDiceOnPatternCard){
-            int i = 0;
-            if (!idPlayers.contains(((ModelChangedMessageDiceOnPatternCard) message).getIdPlayer())) {
-                idPlayers.add(((ModelChangedMessageDiceOnPatternCard) message).getIdPlayer());
-                diceOnPatternCards.add((ModelChangedMessageDiceOnPatternCard) message);
-            }  else {
-                i = idPlayers.indexOf(((ModelChangedMessageDiceOnPatternCard) message).getIdPlayer());
-                diceOnPatternCards.add(i, (ModelChangedMessageDiceOnPatternCard) message);
-            }
+            int i = idPlayers.indexOf(((ModelChangedMessageDiceOnPatternCard) message).getIdPlayer());
+            diceOnPatternCards.remove(i);
+            diceOnPatternCards.add(i, (ModelChangedMessageDiceOnPatternCard) message);
         }
         else if(message instanceof ModelChangedMessagePrivateObjective) {
             if (((ModelChangedMessagePrivateObjective) message).getIdPlayer().equals(Integer.toString(idClient)))
@@ -79,8 +75,6 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
         System.out.println("\nYour PatternCard");
         printPatternCard(idPlayers.get(myPatternCardId), patternCards.get(myPatternCardId), diceOnPatternCards.get(myPatternCardId));
-
-
 
         printPrivateObjective(privateObjective);
 
