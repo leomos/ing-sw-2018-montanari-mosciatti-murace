@@ -2,7 +2,6 @@ package it.polimi.se2018.view.console;
 
 import it.polimi.se2018.model.GamePhase;
 import it.polimi.se2018.model.events.*;
-import it.polimi.se2018.network.ServerInterface;
 import it.polimi.se2018.view.ViewClient;
 
 import java.rmi.RemoteException;
@@ -21,17 +20,17 @@ public class    ViewClientConsole extends ViewClient {
 
     private ViewClientConsolePrint viewClientConsolePrint;
 
-    public ViewClientConsole( ){
+    public ViewClientConsole(){
+    }
+
+    public void setIdClient(int idClient){
+        this.idClient = idClient;
+        viewClientConsolePrint = new ViewClientConsoleSetup(idClient);
     }
 
 
     public void update(ModelChangedMessage message){
-        System.out.println("parte");
-        if(message instanceof ModelChangedMessageConnected){
-            this.idClient = ((ModelChangedMessageConnected) message).getIdClient();
-            viewClientConsolePrint = new ViewClientConsoleSetup(this.idClient);
-        }
-        else if(message instanceof ModelChangedMessageMoveFailed){
+        if(message instanceof ModelChangedMessageMoveFailed){
             if(((ModelChangedMessageMoveFailed) message).getPlayer().equals(Integer.toString(idClient)))
                 System.out.println(((ModelChangedMessageMoveFailed) message).getErrorMessage());
         }
@@ -94,7 +93,7 @@ public class    ViewClientConsole extends ViewClient {
     public void run(){
         boolean c = true;
         while(c) {
-            if (isMyTurn) {
+            if (isMyTurn && gamePhase == GAMEPHASE) {
                 boolean moveOk = true;
 
                 do {
