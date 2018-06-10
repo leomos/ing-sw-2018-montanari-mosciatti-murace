@@ -4,10 +4,15 @@ import it.polimi.se2018.controller.Controller;
 import it.polimi.se2018.model.Model;
 import it.polimi.se2018.model.events.Message;
 import it.polimi.se2018.model.events.ModelChangedMessage;
+import it.polimi.se2018.model.events.ModelChangedMessageConnected;
+import it.polimi.se2018.model.events.PlayerMessageSetup;
 import it.polimi.se2018.network.ConnectedClient;
+import it.polimi.se2018.network.client.ClientInterface;
 import it.polimi.se2018.view.VirtualView;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Set;
 
 public class Room {
@@ -20,21 +25,70 @@ public class Room {
 
     private Set<ConnectedClient> players;
 
+    public Room(VirtualView virtualView) {
+        this.virtualView = virtualView;
+    }
 
-    public void start() {
-        /* TODO: start game procedures */
-        System.out.println("Room started!");
-        /*players.forEach(player -> {
+    public void initGame() {
+        for(ClientInterface clientInterface: virtualView.getClientInterfaceList()) {
+            id++;
+            ModelChangedMessage modelChangedMessageConnected = new ModelChangedMessageConnected(id);
             try {
-                System.out.println(player.getClientInterface().getDieFromPatternCard());
+                clientInterface.update(modelChangedMessageConnected);
+                String name = clientInterface.askForName();
+                clientsList.put(id, name);
+                System.out.println(id + " " + name);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
-        });*/
+        }
     }
 
-    public void stop() {
+    public void start() {
+        //while(gamePlaying) {
+            Model model = new Model();
+            Controller controller = new Controller(model);
+            model.register(virtualView);
+            virtualView.register(controller);
+            controller.addView(virtualView);
+            //need to add view to controller!!
 
+            model.initSetup(clientsList);
+
+            //patterncard choise
+
+            for(ClientInterface clientInterface: virtualView.getClientInterfaceList()){
+                try {
+                    PlayerMessageSetup data = clientInterface.askForPatternCard();
+                    virtualView.callNotify(data);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            model.initGame(clientsList);
+
+            //start rounds
+
+            for(int i = 0; i < clientsList.size() * 2 * 10; i++) //SBAGLIATO?
+                for(ClientInterface clientInterface: virtualView.getClientInterfaceList()){
+                    PlayerMessage data;
+                    try {
+                        do {
+                            data = clientInterface.askForMove();
+                            virtualView.callNotify(data);
+                        }
+                        while(data instanceof PlayerMessageEndTurn);
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+
+
+
+        //}
     }
 
     public void addPlayers(Set<ConnectedClient> players) {
@@ -55,4 +109,6 @@ public class Room {
             }
         });
     }
+
+
 }

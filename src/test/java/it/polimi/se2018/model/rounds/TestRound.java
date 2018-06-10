@@ -1,5 +1,6 @@
 package it.polimi.se2018.model.rounds;
 
+import it.polimi.se2018.model.container.DiceContainer;
 import org.junit.*;
 
 import java.util.ArrayList;
@@ -10,13 +11,17 @@ public class TestRound {
 
     private Round round;
 
+    private DiceContainer diceContainer;
+
     @Before
     public void setUp() {
-        round = new Round(0);
+        diceContainer = new DiceContainer();
+        round = new Round(0, diceContainer);
     }
 
     @After
     public void tearDown() {
+        diceContainer = null;
         round = null;
         assertNull(round);
     }
@@ -62,11 +67,7 @@ public class TestRound {
         round.setPlayers(players);
         round.setFirstPlayer(0);
         for (int i = 0; i < 5; i++) {
-            try {
-                round.setNextPlayer();
-            } catch (RoundFinishedException e) {
-                fail();
-            }
+            round.setNextPlayer();
         }
         assertEquals(0, round.getIdPlayerPlaying());
     }
@@ -102,11 +103,7 @@ public class TestRound {
         } catch (RoundFirstPlayerAlreadySetException roundFirstPlayerAlreadySet) {
             fail();
         }
-        try {
-            round.setNextPlayer();
-        } catch (RoundFinishedException e) {
-            fail();
-        }
+        round.setNextPlayer();
         assertEquals(1,round.turnsPlayedByPlayer(34));
     }
 
@@ -122,11 +119,7 @@ public class TestRound {
         } catch (RoundFirstPlayerAlreadySetException roundFirstPlayerAlreadySet) {
             fail();
         }
-        try {
-            round.setNextPlayer();
-        } catch (RoundFinishedException e) {
-            fail();
-        }
+        round.setNextPlayer();
         assertEquals(0,round.turnsPlayedByPlayer(0));
     }
 
@@ -142,13 +135,9 @@ public class TestRound {
         } catch (RoundFirstPlayerAlreadySetException roundFirstPlayerAlreadySet) {
             fail();
         }
-        try {
-            round.setNextPlayer();
-            round.setNextPlayer();
-            round.setNextPlayer();
-        } catch (RoundFinishedException e) {
-            fail();
-        }
+        round.setNextPlayer();
+        round.setNextPlayer();
+        round.setNextPlayer();
         assertEquals(1, round.turnsPlayedByPlayer(1));
     }
 }

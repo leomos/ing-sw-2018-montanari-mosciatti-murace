@@ -18,9 +18,15 @@ public class Player {
 
     private PrivateObjective privateObjective;
 
+    private boolean hasSetDieThisTurn;
+
+    private boolean hasUsedToolCardThisTurn;
+
     public Player(int id, String name) {
         this.id = id;
         this.name = name;
+        hasSetDieThisTurn = false;
+        hasUsedToolCardThisTurn = false;
     }
 
     public int getId() {
@@ -47,6 +53,14 @@ public class Player {
         return tokens;
     }
 
+    public boolean hasSetDieThisTurn() {
+        return hasSetDieThisTurn;
+    }
+
+    public boolean hasUsedToolCardThisTurn() {
+        return hasUsedToolCardThisTurn;
+    }
+
     public void setTokens(int tokens) {
         this.tokens = tokens;
     }
@@ -62,6 +76,12 @@ public class Player {
     public void setPrivateObjective(PrivateObjective privateObjective) {
         this.privateObjective = privateObjective;
     }
+
+    public void setHasSetDieThisTurn(boolean hasSetDieThisTurn) {
+        this.hasSetDieThisTurn = hasSetDieThisTurn;
+    }
+
+    public void setHasUsedToolCardThisTurn(boolean hasUsedToolCardThisTurn) {this.hasUsedToolCardThisTurn = hasUsedToolCardThisTurn;    }
 }
 
 

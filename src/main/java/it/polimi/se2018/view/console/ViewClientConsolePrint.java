@@ -1,4 +1,4 @@
-package it.polimi.se2018.view;
+package it.polimi.se2018.view.console;
 
 import it.polimi.se2018.model.events.*;
 
@@ -55,7 +55,7 @@ public abstract class ViewClientConsolePrint {
         return (c=='r') || (c=='y') || (c=='g') || (c=='b') || (c=='p') || (c=='w');
     }
 
-    protected void printPatternCard(ModelChangedMessagePatternCard messagePatternCard, ModelChangedMessageDiceOnPatternCard messageDice) {
+    protected void printPatternCard(String idPlayer, ModelChangedMessagePatternCard messagePatternCard, ModelChangedMessageDiceOnPatternCard messageDice) {
         String ANSI_WHITE = "\u001b[4m" + "\u001B[107m";
         String ANSI_RESET = "\u001b[0m";
         String ANSI_GREY = "\u001b[4m" + "\u001B[47m";
@@ -63,7 +63,8 @@ public abstract class ViewClientConsolePrint {
         int n = 0, m = 0;
         String s = "";
 
-        System.out.print("ID PATTERNCARD " + messagePatternCard.getIdPatternCard() + "\n");
+        System.out.print("ID Player " + idPlayer + "\n");
+        System.out.println("Name\t" + messagePatternCard.getName() + "\tDifficulty\t" + messagePatternCard.getDifficulty());
         System.out.print(ANSI_GREY + "   |" + ANSI_RESET);
         for (int i=0; i<5; i++) {
             System.out.print(ANSI_GREY + " " + i + " |" + ANSI_RESET);
@@ -84,12 +85,12 @@ public abstract class ViewClientConsolePrint {
                         s = s + "\u001b[4m" + printDie('w', c);
                     s = s + "|";
                 } else {
-                    char color = messageDice.getRepresentation().charAt(n);
-                    char value = messageDice.getRepresentation().charAt(n+1);
+                    char color = messageDice.getRepresentation().charAt(n+2);
+                    char value = messageDice.getRepresentation().charAt(n+3);
 
                     s = s + printDie(color, value) + "|";
                 }
-                n += 2;
+                n += 4;
             }
             m = m + 5;
             s = s + "\n";
@@ -99,7 +100,10 @@ public abstract class ViewClientConsolePrint {
 
     protected void printRoundTrack(ModelChangedMessageRound message) {
 
-        System.out.print("ROUND " + message.getIdRound() + ":\t");
+        int app = Integer.parseInt(message.getIdRound()) + 1;
+        System.out.print("\nROUND " + app  + ":\t");
+        if(message.getRepresentation().length() == 0)
+            System.out.println("\tCURRENT ROUND\t");
         for (int j=0; j<message.getRepresentation().length(); j+=4) {
             char color = message.getRepresentation().charAt(j+2);
             char value = message.getRepresentation().charAt(j+3);
@@ -122,7 +126,7 @@ public abstract class ViewClientConsolePrint {
     }
 
     protected void printPrivateObjective(ModelChangedMessagePrivateObjective message) {
-        System.out.print("\nPRIVATE OBJECTIVES: "
+        System.out.print("PRIVATE OBJECTIVES: "
                 + "\tNAME: " + message.getName()
                 + "\tDESCRIPTION: " + message.getDescription() + "\n");
     }
@@ -131,7 +135,7 @@ public abstract class ViewClientConsolePrint {
         System.out.print("\nPUBLIC OBJECTIVE: ");
 
         System.out.print("\tNAME: " + message.getName()
-                + "\tDESCRIPTION: " + message.getDescription() + "\n");
+                + "\tDESCRIPTION: " + message.getDescription());
     }
 
     protected void printToolCards(ModelChangedMessageToolCard message) {
@@ -152,6 +156,7 @@ public abstract class ViewClientConsolePrint {
         String s = "";
 
         System.out.print("ID PATTERNCARD: " + messagePatternCard.getIdPatternCard() + "\n");
+        System.out.println("Name\t" + messagePatternCard.getName() + "\tDifficulty\t" + messagePatternCard.getDifficulty());
         System.out.print(ANSI_GREY + "   |" + ANSI_RESET);
         for (int i=0; i<5; i++) {
             System.out.print(ANSI_GREY + " " + i + " |" + ANSI_RESET);

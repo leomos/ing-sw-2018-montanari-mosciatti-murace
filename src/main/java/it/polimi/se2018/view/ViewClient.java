@@ -1,13 +1,9 @@
 package it.polimi.se2018.view;
 
 import it.polimi.se2018.model.events.ModelChangedMessage;
-import it.polimi.se2018.network.ServerInterface;
-
 import java.util.ArrayList;
 
 public abstract class ViewClient {
-
-    private ServerInterface serverInterface;
 
     public void update(ModelChangedMessage modelChangedMessage) {
 
@@ -27,7 +23,7 @@ public abstract class ViewClient {
         return true;
     }
 
-    public Integer[] getPositionInPatternCard(){
+    public ArrayList<Integer> getPositionInPatternCard(){
         return null;
     }
 
@@ -38,4 +34,6 @@ public abstract class ViewClient {
     public ArrayList<Integer> askForPatternCard(){
         return null;
     }
+
+    public ArrayList<String> askForMove(){return null;}
 }

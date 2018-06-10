@@ -28,7 +28,7 @@ public class PatternCard {
 
     private String patternCardRepresentation;
 
-    private String diceRepresentation;
+    private String diceRepresentation = "********************************************************************************";
 
     public PatternCard(DiceContainer diceContainer, int id, String name, int difficulty, String patternCardRepresentation) {
         this.diceContainer = diceContainer;
@@ -206,7 +206,6 @@ public class PatternCard {
      * @return proximityCellList list of available positions around the cell defined by x and y
      * @throws DiceContainerUnsupportedIdException
      */
-
     /*TODO: test + change Proximity to Ortogonal */
     public boolean checkProximityCellsValidity(int rolledDieId, int x, int y)throws DiceContainerUnsupportedIdException {
         Die d = diceContainer.getDie(rolledDieId);
@@ -248,19 +247,23 @@ public class PatternCard {
         return x == 0 || x == 4 || y == 0 || y == 3;
     }
 
-    public void updateDiceRepresentation() throws DiceContainerUnsupportedIdException {
+    public void updateDiceRepresentation() {
         diceRepresentation = "";
-        for(int i = 0; i < 5; i++)
-            for(int j = 0; j < 4; j++){
-                PatternCardCell c = cells[i][j];
+        for(int i = 0; i < 4; i++)
+            for(int j = 0; j < 5; j++){
+                PatternCardCell c = cells[j][i];
                 if(c.isEmpty())
                     diceRepresentation = diceRepresentation + "****";
                 else {
                     if (c.getRolledDieId() < 10)
                         diceRepresentation = diceRepresentation + "0";
-                    diceRepresentation = diceRepresentation + c.getRolledDieId()
-                            + diceContainer.getDie(c.getRolledDieId()).getColorChar()
-                            + diceContainer.getDie(c.getRolledDieId()).getRolledValue();
+                    try {
+                        diceRepresentation = diceRepresentation + c.getRolledDieId()
+                                + diceContainer.getDie(c.getRolledDieId()).getColorChar()
+                                + diceContainer.getDie(c.getRolledDieId()).getRolledValue();
+                    } catch (DiceContainerUnsupportedIdException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
     }

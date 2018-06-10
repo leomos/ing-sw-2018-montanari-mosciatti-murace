@@ -2,19 +2,15 @@ package it.polimi.se2018.controller;
 
 import it.polimi.se2018.model.Model;
 import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
-import it.polimi.se2018.model.events.PlayerMessage;
-import it.polimi.se2018.model.events.PlayerMessageDie;
-import it.polimi.se2018.utils.Observable;
+import it.polimi.se2018.model.events.*;
 import it.polimi.se2018.utils.Observer;
-import it.polimi.se2018.view.ViewClient;
-
-import java.util.HashMap;
+import it.polimi.se2018.view.VirtualView;
 
 public class Controller implements Observer<PlayerMessage> {
 
     protected Model model;
 
-    private HashMap<Integer, ViewClient> view;
+    private VirtualView view;
 
     private ToolCardController toolCardController;
 
@@ -25,12 +21,11 @@ public class Controller implements Observer<PlayerMessage> {
     private EndTurnController endTurnController;
 
     /**
-     * @param idPlayer
      * @param view
      */
-    /* TODO: tests, add for HashMap. */
-    public void addView(int idPlayer, ViewClient view){
-        return;
+    /* TODO: tests */
+    public void addView(VirtualView view){
+        this.view = view;
     }
 
     public Controller(Model model){
@@ -42,12 +37,20 @@ public class Controller implements Observer<PlayerMessage> {
     }
 
     /**
-     * @param view network that sends the message
+     * @param /view network that sends the message
      * @param playerMessage message containing the information about player's move
      */
-    /* TODO: tests, finish update with instanceOf(). */
+    /* TODO: tests, finish update without instanceOf(). */
     @Override
     public void update(PlayerMessage playerMessage){
+
+        if(playerMessage instanceof PlayerMessageSetup){
+            PlayerMessageSetup playerMessageSetup = (PlayerMessageSetup) playerMessage;
+
+            setUpController.execute(playerMessageSetup);
+
+        }
+
 
         if(playerMessage instanceof PlayerMessageDie) {
             PlayerMessageDie playerMessageDie = (PlayerMessageDie) playerMessage;
@@ -56,6 +59,16 @@ public class Controller implements Observer<PlayerMessage> {
             } catch (DiceContainerUnsupportedIdException e) {
                 e.printStackTrace();
             }
+        }
+
+        if(playerMessage instanceof PlayerMessageToolCard) {
+            PlayerMessageToolCard playerMessageToolCard = (PlayerMessageToolCard) playerMessage;
+            this.toolCardController.execute(playerMessageToolCard, view);
+        }
+
+        if(playerMessage instanceof PlayerMessageEndTurn) {
+            PlayerMessageEndTurn playerMessageEndTurn = (PlayerMessageEndTurn) playerMessage;
+            this.endTurnController.execute(playerMessageEndTurn);
         }
 
     }

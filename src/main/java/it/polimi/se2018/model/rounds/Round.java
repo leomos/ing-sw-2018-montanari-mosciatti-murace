@@ -1,6 +1,9 @@
 package it.polimi.se2018.model.rounds;
 
-import it.polimi.se2018.model.DieNotPresentException;
+
+import it.polimi.se2018.model.container.DiceContainer;
+import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
+import it.polimi.se2018.model.container.Die;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,14 +17,19 @@ public class Round {
 
     private int idPlayerPlaying = -1;
 
-    private int[] rolledDiceLeft;
+    private ArrayList<Integer> rolledDiceLeft = new ArrayList<Integer>();
+
+    private String representation = "";
 
     private ArrayList<Integer> players;
 
     private ArrayList<Integer> turns = new ArrayList<>();
 
-    public Round(int id) {
+    private DiceContainer diceContainer;
+
+    public Round(int id, DiceContainer diceContainer) {
         this.id = id;
+        this.diceContainer = diceContainer;
     }
 
     public int getId() {
@@ -32,15 +40,17 @@ public class Round {
         return idPlayerPlaying;
     }
 
-    public int[] getRolledDiceLeft() {
+    public ArrayList<Integer> getRolledDiceLeft() {
         return rolledDiceLeft;
     }
+
+    public String getRepresentation(){return representation;}
 
     public void setPlayers(ArrayList<Integer> players) {
         this.players = players;
     }
 
-    public void setRolledDiceLeft(int[] rolledDiceLeft) {
+    public void setRolledDiceLeft(ArrayList<Integer> rolledDiceLeft) {
         this.rolledDiceLeft = rolledDiceLeft;
     }
 
@@ -53,7 +63,10 @@ public class Round {
         if(idPlayerPlaying != -1) {
             throw new RoundFirstPlayerAlreadySetException();
         }
-        idPlayerPlaying = idFirstPlayer;
+        if(idFirstPlayer == 0)
+            idPlayerPlaying = players.size();
+        else
+            idPlayerPlaying = idFirstPlayer;
         createTurns();
     }
 
@@ -62,12 +75,16 @@ public class Round {
      * from the turns array and then removing it.
      * @throws RoundFinishedException if no more rounds are available.
      */
-    public void setNextPlayer() throws RoundFinishedException {
+    public void setNextPlayer(){
         if(!turns.isEmpty()) {
             idPlayerPlaying = turns.get(0);
             turns.remove(0);
         } else {
-            throw new RoundFinishedException();
+            try {
+                throw new RoundFinishedException();
+            } catch (RoundFinishedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -94,6 +111,21 @@ public class Round {
         turns.remove(0);
     }
 
+    public void updateRepresentation(){
+        representation = "";
+        for(int i = 0; i < rolledDiceLeft.size(); i++){
+            Die d = null;
+            try {
+                d = diceContainer.getDie(rolledDiceLeft.get(i));
+            } catch (DiceContainerUnsupportedIdException e) {
+                e.printStackTrace();
+            }
+            if(rolledDiceLeft.get(i) < 10)
+                representation = representation + "0";
+            representation = representation + Integer.toString(rolledDiceLeft.get(i)) + d.getColorChar() + d.getRolledValue();
+        }
+    }
+
     /**
      * @param playerId id of the player of which we want to know
      *                 how many turns he has played in this round
@@ -118,9 +150,9 @@ public class Round {
      * that is, they need to be present in rolledDiceLeft.
      */
     public void swapDie(int dieIdToRemove, int dieIdToAdd) {
-        for (int i = 0; i < rolledDiceLeft.length; i++) {
-            if(dieIdToRemove == rolledDiceLeft[i]) {
-                rolledDiceLeft[i] = dieIdToAdd;
+        for (int i = 0; i < rolledDiceLeft.size(); i++) {
+            if(dieIdToRemove == rolledDiceLeft.get(i)) {
+                rolledDiceLeft.add(i, dieIdToAdd);
                 return;
             }
         }
@@ -136,6 +168,10 @@ public class Round {
             if(id == dieId) return true;
         }
         return false;
+    }
+
+    public boolean isRoundOver(){
+        return turns.isEmpty();
     }
 
     public void giveConsecutiveTurnsToPlayer(int playerId)

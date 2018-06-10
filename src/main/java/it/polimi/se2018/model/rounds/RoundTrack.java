@@ -2,6 +2,7 @@ package it.polimi.se2018.model.rounds;
 
 import it.polimi.se2018.model.DieNotPresentException;
 import it.polimi.se2018.model.Player;
+import it.polimi.se2018.model.container.DiceContainer;
 
 import java.util.ArrayList;
 
@@ -17,10 +18,13 @@ public class RoundTrack {
 
     private int currentRoundId = -1;
 
-    public RoundTrack(ArrayList<Player> players) {
+    private DiceContainer diceContainer;
+
+    public RoundTrack(ArrayList<Player> players, DiceContainer diceContainer) {
         for(Player player : players) {
             this.players.add(player.getId());
         }
+        this.diceContainer = diceContainer;
     }
 
     public Round getCurrentRound() {
@@ -34,9 +38,13 @@ public class RoundTrack {
      *          that more than NUMBER_OF_ROUNDS rounds are trying to be
      *          played.
      */
-    public void startNextRound() throws RoundTrackNoMoreRoundsException {
+    public void startNextRound(){
         if(isLastRound()) {
-            throw new RoundTrackNoMoreRoundsException();
+            try {
+                throw new RoundTrackNoMoreRoundsException();
+            } catch (RoundTrackNoMoreRoundsException e) {
+                e.printStackTrace();
+            }
         }
         currentRoundId++;
         initNewRound();
@@ -48,9 +56,13 @@ public class RoundTrack {
      * @throws  RoundTrackTooManyDiceForCurrentPlayers if rolledDiceLeft
      *          parameter' size is bigger than (players.size()*2 + 1)
      */
-    public void setRolledDiceLeftForCurrentRound(int[] rolledDiceLeft) throws RoundTrackTooManyDiceForCurrentPlayers {
-        if(rolledDiceLeft.length > (players.size()*2 + 1)) {
-            throw new RoundTrackTooManyDiceForCurrentPlayers();
+    public void setRolledDiceLeftForCurrentRound(ArrayList<Integer> rolledDiceLeft) {
+        if(rolledDiceLeft.size() > (players.size()*2 + 1)) {
+            try {
+                throw new RoundTrackTooManyDiceForCurrentPlayers();
+            } catch (RoundTrackTooManyDiceForCurrentPlayers roundTrackTooManyDiceForCurrentPlayers) {
+                roundTrackTooManyDiceForCurrentPlayers.printStackTrace();
+            }
         }
         rounds[currentRoundId].setRolledDiceLeft(rolledDiceLeft);
     }
@@ -70,7 +82,7 @@ public class RoundTrack {
      * Fills the rounds array with the newly created Round object.
      */
     private void initNewRound() {
-        Round newRound = new Round(currentRoundId);
+        Round newRound = new Round(currentRoundId, diceContainer);
         idFirstPlayerPlaying++;
         try {
             newRound.setPlayers(players);

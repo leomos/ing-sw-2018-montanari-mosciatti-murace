@@ -5,7 +5,7 @@ import it.polimi.se2018.model.events.PlayerMessageSetup;
 import it.polimi.se2018.network.ClientInterface;
 import it.polimi.se2018.network.ServerInterface;
 import it.polimi.se2018.view.ViewClient;
-import it.polimi.se2018.view.ViewClientConsole;
+import it.polimi.se2018.view.console.ViewClientConsole;
 
 import java.io.IOException;
 import java.net.MalformedURLException;

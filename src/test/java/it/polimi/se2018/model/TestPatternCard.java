@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import static junit.framework.TestCase.fail;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class TestPatternCard {
@@ -154,4 +155,12 @@ public class TestPatternCard {
                         patternCard.getDiceRepresentation());
     }
 
+    @Test
+    public void setFirstMove() {
+        assertEquals("Virtus", patternCard.getName());
+        assertEquals(0, patternCard.getId());
+        assertEquals("4025g006g203g405g100", patternCard.getPatternCardRepresentation());
+        patternCard.setFirstMove();
+        assertFalse(patternCard.isFirstMove());
+    }
 }

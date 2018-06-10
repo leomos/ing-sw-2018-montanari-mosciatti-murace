@@ -7,8 +7,11 @@ public class ModelChangedMessageRefresh extends ModelChangedMessage implements M
 
     GamePhase gamePhase;
 
-    public ModelChangedMessageRefresh(GamePhase gamePhase){
+    String idPlayerPlaying;
+
+    public ModelChangedMessageRefresh(GamePhase gamePhase, String idPlayerPlaying){
         this.gamePhase = gamePhase;
+        this.idPlayerPlaying = idPlayerPlaying;
     }
 
     public GamePhase getGamePhase() {
@@ -18,5 +21,8 @@ public class ModelChangedMessageRefresh extends ModelChangedMessage implements M
     @Override
     public void accept(MessageVisitorInterface messageVisitorInterface) {
         messageVisitorInterface.visitModelChangedMessageRefresh(this);
+    }
+    public String getIdPlayerPlaying() {
+        return idPlayerPlaying;
     }
 }
