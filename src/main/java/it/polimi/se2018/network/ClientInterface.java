@@ -9,8 +9,6 @@ import java.util.List;
 
 public interface ClientInterface extends Remote {
 
-    public void setRoom(Room room) throws RemoteException;
-
     public void update(ModelChangedMessage modelChangedMessage) throws RemoteException;
 
     public Integer getDieFromPatternCard() throws RemoteException;
@@ -24,4 +22,5 @@ public interface ClientInterface extends Remote {
     public Integer getValueForDie() throws RemoteException;
 
     public List<Integer> askForPatternCard() throws RemoteException;
+
 }

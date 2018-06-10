@@ -14,7 +14,7 @@ public class SetUpController {
     public void execute(PlayerMessageSetup playerMessageSetup){
 
         int idPatternCard = playerMessageSetup.getPatternCardId();
-        int idPlayer = playerMessageSetup.getPlayer();
+        int idPlayer = playerMessageSetup.getPlayerId();
 
         model.setChosenPatternCard(idPatternCard, idPlayer);
 

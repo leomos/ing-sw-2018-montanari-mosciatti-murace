@@ -20,7 +20,7 @@ public class DieController  {
     /* TODO: tests, check if there is a die in adjacent position + exception*/
     public void execute(PlayerMessageDie playerMessageDie) throws DiceContainerUnsupportedIdException {
 
-        int idPlayer = playerMessageDie.getPlayer();
+        int idPlayer = playerMessageDie.getPlayerId();
         int idDie = playerMessageDie.getDie();
         int x = playerMessageDie.getPosition()[0];
         int y = playerMessageDie.getPosition()[1];

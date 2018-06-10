@@ -3,13 +3,12 @@ package it.polimi.se2018.network.server;
 import it.polimi.se2018.controller.Controller;
 import it.polimi.se2018.model.Model;
 import it.polimi.se2018.model.events.Message;
-import it.polimi.se2018.model.events.PlayerMessage;
-import it.polimi.se2018.network.ClientInterface;
+import it.polimi.se2018.model.events.ModelChangedMessage;
+import it.polimi.se2018.network.ConnectedClient;
 import it.polimi.se2018.view.VirtualView;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 public class Room {
 
@@ -19,34 +18,27 @@ public class Room {
 
     private Controller controller;
 
-    private List<ClientInterface> clientInterfaces;
+    private Set<ConnectedClient> players;
 
-    public Room() {
-        clientInterfaces = new ArrayList<>();
-    }
 
     public void start() {
+        /* TODO: start game procedures */
         System.out.println("Room started!");
-        for(ClientInterface clientInterface : clientInterfaces) {
+        /*players.forEach(player -> {
             try {
-                System.out.println(clientInterface.getDieFromPatternCard());
+                System.out.println(player.getClientInterface().getDieFromPatternCard());
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
-        }
+        });*/
     }
 
     public void stop() {
 
     }
 
-    public void addClient(ClientInterface clientInterface) {
-        clientInterfaces.add(clientInterface);
-        try {
-            clientInterface.setRoom(this);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
+    public void addPlayers(Set<ConnectedClient> players) {
+        this.players = players;
     }
 
     public void notifyView(Message playerMessage) {
@@ -54,4 +46,13 @@ public class Room {
         //view.notify((PlayerMessage) playerMessage);
     }
 
+    public void updatePlayers(Message updateMessage) {
+        players.forEach((player) -> {
+            try {
+                player.getClientInterface().update((ModelChangedMessage) updateMessage);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
+    }
 }

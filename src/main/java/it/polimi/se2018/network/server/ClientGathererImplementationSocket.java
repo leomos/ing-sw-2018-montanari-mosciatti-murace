@@ -108,13 +108,15 @@ public class ClientGathererImplementationSocket implements ClientGathererInterfa
 
             objectOutputStream = new ObjectOutputStream(clientConnection.getOutputStream());
 
-            newClientInterface = new ClientImplementationSocket(objectInputStream, objectOutputStream);
+            newClientInterface = new ClientImplementationSocket(objectInputStream, objectOutputStream, roomDispatcher);
 
             clientId = roomDispatcher.handleClient(newClientInterface, clientName);
 
             registerClientReturnMessage = new MethodCallMessage("registerNewClient", clientId);
 
             objectOutputStream.writeObject(registerClientReturnMessage);
+
+            ((ClientImplementationSocket) newClientInterface).start();
 
         } catch (IOException e) {
             LOGGER.severe(loggingSuffix + "IOException in handleNewClientRegistration!");

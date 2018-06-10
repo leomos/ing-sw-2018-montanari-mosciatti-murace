@@ -15,7 +15,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.rmi.RemoteException;
 
-public class ServerImplementationSocket extends Thread implements ServerInterface {
+public class ServerImplementationSocket extends Thread implements ServerInterface<Socket> {
 
     private ObjectInputStream objectInputStream;
 
@@ -28,10 +28,10 @@ public class ServerImplementationSocket extends Thread implements ServerInterfac
     private ViewClient viewClient;
 
 
-    /*
+
     public ServerImplementationSocket(ViewClient viewClient) {
         this.viewClient = viewClient;
-    }*/
+    }
 
     @Override
     public void notify(PlayerMessage playerMessage) throws RemoteException {
@@ -43,17 +43,17 @@ public class ServerImplementationSocket extends Thread implements ServerInterfac
     }
 
     @Override
-    public Integer registerClient(Object client, String name) throws RemoteException {
-        Socket socket = (Socket) client;
+    public Integer registerClient(Socket client, String name) throws RemoteException {
         MethodCallMessage methodCallMessage;
         try {
-            this.objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+            this.objectOutputStream = new ObjectOutputStream(client.getOutputStream());
             methodCallMessage = new MethodCallMessage("registerNewClient");
             methodCallMessage.addArgument("name", name);
             this.objectOutputStream.writeObject(methodCallMessage);
 
-            this.objectInputStream = new ObjectInputStream(socket.getInputStream());
+            this.objectInputStream = new ObjectInputStream(client.getInputStream());
             methodCallMessage = (MethodCallMessage)this.objectInputStream.readObject();
+            this.start();
             return (Integer)methodCallMessage.getReturnValue();
         } catch (IOException e) {
             e.printStackTrace();

@@ -16,7 +16,7 @@ public class ToolCardController{
     }
 
     public void execute(PlayerMessageToolCard playerMessageToolCard, HashMap<Integer, ViewClient> view) throws DiceContainerUnsupportedIdException {
-        int player = playerMessageToolCard.getPlayer();
+        int player = playerMessageToolCard.getPlayerId();
         int toolCardId = playerMessageToolCard.getToolcard().getToolCardId();
         ViewClient actualView = view.get(player);
 

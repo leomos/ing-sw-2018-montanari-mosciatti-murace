@@ -5,8 +5,6 @@ import it.polimi.se2018.network.visitor.MessageVisitorInterface;
 
 public class PlayerMessageDie extends PlayerMessage implements Message {
 
-    private int player;
-
     private int die;
 
     private int[] position;
@@ -16,10 +14,6 @@ public class PlayerMessageDie extends PlayerMessage implements Message {
         this.die = die;
         this.position[0] = x;
         this.position[1] = y;
-    }
-
-    public int getPlayer() {
-        return player;
     }
 
     public int getDie() {

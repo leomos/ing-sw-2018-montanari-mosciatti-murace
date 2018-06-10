@@ -3,7 +3,9 @@ package it.polimi.se2018.network.server;
 import it.polimi.se2018.model.events.Message;
 import it.polimi.se2018.model.events.MethodCallMessage;
 import it.polimi.se2018.model.events.ModelChangedMessage;
+import it.polimi.se2018.model.events.PlayerMessage;
 import it.polimi.se2018.network.ClientInterface;
+import it.polimi.se2018.network.RoomDispatcherInterface;
 import it.polimi.se2018.network.visitor.MessageVisitorImplementationClient;
 import it.polimi.se2018.network.visitor.MessageVisitorInterface;
 
@@ -22,7 +24,9 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
 
     private ObjectOutputStream objectOutputStream;
 
-    private Room room;
+    private Room room = null;
+
+    private RoomDispatcherInterface roomDispatcher;
 
     private boolean waitingForMethodCallResponse = false, ready = false;
 
@@ -39,9 +43,12 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
         this.objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
     }
 
-    public ClientImplementationSocket(ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream) throws IOException {
+    public ClientImplementationSocket(ObjectInputStream objectInputStream,
+                                      ObjectOutputStream objectOutputStream,
+                                      RoomDispatcherInterface roomDispatcher) throws IOException {
         this.objectInputStream = objectInputStream;
         this.objectOutputStream = objectOutputStream;
+        this.roomDispatcher = roomDispatcher;
     }
 
     @Override
@@ -57,19 +64,24 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
         }
     }
 
-    public void notifyRoom(Message message) {
-        room.notifyView(message);
-    }
-
-    @Override
-    public void setRoom(Room room) throws RemoteException {
-        this.room = room;
-        this.start();
+    public void notifyRoom(PlayerMessage playerMessage) {
+        if(room == null) {
+            roomDispatcher.getAllConnectedClients().forEach(client -> {
+                if (client.getId() == playerMessage.getPlayerId()) {
+                    room = client.getRoom();
+                }
+            });
+        }
+        room.notifyView(playerMessage);
     }
 
     @Override
     public void update(ModelChangedMessage modelChangedMessage) throws RemoteException {
-
+        try {
+            this.objectOutputStream.writeObject(modelChangedMessage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
