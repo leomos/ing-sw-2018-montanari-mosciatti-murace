@@ -1,8 +1,10 @@
 package it.polimi.se2018.view.console;
 
 import it.polimi.se2018.model.GamePhase;
-import it.polimi.se2018.model.events.*;
-import it.polimi.se2018.network.server.ServerInterface;
+import it.polimi.se2018.model.events.ModelChangedMessage;
+import it.polimi.se2018.model.events.ModelChangedMessageConnected;
+import it.polimi.se2018.model.events.ModelChangedMessageMoveFailed;
+import it.polimi.se2018.model.events.ModelChangedMessageRefresh;
 import it.polimi.se2018.view.ViewClient;
 
 import java.util.ArrayList;
@@ -19,8 +21,6 @@ public class ViewClientConsole extends ViewClient {
     private GamePhase gamePhase = GamePhase.SETUPPHASE;
 
     private ViewClientConsolePrint viewClientConsolePrint;
-
-    ServerInterface serverInterface;
 
     public ViewClientConsole( ){
     }
@@ -67,8 +67,9 @@ public class ViewClientConsole extends ViewClient {
 
     }
 
-    public PlayerMessageSetup askForPatternCard()  {
+    public ArrayList<Integer> askForPatternCard()  {
         Scanner input = new Scanner(System.in);
+        ArrayList<Integer> stringToReturn = new ArrayList<Integer>();
         boolean moveOk = true;
         do {
             System.out.println("\nChoose a PatternCard by selecting one of the PatternCardId");
@@ -78,9 +79,10 @@ public class ViewClientConsole extends ViewClient {
             for(int i = 0; i < 24; i++){
                 String app = "" + i;
                 if(app.equals(s)) {
-                    int idPatternCard = Integer.parseInt(s);
                     moveOk = false;
-                    return new PlayerMessageSetup(idClient, idPatternCard);
+                    stringToReturn.add(idClient);
+                    stringToReturn.add(Integer.parseInt(app));
+                    return stringToReturn;
                 }
             }
 
@@ -92,7 +94,8 @@ public class ViewClientConsole extends ViewClient {
         return null;
     }
 
-    public PlayerMessage askForMove(){
+    public ArrayList<String> askForMove(){
+        ArrayList<String> stringToReturn = new ArrayList<String>();
         if(isMyTurn) {
             boolean moveOk = true;
 
@@ -117,10 +120,11 @@ public class ViewClientConsole extends ViewClient {
                                 String app = "set " + i + " " + j + " " + k;
                                 if (s.equals(app)) {
                                     moveOk = false;
-                                    int idDie = Integer.parseInt(parts[1]);
-                                    int x = Integer.parseInt(parts[2]);
-                                    int y = Integer.parseInt(parts[3]);
-                                    return new PlayerMessageDie(idClient, idDie, x, y);
+                                    stringToReturn.add(Integer.toString(idClient));
+                                    stringToReturn.add(parts[1]);
+                                    stringToReturn.add(parts[2]);
+                                    stringToReturn.add(parts[3]);
+                                    return stringToReturn;
                                 }
                             }
                 }
@@ -131,14 +135,18 @@ public class ViewClientConsole extends ViewClient {
                         if(s.equals(app)){
                             int idToolCard = Integer.parseInt(parts[1]);
                             moveOk = false;
-                            return new PlayerMessageToolCard(idClient, idToolCard);
+                            stringToReturn.add(Integer.toString(idClient));
+                            stringToReturn.add(parts[1]);
+                            return stringToReturn;
                         }
                     }
                 }
 
                 if (s.equals("end")) {
                     moveOk = false;
-                    return new PlayerMessageEndTurn(idClient);
+                    stringToReturn.add(Integer.toString(idClient));
+                    stringToReturn.add(s);
+                    return stringToReturn;
                 }
 
                 if(moveOk == true)
