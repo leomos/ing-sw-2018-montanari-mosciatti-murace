@@ -21,7 +21,7 @@ public class Client {
     public static void main(String[] args) {
         int server = (new Random()).nextInt(2);
         ViewClient viewClient = new ViewClientConsole();
-        ServerInterface serverInterface;
+        ServerInterface serverInterface = null;
         int id = 0;
         if(server == 0) {
             System.out.println("SOCKET!");
@@ -48,5 +48,7 @@ public class Client {
             }
         }
         System.out.println(id);
+        viewClient.setServerInterface(serverInterface);
+        ((ViewClientConsole) viewClient).run();
     }
 }

@@ -1,25 +1,34 @@
 package it.polimi.se2018.view;
 
 import it.polimi.se2018.model.events.ModelChangedMessage;
+import it.polimi.se2018.network.ServerInterface;
+
 import java.util.ArrayList;
 
 public abstract class ViewClient {
+
+    protected ServerInterface serverInterface;
 
     public void update(ModelChangedMessage modelChangedMessage) {
 
     }
 
+
+    public void setServerInterface(ServerInterface serverInterface) {
+        this.serverInterface = serverInterface;
+    }
+
     public String askForName() { return null; }
 
-    public int getDieFromPatternCard() {
+    public Integer getDieFromPatternCard() {
         return 0;
     }
 
-    public int getDieFromRoundTrack() {
+    public Integer getDieFromRoundTrack() {
         return 0;
     }
 
-    public boolean getIncrementedValue() {
+    public Boolean getIncrementedValue() {
         return true;
     }
 
@@ -27,13 +36,12 @@ public abstract class ViewClient {
         return null;
     }
 
-    public int getValueForDie(){
+    public Integer getValueForDie(){
         return 0;
     }
 
-    public ArrayList<Integer> askForPatternCard(){
+    public Integer askForPatternCard(){
         return null;
     }
 
-    public ArrayList<String> askForMove(){return null;}
 }

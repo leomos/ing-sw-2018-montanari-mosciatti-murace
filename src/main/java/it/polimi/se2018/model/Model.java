@@ -19,12 +19,15 @@ public class Model extends Observable<ModelChangedMessage> {
 
     private Table table;
 
+    private HashMap<Integer, String> players = new HashMap<>();
+
     /*TODO: costruttore */
 
-    public Model(){
+    public Model(HashMap<Integer, String> players){
+        this.players = players;
     }
 
-    public void initSetup(HashMap<Integer, String> players) {
+    public void initSetup() {
         ModelChangedMessageRefresh modelChangedMessageRefresh;
         table = new Table(players);
 
@@ -49,7 +52,7 @@ public class Model extends Observable<ModelChangedMessage> {
         notify(modelChangedMessageRefresh);
     }
 
-    public void initGame(HashMap<Integer, String> players) {
+    public void initGame() {
         ModelChangedMessageRefresh modelChangedMessageRefresh;
         this.gamePhase = GamePhase.GAMEPHASE;
         modelChangedMessageRefresh = new ModelChangedMessageRefresh(gamePhase, null);

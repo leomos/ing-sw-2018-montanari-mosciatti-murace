@@ -2,12 +2,9 @@ package it.polimi.se2018.network.server;
 
 import it.polimi.se2018.controller.Controller;
 import it.polimi.se2018.model.Model;
-import it.polimi.se2018.model.events.Message;
-import it.polimi.se2018.model.events.ModelChangedMessage;
-import it.polimi.se2018.model.events.ModelChangedMessageConnected;
-import it.polimi.se2018.model.events.PlayerMessageSetup;
+import it.polimi.se2018.model.events.*;
 import it.polimi.se2018.network.ConnectedClient;
-import it.polimi.se2018.network.client.ClientInterface;
+import it.polimi.se2018.network.ClientInterface;
 import it.polimi.se2018.view.VirtualView;
 
 import java.rmi.RemoteException;
@@ -25,64 +22,53 @@ public class Room {
 
     private Set<ConnectedClient> players;
 
-    public Room(VirtualView virtualView) {
-        this.virtualView = virtualView;
-    }
-
-    public void initGame() {
-        for(ClientInterface clientInterface: virtualView.getClientInterfaceList()) {
-            id++;
-            ModelChangedMessage modelChangedMessageConnected = new ModelChangedMessageConnected(id);
-            try {
-                clientInterface.update(modelChangedMessageConnected);
-                String name = clientInterface.askForName();
-                clientsList.put(id, name);
-                System.out.println(id + " " + name);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     public void start() {
         //while(gamePlaying) {
-            Model model = new Model();
-            Controller controller = new Controller(model);
-            model.register(virtualView);
-            virtualView.register(controller);
-            controller.addView(virtualView);
+            HashMap<Integer, String> clientsMap = createClientsList();
+        System.out.println(clientsMap);
+            model = new Model(clientsMap);
+            controller = new Controller(model);
+            view = new VirtualView();
+            model.register(view);
+            view.register(controller);
+            controller.addView(view);
             //need to add view to controller!!
+            players.forEach(player -> {
+                view.addClientInterface(player.getClientInterface());
+            });
 
-            model.initSetup(clientsList);
+            model.initSetup();
 
             //patterncard choise
 
-            for(ClientInterface clientInterface: virtualView.getClientInterfaceList()){
+            players.forEach(player -> {
                 try {
-                    PlayerMessageSetup data = clientInterface.askForPatternCard();
-                    virtualView.callNotify(data);
+                    Integer m = player.getClientInterface().askForPatternCard();
+                    PlayerMessage playerMessage = new PlayerMessageSetup(player.getId(), m);
+                    view.callNotify(playerMessage);
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
-            }
+            });
 
-            model.initGame(clientsList);
+            model.initGame();
 
             //start rounds
 
-            for(int i = 0; i < clientsList.size() * 2 * 10; i++) //SBAGLIATO?
-                for(ClientInterface clientInterface: virtualView.getClientInterfaceList()){
+            /* TODO: non usare PlayerMessage */
+            /*for(int i = 0; i < clientsMap.size() * 2 * 10; i++) //SBAGLIATO?
+                for(ClientInterface clientInterface: view.getClientInterfaceList()){
                     PlayerMessage data;
                     try {
                         do {
                             data = clientInterface.askForMove();
-                            virtualView.callNotify(data);
+                            view.callNotify(data);
                         }
                         while(data instanceof PlayerMessageEndTurn);
                     } catch (RemoteException e) {
                         e.printStackTrace();
                     }
-                }
+                }*/
 
 
 
@@ -91,14 +77,20 @@ public class Room {
         //}
     }
 
+    public void stop() {
+
+    }
+
     public void addPlayers(Set<ConnectedClient> players) {
         this.players = players;
     }
 
     public void notifyView(Message playerMessage) {
         System.out.println("arrivato " + playerMessage.toString());
-        //view.notify((PlayerMessage) playerMessage);
+        view.callNotify((PlayerMessage) playerMessage);
     }
+
+
 
     public void updatePlayers(Message updateMessage) {
         players.forEach((player) -> {
@@ -110,5 +102,12 @@ public class Room {
         });
     }
 
+    private HashMap<Integer, String> createClientsList() {
+        HashMap<Integer, String> clientsMap = new HashMap<>();
+        players.forEach(player -> {
+            clientsMap.put(player.getId(), player.getName());
+        });
+        return clientsMap;
+    }
 
 }

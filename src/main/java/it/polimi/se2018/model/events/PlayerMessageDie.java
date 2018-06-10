@@ -5,13 +5,13 @@ import it.polimi.se2018.network.visitor.MessageVisitorInterface;
 
 public class PlayerMessageDie extends PlayerMessage implements Message {
 
-    private int die;
+    private Integer die;
 
-    private int x_position;
+    private Integer x_position;
 
-    private int y_position;
+    private Integer y_position;
 
-    public PlayerMessageDie(int player, int die, int x, int y){
+    public PlayerMessageDie(Integer player, Integer die, Integer x, Integer y){
         this.player = player;
         this.die = die;
         this.x_position = x;

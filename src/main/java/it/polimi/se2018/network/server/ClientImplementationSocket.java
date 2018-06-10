@@ -14,6 +14,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ClientImplementationSocket extends Thread implements ClientInterface {
@@ -100,8 +101,8 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
     }
 
     @Override
-    public Integer[] getPositionInPatternCard() throws RemoteException {
-        return (Integer[]) waitForMethodCallResponse("getPositionInPatternCard");
+    public ArrayList<Integer> getPositionInPatternCard() throws RemoteException {
+        return (ArrayList<Integer>) waitForMethodCallResponse("getPositionInPatternCard");
     }
 
     @Override
@@ -110,8 +111,8 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
     }
 
     @Override
-    public List<Integer> askForPatternCard() throws RemoteException {
-        return (List<Integer>) waitForMethodCallResponse("askForPatternCard");
+    public Integer askForPatternCard() throws RemoteException {
+        return (Integer) waitForMethodCallResponse("askForPatternCard");
     }
 
     public void unlockAndSetReady() {
