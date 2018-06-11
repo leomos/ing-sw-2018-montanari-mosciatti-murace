@@ -7,6 +7,7 @@ import it.polimi.se2018.view.ViewClient;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 import static it.polimi.se2018.model.GamePhase.GAMEPHASE;
 
@@ -93,6 +94,11 @@ public class    ViewClientConsole extends ViewClient {
     public void run(){
         boolean c = true;
         while(c) {
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             if (isMyTurn && gamePhase == GAMEPHASE) {
                 boolean moveOk = true;
 
