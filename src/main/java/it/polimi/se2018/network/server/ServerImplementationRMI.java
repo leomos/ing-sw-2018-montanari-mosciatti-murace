@@ -20,7 +20,6 @@ public class ServerImplementationRMI extends UnicastRemoteObject implements Clie
 
     private String serverName;
 
-    private Room room = null;
 
     protected ServerImplementationRMI(int port, String host, String serverName) throws RemoteException {
         this.port = port;
@@ -31,17 +30,18 @@ public class ServerImplementationRMI extends UnicastRemoteObject implements Clie
     @Override
     public void notify(PlayerMessage playerMessage) throws RemoteException {
         System.out.println(playerMessage);
-        for(ConnectedClient connectedClient : roomDispatcher.getAllConnectedClients()) {
-            if(connectedClient.getId() == playerMessage.getPlayerId()) {
-                room = connectedClient.getRoom();
-            }
-        }
-        room.notifyView(playerMessage);
+
+        getRoomForId(playerMessage.getPlayerId()).notifyView(playerMessage);
     }
 
     @Override
     public Integer registerClient(ClientInterface client, String name) throws RemoteException {
         return roomDispatcher.handleClient(client, name);
+    }
+
+    @Override
+    public void sendHeartbeet(int id) {
+        getRoomForId(id).heartbeat(id);
     }
 
     @Override
@@ -66,5 +66,16 @@ public class ServerImplementationRMI extends UnicastRemoteObject implements Clie
         }
 
         System.out.println("RMI started.");
+    }
+
+    private Room getRoomForId(int id) {
+        Room room;
+        for(ConnectedClient connectedClient : roomDispatcher.getAllConnectedClients()) {
+            if(connectedClient.getId() == id) {
+                room = connectedClient.getRoom();
+                return room;
+            }
+        }
+        return null;
     }
 }

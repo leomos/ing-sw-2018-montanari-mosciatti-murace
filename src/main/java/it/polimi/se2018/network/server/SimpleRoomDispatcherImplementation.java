@@ -82,6 +82,7 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
         room.start();
 
         rooms.add(room);
+
     }
 
     @Override

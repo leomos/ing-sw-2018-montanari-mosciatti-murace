@@ -11,4 +11,6 @@ public interface ServerInterface<T> extends Remote {
 
     public Integer registerClient(T client, String name) throws RemoteException;
 
+    public void sendHeartbeet(int id) throws RemoteException;
+
 }

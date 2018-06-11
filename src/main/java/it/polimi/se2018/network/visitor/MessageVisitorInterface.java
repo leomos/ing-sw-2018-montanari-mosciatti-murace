@@ -36,4 +36,5 @@ public interface MessageVisitorInterface {
 
     public void visitPlayerMessageToolCard(PlayerMessageToolCard playerMessageToolCard);
 
+    public void visitHeartbeatMessage(HeartbeatMessage heartbeatMessage);
 }

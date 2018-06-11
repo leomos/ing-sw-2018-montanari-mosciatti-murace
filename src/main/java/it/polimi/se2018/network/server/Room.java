@@ -4,13 +4,13 @@ import it.polimi.se2018.controller.Controller;
 import it.polimi.se2018.model.Model;
 import it.polimi.se2018.model.events.*;
 import it.polimi.se2018.network.ConnectedClient;
-import it.polimi.se2018.network.ClientInterface;
 import it.polimi.se2018.view.VirtualView;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 public class Room {
 
@@ -22,10 +22,12 @@ public class Room {
 
     private Set<ConnectedClient> players;
 
+    private Map<Integer, Long> heartbeats;
+
     public void start() {
         //while(gamePlaying) {
-            HashMap<Integer, String> clientsMap = createClientsList();
-        System.out.println(clientsMap);
+            HashMap<Integer, String> clientsMap = createClientsMap();
+            heartbeats = new HashMap<>();
             model = new Model(clientsMap);
             controller = new Controller(model);
             view = new VirtualView();
@@ -39,6 +41,7 @@ public class Room {
 
             model.initSetup();
 
+            heartbeats = initHeartbeats();
             //patterncard choise
 
             players.forEach(player -> {
@@ -50,6 +53,8 @@ public class Room {
                     e.printStackTrace();
                 }
             });
+
+            System.out.println("Starting game in model");
 
             model.initGame();
 
@@ -102,12 +107,26 @@ public class Room {
         });
     }
 
-    private HashMap<Integer, String> createClientsList() {
+    private HashMap<Integer, String> createClientsMap() {
         HashMap<Integer, String> clientsMap = new HashMap<>();
         players.forEach(player -> {
             clientsMap.put(player.getId(), player.getName());
         });
         return clientsMap;
+    }
+
+    public void heartbeat(int id) {
+        System.out.println(id + " | " + (System.nanoTime()-heartbeats.get(id)));
+        heartbeats.put(id, System.nanoTime());
+
+    }
+
+    private HashMap<Integer, Long> initHeartbeats() {
+        HashMap<Integer, Long> heartbeats = new HashMap<>();
+        players.forEach(player -> {
+            heartbeats.put(player.getId(), Long.valueOf(0));
+        });
+        return heartbeats;
     }
 
 }

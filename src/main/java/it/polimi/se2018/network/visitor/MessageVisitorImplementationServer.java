@@ -121,4 +121,9 @@ public class MessageVisitorImplementationServer implements MessageVisitorInterfa
     public void visitPlayerMessageToolCard(PlayerMessageToolCard playerMessageToolCard) {
 
     }
+
+    @Override
+    public void visitHeartbeatMessage(HeartbeatMessage heartbeatMessage) {
+
+    }
 }

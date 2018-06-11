@@ -32,6 +32,11 @@ public class MessageVisitorImplementationClient implements MessageVisitorInterfa
     }
 
     @Override
+    public void visitHeartbeatMessage(HeartbeatMessage heartbeatMessage) {
+        clientImplementationSocket.notifyHeartbeat(heartbeatMessage);
+    }
+
+    @Override
     public void visitMethodCallMessage(MethodCallMessage methodCallMessage) {
         clientImplementationSocket.unlockAndSetReady();
     }

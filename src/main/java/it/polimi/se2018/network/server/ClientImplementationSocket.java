@@ -1,9 +1,6 @@
 package it.polimi.se2018.network.server;
 
-import it.polimi.se2018.model.events.Message;
-import it.polimi.se2018.model.events.MethodCallMessage;
-import it.polimi.se2018.model.events.ModelChangedMessage;
-import it.polimi.se2018.model.events.PlayerMessage;
+import it.polimi.se2018.model.events.*;
 import it.polimi.se2018.network.ClientInterface;
 import it.polimi.se2018.network.RoomDispatcherInterface;
 import it.polimi.se2018.network.visitor.MessageVisitorImplementationClient;
@@ -67,11 +64,7 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
 
     public void notifyRoom(PlayerMessage playerMessage) {
         if(room == null) {
-            roomDispatcher.getAllConnectedClients().forEach(client -> {
-                if (client.getId() == playerMessage.getPlayerId()) {
-                    room = client.getRoom();
-                }
-            });
+            setCurrentRoom(playerMessage.getPlayerId());
         }
         room.notifyView(playerMessage);
     }
@@ -115,6 +108,13 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
         return (Integer) waitForMethodCallResponse("askForPatternCard");
     }
 
+    public void notifyHeartbeat(HeartbeatMessage heartbeatMessage) {
+        if(room == null) {
+            setCurrentRoom(heartbeatMessage.getId());
+        }
+        room.heartbeat(heartbeatMessage.getId());
+    }
+
     public void unlockAndSetReady() {
         synchronized (lock) {
             ready = true;
@@ -140,6 +140,14 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
             ready = false;
             return ((MethodCallMessage)inputMessage).getReturnValue();
         }
+    }
+
+    private void setCurrentRoom(int id) {
+        roomDispatcher.getAllConnectedClients().forEach(client -> {
+            if (client.getId() == id) {
+                room = client.getRoom();
+            }
+        });
     }
 
 

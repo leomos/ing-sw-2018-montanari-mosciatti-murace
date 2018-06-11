@@ -1,9 +1,6 @@
 package it.polimi.se2018.network.client;
 
-import it.polimi.se2018.model.events.Message;
-import it.polimi.se2018.model.events.MethodCallMessage;
-import it.polimi.se2018.model.events.ModelChangedMessage;
-import it.polimi.se2018.model.events.PlayerMessage;
+import it.polimi.se2018.model.events.*;
 import it.polimi.se2018.network.ServerInterface;
 import it.polimi.se2018.network.visitor.MessageVisitorImplementationServer;
 import it.polimi.se2018.network.visitor.MessageVisitorInterface;
@@ -61,6 +58,15 @@ public class ServerImplementationSocket extends Thread implements ServerInterfac
             e.printStackTrace();
         }
         return 0;
+    }
+
+    @Override
+    public void sendHeartbeet(int id) {
+        try {
+            this.objectOutputStream.writeObject(new HeartbeatMessage(id));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
