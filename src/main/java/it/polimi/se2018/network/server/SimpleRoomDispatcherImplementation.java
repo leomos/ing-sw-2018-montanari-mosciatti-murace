@@ -100,7 +100,7 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
 
     @Override
     public Set<ConnectedClient> getAllConnectedClients() {
-        return null;
+        return connectedClients;
     }
 
     @Override

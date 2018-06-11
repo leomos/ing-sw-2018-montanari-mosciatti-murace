@@ -30,12 +30,11 @@ public class ServerImplementationRMI extends UnicastRemoteObject implements Clie
 
     @Override
     public void notify(PlayerMessage playerMessage) throws RemoteException {
-        if(room == null) {
-            roomDispatcher.getAllConnectedClients().forEach(client -> {
-                if (client.getId() == playerMessage.getPlayerId()) {
-                    room = client.getRoom();
-                }
-            });
+        System.out.println(playerMessage);
+        for(ConnectedClient connectedClient : roomDispatcher.getAllConnectedClients()) {
+            if(connectedClient.getId() == playerMessage.getPlayerId()) {
+                room = connectedClient.getRoom();
+            }
         }
         room.notifyView(playerMessage);
     }

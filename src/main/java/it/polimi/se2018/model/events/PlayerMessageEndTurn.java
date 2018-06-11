@@ -4,8 +4,6 @@ import it.polimi.se2018.network.visitor.MessageVisitorInterface;
 
 public class PlayerMessageEndTurn extends PlayerMessage {
 
-    private int player;
-
     public PlayerMessageEndTurn(int player){
         this.player = player;
     }
