@@ -4,8 +4,6 @@ import it.polimi.se2018.network.visitor.MessageVisitorInterface;
 
 public class PlayerMessageToolCard extends PlayerMessage implements Message {
 
-    private int player;
-
     private int toolcard;
 
     public PlayerMessageToolCard(int player, int toolCard){
