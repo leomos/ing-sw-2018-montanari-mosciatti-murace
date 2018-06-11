@@ -7,6 +7,7 @@ import it.polimi.se2018.network.ConnectedClient;
 import it.polimi.se2018.view.VirtualView;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -34,10 +35,8 @@ public class Room {
             model.register(view);
             view.register(controller);
             controller.addView(view);
-            //need to add view to controller!!
-            players.forEach(player -> {
-                view.addClientInterface(player.getClientInterface());
-            });
+
+            view.setRoom(this);
 
             model.initSetup();
 
@@ -105,6 +104,19 @@ public class Room {
                 e.printStackTrace();
             }
         });
+    }
+
+    public ArrayList<Integer> getPositionInPatternCard(int idClient){
+        for(ConnectedClient player : players) {
+            if(player.getId() == idClient) {
+                try {
+                    return player.getClientInterface().getPositionInPatternCard();
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
     }
 
     private HashMap<Integer, String> createClientsMap() {
