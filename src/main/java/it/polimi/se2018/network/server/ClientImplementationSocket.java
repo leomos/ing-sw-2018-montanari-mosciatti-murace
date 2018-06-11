@@ -53,7 +53,11 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
     public void run() {
         try {
             while (null != (inputMessage = (Message) objectInputStream.readObject())) {
-                inputMessage.accept(messageVisitorInterface);
+                Runnable task = () -> {
+                    inputMessage.accept(messageVisitorInterface);
+                };
+                Thread thread = new Thread(task);
+                thread.start();
             }
         } catch (IOException e) {
 
