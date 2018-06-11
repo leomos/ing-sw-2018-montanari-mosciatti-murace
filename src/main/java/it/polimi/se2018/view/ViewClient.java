@@ -35,8 +35,8 @@ public abstract class ViewClient {
         return 0;
     }
 
-    public Boolean getIncrementedValue() {
-        return true;
+    public ArrayList<Integer> getIncrementedValue() {
+        return null;
     }
 
     public ArrayList<Integer> getPositionInPatternCard(){

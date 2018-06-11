@@ -7,7 +7,6 @@ import it.polimi.se2018.network.server.Room;
 import it.polimi.se2018.utils.Observable;
 import it.polimi.se2018.utils.Observer;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 //import it.polimi.se2018.network.server.Room;
@@ -31,7 +30,6 @@ public class VirtualView extends Observable<PlayerMessage> implements Observer<M
         room.updatePlayers(modelChangedMessage);
     }
 
-
     public void callNotify(PlayerMessage playerMessage){
         notify(playerMessage);
     }
@@ -43,4 +41,6 @@ public class VirtualView extends Observable<PlayerMessage> implements Observer<M
     public ArrayList<Integer> getPositionInPatternCard(int idClient){
         return room.getPositionInPatternCard(idClient);
     }
+
+    public ArrayList<Integer> getIncrementedValue(int idClient) {return room.getIncrementedValue(idClient);}
 }

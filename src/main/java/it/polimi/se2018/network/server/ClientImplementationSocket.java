@@ -12,7 +12,6 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ClientImplementationSocket extends Thread implements ClientInterface {
 
@@ -93,8 +92,8 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
     }
 
     @Override
-    public Boolean getIncrementedValue() throws RemoteException {
-        return (Boolean) waitForMethodCallResponse("getIncrementedValue");
+    public ArrayList<Integer> getIncrementedValue() throws RemoteException {
+        return (ArrayList<Integer>) waitForMethodCallResponse("getIncrementedValue");
     }
 
     @Override

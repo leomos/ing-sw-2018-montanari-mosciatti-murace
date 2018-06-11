@@ -18,23 +18,19 @@ public class ToolCardController{
         int idPlayer = playerMessageToolCard.getPlayer();
         int idToolCard = playerMessageToolCard.getToolcard();
 
-        System.out.println("arrivato nel controller");
         if(model.checkToolCard(idPlayer, idToolCard)){
 
             if (idToolCard == 1) {
 
-                //boolean incremented_value = view.getIncrementedValue();
+                ArrayList<Integer> dieToIncrement = view.getIncrementedValue(idPlayer);
+                model.incrementOrDecrementDieValue(idPlayer, dieToIncrement.get(0), dieToIncrement.get(1), idToolCard);
 
             } else if (idToolCard == 2) {
-                //controllo ci siano ALMENO un dado su tutta la patterCard -> serve un metodo per contarli su patternCard
-                ArrayList<Integer> positions = view.getPositionInPatternCard(playerMessageToolCard.getPlayer());
-
+                ArrayList<Integer> positions = view.getPositionInPatternCard(idPlayer);
                 model.moveDieInsidePatternCard(idPlayer, positions.get(0), positions.get(1), positions.get(2), positions.get(3), false, true, 2);
+
             } else if (idToolCard == 3) {
-                System.out.println("qui?");
-                ArrayList<Integer> positions = view.getPositionInPatternCard(playerMessageToolCard.getPlayer());
-                System.out.println("qui?");
-                System.out.println(positions);
+                ArrayList<Integer> positions = view.getPositionInPatternCard(idPlayer);
                 model.moveDieInsidePatternCard(idPlayer, positions.get(0), positions.get(1), positions.get(2), positions.get(3), true, false, 3);
 
             } else if (idToolCard == 4) {
@@ -49,6 +45,10 @@ public class ToolCardController{
 
                 model.moveDieInsidePatternCard(idPlayer, startingPosition2.get(0), startingPosition2.get(1), finalPosition2.get(0), finalPosition2.get(1), false, false, 4);
                 */
+            } else if(idToolCard == 7){
+
+                model.rerollDiceArena(idPlayer, idToolCard);
+
             }
         }
     }

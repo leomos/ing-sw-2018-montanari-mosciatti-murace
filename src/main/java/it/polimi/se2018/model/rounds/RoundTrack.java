@@ -38,13 +38,9 @@ public class RoundTrack {
      *          that more than NUMBER_OF_ROUNDS rounds are trying to be
      *          played.
      */
-    public void startNextRound(){
+    public void startNextRound() throws RoundTrackNoMoreRoundsException {
         if(isLastRound()) {
-            try {
-                throw new RoundTrackNoMoreRoundsException();
-            } catch (RoundTrackNoMoreRoundsException e) {
-                e.printStackTrace();
-            }
+            throw new RoundTrackNoMoreRoundsException();
         }
         currentRoundId++;
         initNewRound();

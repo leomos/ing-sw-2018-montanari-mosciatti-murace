@@ -22,6 +22,8 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
     private ModelChangedMessagePrivateObjective privateObjective;
 
+    private ModelChangedMessageTokensLeft tokensLeft;
+
     private ArrayList<ModelChangedMessageRound> roundTrack = new ArrayList<ModelChangedMessageRound>(10);
 
     public ViewClientConsoleGame(int idClient){
@@ -65,6 +67,9 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
         else if(message instanceof ModelChangedMessageRound) {
             roundTrack.add(Integer.parseInt(((ModelChangedMessageRound) message).getIdRound()), (ModelChangedMessageRound) message);
         }
+        else if(message instanceof ModelChangedMessageTokensLeft)
+            if(((ModelChangedMessageTokensLeft) message).getIdPlayer().equals(Integer.toString(idClient)))
+                tokensLeft = (ModelChangedMessageTokensLeft) message;
 
 
     }
@@ -87,6 +92,8 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
         printPatternCard(idPlayers.get(myPatternCardId), patternCards.get(myPatternCardId), diceOnPatternCards.get(myPatternCardId));
 
         printPrivateObjective(privateObjective);
+
+        System.out.println("You have left " + tokensLeft.getTokensLeft() + " tokens to use on ToolCards");
 
         for (int i = 0; i < roundTrack.size(); i++)
             printRoundTrack(roundTrack.get(i));

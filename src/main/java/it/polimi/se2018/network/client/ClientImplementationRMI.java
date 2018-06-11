@@ -6,7 +6,6 @@ import it.polimi.se2018.view.ViewClient;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ClientImplementationRMI implements ClientInterface {
 
@@ -32,7 +31,7 @@ public class ClientImplementationRMI implements ClientInterface {
     }
 
     @Override
-    public Boolean getIncrementedValue() throws RemoteException {
+    public ArrayList<Integer> getIncrementedValue() throws RemoteException {
         return viewClient.getIncrementedValue();
     }
 

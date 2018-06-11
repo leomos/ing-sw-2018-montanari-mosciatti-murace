@@ -47,6 +47,15 @@ public class DiceArena {
         }
     }
 
+    public void rerollDiceArena(){
+        for(int i = 0; i < numberOfDice; i++) {
+            try {
+                diceContainer.getDie(arena.get(i)).roll();
+            } catch (DiceContainerUnsupportedIdException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     /**
      * @param dieIdToRemove

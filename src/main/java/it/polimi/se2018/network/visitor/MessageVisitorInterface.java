@@ -28,6 +28,8 @@ public interface MessageVisitorInterface {
 
     public void visitModelChangedMessageToolCard(ModelChangedMessageToolCard modelChangedMessageToolCard);
 
+    public void visitModelChangedMessageTokensLeft(ModelChangedMessageTokensLeft modelChangedMessageTokensLeft);
+
     public void visitPlayerMessageDie(PlayerMessageDie playerMessageDie);
 
     public void visitPlayerMessageEndTurn(PlayerMessageEndTurn playerMessageEndTurn);

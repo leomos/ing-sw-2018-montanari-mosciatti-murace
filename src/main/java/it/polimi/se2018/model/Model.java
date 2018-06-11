@@ -2,11 +2,13 @@ package it.polimi.se2018.model;
 
 import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.container.Die;
+import it.polimi.se2018.model.container.DieRolledValueOutOfBoundException;
 import it.polimi.se2018.model.events.*;
 import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.objectives.PublicObjective;
 import it.polimi.se2018.model.rounds.Round;
 import it.polimi.se2018.model.rounds.RoundTrack;
+import it.polimi.se2018.model.rounds.RoundTrackNoMoreRoundsException;
 import it.polimi.se2018.model.toolcards.ToolCard;
 import it.polimi.se2018.model.toolcards.ToolCardContainer;
 import it.polimi.se2018.utils.Observable;
@@ -76,6 +78,9 @@ public class Model extends Observable<ModelChangedMessage> {
                     Integer.toString(privateObjective.getId()),
                     privateObjective.getName(),
                     privateObjective.getDescription()));
+
+            notify(new ModelChangedMessageTokensLeft(Integer.toString(key),
+                    Integer.toString(table.getPlayers(key).getTokens())));
 
         }
 
@@ -174,9 +179,9 @@ public class Model extends Observable<ModelChangedMessage> {
         return moveOk;
     }
 
-    public boolean checkDieInDiceArena(int idPlayer, int idDie) throws DiceContainerUnsupportedIdException {
+    public boolean checkDieInDiceArena(int idPlayer, int idDie) {
         boolean moveOk = false;
-        Die d = table.getDiceContainer().getDie(idDie);
+
         if (table.getDiceArena().getArena().contains(idDie)) {
             moveOk = true;
         }else {
@@ -201,7 +206,11 @@ public class Model extends Observable<ModelChangedMessage> {
             notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
             notify(new ModelChangedMessageRound(Integer.toString(round.getId()), round.getRepresentation()));
 
-            table.getRoundTrack().startNextRound();
+            try {
+                table.getRoundTrack().startNextRound();
+            } catch (RoundTrackNoMoreRoundsException e) {
+                //TODO: what to do once the rounds finish
+            }
         }
         table.getPlayers(playerMessageEndTurn.getPlayer()).setHasSetDieThisTurn(false);
         table.getPlayers(playerMessageEndTurn.getPlayer()).setHasUsedToolCardThisTurn(false);
@@ -233,10 +242,64 @@ public class Model extends Observable<ModelChangedMessage> {
                 notify(new ModelChangedMessageMoveFailed(idPL, "Already used a toolCard this turn"));
             }
         } else {
-            notify(new ModelChangedMessageMoveFailed(idPL, "ToolCard is not in Play"));
+            notify(new ModelChangedMessageMoveFailed(idPL, "ToolCard selected is not in Play"));
         }
 
         return toolCardPresent && enoughTokens;
+    }
+
+
+    public void incrementOrDecrementDieValue(int idPlayer, int idDie, int changeValue, int idToolCard) {
+        Player currentPlayer = this.table.getPlayers(idPlayer);
+        ToolCardContainer toolCardContainer = this.table.getToolCardContainer();
+
+        Die d = null;
+
+
+
+        if(checkDieInDiceArena(idPlayer, idDie)){
+
+            try {
+                d = table.getDiceContainer().getDie(idDie);
+            } catch (DiceContainerUnsupportedIdException e) {
+                e.printStackTrace();
+            }
+
+
+            if(changeValue == 1) {
+                try {
+                    d.setRolledValue( d.getRolledValue() + 1);
+                } catch (DieRolledValueOutOfBoundException e) {
+                    notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Can't turn a 6 into a 1"));
+                }
+            }
+            else {
+                try {
+                    d.setRolledValue(d.getRolledValue() - 1);
+                } catch (DieRolledValueOutOfBoundException e) {
+                    notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Can't turn a 1 into a 6"));
+                }
+            }
+
+            currentPlayer.setTokens(currentPlayer.getTokens() - toolCardContainer.getToolCard(idToolCard).cost());
+
+            this.getTable().getToolCardContainer().getToolCard(idToolCard).setUsed();
+            this.getTable().getPlayers(idPlayer).setHasUsedToolCardThisTurn(true);
+
+            table.getDiceArena().updateRepresentation();
+            ToolCard toolCard = table.getToolCardContainer().getToolCard(idToolCard);
+
+            notify(new ModelChangedMessageTokensLeft(Integer.toString(idPlayer), Integer.toString(table.getPlayers(idPlayer).getTokens())));
+            notify(new ModelChangedMessageToolCard(Integer.toString(idToolCard), toolCard.getName(), toolCard.getDescription(), Integer.toString(toolCard.cost())));
+
+            notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
+
+            notify(new ModelChangedMessageRefresh(this.gamePhase, Integer.toString(table.getRoundTrack().getCurrentRound().getIdPlayerPlaying())));
+
+
+
+        }
+
     }
 
     /**
@@ -259,8 +322,6 @@ public class Model extends Observable<ModelChangedMessage> {
                                          boolean ignoreColorConstraint,
                                          int idToolCard)  {
 
-        System.out.println("son dentro model 8)");
-
         Player currentPlayer = this.table.getPlayers(idPlayer);
         PatternCard patternCard = currentPlayer.getChosenPatternCard();
         ToolCardContainer toolCardContainer = this.table.getToolCardContainer();
@@ -273,8 +334,8 @@ public class Model extends Observable<ModelChangedMessage> {
                 patternCard.getPatternCardCell(x_i, y_i).removeDie();
                 try {
                     if (checkDieInPatternCard(idPlayer, idDie, x_f, y_f, ignoreValueConstraint, ignoreColorConstraint)) {
-                        patternCard.getPatternCardCell(x_f, y_f).setRolledDieId(idDie, ignoreValueConstraint, ignoreColorConstraint);
 
+                        patternCard.getPatternCardCell(x_f, y_f).setRolledDieId(idDie, ignoreValueConstraint, ignoreColorConstraint);
 
                         currentPlayer.setTokens(currentPlayer.getTokens() - toolCardContainer.getToolCard(idToolCard).cost());
 
@@ -285,8 +346,11 @@ public class Model extends Observable<ModelChangedMessage> {
                         String idPC = "" + patternCard.getId();
                         ToolCard toolCard = table.getToolCardContainer().getToolCard(idToolCard);
 
-                        notify(new ModelChangedMessageDiceOnPatternCard(idPL, idPC, patternCard.getDiceRepresentation()));
                         notify(new ModelChangedMessageToolCard(Integer.toString(idToolCard), toolCard.getName(), toolCard.getDescription(), Integer.toString(toolCard.cost())));
+                        notify(new ModelChangedMessageTokensLeft(idPL, Integer.toString(table.getPlayers(idPlayer).getTokens())));
+
+                        notify(new ModelChangedMessageDiceOnPatternCard(idPL, idPC, patternCard.getDiceRepresentation()));
+
                         notify(new ModelChangedMessageRefresh(gamePhase, idPL));
 
                         } else {
@@ -302,22 +366,74 @@ public class Model extends Observable<ModelChangedMessage> {
 
     }
 
-    public void swapDieAmongRoundTrackAndDiceArena(int dieIdInRoundTrack, int dieIdInDiceArena) {
+    public void rerollDiceArena(int idPlayer, int idToolCard){
+        ToolCardContainer toolCardContainer = this.table.getToolCardContainer();
+        Player currentPlayer = table.getPlayers(idPlayer);
+
+        table.getDiceArena().rerollDiceArena();
+
+        currentPlayer.setTokens(currentPlayer.getTokens() - toolCardContainer.getToolCard(idToolCard).cost());
+
+        this.getTable().getToolCardContainer().getToolCard(idToolCard).setUsed();
+        this.getTable().getPlayers(idPlayer).setHasUsedToolCardThisTurn(true);
+
+        table.getDiceArena().updateRepresentation();
+        ToolCard toolCard = table.getToolCardContainer().getToolCard(idToolCard);
+
+        notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
+
+        notify(new ModelChangedMessageTokensLeft(Integer.toString(idPlayer), Integer.toString(table.getPlayers(idPlayer).getTokens())));
+        notify(new ModelChangedMessageToolCard(Integer.toString(idToolCard), toolCard.getName(), toolCard.getDescription(), Integer.toString(toolCard.cost())));
+
+        notify(new ModelChangedMessageRefresh(this.gamePhase, Integer.toString(table.getRoundTrack().getCurrentRound().getIdPlayerPlaying())));
+
+    }
+
+    public void swapDieAmongRoundTrackAndDiceArena(int idPlayer, int dieIdInRoundTrack, int dieIdInDiceArena, int idToolCard) {
         RoundTrack roundTrack = table.getRoundTrack();
         DiceArena diceArena = table.getDiceArena();
+        Player currentPlayer = this.table.getPlayers(idPlayer);
 
-        try {
-            roundTrack.swapDieInRound(dieIdInRoundTrack, dieIdInDiceArena);
-        } catch (DieNotPresentException e) {
-            /* TODO: notify che il dado swappato non esiste nella RoundTrack */
-            e.printStackTrace();
-        }
+        boolean moveOk = true;
 
-        try {
-            diceArena.swapDie(dieIdInDiceArena, dieIdInRoundTrack);
-        } catch (DieNotPresentException e) {
-            /* TODO: notify che il dado swappato non esiste nella DiceArena */
-            e.printStackTrace();
+        if(checkDieInDiceArena(idPlayer, dieIdInDiceArena)) {
+            try {
+                roundTrack.swapDieInRound(dieIdInRoundTrack, dieIdInDiceArena);
+            } catch (DieNotPresentException e) {
+                moveOk = false;
+                notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Die not present in RoundTrack"));
+                e.printStackTrace();
+            }
+
+            try {
+                diceArena.swapDie(dieIdInDiceArena, dieIdInRoundTrack);
+            } catch (DieNotPresentException e) {
+                moveOk = false;
+                notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Die not Present in Die Arena"));
+                e.printStackTrace();
+            }
+
+            if (moveOk) {
+
+                //TODO: update e manda nuovo round
+
+                ToolCardContainer toolCardContainer = this.table.getToolCardContainer();
+                currentPlayer.setTokens(currentPlayer.getTokens() - toolCardContainer.getToolCard(idToolCard).cost());
+
+                this.getTable().getToolCardContainer().getToolCard(idToolCard).setUsed();
+                this.getTable().getPlayers(idPlayer).setHasUsedToolCardThisTurn(true);
+
+                table.getDiceArena().updateRepresentation();
+                ToolCard toolCard = table.getToolCardContainer().getToolCard(idToolCard);
+
+                notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
+
+                notify(new ModelChangedMessageTokensLeft(Integer.toString(idPlayer), Integer.toString(table.getPlayers(idPlayer).getTokens())));
+                notify(new ModelChangedMessageToolCard(Integer.toString(idToolCard), toolCard.getName(), toolCard.getDescription(), Integer.toString(toolCard.cost())));
+
+                notify(new ModelChangedMessageRefresh(this.gamePhase, Integer.toString(table.getRoundTrack().getCurrentRound().getIdPlayerPlaying())));
+
+            }
         }
 
     }

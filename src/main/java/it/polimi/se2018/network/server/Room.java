@@ -2,7 +2,10 @@ package it.polimi.se2018.network.server;
 
 import it.polimi.se2018.controller.Controller;
 import it.polimi.se2018.model.Model;
-import it.polimi.se2018.model.events.*;
+import it.polimi.se2018.model.events.Message;
+import it.polimi.se2018.model.events.ModelChangedMessage;
+import it.polimi.se2018.model.events.PlayerMessage;
+import it.polimi.se2018.model.events.PlayerMessageSetup;
 import it.polimi.se2018.network.ConnectedClient;
 import it.polimi.se2018.view.VirtualView;
 
@@ -11,7 +14,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 public class Room {
 
@@ -118,6 +120,20 @@ public class Room {
         }
         return null;
     }
+
+    public ArrayList<Integer> getIncrementedValue(int idClient){
+        for(ConnectedClient player : players) {
+            if(player.getId() == idClient) {
+                try {
+                    return player.getClientInterface().getIncrementedValue();
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
+
 
     private HashMap<Integer, String> createClientsMap() {
         HashMap<Integer, String> clientsMap = new HashMap<>();

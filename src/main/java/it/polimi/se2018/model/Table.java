@@ -1,8 +1,10 @@
 package it.polimi.se2018.model;
 
 import it.polimi.se2018.model.container.DiceContainer;
+import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.objectives.*;
 import it.polimi.se2018.model.rounds.RoundTrack;
+import it.polimi.se2018.model.rounds.RoundTrackNoMoreRoundsException;
 import it.polimi.se2018.model.toolcards.ToolCardContainer;
 import it.polimi.se2018.utils.Database;
 
@@ -33,7 +35,7 @@ public class Table {
     private Scoreboard scoreboard;
 
     /* TODO: COSTRUTTORE che crei ogni attributo e che setti i Players + controllare se tipo PLayer  ok */
-    public Table(HashMap<Integer, String> HM){
+    public Table(HashMap<Integer, String> HM) {
         for(Integer key : HM.keySet()) {
             this.players.add(new Player(key, HM.get(key)));
         }
@@ -53,7 +55,11 @@ public class Table {
 
         this.diceArena.rollDiceIntoArena();
         this.diceArena.updateRepresentation();
-        this.getRoundTrack().startNextRound();
+        try {
+            this.getRoundTrack().startNextRound();
+        } catch (RoundTrackNoMoreRoundsException e) {
+            //TODO: dont know what to put here
+        }
     }
 
     public int getNumberOfPlayers() {
@@ -125,14 +131,14 @@ public class Table {
 
     private void setToolCards(){
         ArrayList<Integer> toolCardsList = new ArrayList<>();
-        for (Integer i = 0; i < 10; i++)
-            if(i != 2)
+        for (Integer i = 0; i < 12; i++)
+            if(i != 6)
                 toolCardsList.add(i);
 
         Collections.shuffle(toolCardsList);
 
         //TO FORCE A PATTERNCARD FOR TESTS
-        toolCardsList.add(0,2);
+        toolCardsList.add(0,6);
 
         for(int j = 0; j < 3; j++)
             toolCardContainer.setToolCardInPlay(toolCardsList.get(j));
@@ -165,6 +171,19 @@ public class Table {
             patternCardsToPlayer.add(patternCards.get(val));
             patternCardsToPlayer.add(patternCards.get(val + 12));
             players.get(j).setPatternCards(patternCardsToPlayer);
+        }
+    }
+
+    private void calculateScores() throws DiceContainerUnsupportedIdException {
+        Scoreboard scoreboard = new Scoreboard(roundTrack.getCurrentRound().getIdPlayerPlaying());
+        for(int i = 0; i < players.size(); i++){
+            int result = 0;
+            PatternCard patternCard = players.get(i).getChosenPatternCard();
+            for(int j = 0; j < 3; j++)
+                result = result + publicObjectives.get(j).calculateScore(patternCard);
+            result = result + players.get(i).getPrivateObjective().calculateScore(patternCard);
+
+            scoreboard.setScore(players.get(i).getId(), result, players.get(i).getTokens());
         }
     }
 }

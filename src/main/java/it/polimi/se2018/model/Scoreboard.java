@@ -13,9 +13,14 @@ public class Scoreboard {
 
     private HashMap<Integer, Integer> score;
 
-    /* TODO: set HashMap */
-    public void setScore(int Player) {
+    public Scoreboard(int lastId){
+        this.lastId = lastId;
+    }
 
+    public void setScore(int idPlayer, int score, int tokensLeft) {
+        this.player.add(idPlayer);
+        this.score.put(idPlayer, score);
+        this.tokens.put(idPlayer, tokensLeft);
     }
 
     /* TODO: order HashMap */

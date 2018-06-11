@@ -175,11 +175,13 @@ public class ViewClientConsole extends ViewClient {
         if(idPlayerPlaying == idClient){
             canIPlay = false;
             ArrayList<Integer> position = new ArrayList<Integer>();
-            boolean moveOk1 = true;
-            boolean moveOk2 = true;
+            boolean moveOk1, moveOk2;
 
             do {
                 System.out.println("\nInsert Starting position on PatternCard separated by a space");
+
+                moveOk1 = true;
+                moveOk2 = true;
 
                 Scanner input = new Scanner(System.in);
                 String s = input.nextLine();
@@ -248,18 +250,47 @@ public class ViewClientConsole extends ViewClient {
         return dieId;
     }
 
-    public Boolean getIncrementedValue(){
-        Boolean i;
+    public ArrayList<Integer> getIncrementedValue() {
 
-        System.out.println("\nInsert 1 to increment value, 0 to decrement");
-        Scanner input = new Scanner(System.in);
-        String s = input.nextLine();
-        int k = Integer.parseInt(s);
-        if(k == 1)
-            i = true;
-        else
-            i = false;
+        if (idPlayerPlaying == idClient) {
+            ArrayList<Integer> dieAndDecision = new ArrayList<Integer>();
+            canIPlay = false;
+            boolean moveOk1, moveOk2;
 
-        return i;
+            do {
+                moveOk1 = true;
+                moveOk2 = true;
+
+                System.out.println("\nInsert idDie from DiceArena to change followed by 1 to increment value itss value or by 0 to decrement");
+                Scanner input = new Scanner(System.in);
+                String s = input.nextLine();
+                String[] parts = s.split(" ");
+
+                if(parts.length == 2) {
+                    for(int i = 0; i < 90; i++)
+                        if(parts[0].equals(Integer.toString(i)))
+                            moveOk1 = false;
+
+                    if (parts[1].equals("1") || parts[1].equals("0"))
+                        moveOk2 = false;
+
+                    if(moveOk1 || moveOk2){
+                        System.out.println("Try again!");
+                    } else {
+                        dieAndDecision.add(Integer.parseInt(parts[0]));
+                        dieAndDecision.add(Integer.parseInt(parts[1]));
+                    }
+
+                }
+
+            }
+            while(moveOk1 || moveOk2);
+
+            canIPlay = true;
+
+            return dieAndDecision;
+        }
+
+        return null;
     }
 }
