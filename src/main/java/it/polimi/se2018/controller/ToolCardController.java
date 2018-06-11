@@ -28,11 +28,13 @@ public class ToolCardController{
             } else if (idToolCard == 2) {
                 //controllo ci siano ALMENO un dado su tutta la patterCard -> serve un metodo per contarli su patternCard
                 ArrayList<Integer> positions = view.getPositionInPatternCard(playerMessageToolCard.getPlayer());
-                System.out.println(positions);
+
                 model.moveDieInsidePatternCard(idPlayer, positions.get(0), positions.get(1), positions.get(2), positions.get(3), false, true, 2);
             } else if (idToolCard == 3) {
+                System.out.println("qui?");
                 ArrayList<Integer> positions = view.getPositionInPatternCard(playerMessageToolCard.getPlayer());
-
+                System.out.println("qui?");
+                System.out.println(positions);
                 model.moveDieInsidePatternCard(idPlayer, positions.get(0), positions.get(1), positions.get(2), positions.get(3), true, false, 3);
 
             } else if (idToolCard == 4) {

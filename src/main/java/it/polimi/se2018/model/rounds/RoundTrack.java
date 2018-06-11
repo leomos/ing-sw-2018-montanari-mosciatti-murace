@@ -83,10 +83,13 @@ public class RoundTrack {
      */
     private void initNewRound() {
         Round newRound = new Round(currentRoundId, diceContainer);
-        idFirstPlayerPlaying++;
+        if(idFirstPlayerPlaying == 0)
+            idFirstPlayerPlaying = players.get(0);
+
+        idFirstPlayerPlaying = players.get((players.indexOf(idFirstPlayerPlaying) + 1) % players.size());
         try {
             newRound.setPlayers(players);
-            newRound.setFirstPlayer( idFirstPlayerPlaying %  players.size() );
+            newRound.setFirstPlayer(idFirstPlayerPlaying);
             rounds[currentRoundId] = newRound;
         } catch (RoundFirstPlayerAlreadySetException roundFirstPlayerAlreadySet) {
             roundFirstPlayerAlreadySet.printStackTrace();
