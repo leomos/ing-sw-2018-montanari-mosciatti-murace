@@ -259,6 +259,8 @@ public class Model extends Observable<ModelChangedMessage> {
                                          boolean ignoreColorConstraint,
                                          int idToolCard)  {
 
+        System.out.println("son dentro model 8)");
+
         Player currentPlayer = this.table.getPlayers(idPlayer);
         PatternCard patternCard = currentPlayer.getChosenPatternCard();
         ToolCardContainer toolCardContainer = this.table.getToolCardContainer();
@@ -268,10 +270,11 @@ public class Model extends Observable<ModelChangedMessage> {
             if (!patternCard.getPatternCardCell(x_i, y_i).isEmpty() &&
                     patternCard.getPatternCardCell(x_f, y_f).isEmpty()) {
                 int idDie = patternCard.getPatternCardCell(x_i, y_i).getRolledDieId();
+                patternCard.getPatternCardCell(x_i, y_i).removeDie();
                 try {
                     if (checkDieInPatternCard(idPlayer, idDie, x_f, y_f, ignoreValueConstraint, ignoreColorConstraint)) {
                         patternCard.getPatternCardCell(x_f, y_f).setRolledDieId(idDie, ignoreValueConstraint, ignoreColorConstraint);
-                        patternCard.getPatternCardCell(x_i, y_i).removeDie();
+
 
                         currentPlayer.setTokens(currentPlayer.getTokens() - toolCardContainer.getToolCard(idToolCard).cost());
 
@@ -286,7 +289,9 @@ public class Model extends Observable<ModelChangedMessage> {
                         notify(new ModelChangedMessageToolCard(Integer.toString(idToolCard), toolCard.getName(), toolCard.getDescription(), Integer.toString(toolCard.cost())));
                         notify(new ModelChangedMessageRefresh(gamePhase, idPL));
 
-                        }
+                        } else {
+                        patternCard.getPatternCardCell(x_i, y_i).setRolledDieId(idDie, true, true);
+                    }
                 } catch (DiceContainerUnsupportedIdException e) {
                     e.printStackTrace();
                 }

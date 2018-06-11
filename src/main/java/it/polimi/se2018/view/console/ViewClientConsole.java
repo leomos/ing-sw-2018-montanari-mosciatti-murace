@@ -169,11 +169,13 @@ public class ViewClientConsole extends ViewClient {
 
     public ArrayList<Integer> getPositionInPatternCard(){
         if(isMyTurn){
+            isMyTurn = false;
             ArrayList<Integer> position = new ArrayList<Integer>();
-            boolean moveOk = true;
+            boolean moveOk1 = true;
+            boolean moveOk2 = true;
 
             do {
-                System.out.println("\nInsert position on PatternCard separated by a space");
+                System.out.println("\nInsert Starting position on PatternCard separated by a space");
 
                 Scanner input = new Scanner(System.in);
                 String s = input.nextLine();
@@ -182,17 +184,37 @@ public class ViewClientConsole extends ViewClient {
                     for (int j = 0; j < 4; j++) {
                         String app = "" + i + " " + j;
                         if (app.equals(s)) {
-                            moveOk = false;
+                            moveOk1 = false;
                             position.add(Integer.parseInt(s.split(" ")[0]));
                             position.add(Integer.parseInt(s.split(" ")[1]));
                         }
                     }
                 }
 
-                if(moveOk)
+                System.out.println("\nInsert Final position on PatternCard separated by a space");
+
+                input = new Scanner(System.in);
+                s = input.nextLine();
+
+                for(int i = 0; i < 5; i++) {
+                    for (int j = 0; j < 4; j++) {
+                        String app = "" + i + " " + j;
+                        if (app.equals(s)) {
+                            moveOk2 = false;
+                            position.add(Integer.parseInt(s.split(" ")[0]));
+                            position.add(Integer.parseInt(s.split(" ")[1]));
+                        }
+                    }
+                }
+
+                if(moveOk1 || moveOk2)
                     System.out.println("Try Again!");
             }
-            while(moveOk);
+            while(moveOk1 || moveOk2);
+
+            isMyTurn = true;
+
+            System.out.println(position);
 
             return position;
         }else
