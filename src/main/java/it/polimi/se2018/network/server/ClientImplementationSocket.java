@@ -29,7 +29,7 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
 
     private RoomDispatcherInterface roomDispatcher;
 
-    private boolean waitingForMethodCallResponse = false, ready = false;
+    private boolean ready = false;
 
     private Object lock = new Object();
 
@@ -123,7 +123,6 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
     }
 
     private Object waitForMethodCallResponse(String methodName) {
-        waitingForMethodCallResponse = true;
         MethodCallMessage methodCallMessage = new MethodCallMessage(methodName);
         try {
             objectOutputStream.writeObject(methodCallMessage);
