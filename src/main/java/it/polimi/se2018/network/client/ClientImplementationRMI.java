@@ -26,6 +26,11 @@ public class ClientImplementationRMI implements ClientInterface {
     }
 
     @Override
+    public Integer getDieFromDiceArena() throws RemoteException{
+        return viewClient.getDieFromDiceArena();
+    }
+
+    @Override
     public Integer getDieFromRoundTrack() throws RemoteException {
         return viewClient.getDieFromRoundTrack();
     }

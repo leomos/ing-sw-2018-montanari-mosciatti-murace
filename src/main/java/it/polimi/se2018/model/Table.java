@@ -34,7 +34,6 @@ public class Table {
 
     private Scoreboard scoreboard;
 
-    /* TODO: COSTRUTTORE che crei ogni attributo e che setti i Players + controllare se tipo PLayer  ok */
     public Table(HashMap<Integer, String> HM) {
         for(Integer key : HM.keySet()) {
             this.players.add(new Player(key, HM.get(key)));
@@ -54,7 +53,6 @@ public class Table {
         this.setToolCards();
 
         this.diceArena.rollDiceIntoArena();
-        this.diceArena.updateRepresentation();
         try {
             this.getRoundTrack().startNextRound();
         } catch (RoundTrackNoMoreRoundsException e) {
@@ -132,13 +130,13 @@ public class Table {
     private void setToolCards(){
         ArrayList<Integer> toolCardsList = new ArrayList<>();
         for (Integer i = 0; i < 12; i++)
-            if(i != 6)
+            if(i != 9)
                 toolCardsList.add(i);
 
         Collections.shuffle(toolCardsList);
 
         //TO FORCE A PATTERNCARD FOR TESTS
-        toolCardsList.add(0,6);
+        toolCardsList.add(0,9);
 
         for(int j = 0; j < 3; j++)
             toolCardContainer.setToolCardInPlay(toolCardsList.get(j));

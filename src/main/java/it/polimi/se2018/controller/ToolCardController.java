@@ -26,14 +26,17 @@ public class ToolCardController{
                 model.incrementOrDecrementDieValue(idPlayer, dieToIncrement.get(0), dieToIncrement.get(1), idToolCard);
 
             } else if (idToolCard == 2) {
+
                 ArrayList<Integer> positions = view.getPositionInPatternCard(idPlayer);
                 model.moveDieInsidePatternCard(idPlayer, positions.get(0), positions.get(1), positions.get(2), positions.get(3), false, true, 2);
 
             } else if (idToolCard == 3) {
+
                 ArrayList<Integer> positions = view.getPositionInPatternCard(idPlayer);
                 model.moveDieInsidePatternCard(idPlayer, positions.get(0), positions.get(1), positions.get(2), positions.get(3), true, false, 3);
 
             } else if (idToolCard == 4) {
+
                 /* NON MI PIACE CHE INVOCHI DUE VOLTE LA VIEW
                 ArrayList<Integer> startingPosition1 = view.getPositionInPatternCard(playerMessageToolCard.getPlayer());
                 ArrayList<Integer> finalPosition1 = view.getPositionInPatternCard(playerMessageToolCard.getPlayer());
@@ -49,6 +52,10 @@ public class ToolCardController{
 
                 model.rerollDiceArena(idPlayer, idToolCard);
 
+            } else if(idToolCard == 10){
+
+                int dieToTurn = view.getDieFromDiceArena(idPlayer);
+                model.turnDieAround(idPlayer, dieToTurn ,idToolCard);
             }
         }
     }

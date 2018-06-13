@@ -28,12 +28,14 @@ public abstract class ViewClient {
     public String askForName() { return null; }
 
     public Integer getDieFromPatternCard() {
-        return 0;
+        return null;
     }
 
     public Integer getDieFromRoundTrack() {
-        return 0;
+        return null;
     }
+
+    public Integer getDieFromDiceArena() { return null;}
 
     public ArrayList<Integer> getIncrementedValue() {
         return null;

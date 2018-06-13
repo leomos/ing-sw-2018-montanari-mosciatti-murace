@@ -10,8 +10,6 @@ public interface ClientInterface extends Remote {
 
     public void update(ModelChangedMessage modelChangedMessage) throws RemoteException;
 
-    public Integer getDieFromPatternCard() throws RemoteException;
-
     public Integer getDieFromRoundTrack() throws RemoteException;
 
     public ArrayList<Integer> getIncrementedValue() throws RemoteException;
@@ -22,4 +20,7 @@ public interface ClientInterface extends Remote {
 
     public Integer askForPatternCard() throws RemoteException;
 
+    public Integer getDieFromDiceArena() throws RemoteException;
+
+    public Integer getDieFromPatternCard() throws RemoteException;
 }

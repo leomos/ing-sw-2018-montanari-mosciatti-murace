@@ -1,5 +1,6 @@
 package it.polimi.se2018.model;
 
+import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.objectives.PrivateObjective;
 
 import java.util.ArrayList;
@@ -82,6 +83,14 @@ public class Player {
     }
 
     public void setHasUsedToolCardThisTurn(boolean hasUsedToolCardThisTurn) {this.hasUsedToolCardThisTurn = hasUsedToolCardThisTurn;    }
+
+    public void setDieInPatternCard(int idDie, int x, int y, boolean ignoreValueConstraint, boolean ignoreColorConstraint, boolean ignoreAdjency) throws PatternCardNotRespectingNearbyDieExpection, PatternCardNoAdjacentDieException, PatternCardDidNotRespectFirstMoveException, PatternCardNotRespectingCellConstraintException, PatternCardCellIsOccupiedException, DiceContainerUnsupportedIdException, PlayerHasAlreadySetDieThisTurnException {
+        if(!hasSetDieThisTurn){
+            chosenPatternCard.setDieInPatternCard(idDie, x , y, ignoreValueConstraint, ignoreColorConstraint, ignoreAdjency);
+        } else {
+            throw new PlayerHasAlreadySetDieThisTurnException();
+        }
+    }
 }
 
 

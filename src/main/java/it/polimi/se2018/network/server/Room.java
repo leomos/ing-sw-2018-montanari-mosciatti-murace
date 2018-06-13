@@ -134,6 +134,19 @@ public class Room {
         return null;
     }
 
+    public Integer getDieFromDiceArena(int idClient){
+        for(ConnectedClient player : players) {
+            if(player.getId() == idClient) {
+                try {
+                    return player.getClientInterface().getDieFromDiceArena();
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
+
 
     private HashMap<Integer, String> createClientsMap() {
         HashMap<Integer, String> clientsMap = new HashMap<>();

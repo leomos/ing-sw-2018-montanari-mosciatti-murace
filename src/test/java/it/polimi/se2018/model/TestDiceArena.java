@@ -56,7 +56,9 @@ public class TestDiceArena {
     public void checkUpdateRepresentation_ParamsAreRandom_CheckValuesAreAcceptable() throws DiceContainerUnsupportedIdException {
 
         diceArena.rollDiceIntoArena();
-        diceArena.updateRepresentation();
+
+        diceArena.getRepresentation();
+
         for(int i = 0; i < diceArena.getRepresentation().length(); i+=4){
             int k = Integer.parseInt(diceArena.getRepresentation().substring(i, i + 2));
             int m = Character.getNumericValue(diceArena.getRepresentation().charAt(i+3));

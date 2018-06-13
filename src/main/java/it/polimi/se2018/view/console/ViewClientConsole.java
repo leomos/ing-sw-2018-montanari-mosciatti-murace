@@ -227,29 +227,6 @@ public class ViewClientConsole extends ViewClient {
             return null;
     }
 
-    public Integer getDieFromPatternCard(){
-        Integer idDie;
-
-        System.out.println("\nInsert ID die");
-        Scanner input = new Scanner(System.in);
-        String s = input.nextLine();
-        idDie = Integer.valueOf(s);
-
-        return idDie;
-    }
-
-    public Integer getDieFromRoundTrack(){
-        Integer dieId;
-
-        System.out.println("\nInsert ID die");
-        Scanner input = new Scanner(System.in);
-        String s = input.nextLine();
-        dieId = Integer.valueOf(s);
-
-
-        return dieId;
-    }
-
     public ArrayList<Integer> getIncrementedValue() {
 
         if (idPlayerPlaying == idClient) {
@@ -267,21 +244,22 @@ public class ViewClientConsole extends ViewClient {
                 String[] parts = s.split(" ");
 
                 if(parts.length == 2) {
-                    for(int i = 0; i < 90; i++)
-                        if(parts[0].equals(Integer.toString(i)))
+                    for (int i = 0; i < 90; i++)
+                        if (parts[0].equals(Integer.toString(i)))
                             moveOk1 = false;
 
                     if (parts[1].equals("1") || parts[1].equals("0"))
                         moveOk2 = false;
-
-                    if(moveOk1 || moveOk2){
-                        System.out.println("Try again!");
-                    } else {
-                        dieAndDecision.add(Integer.parseInt(parts[0]));
-                        dieAndDecision.add(Integer.parseInt(parts[1]));
-                    }
-
                 }
+
+                if(moveOk1 || moveOk2){
+                    System.out.println("Try again!");
+                } else {
+                    dieAndDecision.add(Integer.parseInt(parts[0]));
+                    dieAndDecision.add(Integer.parseInt(parts[1]));
+                }
+
+
 
             }
             while(moveOk1 || moveOk2);
@@ -291,6 +269,72 @@ public class ViewClientConsole extends ViewClient {
             return dieAndDecision;
         }
 
+        return null;
+    }
+
+    public Integer getDieFromDiceArena(){
+
+        if(idPlayerPlaying == idClient) {
+            canIPlay = false;
+            boolean moveOk;
+            int idDie = -1;
+
+            do{
+                moveOk = true;
+
+                System.out.println("\nInsert idDie from DiceArena to use");
+                Scanner input = new Scanner(System.in);
+                String s = input.nextLine();
+
+                for(int i = 0; i < 90; i++){
+                    if(s.equals(Integer.toString(i))) {
+                        moveOk = false;
+                        idDie = Integer.parseInt(s);
+                    }
+                }
+
+                if(moveOk)
+                    System.out.println("Try Again!");
+
+            } while(moveOk);
+
+            canIPlay = true;
+
+            return idDie;
+
+        }
+        return null;
+    }
+
+    public Integer getDieFromRoundTrack(){if(idPlayerPlaying == idClient) {
+        canIPlay = false;
+        boolean moveOk;
+        int idDie = -1;
+
+        do{
+            moveOk = true;
+
+            System.out.println("\nInsert idDie from RoundTruck to use");
+            Scanner input = new Scanner(System.in);
+            String s = input.nextLine();
+
+            for(int i = 0; i < 90; i++){
+                if(s.equals(Integer.toString(i))) {
+                    moveOk = false;
+                    idDie = Integer.parseInt(s);
+                }
+            }
+
+            if(moveOk)
+                System.out.println("Try Again!");
+
+        } while(moveOk);
+
+        canIPlay = true;
+
+        return idDie;
+
+    }
         return null;
     }
 }
