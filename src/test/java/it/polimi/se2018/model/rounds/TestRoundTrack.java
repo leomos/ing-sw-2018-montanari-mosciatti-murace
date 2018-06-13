@@ -17,6 +17,8 @@ public class TestRoundTrack {
 
     private DiceContainer diceContainer;
 
+
+
     @Before
     public void setUp() {
         diceContainer = new DiceContainer();
@@ -34,14 +36,22 @@ public class TestRoundTrack {
 
     @Test
     public void startNextRound_CalledOneTime_currentRoundIdShouldBe0() {
-        roundTrack.startNextRound();
+        try {
+            roundTrack.startNextRound();
+        } catch (RoundTrackNoMoreRoundsException e) {
+            e.printStackTrace();
+        }
         assertEquals(0,roundTrack.getCurrentRound().getId());
     }
 
     @Test
     public void startNextRound_Called10Times_currentRoundIdShouldBe9() {
         for (int i = 0; i < 10; i++) {
-            roundTrack.startNextRound();
+            try {
+                roundTrack.startNextRound();
+            } catch (RoundTrackNoMoreRoundsException e) {
+                e.printStackTrace();
+            }
         }
         assertEquals(9,roundTrack.getCurrentRound().getId());
     }
@@ -60,7 +70,11 @@ public class TestRoundTrack {
         diceLeft.add(34);
         diceLeft.add(22);
         diceLeft.add(90);
-        roundTrack.startNextRound();
+        try {
+            roundTrack.startNextRound();
+        } catch (RoundTrackNoMoreRoundsException e) {
+            e.printStackTrace();
+        }
         roundTrack.setRolledDiceLeftForCurrentRound(diceLeft);
         assertEquals(diceLeft, roundTrack.getCurrentRound().getRolledDiceLeft());
     }
@@ -84,7 +98,11 @@ public class TestRoundTrack {
         diceLeft.add(1);
         diceLeft.add(23);
         diceLeft.add(42);
-        roundTrack.startNextRound();
+        try {
+            roundTrack.startNextRound();
+        } catch (RoundTrackNoMoreRoundsException e) {
+            e.printStackTrace();
+        }
         roundTrack.setRolledDiceLeftForCurrentRound(diceLeft);
         try {
             roundTrack.swapDieInRound(23,54);
@@ -100,7 +118,11 @@ public class TestRoundTrack {
         diceLeft.add(1);
         diceLeft.add(23);
         diceLeft.add(42);
-        roundTrack.startNextRound();
+        try {
+            roundTrack.startNextRound();
+        } catch (RoundTrackNoMoreRoundsException e) {
+            e.printStackTrace();
+        }
         roundTrack.setRolledDiceLeftForCurrentRound(diceLeft);
         roundTrack.swapDieInRound(90,54);
     }

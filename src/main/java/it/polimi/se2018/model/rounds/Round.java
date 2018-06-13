@@ -54,6 +54,11 @@ public class Round {
         this.rolledDiceLeft = rolledDiceLeft;
     }
 
+    public boolean isSecondPartOfRound(){
+        return turns.size() < players.size();
+    }
+
+
     /**
      * @param idFirstPlayer is the id that should start the round.
      * @throws RoundFirstPlayerAlreadySetException  if the first player
@@ -75,16 +80,12 @@ public class Round {
      * from the turns array and then removing it.
      * @throws RoundFinishedException if no more rounds are available.
      */
-    public void setNextPlayer(){
+    public void setNextPlayer() throws RoundFinishedException {
         if(!turns.isEmpty()) {
             idPlayerPlaying = turns.get(0);
             turns.remove(0);
         } else {
-            try {
-                throw new RoundFinishedException();
-            } catch (RoundFinishedException e) {
-                e.printStackTrace();
-            }
+            throw new RoundFinishedException();
         }
     }
 

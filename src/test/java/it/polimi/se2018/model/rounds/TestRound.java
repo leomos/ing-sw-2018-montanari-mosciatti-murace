@@ -67,7 +67,11 @@ public class TestRound {
         round.setPlayers(players);
         round.setFirstPlayer(0);
         for (int i = 0; i < 5; i++) {
-            round.setNextPlayer();
+            try {
+                round.setNextPlayer();
+            } catch (RoundFinishedException e) {
+                e.printStackTrace();
+            }
         }
         assertEquals(0, round.getIdPlayerPlaying());
     }
@@ -92,7 +96,7 @@ public class TestRound {
     }
 
     @Test
-    public void turnsPlayedByPlayer_After1RoundPlayedByPlayerWithId34_turnsPlayedShouldBe1() {
+    public void turnsPlayedByPlayer_After1RoundPlayedByPlayerWithId34_turnsPlayedShouldBe1() throws RoundFinishedException {
         ArrayList<Integer> players = new ArrayList<>();
         players.add(34);
         players.add(1);
@@ -108,7 +112,7 @@ public class TestRound {
     }
 
     @Test
-    public void turnsPlayedByPlayer_After1RoundStartingFrom34_turnsPlayedBy0ShouldBe0() {
+    public void turnsPlayedByPlayer_After1RoundStartingFrom34_turnsPlayedBy0ShouldBe0() throws RoundFinishedException {
         ArrayList<Integer> players = new ArrayList<>();
         players.add(34);
         players.add(1);
@@ -124,7 +128,7 @@ public class TestRound {
     }
 
     @Test
-    public void turnsPlayedByPlayer_After4RoundsStartingFrom34_turnsPlayedBy1ShouldBe1(){
+    public void turnsPlayedByPlayer_After4RoundsStartingFrom34_turnsPlayedBy1ShouldBe1() throws RoundFinishedException {
         ArrayList<Integer> players = new ArrayList<>();
         players.add(34);
         players.add(1);
@@ -139,5 +143,35 @@ public class TestRound {
         round.setNextPlayer();
         round.setNextPlayer();
         assertEquals(1, round.turnsPlayedByPlayer(1));
+    }
+
+    @Test
+    public void isSecondPartOfRound_after4TurnInARoundWith4Players_allAssersShouldWork() throws RoundFinishedException {
+        ArrayList<Integer> players = new ArrayList<>();
+        players.add(34);
+        players.add(21);
+        players.add(1);
+        players.add(0);
+        round.setPlayers(players);
+        try {
+            round.setFirstPlayer(34);
+        } catch (RoundFirstPlayerAlreadySetException roundFirstPlayerAlreadySet) {
+            fail();
+        }
+        round.setNextPlayer();
+        assertEquals(false, round.isSecondPartOfRound());
+        round.setNextPlayer();
+        assertEquals(false, round.isSecondPartOfRound());
+        round.setNextPlayer();
+        assertEquals(false, round.isSecondPartOfRound());
+        round.setNextPlayer();
+        assertEquals(true, round.isSecondPartOfRound());
+        round.setNextPlayer();
+        assertEquals(true, round.isSecondPartOfRound());
+        round.setNextPlayer();
+        assertEquals(true, round.isSecondPartOfRound());
+        round.setNextPlayer();
+        assertEquals(true, round.isSecondPartOfRound());
+
     }
 }

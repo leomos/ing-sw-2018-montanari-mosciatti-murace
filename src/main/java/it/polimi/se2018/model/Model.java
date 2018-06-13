@@ -7,6 +7,7 @@ import it.polimi.se2018.model.events.*;
 import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.objectives.PublicObjective;
 import it.polimi.se2018.model.rounds.Round;
+import it.polimi.se2018.model.rounds.RoundFinishedException;
 import it.polimi.se2018.model.rounds.RoundTrack;
 import it.polimi.se2018.model.rounds.RoundTrackNoMoreRoundsException;
 import it.polimi.se2018.model.toolcards.ToolCard;
@@ -194,7 +195,11 @@ public class Model extends Observable<ModelChangedMessage> {
 
     public void endTurn(PlayerMessageEndTurn playerMessageEndTurn){
         if(!table.getRoundTrack().getCurrentRound().isRoundOver()) {
-            table.getRoundTrack().getCurrentRound().setNextPlayer();
+            try {
+                table.getRoundTrack().getCurrentRound().setNextPlayer();
+            } catch (RoundFinishedException e) {
+                e.printStackTrace();
+            }
         }
         else {
             Round round = table.getRoundTrack().getCurrentRound();
@@ -367,26 +372,35 @@ public class Model extends Observable<ModelChangedMessage> {
     }
 
     public void rerollDiceArena(int idPlayer, int idToolCard){
-        ToolCardContainer toolCardContainer = this.table.getToolCardContainer();
-        Player currentPlayer = table.getPlayers(idPlayer);
+        if(table.getRoundTrack().isCurrentRoundInSecondPhase()) {
+            if(!table.getPlayers(idPlayer).hasSetDieThisTurn()) {
+                ToolCardContainer toolCardContainer = this.table.getToolCardContainer();
+                Player currentPlayer = table.getPlayers(idPlayer);
 
-        table.getDiceArena().rerollDiceArena();
+                table.getDiceArena().rerollDiceArena();
 
-        currentPlayer.setTokens(currentPlayer.getTokens() - toolCardContainer.getToolCard(idToolCard).cost());
+                currentPlayer.setTokens(currentPlayer.getTokens() - toolCardContainer.getToolCard(idToolCard).cost());
 
-        this.getTable().getToolCardContainer().getToolCard(idToolCard).setUsed();
-        this.getTable().getPlayers(idPlayer).setHasUsedToolCardThisTurn(true);
+                this.getTable().getToolCardContainer().getToolCard(idToolCard).setUsed();
+                this.getTable().getPlayers(idPlayer).setHasUsedToolCardThisTurn(true);
 
-        table.getDiceArena().updateRepresentation();
-        ToolCard toolCard = table.getToolCardContainer().getToolCard(idToolCard);
+                table.getDiceArena().updateRepresentation();
+                ToolCard toolCard = table.getToolCardContainer().getToolCard(idToolCard);
 
-        notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
+                notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
 
-        notify(new ModelChangedMessageTokensLeft(Integer.toString(idPlayer), Integer.toString(table.getPlayers(idPlayer).getTokens())));
-        notify(new ModelChangedMessageToolCard(Integer.toString(idToolCard), toolCard.getName(), toolCard.getDescription(), Integer.toString(toolCard.cost())));
+                notify(new ModelChangedMessageTokensLeft(Integer.toString(idPlayer), Integer.toString(table.getPlayers(idPlayer).getTokens())));
+                notify(new ModelChangedMessageToolCard(Integer.toString(idToolCard), toolCard.getName(), toolCard.getDescription(), Integer.toString(toolCard.cost())));
 
-        notify(new ModelChangedMessageRefresh(this.gamePhase, Integer.toString(table.getRoundTrack().getCurrentRound().getIdPlayerPlaying())));
+                notify(new ModelChangedMessageRefresh(this.gamePhase, Integer.toString(table.getRoundTrack().getCurrentRound().getIdPlayerPlaying())));
+            } else {
+                notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Can only use this card before setting a die"));
 
+            }
+        } else {
+            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Can only be used during second turn of round"));
+
+        }
     }
 
     public void swapDieAmongRoundTrackAndDiceArena(int idPlayer, int dieIdInRoundTrack, int dieIdInDiceArena, int idToolCard) {
@@ -415,7 +429,7 @@ public class Model extends Observable<ModelChangedMessage> {
 
             if (moveOk) {
 
-                //TODO: update e manda nuovo round
+                //TODO: update e manda nuovo round -> servirebbe mettere pubblico un metodo privato
 
                 ToolCardContainer toolCardContainer = this.table.getToolCardContainer();
                 currentPlayer.setTokens(currentPlayer.getTokens() - toolCardContainer.getToolCard(idToolCard).cost());
