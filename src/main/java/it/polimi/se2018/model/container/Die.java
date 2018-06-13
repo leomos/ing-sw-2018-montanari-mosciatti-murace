@@ -55,7 +55,7 @@ public class Die {
 
     /**
      * Rolls a die setting rolledValue to a random value ranging
-     * from 0 to 6 included.
+     * from 1 to 6 included.
      */
     public void roll() {
         ArrayList<Integer> possibleValues = new ArrayList<>();
@@ -65,6 +65,27 @@ public class Die {
 
         this.rolledValue = possibleValues.get(0);
         this.rolled = true;
+    }
+
+    public void turnAround()  {
+        if(this.rolled){
+            switch (this.rolledValue){
+                case 1: this.rolledValue = 6; break;
+                case 2: this.rolledValue = 5; break;
+                case 3: this.rolledValue = 4; break;
+                case 4: this.rolledValue = 3; break;
+                case 5: this.rolledValue = 2; break;
+                case 6: this.rolledValue = 1; break;
+                default: this.rolledValue = 0; break;
+            }
+        } else {
+            //TODO: devo throware qualcosa? non so
+        }
+    }
+
+    public void unroll() {
+        this.rolled = false;
+        this.rolledValue = 0;
     }
 
     public String getColorChar(){
