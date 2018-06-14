@@ -112,10 +112,7 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
     }
 
     public void notifyHeartbeat(HeartbeatMessage heartbeatMessage) {
-        if(room == null) {
-            setCurrentRoom(heartbeatMessage.getId());
-        }
-        room.heartbeat(heartbeatMessage.getId());
+        roomDispatcher.hearbeat(heartbeatMessage);
     }
 
     public void unlockAndSetReady() {
