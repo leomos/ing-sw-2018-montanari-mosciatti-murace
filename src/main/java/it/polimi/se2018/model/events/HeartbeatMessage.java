@@ -12,10 +12,9 @@ public class HeartbeatMessage implements Message, Serializable {
 
     private Instant sent;
 
-    private Instant received;
-
-    public HeartbeatMessage(int id) {
+    public HeartbeatMessage(int id, Instant sent) {
         this.id = id;
+        this.sent = sent;
     }
 
     @Override
@@ -27,15 +26,7 @@ public class HeartbeatMessage implements Message, Serializable {
         return id;
     }
 
-    public void setReceived(Instant received) {
-        this.received = received;
-    }
-
-    public void setSent(Instant sent) {
-        this.sent = sent;
-    }
-
-    public long getTripDuration() {
-        return Duration.between(sent, received).toMillis();
+    public Instant getSent() {
+        return sent;
     }
 }
