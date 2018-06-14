@@ -1,5 +1,6 @@
 package it.polimi.se2018.network.server;
 
+import it.polimi.se2018.model.events.HeartbeatMessage;
 import it.polimi.se2018.network.ClientInterface;
 import it.polimi.se2018.network.ConnectedClient;
 import it.polimi.se2018.network.RoomDispatcherInterface;
@@ -24,21 +25,24 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
 
     private int refreshRate;
 
-    private boolean roomRunning;
+    private boolean roomDispatcherRunning;
+
+    private HashMap<Integer, HeartbeatMessage> heartbeats;
 
 
     public SimpleRoomDispatcherImplementation(int countdownLength, int refreshRate) {
         this.countdownLength = countdownLength;
         this.refreshRate = refreshRate;
-        this.roomRunning = true;
+        this.roomDispatcherRunning = true;
         this.currentClientsWaiting = new ConcurrentLinkedQueue<>();
         this.connectedClients = new HashSet<>();
         this.rooms = new HashSet<>();
+        this.heartbeats = new HashMap<>();
     }
 
     @Override
     public void run() {
-        while(roomRunning) {
+        while(roomDispatcherRunning) {
             LOGGER.info("Waiting for at least 2 clients.");
             while (currentClientsWaiting.size() < 2) {
                 try {
@@ -77,6 +81,7 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
         clients.forEach(client -> {
             client.setRoom(room);
             connectedClients.add(client);
+            addToHeartbeats(client.getId());
         });
 
         room.start();
@@ -109,5 +114,16 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
         rooms.forEach(room -> {
             room.stop();
         });
+
+        roomDispatcherRunning = false;
+    }
+
+    @Override
+    public synchronized void hearbeat(HeartbeatMessage heartbeatMessage) {
+        heartbeats.put(heartbeatMessage.getId(), heartbeatMessage);
+    }
+
+    private synchronized void addToHeartbeats(int id) {
+        heartbeats.put(id, null);
     }
 }
