@@ -1,5 +1,6 @@
 package it.polimi.se2018.network;
 
+import it.polimi.se2018.model.events.HeartbeatMessage;
 import it.polimi.se2018.model.events.PlayerMessage;
 
 import java.rmi.Remote;
@@ -11,6 +12,6 @@ public interface ServerInterface<T> extends Remote {
 
     public Integer registerClient(T client, String name) throws RemoteException;
 
-    public void sendHeartbeet(int id) throws RemoteException;
+    public void sendHeartbeet(HeartbeatMessage heartbeatMessage) throws RemoteException;
 
 }
