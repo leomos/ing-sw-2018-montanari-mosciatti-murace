@@ -12,7 +12,6 @@ import it.polimi.se2018.view.VirtualView;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 public class Room {
@@ -25,12 +24,10 @@ public class Room {
 
     private Set<ConnectedClient> players;
 
-    private Map<Integer, Long> heartbeats;
 
     public void start() {
         //while(gamePlaying) {
             HashMap<Integer, String> clientsMap = createClientsMap();
-            heartbeats = new HashMap<>();
             model = new Model(clientsMap);
             controller = new Controller(model);
             view = new VirtualView();
@@ -41,8 +38,6 @@ public class Room {
             view.setRoom(this);
 
             model.initSetup();
-
-            heartbeats = initHeartbeats();
             //patterncard choise
 
             players.forEach(player -> {
@@ -142,19 +137,4 @@ public class Room {
         });
         return clientsMap;
     }
-
-    public void heartbeat(int id) {
-        System.out.println(id + " | " + (System.nanoTime()-heartbeats.get(id)));
-        heartbeats.put(id, System.nanoTime());
-
-    }
-
-    private HashMap<Integer, Long> initHeartbeats() {
-        HashMap<Integer, Long> heartbeats = new HashMap<>();
-        players.forEach(player -> {
-            heartbeats.put(player.getId(), Long.valueOf(0));
-        });
-        return heartbeats;
-    }
-
 }
