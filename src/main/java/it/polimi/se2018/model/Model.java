@@ -376,7 +376,7 @@ public class Model extends Observable<ModelChangedMessage> {
 
         } catch (RoundPlayerAlreadyPlayedSecondTurnException e) {
             notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Can only use this card during first turn"));
-        } catch (PlayerHasNotSetDieThisTurn playerHasNotSetDieThisTurn) {
+        } catch (PlayerHasNotSetDieThisTurnException playerHasNotSetDieThisTurnException) {
             notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Can only use this card after setting a die"));
         }
 

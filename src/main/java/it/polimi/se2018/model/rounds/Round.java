@@ -2,7 +2,7 @@ package it.polimi.se2018.model.rounds;
 
 
 import it.polimi.se2018.model.Player;
-import it.polimi.se2018.model.PlayerHasNotSetDieThisTurn;
+import it.polimi.se2018.model.PlayerHasNotSetDieThisTurnException;
 import it.polimi.se2018.model.container.DiceContainer;
 import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.container.Die;
@@ -178,10 +178,10 @@ public class Round {
     }
 
     public void giveConsecutiveTurnsToPlayer(int playerId, Player player)
-            throws RoundPlayerAlreadyPlayedSecondTurnException, PlayerHasNotSetDieThisTurn {
+            throws RoundPlayerAlreadyPlayedSecondTurnException, PlayerHasNotSetDieThisTurnException {
 
         if(player.hasSetDieThisTurn())
-            throw new PlayerHasNotSetDieThisTurn();
+            throw new PlayerHasNotSetDieThisTurnException();
         if(turnsPlayedByPlayer(playerId) != 1) {
             throw new RoundPlayerAlreadyPlayedSecondTurnException();
         }
