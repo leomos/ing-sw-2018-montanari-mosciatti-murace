@@ -300,56 +300,58 @@ public class Model extends Observable<ModelChangedMessage> {
         String idPL = "" + idPlayer;
 
 
-            if (!patternCard.getPatternCardCell(x_i, y_i).isEmpty() &&
-                    patternCard.getPatternCardCell(x_f, y_f).isEmpty()) {
 
-                int idDie = patternCard.getPatternCardCell(x_i, y_i).getRolledDieId();
-                patternCard.getPatternCardCell(x_i, y_i).removeDie();
-                boolean moveFailed = true;
+        int idDie = patternCard.getPatternCardCell(x_i, y_i).getRolledDieId();
+        try {
+            patternCard.getPatternCardCell(x_i, y_i).removeDie();
+
+            boolean moveFailed = true;
+
+            try {
+
+                patternCard.setDieInPatternCard(idDie, x_f, y_f, ignoreValueConstraint, ignoreColorConstraint, false);
+                moveFailed = false;
+
+                currentPlayer.setTokens(currentPlayer.getTokens() - toolCardContainer.getToolCard(idToolCard).cost());
+                this.getTable().getToolCardContainer().getToolCard(idToolCard).setUsed();
+                this.getTable().getPlayers(idPlayer).setHasUsedToolCardThisTurn(true);
+
+
+                String idPC = "" + patternCard.getId();
+                ToolCard toolCard = table.getToolCardContainer().getToolCard(idToolCard);
+
+                notify(new ModelChangedMessageToolCard(Integer.toString(idToolCard), toolCard.getName(), toolCard.getDescription(), Integer.toString(toolCard.cost())));
+                notify(new ModelChangedMessageTokensLeft(idPL, Integer.toString(table.getPlayers(idPlayer).getTokens())));
+
+                notify(new ModelChangedMessageDiceOnPatternCard(idPL, idPC, patternCard.getDiceRepresentation()));
+
+                notify(new ModelChangedMessageRefresh(gamePhase, idPL));
+
+            } catch (PatternCardDidNotRespectFirstMoveException e) {
+                notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Did not respect first move constraint"));
+            } catch (PatternCardNoAdjacentDieException e) {
+                notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "No die adjacent to the cell selected"));
+            } catch (PatternCardCellIsOccupiedException e) {
+                notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Already a die in that position"));
+            } catch (PatternCardNotRespectingCellConstraintException e) {
+                notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Did not respect cell constraint"));
+            } catch (PatternCardNotRespectingNearbyDieExpection patternCardNotRespectingNearbyDieExpection) {
+                notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Not respecting nearby dice colors or values"));
+            }  catch (DiceContainerUnsupportedIdException e) {
+                e.printStackTrace();
+            }
+
+            if(moveFailed) {
                 try {
-
-                    try {
-                        patternCard.setDieInPatternCard(idDie, x_f, y_f, ignoreValueConstraint, ignoreColorConstraint, false);
-                        moveFailed = false;
-
-                        currentPlayer.setTokens(currentPlayer.getTokens() - toolCardContainer.getToolCard(idToolCard).cost());
-                        this.getTable().getToolCardContainer().getToolCard(idToolCard).setUsed();
-                        this.getTable().getPlayers(idPlayer).setHasUsedToolCardThisTurn(true);
-
-
-                        String idPC = "" + patternCard.getId();
-                        ToolCard toolCard = table.getToolCardContainer().getToolCard(idToolCard);
-
-                        notify(new ModelChangedMessageToolCard(Integer.toString(idToolCard), toolCard.getName(), toolCard.getDescription(), Integer.toString(toolCard.cost())));
-                        notify(new ModelChangedMessageTokensLeft(idPL, Integer.toString(table.getPlayers(idPlayer).getTokens())));
-
-                        notify(new ModelChangedMessageDiceOnPatternCard(idPL, idPC, patternCard.getDiceRepresentation()));
-
-                        notify(new ModelChangedMessageRefresh(gamePhase, idPL));
-
-                    } catch (PatternCardDidNotRespectFirstMoveException e) {
-                        notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Did not respect first move constraint"));
-                    } catch (PatternCardNoAdjacentDieException e) {
-                        notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "No die adjacent to the cell selected"));
-                    } catch (PatternCardCellIsOccupiedException e) {
-                        notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Already a die in that position"));
-                    } catch (PatternCardNotRespectingCellConstraintException e) {
-                        notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Did not respect cell constraint"));
-                    } catch (PatternCardNotRespectingNearbyDieExpection patternCardNotRespectingNearbyDieExpection) {
-                        notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Not respecting nearby dice colors or values"));
-                    }
-
-                    if(moveFailed)
-                        patternCard.getPatternCardCell(x_i, y_i).setRolledDieId(idDie, true, true);
-
+                    patternCard.getPatternCardCell(x_i, y_i).setRolledDieId(idDie, true, true);
                 } catch (DiceContainerUnsupportedIdException e) {
                     e.printStackTrace();
                 }
-
-            } else {
-                notify(new ModelChangedMessageMoveFailed(idPL, "One of the two is position is not available"));
             }
 
+        } catch (CellIsEmptyException e) {
+            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Starting cell is empty"));
+        }
     }
 
     public void turnDieAround(int idPlayer, int idDie, int idToolCard) {

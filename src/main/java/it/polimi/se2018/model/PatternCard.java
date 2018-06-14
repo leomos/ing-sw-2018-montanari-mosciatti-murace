@@ -111,11 +111,11 @@ public class PatternCard {
     }
 
     public String getDiceRepresentation() {
+        this.updateDiceRepresentation();
         return diceRepresentation;
     }
 
     public String getPatternCardRepresentation() {
-        this.updateDiceRepresentation();
         return patternCardRepresentation;
     }
 

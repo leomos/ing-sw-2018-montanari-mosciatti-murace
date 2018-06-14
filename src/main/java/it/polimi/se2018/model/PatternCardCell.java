@@ -59,7 +59,10 @@ public class PatternCardCell {
     /**
      * remove die in this cell by putting id equals to -1
      */
-    public void removeDie(){
-        this.rolledDieId = -1;
+    public void removeDie() throws CellIsEmptyException {
+        if(rolledDieId != -1)
+            this.rolledDieId = -1;
+        else
+            throw new CellIsEmptyException();
     }
 }
