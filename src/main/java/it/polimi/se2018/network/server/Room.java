@@ -40,7 +40,7 @@ public class Room {
             model.initSetup();
             //patterncard choise
 
-            players.forEach(player -> {
+            players.parallelStream().forEach(player -> {
                 try {
                     Integer m = player.getClientInterface().askForPatternCard();
                     PlayerMessage playerMessage = new PlayerMessageSetup(player.getId(), m);
