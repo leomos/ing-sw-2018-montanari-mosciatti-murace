@@ -101,7 +101,7 @@ public class RoundTrack {
      * @return the id of the Round to which dieId belongs
      * @throws DieNotPresentException if no Round has dieId in its rolledDiceLeft
      */
-    private int getRoundIdForDieId(int dieId) throws DieNotPresentException {
+    public int getRoundIdForDieId(int dieId) throws DieNotPresentException {
         for (int i = 0; i <= currentRoundId; i++) {
             if(rounds[i].isDiePresentInLeftDice(dieId)) return i;
         }

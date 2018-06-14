@@ -17,7 +17,6 @@ public class VirtualView extends Observable<PlayerMessage> implements Observer<M
 
     private Room room;
 
-
     public void addClientInterface(ClientInterface clientInterface) {
         this.clientInterfaceList.add(clientInterface);
     }
@@ -45,4 +44,11 @@ public class VirtualView extends Observable<PlayerMessage> implements Observer<M
     public ArrayList<Integer> getIncrementedValue(int idClient) {return room.getIncrementedValue(idClient);}
 
     public Integer getDieFromDiceArena(int idClient) { return room.getDieFromDiceArena(idClient);}
+
+    public Integer getDieFromRoundTrack(int idClient) { return  room.getDieFromRoundTrack(idClient);}
+
+    public void block(int idClient) { room.block(idClient);}
+
+    public void free(int idClient) { room.free(idClient);}
+
 }

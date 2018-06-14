@@ -54,4 +54,12 @@ public class ClientImplementationRMI implements ClientInterface {
     public Integer askForPatternCard() throws RemoteException {
         return viewClient.askForPatternCard();
     }
+
+    public void block() throws RemoteException {
+        viewClient.block();
+    }
+
+    public void free() throws RemoteException {
+        viewClient.free();
+    }
 }

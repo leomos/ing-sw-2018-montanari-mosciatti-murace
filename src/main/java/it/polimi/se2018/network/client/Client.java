@@ -12,12 +12,11 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Random;
 
 public class Client {
 
     public static void main(String[] args) {
-        int server = (new Random()).nextInt(2);
+        int server = 1; //(new Random()).nextInt(2);
         ViewClient viewClient = new ViewClientConsole();
         ServerInterface serverInterface = null;
         int id = 0;

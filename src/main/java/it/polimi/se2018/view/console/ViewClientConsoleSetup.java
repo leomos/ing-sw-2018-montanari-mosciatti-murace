@@ -5,6 +5,7 @@ import it.polimi.se2018.model.events.ModelChangedMessagePatternCard;
 import it.polimi.se2018.model.events.ModelChangedMessagePrivateObjective;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class ViewClientConsoleSetup extends ViewClientConsolePrint {
 
@@ -39,5 +40,6 @@ public class ViewClientConsoleSetup extends ViewClientConsolePrint {
         printPrivateObjective(privateObjective);
 
         }
+
 
 }

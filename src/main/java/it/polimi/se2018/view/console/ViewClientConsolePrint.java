@@ -185,4 +185,5 @@ public abstract class ViewClientConsolePrint {
     public abstract void update(ModelChangedMessage message);
 
     public abstract void print();
+
 }
