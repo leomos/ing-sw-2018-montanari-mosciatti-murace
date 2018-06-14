@@ -41,7 +41,7 @@ public class ServerImplementationRMI extends UnicastRemoteObject implements Clie
     }
 
     @Override
-    public void sendHeartbeet(HeartbeatMessage heartbeatMessage) {
+    public void sendHeartbeat(HeartbeatMessage heartbeatMessage) {
         roomDispatcher.hearbeat(heartbeatMessage);
     }
 

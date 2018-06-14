@@ -61,9 +61,9 @@ public class ServerImplementationSocket extends Thread implements ServerInterfac
     }
 
     @Override
-    public void sendHeartbeet(int id) {
+    public void sendHeartbeat(HeartbeatMessage heartbeatMessage) {
         try {
-            this.objectOutputStream.writeObject(new HeartbeatMessage(id));
+            this.objectOutputStream.writeObject(heartbeatMessage);
         } catch (IOException e) {
             e.printStackTrace();
         }
