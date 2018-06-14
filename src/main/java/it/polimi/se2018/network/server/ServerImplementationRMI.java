@@ -1,5 +1,6 @@
 package it.polimi.se2018.network.server;
 
+import it.polimi.se2018.model.events.HeartbeatMessage;
 import it.polimi.se2018.model.events.PlayerMessage;
 import it.polimi.se2018.network.*;
 
@@ -40,8 +41,8 @@ public class ServerImplementationRMI extends UnicastRemoteObject implements Clie
     }
 
     @Override
-    public void sendHeartbeet(int id) {
-        getRoomForId(id).heartbeat(id);
+    public void sendHeartbeet(HeartbeatMessage heartbeatMessage) {
+        roomDispatcher.hearbeat(heartbeatMessage);
     }
 
     @Override
