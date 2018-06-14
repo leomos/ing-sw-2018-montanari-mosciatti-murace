@@ -21,7 +21,6 @@ public abstract class ViewClient {
     public void update(ModelChangedMessage modelChangedMessage) {
     }
 
-
     public void setServerInterface(ServerInterface serverInterface) {
         this.serverInterface = serverInterface;
     }
@@ -53,6 +52,10 @@ public abstract class ViewClient {
     public Integer askForPatternCard(){
         return null;
     }
+
+    public void block() {return;}
+
+    public void free() {return;}
 
     public void startHeartbeating(int id) {
         task = () -> {

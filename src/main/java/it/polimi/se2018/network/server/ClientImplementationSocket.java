@@ -116,6 +116,17 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
         return (Integer) waitForMethodCallResponse("askForPatternCard");
     }
 
+    @Override
+    public void block() throws RemoteException {
+        waitForMethodCallResponse("block");
+    }
+
+    @Override
+    public void free() throws RemoteException {
+        waitForMethodCallResponse("free");
+    }
+
+
     public void notifyHeartbeat(HeartbeatMessage heartbeatMessage) {
         roomDispatcher.hearbeat(heartbeatMessage);
     }

@@ -18,7 +18,9 @@ public class ToolCardController{
         int idPlayer = playerMessageToolCard.getPlayer();
         int idToolCard = playerMessageToolCard.getToolcard();
 
-        if(model.checkToolCard(idPlayer, idToolCard)){
+        if(model.checkToolCard(idPlayer, idToolCard)) {
+
+            view.block(idPlayer);
 
             if (idToolCard == 1) {
 
@@ -40,7 +42,7 @@ public class ToolCardController{
                 /* NON MI PIACE CHE INVOCHI DUE VOLTE LA VIEW
                 ArrayList<Integer> startingPosition1 = view.getPositionInPatternCard(playerMessageToolCard.getPlayer());
                 ArrayList<Integer> finalPosition1 = view.getPositionInPatternCard(playerMessageToolCard.getPlayer());
-
+        
                 model.moveDieInsidePatternCard(idPlayer, startingPosition1.get(0), startingPosition1.get(1), finalPosition1.get(0), finalPosition1.get(1), false, false, 4);
 
                 ArrayList<Integer> startingPosition2 = view.getPositionInPatternCard(playerMessageToolCard.getPlayer());
@@ -48,15 +50,40 @@ public class ToolCardController{
 
                 model.moveDieInsidePatternCard(idPlayer, startingPosition2.get(0), startingPosition2.get(1), finalPosition2.get(0), finalPosition2.get(1), false, false, 4);
                 */
-            } else if(idToolCard == 7){
+            } else if (idToolCard == 5) {
+
+                Integer idDieDiceArena = view.getDieFromDiceArena(idPlayer);
+                Integer idDieRoundTrack = view.getDieFromRoundTrack(idPlayer);
+
+                model.swapDieAmongRoundTrackAndDiceArena(idPlayer, idDieRoundTrack, idDieDiceArena, idToolCard);
+            } else if(idToolCard == 6) {
+
+                Integer idDie = view.getDieFromDiceArena(idPlayer);
+
+                //todo
+
+            } else if (idToolCard == 7) {
 
                 model.rerollDiceArena(idPlayer, idToolCard);
 
-            } else if(idToolCard == 10){
+            } else if (idToolCard == 8) {
+
+                model.giveConsecutiveRoundsToPlayer(idPlayer, idToolCard);
+
+            } else if(idToolCard == 9) {
+
+                Integer idDie = view.getDieFromDiceArena(idPlayer);
+                ArrayList<Integer> positions = view.getPositionInPatternCard(idPlayer);
+
+                model.setDieInPatternCardFromDiceArena(idPlayer, idDie, positions.get(0), positions.get(1), true, idToolCard);
+
+            }else if(idToolCard == 10){
 
                 int dieToTurn = view.getDieFromDiceArena(idPlayer);
                 model.turnDieAround(idPlayer, dieToTurn ,idToolCard);
             }
+
+            view.free(idPlayer);
         }
     }
 }
