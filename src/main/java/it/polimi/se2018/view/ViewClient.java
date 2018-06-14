@@ -4,13 +4,11 @@ import it.polimi.se2018.model.events.HeartbeatMessage;
 import it.polimi.se2018.model.events.ModelChangedMessage;
 import it.polimi.se2018.network.ServerInterface;
 
-import java.rmi.RemoteException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class ViewClient {
 
@@ -57,13 +55,11 @@ public abstract class ViewClient {
     }
 
     public void startHeartbeating(int id) {
-        AtomicReference<HeartbeatMessage> heartbeatMessage = null;
         task = () -> {
             try {
-                System.out.println("Sent hb");
-                heartbeatMessage.set(new HeartbeatMessage(id, Instant.now()));
-                serverInterface.sendHeartbeat(heartbeatMessage.get());
-            } catch (RemoteException e) {
+                HeartbeatMessage heartbeatMessage = new HeartbeatMessage(id, Instant.now());
+                serverInterface.sendHeartbeat(heartbeatMessage);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         };
