@@ -27,7 +27,7 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
 
     private boolean roomDispatcherRunning;
 
-    private HashMap<Integer, HeartbeatMessage> heartbeats;
+    private HeartbeatHandler heartbeatHandler;
 
 
     public SimpleRoomDispatcherImplementation(int countdownLength, int refreshRate) {
@@ -37,7 +37,7 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
         this.currentClientsWaiting = new ConcurrentLinkedQueue<>();
         this.connectedClients = new HashSet<>();
         this.rooms = new HashSet<>();
-        this.heartbeats = new HashMap<>();
+        this.heartbeatHandler = new HeartbeatHandler(5);
     }
 
     @Override
@@ -81,7 +81,6 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
         clients.forEach(client -> {
             client.setRoom(room);
             connectedClients.add(client);
-            addToHeartbeats(client.getId());
         });
 
         room.start();
@@ -115,15 +114,14 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
             room.stop();
         });
 
+        heartbeatHandler.stopHeartbeatRunning();
+
         roomDispatcherRunning = false;
     }
 
     @Override
     public synchronized void hearbeat(HeartbeatMessage heartbeatMessage) {
-        heartbeats.put(heartbeatMessage.getId(), heartbeatMessage);
-    }
-
-    private synchronized void addToHeartbeats(int id) {
-        heartbeats.put(id, null);
+        System.out.println("New hearbeat: " + heartbeatMessage.getId());
+        heartbeatHandler.heartbeat(heartbeatMessage);
     }
 }

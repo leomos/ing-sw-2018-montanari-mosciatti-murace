@@ -2,27 +2,50 @@ package it.polimi.se2018.network.server;
 
 import it.polimi.se2018.model.events.HeartbeatMessage;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class HeartbeatHandler extends Thread {
 
-    private HashMap<Integer, Optional<HeartbeatMessage>> heartbeats;
+    private int controlRateInSeconds;
 
-    private List<Integer> waitingFirstHeartbeat;
+    private HashMap<Integer, Instant> heartbeats;
 
-    public HeartbeatHandler() {
+    private boolean heartbeatRunning = true;
+
+
+    public HeartbeatHandler(int controlRateInSeconds) {
+        this.controlRateInSeconds = controlRateInSeconds;
         this.heartbeats = new HashMap<>();
-        this.waitingFirstHeartbeat = new CopyOnWriteArrayList<>();
     }
 
-    public void addHeartbeater(int id) {
-        heartbeats.put(id, Optional.empty());
+    @Override
+    public void run() {
+        while (heartbeatRunning) {
+            System.out.println(heartbeats);
+            /*heartbeats.forEach((id, received) -> {
+                if(Duration.between(Instant.now(), ) > ){
+
+                }
+            });*/
+            try {
+                TimeUnit.SECONDS.sleep(controlRateInSeconds);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
-    public void heartbeat(HeartbeatMessage heartbeatMessage) {
-        heartbeats.put(heartbeatMessage.getId(), Optional.of(heartbeatMessage));
+    public synchronized void heartbeat(HeartbeatMessage heartbeatMessage) {
+        Instant receivedInstant = Instant.now();
+        heartbeats.put(heartbeatMessage.getId(), receivedInstant);
     }
+
+    public void stopHeartbeatRunning() {
+        heartbeatRunning = false;
+    }
+
 }

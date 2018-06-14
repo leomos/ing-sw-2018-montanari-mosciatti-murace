@@ -45,6 +45,7 @@ public class Client {
                 e.printStackTrace();
             }
         }
+        viewClient.startHeartbeating(id);
         System.out.println(id);
         ((ViewClientConsole) viewClient).setIdClient(id);
         viewClient.setServerInterface(serverInterface);
