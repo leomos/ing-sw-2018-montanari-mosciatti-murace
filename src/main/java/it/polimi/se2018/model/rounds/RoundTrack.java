@@ -31,6 +31,10 @@ public class RoundTrack {
         return rounds[currentRoundId];
     }
 
+    public boolean isCurrentRoundInSecondPhase(){
+        return getCurrentRound().isSecondPartOfRound();
+    }
+
     /**
      * Increments currentRoundId and calls initNewRound after that.
      * @throws  RoundTrackNoMoreRoundsException if this is

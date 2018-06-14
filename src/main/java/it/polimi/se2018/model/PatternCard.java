@@ -111,6 +111,7 @@ public class PatternCard {
     }
 
     public String getDiceRepresentation() {
+        this.updateDiceRepresentation();
         return diceRepresentation;
     }
 
@@ -243,11 +244,50 @@ public class PatternCard {
         return false;
     }
 
+    public void setDieInPatternCard(int idDie, int x, int y, boolean ignoreValueConstraint, boolean ignoreColorConstraint, boolean ignoreAdjency) throws DiceContainerUnsupportedIdException, PatternCardDidNotRespectFirstMoveException, PatternCardNoAdjacentDieException, PatternCardCellIsOccupiedException, PatternCardNotRespectingCellConstraintException, PatternCardNotRespectingNearbyDieExpection {
+        Die d = diceContainer.getDie(idDie);
+
+        try {
+                if (this.getPatternCardCell(x, y).checkDieValidity(d.getRolledValue(), d.getColor(), ignoreValueConstraint, ignoreColorConstraint)) {
+                    if (this.getPatternCardCell(x, y).isEmpty()) {
+                        if (this.isFirstMove()) {
+                            if (this.checkFirstMove(x, y)) {
+                                cells[x][y].setRolledDieId(idDie, ignoreValueConstraint, ignoreColorConstraint);
+                            } else {
+                                throw new PatternCardDidNotRespectFirstMoveException();
+                            }
+                        } else if (this.checkProximityCellsValidity(idDie, x, y)) {
+                            if (!ignoreAdjency){
+                                if (this.checkDieInAdjacentCells(x, y))
+                                    cells[x][y].setRolledDieId(idDie, ignoreValueConstraint, ignoreColorConstraint);
+                                else {
+                                    throw new PatternCardNoAdjacentDieException();
+                                }
+                            } else {
+                                cells[x][y].setRolledDieId(idDie, ignoreValueConstraint, ignoreColorConstraint);
+                            }
+                        } else {
+                            throw new PatternCardNotRespectingNearbyDieExpection();
+                        }
+                    } else {
+                        throw new PatternCardCellIsOccupiedException();
+                    }
+                } else {
+                    throw new PatternCardNotRespectingCellConstraintException();
+                }
+
+        } catch (DiceContainerUnsupportedIdException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
     public boolean checkFirstMove(int x, int y){
         return x == 0 || x == 4 || y == 0 || y == 3;
     }
 
-    public void updateDiceRepresentation() {
+    private void updateDiceRepresentation() {
         diceRepresentation = "";
         for(int i = 0; i < 4; i++)
             for(int j = 0; j < 5; j++){

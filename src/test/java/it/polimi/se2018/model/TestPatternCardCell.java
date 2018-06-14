@@ -2,10 +2,13 @@ package it.polimi.se2018.model;
 
 import it.polimi.se2018.model.container.DiceContainer;
 import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
-import it.polimi.se2018.model.container.DieRolledStateNotChangedException;
 import it.polimi.se2018.model.container.DieRolledValueOutOfBoundException;
-import org.junit.*;
-import static org.junit.Assert.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class TestPatternCardCell {
 
@@ -66,7 +69,11 @@ public class TestPatternCardCell {
     @Test
     public void removeDie() throws DiceContainerUnsupportedIdException {
         patternCardCell.setRolledDieId(0, false, false);
-        patternCardCell.removeDie();
+        try {
+            patternCardCell.removeDie();
+        } catch (CellIsEmptyException e) {
+            e.printStackTrace();
+        }
         assertEquals(-1, patternCardCell.getRolledDieId());
     }
 }

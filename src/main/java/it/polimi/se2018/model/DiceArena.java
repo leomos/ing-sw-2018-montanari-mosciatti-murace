@@ -3,6 +3,8 @@ package it.polimi.se2018.model;
 import it.polimi.se2018.model.container.DiceContainer;
 import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.container.Die;
+import it.polimi.se2018.model.rounds.RoundTrack;
+import it.polimi.se2018.model.rounds.RoundTrackNotInSecondPartOfRoundException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,6 +32,7 @@ public class DiceArena {
     }
 
     public String getRepresentation() {
+        this.updateRepresentation();
         return representation;
     }
 
@@ -47,13 +50,21 @@ public class DiceArena {
         }
     }
 
-    public void rerollDiceArena(){
-        for(int i = 0; i < numberOfDice; i++) {
-            try {
-                diceContainer.getDie(arena.get(i)).roll();
-            } catch (DiceContainerUnsupportedIdException e) {
-                e.printStackTrace();
+    public void rerollDiceArena(RoundTrack roundTrack, Player player) throws RoundTrackNotInSecondPartOfRoundException, PlayerHasAlreadySetDieThisTurnException {
+        if(roundTrack.isCurrentRoundInSecondPhase()) {
+            if(!player.hasSetDieThisTurn()) {
+                for (int i = 0; i < arena.size(); i++) {
+                    try {
+                        diceContainer.getDie(arena.get(i)).roll();
+                    } catch (DiceContainerUnsupportedIdException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } else{
+                throw new PlayerHasAlreadySetDieThisTurnException();
             }
+        } else {
+            throw new RoundTrackNotInSecondPartOfRoundException();
         }
     }
 
@@ -67,7 +78,7 @@ public class DiceArena {
         arena.set(arena.indexOf(dieIdToRemove), dieIdToAdd);
     }
 
-    public void updateRepresentation(){
+    private void updateRepresentation(){
         representation = "";
         for(int i = 0; i < arena.size(); i++){
             Die d = null;

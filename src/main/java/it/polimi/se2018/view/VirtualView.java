@@ -43,4 +43,6 @@ public class VirtualView extends Observable<PlayerMessage> implements Observer<M
     }
 
     public ArrayList<Integer> getIncrementedValue(int idClient) {return room.getIncrementedValue(idClient);}
+
+    public Integer getDieFromDiceArena(int idClient) { return room.getDieFromDiceArena(idClient);}
 }

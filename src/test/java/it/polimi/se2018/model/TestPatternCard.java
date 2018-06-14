@@ -134,7 +134,7 @@ public class TestPatternCard {
         this.patternCard.getPatternCardCell(3, 3).setRolledDieId(56, false, false);
         this.patternCard.getPatternCardCell(4, 3).setRolledDieId(40, false, false);
 
-        patternCard.updateDiceRepresentation();
+        patternCard.getDiceRepresentation();
 
         for(int i = 0; i < patternCard.getDiceRepresentation().length(); i+=4){
             if(patternCard.getDiceRepresentation().charAt(i) != '*'){
@@ -150,7 +150,7 @@ public class TestPatternCard {
 
     @Test
     public void checkUpdateDiceRepresentation_PatternCardWithNoDice_ExpectedStringOf80Asterisks() throws DiceContainerUnsupportedIdException {
-        patternCard.updateDiceRepresentation();
+        patternCard.getDiceRepresentation();
         assertEquals("********************************************************************************",
                         patternCard.getDiceRepresentation());
     }

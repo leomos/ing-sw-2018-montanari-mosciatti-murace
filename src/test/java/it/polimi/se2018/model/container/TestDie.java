@@ -97,4 +97,38 @@ public class TestDie {
         Die d = new Die(DieColor.GREEN);
         assertEquals("g", d.getColorChar());
     }
+
+    @Test
+    public void turnAround_ParamAs5_FinalValueShouldBe2() {
+        Die d = new Die(DieColor.GREEN);
+
+        try {
+            d.setRolledValue(5);
+        } catch (DieRolledValueOutOfBoundException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            d.setRolled(true);
+        } catch (DieRolledStateNotChangedException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals(5, d.getRolledValue());
+
+        d.turnAround();
+
+        assertEquals(2, d.getRolledValue());
+    }
+
+    @Test
+    public void unroll_ReturnShouldBeTrue() {
+        Die d = new Die(DieColor.PURPLE);
+
+        d.roll();
+        d.unroll();
+
+        assertEquals(false, d.isRolled());
+        assertEquals(0, d.getRolledValue());
+    }
 }

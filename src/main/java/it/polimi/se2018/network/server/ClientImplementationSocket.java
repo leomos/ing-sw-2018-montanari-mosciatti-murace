@@ -92,6 +92,11 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
     }
 
     @Override
+    public Integer getDieFromDiceArena() throws RemoteException {
+        return (Integer) waitForMethodCallResponse("getDieFromDiceArena");
+    }
+
+    @Override
     public ArrayList<Integer> getIncrementedValue() throws RemoteException {
         return (ArrayList<Integer>) waitForMethodCallResponse("getIncrementedValue");
     }
