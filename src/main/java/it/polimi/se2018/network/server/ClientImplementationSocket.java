@@ -107,6 +107,11 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
     }
 
     @Override
+    public ArrayList<Integer> getSinglePositionInPatternCard() throws RemoteException {
+        return (ArrayList<Integer>) waitForMethodCallResponse("getSinglePositionInPatternCard");
+    }
+
+    @Override
     public Integer getValueForDie() throws RemoteException {
         return (Integer) waitForMethodCallResponse("getValueForDie");
     }

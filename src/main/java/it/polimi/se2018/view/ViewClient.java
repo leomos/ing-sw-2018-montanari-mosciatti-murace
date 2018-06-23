@@ -47,6 +47,10 @@ public abstract class ViewClient {
         return null;
     }
 
+    public ArrayList<Integer> getSinglePositionInPatternCard(){
+        return null;
+    }
+
     public Integer getValueForDie(){
         return 0;
     }

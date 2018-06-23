@@ -46,14 +46,16 @@ public class Round {
         return rolledDiceLeft;
     }
 
-    public String getRepresentation(){return representation;}
+    public String getRepresentation(){
+        updateRepresentation();
+        return representation;}
 
     public void setPlayers(ArrayList<Integer> players) {
         this.players = players;
     }
 
     public void setRolledDiceLeft(ArrayList<Integer> rolledDiceLeft) {
-        this.rolledDiceLeft = rolledDiceLeft;
+        this.rolledDiceLeft.addAll(rolledDiceLeft);
     }
 
     public boolean isSecondPartOfRound(){
@@ -162,13 +164,14 @@ public class Round {
     }
 
     /**
-     * @param dieId the id of the die to be searched
+     * @param idDie the id of the die to be searched
      * @return      true if rolledDiceLeft contains dieId,
      *              false otherwise
      */
-    public boolean isDiePresentInLeftDice(int dieId) {
+    public boolean isDiePresentInDiceLeft(int idDie) {
         for (int id : rolledDiceLeft) {
-            if(id == dieId) return true;
+            System.out.println(id);
+            if(id == idDie) return true;
         }
         return false;
     }

@@ -25,7 +25,7 @@ public class DieController  {
         int x = playerMessageDie.getX_position();
         int y = playerMessageDie.getY_position();
 
-        this.model.setDieInPatternCardFromDiceArena(idPlayer, idDie, x, y, false);
+        this.model.setDieInPatternCardFromDiceArena(idPlayer, idDie, x, y, false, -1);
 
     }
 }

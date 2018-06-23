@@ -55,6 +55,11 @@ public class ClientImplementationRMI implements ClientInterface {
         return viewClient.askForPatternCard();
     }
 
+    @Override
+    public ArrayList<Integer> getSinglePositionInPatternCard() throws RemoteException {
+        return viewClient.getSinglePositionInPatternCard();
+    }
+
     public void block() throws RemoteException {
         viewClient.block();
     }

@@ -55,26 +55,6 @@ public class Room {
             model.initGame();
 
             //start rounds
-
-            /* TODO: non usare PlayerMessage */
-            /*for(int i = 0; i < clientsMap.size() * 2 * 10; i++) //SBAGLIATO?
-                for(ClientInterface clientInterface: view.getClientInterfaceList()){
-                    PlayerMessage data;
-                    try {
-                        do {
-                            data = clientInterface.askForMove();
-                            view.callNotify(data);
-                        }
-                        while(data instanceof PlayerMessageEndTurn);
-                    } catch (RemoteException e) {
-                        e.printStackTrace();
-                    }
-                }*/
-
-
-
-
-
         //}
     }
 
@@ -129,11 +109,37 @@ public class Room {
         return null;
     }
 
+    public ArrayList<Integer> getSinglePositionInPatternCard(int idClient){
+        for(ConnectedClient player : players) {
+            if(player.getId() == idClient) {
+                try {
+                    return player.getClientInterface().getSinglePositionInPatternCard();
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
+
     public Integer getDieFromDiceArena(int idClient){
         for(ConnectedClient player : players) {
             if(player.getId() == idClient) {
                 try {
                     return player.getClientInterface().getDieFromDiceArena();
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
+
+    public Integer getValueForDie(int idClient){
+        for(ConnectedClient player : players) {
+            if(player.getId() == idClient) {
+                try {
+                    return player.getClientInterface().getValueForDie();
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }

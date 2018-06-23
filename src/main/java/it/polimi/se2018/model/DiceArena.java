@@ -3,6 +3,7 @@ package it.polimi.se2018.model;
 import it.polimi.se2018.model.container.DiceContainer;
 import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.container.Die;
+import it.polimi.se2018.model.container.DieRolledValueOutOfBoundException;
 import it.polimi.se2018.model.rounds.RoundTrack;
 import it.polimi.se2018.model.rounds.RoundTrackNotInSecondPartOfRoundException;
 
@@ -50,6 +51,23 @@ public class DiceArena {
         }
     }
 
+    public void removeDieFromDiceArena(int idDie) {
+        for(int i = 0; i < arena.size(); i++)
+            if(arena.get(i) == idDie)
+                arena.remove(i);
+    }
+
+    public void rollOneDieIntoDiceArena(int idDie, int value){
+        try {
+            diceContainer.getDie(idDie).setRolledValue(value);
+        } catch (DieRolledValueOutOfBoundException e) {
+            e.printStackTrace();
+        } catch (DiceContainerUnsupportedIdException e) {
+            e.printStackTrace();
+        }
+        arena.add(idDie);
+    }
+
     public void rerollDiceArena(RoundTrack roundTrack, Player player) throws RoundTrackNotInSecondPartOfRoundException, PlayerHasAlreadySetDieThisTurnException {
         if(roundTrack.isCurrentRoundInSecondPhase()) {
             if(!player.hasSetDieThisTurn()) {
@@ -76,6 +94,10 @@ public class DiceArena {
     public void swapDie(int dieIdToRemove, int dieIdToAdd) throws DieNotPresentException {
         if(!arena.contains(dieIdToRemove)) throw new DieNotPresentException();
         arena.set(arena.indexOf(dieIdToRemove), dieIdToAdd);
+    }
+
+    public void addOneDieToArena(int idDieToAdd){
+        arena.add(idDieToAdd);
     }
 
     private void updateRepresentation(){

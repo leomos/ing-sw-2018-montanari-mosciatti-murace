@@ -109,7 +109,7 @@ public class TestRoundTrack {
         } catch (DieNotPresentException e) {
             fail();
         }
-        assertTrue(roundTrack.getCurrentRound().isDiePresentInLeftDice(54));
+        assertTrue(roundTrack.getCurrentRound().isDiePresentInDiceLeft(54));
     }
 
     @Test(expected = DieNotPresentException.class)
