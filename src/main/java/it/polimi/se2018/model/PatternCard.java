@@ -244,7 +244,7 @@ public class PatternCard {
         return false;
     }
 
-    public void setDieInPatternCard(int idDie, int x, int y, boolean ignoreValueConstraint, boolean ignoreColorConstraint, boolean ignoreAdjency) throws DiceContainerUnsupportedIdException, PatternCardDidNotRespectFirstMoveException, PatternCardNoAdjacentDieException, PatternCardCellIsOccupiedException, PatternCardNotRespectingCellConstraintException, PatternCardNotRespectingNearbyDieExpection {
+    public void setDieInPatternCard(int idDie, int x, int y, boolean ignoreValueConstraint, boolean ignoreColorConstraint, boolean ignoreAdjency) throws DiceContainerUnsupportedIdException, PatternCardDidNotRespectFirstMoveException, PatternCardNoAdjacentDieException, PatternCardCellIsOccupiedException, PatternCardNotRespectingCellConstraintException, PatternCardNotRespectingNearbyDieExpection, PatternCardAdjacentDieException {
         Die d = diceContainer.getDie(idDie);
 
         try {
@@ -264,7 +264,10 @@ public class PatternCard {
                                     throw new PatternCardNoAdjacentDieException();
                                 }
                             } else {
-                                cells[x][y].setRolledDieId(idDie, ignoreValueConstraint, ignoreColorConstraint);
+                                if(!this.checkDieInAdjacentCells(x, y))
+                                    cells[x][y].setRolledDieId(idDie, ignoreValueConstraint, ignoreColorConstraint);
+                                else
+                                    throw new PatternCardAdjacentDieException();
                             }
                         } else {
                             throw new PatternCardNotRespectingNearbyDieExpection();

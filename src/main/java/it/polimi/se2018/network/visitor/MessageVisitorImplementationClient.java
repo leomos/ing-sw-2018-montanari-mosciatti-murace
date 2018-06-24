@@ -57,6 +57,11 @@ public class MessageVisitorImplementationClient implements MessageVisitorInterfa
     }
 
     @Override
+    public void visitModelChangedMessageNewEvent(ModelChangedMessageNewEvent modelChangedMessageNewEvent) {
+
+    }
+
+    @Override
     public void visitModelChangedMessageEndGame(ModelChangedMessageEndGame modelChangedMessageEndGame) {
 
     }

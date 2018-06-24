@@ -26,6 +26,8 @@ public interface MessageVisitorInterface {
 
     public void visitModelChangedMessageRound(ModelChangedMessageRound modelChangedMessageRound);
 
+    public void visitModelChangedMessageNewEvent(ModelChangedMessageNewEvent modelChangedMessageNewEvent);
+
     public void visitModelChangedMessageToolCard(ModelChangedMessageToolCard modelChangedMessageToolCard);
 
     public void visitModelChangedMessageTokensLeft(ModelChangedMessageTokensLeft modelChangedMessageTokensLeft);

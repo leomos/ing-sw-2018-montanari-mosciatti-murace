@@ -56,7 +56,6 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
                     if(toolCards.get(i).getIdToolCard().equals(((ModelChangedMessageToolCard) message).getIdToolCard())) {
                         toolCards.remove(i);
                         toolCards.add(i, (ModelChangedMessageToolCard) message);
-                        System.out.println("\nentra e cost" + ((ModelChangedMessageToolCard) message).getCost() + "\n");
                     }
             } else {
                 toolCards.add((ModelChangedMessageToolCard) message);
@@ -70,7 +69,6 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
         else if(message instanceof ModelChangedMessageTokensLeft)
             if(((ModelChangedMessageTokensLeft) message).getIdPlayer().equals(Integer.toString(idClient)))
                 tokensLeft = (ModelChangedMessageTokensLeft) message;
-
 
     }
 

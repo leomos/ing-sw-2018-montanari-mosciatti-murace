@@ -108,6 +108,11 @@ public class MessageVisitorImplementationServer implements MessageVisitorInterfa
     }
 
     @Override
+    public void visitModelChangedMessageNewEvent(ModelChangedMessageNewEvent modelChangedMessageNewEvent) {
+        serverImplementationSocket.updateView(modelChangedMessageNewEvent);
+    }
+
+    @Override
     public void visitPlayerMessageDie(PlayerMessageDie playerMessageDie) {
 
     }
