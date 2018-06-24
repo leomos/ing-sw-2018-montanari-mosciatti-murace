@@ -133,7 +133,7 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
 
 
     public void notifyHeartbeat(HeartbeatMessage heartbeatMessage) {
-        roomDispatcher.hearbeat(heartbeatMessage);
+        roomDispatcher.heartbeat(heartbeatMessage);
     }
 
     public void unlockAndSetReady() {

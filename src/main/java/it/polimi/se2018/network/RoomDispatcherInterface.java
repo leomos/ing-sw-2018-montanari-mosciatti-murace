@@ -10,7 +10,7 @@ public interface RoomDispatcherInterface extends Runnable {
 
     public Set<ConnectedClient> getAllConnectedClients();
 
-    public void hearbeat(HeartbeatMessage heartbeatMessage);
+    public void heartbeat(HeartbeatMessage heartbeatMessage);
 
     public void stopDispatcher();
 
