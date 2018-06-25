@@ -37,11 +37,12 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
         this.currentClientsWaiting = new ConcurrentLinkedQueue<>();
         this.connectedClients = new HashSet<>();
         this.rooms = new HashSet<>();
-        this.heartbeatHandler = new HeartbeatHandler(5);
+        this.heartbeatHandler = new HeartbeatHandler(5, 10, this);
     }
 
     @Override
     public void run() {
+        heartbeatHandler.start();
         while(roomDispatcherRunning) {
             LOGGER.info("Waiting for at least 2 clients.");
             while (currentClientsWaiting.size() < 2) {
@@ -111,7 +112,11 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
     @Override
     public synchronized void stopDispatcher() {
         rooms.forEach(room -> {
-            room.stop();
+            try {
+                room.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         });
 
         heartbeatHandler.stopHeartbeatRunning();
@@ -120,8 +125,14 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
     }
 
     @Override
-    public synchronized void hearbeat(HeartbeatMessage heartbeatMessage) {
-        System.out.println("New hearbeat: " + heartbeatMessage.getId());
+    public synchronized void heartbeat(HeartbeatMessage heartbeatMessage) {
         heartbeatHandler.heartbeat(heartbeatMessage);
+    }
+
+    public void setConnectedClientSuspended(int id) {
+        connectedClients.stream()
+                .filter(client -> client.getId() == id)
+                .findFirst()
+                .ifPresent(client -> client.setSuspended(true));
     }
 }
