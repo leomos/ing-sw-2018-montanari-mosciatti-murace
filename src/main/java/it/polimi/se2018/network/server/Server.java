@@ -12,7 +12,7 @@ public class Server {
     private ExecutorService executorService;
 
     public static void main(String[] args) {
-        RoomDispatcherInterface roomDispatcher = new SimpleRoomDispatcherImplementation(3, 1);
+        RoomDispatcherInterface roomDispatcher = new SimpleRoomDispatcherImplementation(5, 1);
 
         ClientGathererInterface clientGathererSocket = new ClientGathererImplementationSocket(1111);
         ClientGathererInterface clientGathererRMI = null;

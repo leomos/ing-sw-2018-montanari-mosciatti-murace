@@ -290,6 +290,33 @@ public class PatternCard {
         return x == 0 || x == 4 || y == 0 || y == 3;
     }
 
+    public ArrayList<Integer> getAvailablePositions(int idDie) throws DiceContainerUnsupportedIdException {
+
+        Die d = null;
+        ArrayList<Integer> list = new ArrayList<>();
+
+        try {
+            d = diceContainer.getDie(idDie);
+        } catch (DiceContainerUnsupportedIdException e) {
+            e.printStackTrace();
+        }
+
+        for(int i = 0; i < 5; i++)
+            for(int j = 0; j < 4; j++)
+                if(!firstMove){
+                    if(cells[i][j].checkDieValidity(d.getRolledValue(), d.getColor(), false, false)
+                            && this.checkProximityCellsValidity(idDie, i, j) && this.checkDieInAdjacentCells(i,j) &&cells[i][j].isEmpty()) {
+                        list.add(i);
+                        list.add(j);
+                    }
+                }else if(checkFirstMove(i,j) && cells[i][j].checkDieValidity(d.getRolledValue(), d.getColor(), false, false)
+                        && cells[i][j].isEmpty()) {
+                    list.add(i);
+                    list.add(j);
+                }
+        return list;
+    }
+
     private void updateDiceRepresentation() {
         diceRepresentation = "";
         for(int i = 0; i < 4; i++)

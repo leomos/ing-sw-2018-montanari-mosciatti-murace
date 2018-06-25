@@ -30,57 +30,55 @@ public class ToolCardController{
             } else if (idToolCard == 2) {
 
                 ArrayList<Integer> positions = view.getPositionInPatternCard(idPlayer);
-                model.moveDieInsidePatternCard(idPlayer, positions.get(0), positions.get(1), positions.get(2), positions.get(3), false, true, 2);
+                model.moveDieInsidePatternCard(idPlayer, positions, false, true, 2);
 
             } else if (idToolCard == 3) {
 
                 ArrayList<Integer> positions = view.getPositionInPatternCard(idPlayer);
-                model.moveDieInsidePatternCard(idPlayer, positions.get(0), positions.get(1), positions.get(2), positions.get(3), true, false, 3);
+                model.moveDieInsidePatternCard(idPlayer, positions, true, false, 3);
 
             } else if (idToolCard == 4) {
 
-                /*
-                ArrayList<Integer> startingPosition1 = view.getPositionInPatternCard(playerMessageToolCard.getPlayer());
-                ArrayList<Integer> finalPosition1 = view.getPositionInPatternCard(playerMessageToolCard.getPlayer());
-        
-                model.moveDieInsidePatternCard(idPlayer, startingPosition1.get(0), startingPosition1.get(1), finalPosition1.get(0), finalPosition1.get(1), false, false, 4);
 
-                ArrayList<Integer> startingPosition2 = view.getPositionInPatternCard(playerMessageToolCard.getPlayer());
-                ArrayList<Integer> finalPosition2 = view.getPositionInPatternCard(playerMessageToolCard.getPlayer());
+                ArrayList<Integer> positions1 = view.getPositionInPatternCard(idPlayer);
+                ArrayList<Integer> positions2 = view.getPositionInPatternCard(idPlayer);
 
-                model.moveDieInsidePatternCard(idPlayer, startingPosition2.get(0), startingPosition2.get(1), finalPosition2.get(0), finalPosition2.get(1), false, false, 4);
-                */
+                model.moveTwoDiceInsidePatternCard(idPlayer, positions1, positions2, 4);
+
             } else if (idToolCard == 5) {
+                //todo: controlla che sia almeno round 2
 
                 Integer idDieDiceArena = view.getDieFromDiceArena(idPlayer);
                 Integer idDieRoundTrack = view.getDieFromRoundTrack(idPlayer);
 
-                //todo: non salva bene i round
                 model.swapDieAmongRoundTrackAndDiceArena(idPlayer, idDieRoundTrack, idDieDiceArena, idToolCard);
+
             } else if(idToolCard == 6) {
 
-                //todo gestire errore nella prima interazione in modo che non invochi la seconda istruzione
                 Integer idDie = view.getDieFromDiceArena(idPlayer);
 
                 model.rollDieAgain(idPlayer, idDie, idToolCard);
+                ArrayList<Integer> list = model.checkAvailablePositions(idPlayer, idDie);
 
-                //todo: check che possa essere piazzato e solo in caso fai queste due istruzioni
-                ArrayList<Integer> position = view.getSinglePositionInPatternCard(idPlayer);
+                if(list.size() != 0) {
+                    ArrayList<Integer> position = view.getSinglePositionInPatternCard(idPlayer, list);
 
-                model.setDieInPatternCardFromDiceArena(idPlayer, idDie, position.get(0), position.get(1), false, idToolCard);
-
+                    model.setDieInPatternCardFromDiceArena(idPlayer, idDie, position.get(0), position.get(1), false, idToolCard);
+                }
             } else if (idToolCard == 7) {
 
                 model.rerollDiceArena(idPlayer, idToolCard);
 
             } else if (idToolCard == 8) {
 
+                //todo forse sbagliato, l'abbiamo fatto troppo complicato, non deve poter usare un'altra toolCard
+
                 model.giveConsecutiveRoundsToPlayer(idPlayer, idToolCard);
 
             } else if(idToolCard == 9) {
 
                 Integer idDie = view.getDieFromDiceArena(idPlayer);
-                ArrayList<Integer> positions = view.getSinglePositionInPatternCard(idPlayer);
+                ArrayList<Integer> positions = view.getSinglePositionInPatternCard(idPlayer, null);
 
                 model.setDieInPatternCardFromDiceArena(idPlayer, idDie, positions.get(0), positions.get(1), true, idToolCard);
 
@@ -96,11 +94,28 @@ public class ToolCardController{
                 int newIdDie = model.swapDieWithDieFromDiceBag(idPlayer, idDie, idToolCard);
 
                 int value = view.getValueForDie(idPlayer);
-                //MANDA ARRAY DI POSIZIONI
-                ArrayList<Integer> position = view.getSinglePositionInPatternCard(idPlayer);
-                model.giveValueToDie(idPlayer, newIdDie, value);
+                model.giveValueToDie(idPlayer, idDie, newIdDie, value);
+                ArrayList<Integer> list = model.checkAvailablePositions(idPlayer, idDie);
 
-                model.setDieInPatternCardFromDiceArena(idPlayer, newIdDie, position.get(0), position.get(1), false, idToolCard);
+                if(list.size() != 0) {
+                    ArrayList<Integer> position = view.getSinglePositionInPatternCard(idPlayer, list);
+                    model.setDieInPatternCardFromDiceArena(idPlayer, idDie, position.get(0), position.get(1), false, idToolCard);
+                }
+
+            } else if(idToolCard == 12){
+
+                ArrayList<Integer> positions1 = view.getPositionInPatternCard(idPlayer);
+                ArrayList<Integer> positions2 = view.getPositionInPatternCard(idPlayer);
+
+                if(positions2.get(0) == -1){
+
+                    model.moveDieInsidePatternCard(idPlayer, positions1, false, false, idToolCard);
+
+                } else if(model.checkDiceColor(idPlayer, positions1, positions2)) {
+
+                    model.moveTwoDiceInsidePatternCard(idPlayer, positions1, positions2, 4);
+
+                }
             }
 
             view.free(idPlayer);

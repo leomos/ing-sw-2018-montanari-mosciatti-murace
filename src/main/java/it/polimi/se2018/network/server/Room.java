@@ -109,11 +109,11 @@ public class Room {
         return null;
     }
 
-    public ArrayList<Integer> getSinglePositionInPatternCard(int idClient){
+    public ArrayList<Integer> getSinglePositionInPatternCard(int idClient, ArrayList<Integer> listOfAvailablePositions){
         for(ConnectedClient player : players) {
             if(player.getId() == idClient) {
                 try {
-                    return player.getClientInterface().getSinglePositionInPatternCard();
+                    return player.getClientInterface().getSinglePositionInPatternCard(listOfAvailablePositions);
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
