@@ -12,6 +12,8 @@ public class ConnectedClient {
 
     private Room room;
 
+    private boolean isSuspended;
+
     public ConnectedClient(int id, String name, ClientInterface clientInterface) {
         this.id = id;
         this.name = name;
@@ -40,6 +42,10 @@ public class ConnectedClient {
 
     public Room getRoom() {
         return room;
+    }
+
+    public void setSuspended(boolean suspended) {
+        this.isSuspended = suspended;
     }
 
     @Override
