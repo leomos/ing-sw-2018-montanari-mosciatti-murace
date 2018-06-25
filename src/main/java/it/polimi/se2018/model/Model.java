@@ -116,44 +116,47 @@ public class Model extends Observable<ModelChangedMessage> {
     public void setDieInPatternCardFromDiceArena(int idPlayer, int idDie, int x, int y, boolean ignoreAdjency, int idToolCard) {
         PatternCard patternCard = table.getPlayers(idPlayer).getChosenPatternCard();
 
-        int actualIdDie = table.getDiceArena().getArena().get(idDie);
+        if(table.getDiceArena().getArena().size() > idDie) {
+            int actualIdDie = table.getDiceArena().getArena().get(idDie);
 
-        try {
-            table.getPlayers(idPlayer).setDieInPatternCard(actualIdDie, x, y, false, false, ignoreAdjency);
+            try {
+                table.getPlayers(idPlayer).setDieInPatternCard(actualIdDie, x, y, false, false, ignoreAdjency);
 
-            if(patternCard.isFirstMove())
-                patternCard.setFirstMove();
+                if (patternCard.isFirstMove())
+                    patternCard.setFirstMove();
 
-            if(idToolCard != -1)
-                updateToolCard(idPlayer, idToolCard);
+                if (idToolCard != -1)
+                    updateToolCard(idPlayer, idToolCard);
 
-            table.getPlayers(idPlayer).setHasSetDieThisTurn(true);
-            table.getDiceArena().getArena().remove(idDie);
-            String idPL = "" + idPlayer;
-            String idPC = "" + patternCard.getId();
+                table.getPlayers(idPlayer).setHasSetDieThisTurn(true);
+                table.getDiceArena().getArena().remove(idDie);
+                String idPL = "" + idPlayer;
+                String idPC = "" + patternCard.getId();
 
 
-            notify(new ModelChangedMessageDiceOnPatternCard(idPL, idPC, patternCard.getDiceRepresentation()));
-            notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
-            notify(new ModelChangedMessageRefresh(this.gamePhase, Integer.toString(table.getRoundTrack().getCurrentRound().getIdPlayerPlaying())));
+                notify(new ModelChangedMessageDiceOnPatternCard(idPL, idPC, patternCard.getDiceRepresentation()));
+                notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
+                notify(new ModelChangedMessageRefresh(this.gamePhase, Integer.toString(table.getRoundTrack().getCurrentRound().getIdPlayerPlaying())));
 
-        } catch (PatternCardDidNotRespectFirstMoveException e) {
-            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Did not respect first move constraint"));
-        } catch (PatternCardNoAdjacentDieException e) {
-            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "No die adjacent to the cell selected"));
-        } catch (PatternCardCellIsOccupiedException e) {
-            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Already a die in that position"));
-        } catch (PatternCardNotRespectingCellConstraintException e) {
-            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Did not respect cell constraint"));
-        } catch (PatternCardNotRespectingNearbyDieExpection patternCardNotRespectingNearbyDieExpection) {
-            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Not respecting nearby dice colors or values"));
-        } catch (PlayerHasAlreadySetDieThisTurnException e){
-            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Already set a Die this turn"));
-        } catch (PatternCardAdjacentDieException e) {
-            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "There can't be a die close to the selected cell"));
-        } catch (DiceContainerUnsupportedIdException e) {
-            e.printStackTrace();
-        }
+            } catch (PatternCardDidNotRespectFirstMoveException e) {
+                notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Did not respect first move constraint"));
+            } catch (PatternCardNoAdjacentDieException e) {
+                notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "No die adjacent to the cell selected"));
+            } catch (PatternCardCellIsOccupiedException e) {
+                notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Already a die in that position"));
+            } catch (PatternCardNotRespectingCellConstraintException e) {
+                notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Did not respect cell constraint"));
+            } catch (PatternCardNotRespectingNearbyDieExpection patternCardNotRespectingNearbyDieExpection) {
+                notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Not respecting nearby dice colors or values"));
+            } catch (PlayerHasAlreadySetDieThisTurnException e) {
+                notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Already set a Die this turn"));
+            } catch (PatternCardAdjacentDieException e) {
+                notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "There can't be a die close to the selected cell"));
+            } catch (DiceContainerUnsupportedIdException e) {
+                e.printStackTrace();
+            }
+        } else
+            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "idDie non present in diceArena"));
 
     }
 
@@ -177,7 +180,10 @@ public class Model extends Observable<ModelChangedMessage> {
             try {
                 table.getRoundTrack().startNextRound();
             } catch (RoundTrackNoMoreRoundsException e) {
-                //TODO: here what to do once the rounds finish
+                table.calculateScores();
+
+                notify(new ModelChangedMessageRefresh(GamePhase.ENDGAMEPHASE, null));
+                notify(new ModelChangedMessageEndGame(table.getScoreboard().getRepresentation()));
             }
         }
         table.getPlayers(playerMessageEndTurn.getPlayer()).setHasSetDieThisTurn(false);
@@ -219,30 +225,32 @@ public class Model extends Observable<ModelChangedMessage> {
 
     public void incrementOrDecrementDieValue(int idPlayer, int idDie, int changeValue, int idToolCard) {
 
-        Die d = null;
-        try {
-            d = table.getDiceContainer().getDie(table.getDiceArena().getArena().get(idDie));
-        } catch (DiceContainerUnsupportedIdException e) {
-            e.printStackTrace();
-        }
+        if(table.getDiceArena().getArena().size() > idDie) {
+            Die d = null;
+            try {
+                d = table.getDiceContainer().getDie(table.getDiceArena().getArena().get(idDie));
+            } catch (DiceContainerUnsupportedIdException e) {
+                e.printStackTrace();
+            }
 
 
+            try {
+                if (changeValue == 1)
+                    d.setRolledValue(d.getRolledValue() + 1);
+                else
+                    d.setRolledValue(d.getRolledValue() - 1);
 
-        try {
-            if(changeValue == 1)
-                d.setRolledValue( d.getRolledValue() + 1);
-            else
-                d.setRolledValue(d.getRolledValue() - 1);
+                updateToolCard(idPlayer, idToolCard);
 
-            updateToolCard(idPlayer, idToolCard);
+                notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
 
-            notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
+                notify(new ModelChangedMessageRefresh(this.gamePhase, Integer.toString(table.getRoundTrack().getCurrentRound().getIdPlayerPlaying())));
 
-            notify(new ModelChangedMessageRefresh(this.gamePhase, Integer.toString(table.getRoundTrack().getCurrentRound().getIdPlayerPlaying())));
-
-        } catch (DieRolledValueOutOfBoundException e) {
-            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Can't turn a 6 into a 1 or a 6 into a 1!"));
-        }
+            } catch (DieRolledValueOutOfBoundException e) {
+                notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Can't turn a 6 into a 1 or a 6 into a 1!"));
+            }
+        } else
+            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "There can't be a die close to the selected cell"));
 
 
 
@@ -352,18 +360,24 @@ public class Model extends Observable<ModelChangedMessage> {
     }
 
     public void turnDieAround(int idPlayer, int idDie, int idToolCard) {
-        try {
-            table.getDiceContainer().getDie(table.getDiceArena().getArena().get(idDie)).turnAround();
 
-            updateToolCard(idPlayer, idToolCard);
+        if (table.getDiceArena().getArena().size() > idDie) {
 
-            notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
+            try {
+                table.getDiceContainer().getDie(table.getDiceArena().getArena().get(idDie)).turnAround();
 
-            notify(new ModelChangedMessageRefresh(gamePhase, Integer.toString(idPlayer)));
+                updateToolCard(idPlayer, idToolCard);
 
-        } catch (DiceContainerUnsupportedIdException e) {
+                notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
 
-        }
+                notify(new ModelChangedMessageRefresh(gamePhase, Integer.toString(idPlayer)));
+
+            } catch (DiceContainerUnsupportedIdException e) {
+
+            }
+        } else
+            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "There can't be a die close to the selected cell"));
+
 
     }
 
@@ -403,76 +417,91 @@ public class Model extends Observable<ModelChangedMessage> {
 
     public void rollDieAgain(int idPlayer, int idDie, int idToolCard){
 
-        try {
-            Die d = table.getDiceContainer().getDie(table.getDiceArena().getArena().get(idDie));
+        if(table.getDiceArena().getArena().size() > idDie) {
 
-            updateToolCard(idPlayer, idToolCard);
-            d.roll();
+            try {
+                Die d = table.getDiceContainer().getDie(table.getDiceArena().getArena().get(idDie));
 
-            notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
-            notify(new ModelChangedMessageRefresh(this.gamePhase, Integer.toString(table.getRoundTrack().getCurrentRound().getIdPlayerPlaying())));
+                updateToolCard(idPlayer, idToolCard);
+                d.roll();
+
+                notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
+                notify(new ModelChangedMessageRefresh(this.gamePhase, Integer.toString(table.getRoundTrack().getCurrentRound().getIdPlayerPlaying())));
 
 
-            notify(new ModelChangedMessageNewEvent(Integer.toString(idPlayer), "The new value for the die is " + d.getRolledValue()));
+                notify(new ModelChangedMessageNewEvent(Integer.toString(idPlayer), "The new value for the die is " + d.getRolledValue()));
 
-        } catch (DiceContainerUnsupportedIdException e) {
-            e.printStackTrace();
-        }
+            } catch (DiceContainerUnsupportedIdException e) {
+                e.printStackTrace();
+            }
+        } else
+            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "There can't be a die close to the selected cell"));
 
     }
 
-    public void swapDieAmongRoundTrackAndDiceArena(int idPlayer, int dieIdInRoundTrack, int dieIdInDiceArena, int idToolCard) {
+    public void swapDieAmongRoundTrackAndDiceArena(int idPlayer, int dieIdInRoundTrack, int idRound, int dieIdInDiceArena, int idToolCard) {
         RoundTrack roundTrack = table.getRoundTrack();
         DiceArena diceArena = table.getDiceArena();
-        int actualIdDieInDiceArena = table.getDiceArena().getArena().get(dieIdInDiceArena);
 
-        try {
-            roundTrack.swapDieInRound(dieIdInRoundTrack, actualIdDieInDiceArena);
+        if(table.getDiceArena().getArena().size() > dieIdInDiceArena) {
+
+            int actualIdDieInDiceArena = table.getDiceArena().getArena().get(dieIdInDiceArena);
 
             try {
-                diceArena.swapDie(actualIdDieInDiceArena, dieIdInRoundTrack);
+                int actualIdDieInRoundTrack = roundTrack.swapDieInRound(dieIdInRoundTrack, idRound, actualIdDieInDiceArena);
 
-                Round round = table.getRoundTrack().getRound(table.getRoundTrack().getRoundIdForDieId(actualIdDieInDiceArena));
-                notify(new ModelChangedMessageRound(Integer.toString(round.getId()), round.getRepresentation()));
+                try {
+                    diceArena.swapDie(actualIdDieInDiceArena, actualIdDieInRoundTrack);
 
-                updateToolCard(idPlayer, idToolCard);
+                    Round round = table.getRoundTrack().getRound(idRound);
+                    notify(new ModelChangedMessageRound(Integer.toString(round.getId()), round.getRepresentation()));
 
-                notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
+                    updateToolCard(idPlayer, idToolCard);
 
-                notify(new ModelChangedMessageRefresh(this.gamePhase, Integer.toString(table.getRoundTrack().getCurrentRound().getIdPlayerPlaying())));
+                    notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
+
+                    notify(new ModelChangedMessageRefresh(this.gamePhase, Integer.toString(table.getRoundTrack().getCurrentRound().getIdPlayerPlaying())));
+
+                } catch (DieNotPresentException e) {
+                    roundTrack.swapDieInRound(actualIdDieInDiceArena, idRound, actualIdDieInRoundTrack);
+                    notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Die not Present in DiceArena"));
+                }
+
 
             } catch (DieNotPresentException e) {
-                roundTrack.swapDieInRound(actualIdDieInDiceArena, dieIdInRoundTrack);
-                notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Die not Present in DiceArena"));
+                notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Die not present in RoundTrack"));
+            } catch (RoundHasNotBeenInitializedYetException e) {
+                notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Round selected has not been completed yet"));
             }
-
-
-        } catch (DieNotPresentException e) {
-            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Die not present in RoundTrack"));
-        }
-
+        } else
+            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "There can't be a die close to the selected cell"));
 
     }
 
     public Integer swapDieWithDieFromDiceBag(int idPlayer, int idDie, int idToolCard){
         DiceArena diceArena = table.getDiceArena();
 
-        diceArena.removeDieFromDiceArena(table.getDiceArena().getArena().get(idDie));
-        ArrayList<Integer> diceToRoll = table.getDiceContainer().getUnrolledDice();
-        Collections.shuffle(diceToRoll);
+        if(diceArena.getArena().size() > idDie) {
+
+            diceArena.removeDieFromDiceArena(table.getDiceArena().getArena().get(idDie));
+            ArrayList<Integer> diceToRoll = table.getDiceContainer().getUnrolledDice();
+            Collections.shuffle(diceToRoll);
 
 
-        Die d = null;
-        int idNewDie = diceToRoll.get(0);
-        try {
-            d = table.getDiceContainer().getDie(idNewDie);
-        } catch (DiceContainerUnsupportedIdException e) {
-            e.printStackTrace();
-        }
+            Die d = null;
+            int idNewDie = diceToRoll.get(0);
+            try {
+                d = table.getDiceContainer().getDie(idNewDie);
+            } catch (DiceContainerUnsupportedIdException e) {
+                e.printStackTrace();
+            }
 
-        notify(new ModelChangedMessageNewEvent(Integer.toString(idPlayer), "\nThe new die has the color " + d.getColor()));
-        return idNewDie;
+            notify(new ModelChangedMessageNewEvent(Integer.toString(idPlayer), "\nThe new die has the color " + d.getColor()));
+            return idNewDie;
+        } else
+            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "There can't be a die close to the selected cell"));
 
+        return null;
     }
 
     public void giveValueToDie(int idPlayer, int positionInDiceArena, int actualIdDie, int value){
@@ -519,6 +548,17 @@ public class Model extends Observable<ModelChangedMessage> {
             return true;
         else{
             notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "You need at least 2 dice on the pattern card to perform a die movement"));
+            return false;
+        }
+
+    }
+
+    public boolean checkRoundIsPastSecond(int idPlayer){
+
+        if(table.getRoundTrack().getCurrentRound().getId() > 0)
+            return true;
+        else{
+            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "You can only use this card after round 2"));
             return false;
         }
 

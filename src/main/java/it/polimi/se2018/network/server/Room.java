@@ -144,7 +144,7 @@ public class Room extends Thread {
         return null;
     }
 
-    public Integer getDieFromRoundTrack(int idClient){
+    public ArrayList<Integer> getDieFromRoundTrack(int idClient){
         for(ConnectedClient player : players) {
             if(player.getId() == idClient) {
                 try {

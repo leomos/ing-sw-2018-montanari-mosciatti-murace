@@ -216,7 +216,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
             moveOk1 = true;
             moveOk2 = true;
 
-            System.out.println("\nInsert idDie from DiceArena to change followed by 1 to increment value itss value or by 0 to decrement");
+            System.out.println("\nInsert idDie from DiceArena to change followed by 1 to increase value its value or by 0 to decrease");
             Scanner input = new Scanner(System.in);
             String s = input.nextLine();
             String[] parts = s.split(" ");
@@ -275,21 +275,27 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
     }
 
-    public Integer getDieFromRoundTrack(){
+    public ArrayList<Integer> getDieFromRoundTrack(){
         boolean moveOk;
-        int idDie = -1;
+        ArrayList<Integer> idDie = new ArrayList<>();
 
         do{
             moveOk = true;
 
-            System.out.println("\nInsert idDie from RoundTruck to use");
+            System.out.println("\nInsert idRound followed by idDie");
             Scanner input = new Scanner(System.in);
             String s = input.nextLine();
+            String[] parts = s.split(" ");
 
-            for(int i = 0; i < 90; i++){
-                if(s.equals(Integer.toString(i))) {
-                    moveOk = false;
-                    idDie = Integer.parseInt(s);
+            if(parts.length == 2) {
+                for (int i = 1; i < 11; i++) {
+                    for (int j = 0; j < 9; j++) {
+                        if (parts[0].equals(Integer.toString(i)) && parts[1].equals(Integer.toString(j))) {
+                            moveOk = false;
+                            idDie.add(Integer.parseInt(parts[0]) - 1);
+                            idDie.add(Integer.parseInt(parts[1]));
+                        }
+                    }
                 }
             }
 

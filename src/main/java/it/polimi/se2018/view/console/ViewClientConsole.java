@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
+import static it.polimi.se2018.model.GamePhase.ENDGAMEPHASE;
 import static it.polimi.se2018.model.GamePhase.GAMEPHASE;
 
 public class ViewClientConsole extends ViewClient implements Runnable {
@@ -48,8 +49,8 @@ public class ViewClientConsole extends ViewClient implements Runnable {
                 gamePhase = ((ModelChangedMessageRefresh) message).getGamePhase();
                 if(gamePhase == GAMEPHASE)
                     viewClientConsolePrint = new ViewClientConsoleGame(this.idClient);
-                //if(gamePhase == ENDGAMEPHASE)
-                    //CREA NUOVA PRINT
+                if(gamePhase == ENDGAMEPHASE)
+                    viewClientConsolePrint = new ViewClientConsoleEndGame(this.idClient);
             }else {
                 viewClientConsolePrint.print();
                 if(((ModelChangedMessageRefresh) message).getIdPlayerPlaying() != null) {
@@ -233,7 +234,7 @@ public class ViewClientConsole extends ViewClient implements Runnable {
         return null;
     }
 
-    public Integer getDieFromRoundTrack(){
+    public ArrayList<Integer> getDieFromRoundTrack(){
         if(idPlayerPlaying == idClient) {
 
             return viewClientConsolePrint.getDieFromRoundTrack();

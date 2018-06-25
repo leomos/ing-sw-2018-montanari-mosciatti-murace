@@ -10,7 +10,7 @@ public interface ClientInterface extends Remote {
 
     public void update(ModelChangedMessage modelChangedMessage) throws RemoteException;
 
-    public Integer getDieFromRoundTrack() throws RemoteException;
+    public ArrayList<Integer> getDieFromRoundTrack() throws RemoteException;
 
     public ArrayList<Integer> getIncrementedValue() throws RemoteException;
 

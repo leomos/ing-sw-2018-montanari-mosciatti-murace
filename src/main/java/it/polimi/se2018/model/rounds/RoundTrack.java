@@ -114,8 +114,11 @@ public class RoundTrack {
      * @throws DieNotPresentException   if dieIdToRemove is not present
      *          in any of round's rolledDiceLeft.
      */
-    public void swapDieInRound(int dieIdToRemove, int dieIdToAdd) throws DieNotPresentException {
-        int roundIdForDieIdToRemove = getRoundIdForDieId(dieIdToRemove);
-        rounds[roundIdForDieIdToRemove].swapDie(dieIdToRemove, dieIdToAdd);
+    public int swapDieInRound(int dieIdToRemove, int roundIdForDieIdToRemove, int dieIdToAdd) throws RoundHasNotBeenInitializedYetException, DieNotPresentException {
+        if(roundIdForDieIdToRemove < currentRoundId)
+            return rounds[roundIdForDieIdToRemove].swapDie(dieIdToRemove, dieIdToAdd);
+        else
+            throw new RoundHasNotBeenInitializedYetException();
+
     }
 }

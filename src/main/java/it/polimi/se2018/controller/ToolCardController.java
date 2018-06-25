@@ -51,13 +51,14 @@ public class ToolCardController{
                 }
 
             } else if (idToolCard == 5) {
-                //todo: controlla che sia almeno round 2
 
-                Integer idDieDiceArena = view.getDieFromDiceArena(idPlayer);
-                Integer idDieRoundTrack = view.getDieFromRoundTrack(idPlayer);
+                if(model.checkRoundIsPastSecond(idPlayer)) {
 
-                model.swapDieAmongRoundTrackAndDiceArena(idPlayer, idDieRoundTrack, idDieDiceArena, idToolCard);
+                    Integer idDieDiceArena = view.getDieFromDiceArena(idPlayer);
+                    ArrayList<Integer> idDieRoundTrack = view.getDieFromRoundTrack(idPlayer);
 
+                    model.swapDieAmongRoundTrackAndDiceArena(idPlayer, idDieRoundTrack.get(1), idDieRoundTrack.get(0), idDieDiceArena, idToolCard);
+                }
             } else if(idToolCard == 6) {
 
                 Integer idDie = view.getDieFromDiceArena(idPlayer);
@@ -92,6 +93,8 @@ public class ToolCardController{
             } else if(idToolCard == 11){
 
                 if(model.checkEnoughDiceInDiceBag(idPlayer)) {
+
+                    //todo: tests se idDie non vabene
 
                     int idDie = view.getDieFromDiceArena(idPlayer);
                     int newIdDie = model.swapDieWithDieFromDiceBag(idPlayer, idDie, idToolCard);
