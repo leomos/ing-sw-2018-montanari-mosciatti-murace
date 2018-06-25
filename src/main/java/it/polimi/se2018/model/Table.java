@@ -130,7 +130,7 @@ public class Table {
     private void setToolCards(){
         ArrayList<Integer> toolCardsList = new ArrayList<>();
         for (Integer i = 0; i < 12; i++)
-            if(i != 10)
+            if(i != 4)
                 toolCardsList.add(i);
 
         Collections.shuffle(toolCardsList);
@@ -138,7 +138,7 @@ public class Table {
         //TO FORCE A PATTERNCARD FOR TESTS
         toolCardsList.add(0,10);
         toolCardsList.add(1,5);
-        toolCardsList.add(1,8);
+        toolCardsList.add(1,4);
 
 
         for(int j = 0; j < 3; j++)

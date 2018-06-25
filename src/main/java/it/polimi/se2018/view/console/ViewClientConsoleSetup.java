@@ -86,7 +86,7 @@ public class ViewClientConsoleSetup extends ViewClientConsolePrint {
     }
 
     @Override
-    public Integer getDieFromRoundTrack() {
+    public ArrayList<Integer> getDieFromRoundTrack() {
         return null;
     }
 

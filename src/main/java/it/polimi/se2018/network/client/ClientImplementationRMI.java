@@ -31,7 +31,7 @@ public class ClientImplementationRMI implements ClientInterface {
     }
 
     @Override
-    public Integer getDieFromRoundTrack() throws RemoteException {
+    public ArrayList<Integer> getDieFromRoundTrack() throws RemoteException {
         return viewClient.getDieFromRoundTrack();
     }
 

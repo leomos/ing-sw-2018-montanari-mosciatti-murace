@@ -234,7 +234,7 @@ public class ViewClientConsole extends ViewClient implements Runnable {
         return null;
     }
 
-    public Integer getDieFromRoundTrack(){
+    public ArrayList<Integer> getDieFromRoundTrack(){
         if(idPlayerPlaying == idClient) {
 
             return viewClientConsolePrint.getDieFromRoundTrack();

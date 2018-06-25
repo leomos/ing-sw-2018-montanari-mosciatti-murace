@@ -1,6 +1,7 @@
 package it.polimi.se2018.model.rounds;
 
 
+import it.polimi.se2018.model.DieNotPresentException;
 import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model.PlayerHasNotSetDieThisTurnException;
 import it.polimi.se2018.model.container.DiceContainer;
@@ -154,13 +155,14 @@ public class Round {
      * This method expects that the two params are valid,
      * that is, they need to be present in rolledDiceLeft.
      */
-    public void swapDie(int dieIdToRemove, int dieIdToAdd) {
-        for (int i = 0; i < rolledDiceLeft.size(); i++) {
-            if(dieIdToRemove == rolledDiceLeft.get(i)) {
-                rolledDiceLeft.set(i, dieIdToAdd);
-                return;
-            }
-        }
+    public int swapDie(int dieIdToRemove, int dieIdToAdd) throws DieNotPresentException {
+        if(dieIdToRemove < rolledDiceLeft.size()) {
+            int actualIdDieInRoundTrack = rolledDiceLeft.get(dieIdToRemove);
+            rolledDiceLeft.set(dieIdToRemove, dieIdToAdd);
+
+            return actualIdDieInRoundTrack;
+        } else
+            throw new DieNotPresentException();
     }
 
     /**

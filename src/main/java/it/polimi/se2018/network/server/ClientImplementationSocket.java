@@ -87,8 +87,8 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
     }
 
     @Override
-    public Integer getDieFromRoundTrack() throws RemoteException {
-        return (Integer) waitForMethodCallResponse("getDieFromRoundTrack");
+    public ArrayList<Integer> getDieFromRoundTrack() throws RemoteException {
+        return (ArrayList<Integer>) waitForMethodCallResponse("getDieFromRoundTrack");
     }
 
     @Override

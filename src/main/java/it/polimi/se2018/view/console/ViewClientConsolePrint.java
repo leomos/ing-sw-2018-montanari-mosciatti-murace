@@ -110,7 +110,7 @@ public abstract class ViewClientConsolePrint {
             char color = message.getRepresentation().charAt(j+2);
             char value = message.getRepresentation().charAt(j+3);
 
-            System.out.print("\t " + message.getRepresentation().charAt(j) + message.getRepresentation().charAt(j+1) + " ");
+            System.out.print("\t " + j/4 + " ");
             System.out.print(printDie(color, value));
         }
     }
@@ -198,7 +198,7 @@ public abstract class ViewClientConsolePrint {
 
     public abstract Integer getDieFromDiceArena();
 
-    public abstract Integer getDieFromRoundTrack();
+    public abstract ArrayList<Integer> getDieFromRoundTrack();
 
     public abstract Integer getValueForDie();
 

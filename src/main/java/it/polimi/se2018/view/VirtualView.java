@@ -45,7 +45,7 @@ public class VirtualView extends Observable<PlayerMessage> implements Observer<M
 
     public Integer getDieFromDiceArena(int idClient) { return room.getDieFromDiceArena(idClient);}
 
-    public Integer getDieFromRoundTrack(int idClient) { return  room.getDieFromRoundTrack(idClient);}
+    public ArrayList<Integer> getDieFromRoundTrack(int idClient) { return  room.getDieFromRoundTrack(idClient);}
 
     public Integer getValueForDie(int idClient) { return  room.getValueForDie(idClient);}
 

@@ -33,7 +33,7 @@ public abstract class ViewClient {
         return null;
     }
 
-    public Integer getDieFromRoundTrack() {
+    public ArrayList<Integer> getDieFromRoundTrack() {
         return null;
     }
 
