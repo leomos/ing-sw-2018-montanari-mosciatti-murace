@@ -37,7 +37,6 @@ public class ViewClientConsole extends ViewClient implements Runnable {
             if(((ModelChangedMessageMoveFailed) message).getPlayer().equals(Integer.toString(idClient))) {
                 System.out.println(((ModelChangedMessageMoveFailed) message).getErrorMessage());
                 System.out.println("\n\nTry again");
-                System.out.println("/help: get List of moves");
             }
         } else if(message instanceof ModelChangedMessageNewEvent){
             if(((ModelChangedMessageNewEvent) message).getPlayer().equals(Integer.toString(idClient))){
@@ -46,15 +45,17 @@ public class ViewClientConsole extends ViewClient implements Runnable {
         }
         else if(message instanceof ModelChangedMessageRefresh) {
             if (((ModelChangedMessageRefresh) message).getGamePhase() != gamePhase) {
-                gamePhase = ((ModelChangedMessageRefresh) message).getGamePhase(); //cambia anche per end game
+                gamePhase = ((ModelChangedMessageRefresh) message).getGamePhase();
                 if(gamePhase == GAMEPHASE)
                     viewClientConsolePrint = new ViewClientConsoleGame(this.idClient);
+                //if(gamePhase == ENDGAMEPHASE)
+                    //CREA NUOVA PRINT
             }else {
                 viewClientConsolePrint.print();
                 if(((ModelChangedMessageRefresh) message).getIdPlayerPlaying() != null) {
                     idPlayerPlaying = Integer.parseInt(((ModelChangedMessageRefresh) message).getIdPlayerPlaying());
-                    if(idPlayerPlaying == idClient) {
-                        System.out.println("\n\nIt's your turn");
+                    if(idPlayerPlaying == idClient && canIPlay) {
+                        System.out.println("It's your turn");
                         System.out.println("/help: get List of moves");
                     }
                 }
@@ -69,7 +70,7 @@ public class ViewClientConsole extends ViewClient implements Runnable {
 
     public String askForName(){
 
-        System.out.println("\nname");
+        System.out.println("\nName");
         Scanner input = new Scanner(System.in);
         String s = input.nextLine();
 
@@ -78,27 +79,7 @@ public class ViewClientConsole extends ViewClient implements Runnable {
     }
 
     public Integer askForPatternCard()  {
-        Scanner input = new Scanner(System.in);
-        boolean moveOk = true;
-        do {
-            System.out.println("\nChoose a PatternCard by selecting one of the PatternCardId");
-
-            String s = input.nextLine();
-
-            for(int i = 0; i < 24; i++){
-                String app = "" + i;
-                if(app.equals(s)) {
-                    moveOk = false;
-                    return Integer.parseInt(app);
-                }
-            }
-
-            if(moveOk)
-                System.out.println("Try Again!");
-        }
-        while(moveOk);
-
-        return null;
+        return viewClientConsolePrint.askForPatternCard();
     }
 
     public void run(){
@@ -121,16 +102,15 @@ public class ViewClientConsole extends ViewClient implements Runnable {
                         e.printStackTrace();
                     }
                     if(canIPlay) {
+                        boolean moveOk;
+                        do {
+                            moveOk = true;
 
-                        Scanner input = new Scanner(System.in);
-                        String s = input.nextLine();
-                        String[] parts = s.split(" ");
+                            Scanner input = new Scanner(System.in);
+                            String s = input.nextLine();
+                            String[] parts = s.split(" ");
 
-                        if (idPlayerPlaying == idClient) {
-
-                            boolean moveOk = true;
-
-                            do {
+                            if (idPlayerPlaying == idClient) {
 
                                 if (s.equals("/help")) {
                                     System.out.println("\nset + DieId + x_position + y_position  -> to position a die from the dice arena to the patterncard\n" +
@@ -187,12 +167,12 @@ public class ViewClientConsole extends ViewClient implements Runnable {
                                     System.out.println("/help: get List of moves");
                                 }
 
-                            }
-                            while (moveOk);
 
-                        } else {
-                            System.out.println("\n\nIt's Player  " + idPlayerPlaying + " turn, not yours");
+                            } else {
+                                System.out.println("\n\nIt's Player  " + idPlayerPlaying + " turn, not yours");
+                            }
                         }
+                        while (moveOk);
                     }
 
                 }
@@ -209,162 +189,45 @@ public class ViewClientConsole extends ViewClient implements Runnable {
     public void free(){
         if (idPlayerPlaying == idClient)
             canIPlay = true;
+        if(idPlayerPlaying == idClient && canIPlay) {
+            System.out.println("It's your turn");
+            System.out.println("/help: get List of moves");
+        }
     }
 
     public ArrayList<Integer> getPositionInPatternCard(){
         if(idPlayerPlaying == idClient){
-            ArrayList<Integer> position = new ArrayList<Integer>();
-            boolean moveOk1, moveOk2;
 
-            do {
-                System.out.println("\nInsert Starting position on PatternCard separated by a space");
+            return viewClientConsolePrint.getPositionInPatternCard();
 
-                moveOk1 = true;
-                moveOk2 = true;
-
-                Scanner input = new Scanner(System.in);
-                String s = input.nextLine();
-
-                for(int i = 0; i < 5; i++) {
-                    for (int j = 0; j < 4; j++) {
-                        String app = "" + i + " " + j;
-                        if (app.equals(s)) {
-                            moveOk1 = false;
-                            position.add(Integer.parseInt(s.split(" ")[0]));
-                            position.add(Integer.parseInt(s.split(" ")[1]));
-                        }
-                    }
-                }
-
-                System.out.println("\nInsert Final position on PatternCard separated by a space");
-
-                input = new Scanner(System.in);
-                s = input.nextLine();
-
-                for(int i = 0; i < 5; i++) {
-                    for (int j = 0; j < 4; j++) {
-                        String app = "" + i + " " + j;
-                        if (app.equals(s)) {
-                            moveOk2 = false;
-                            position.add(Integer.parseInt(s.split(" ")[0]));
-                            position.add(Integer.parseInt(s.split(" ")[1]));
-                        }
-                    }
-                }
-
-                if(moveOk1 || moveOk2)
-                    System.out.println("Try Again!");
-            }
-            while(moveOk1 || moveOk2);
-
-            return position;
-        }else
-            return null;
+        }
+        return null;
     }
 
-    public ArrayList<Integer> getSinglePositionInPatternCard(){
+    public ArrayList<Integer> getSinglePositionInPatternCard(ArrayList<Integer> listOfAvailablePositions){
         if(idPlayerPlaying == idClient) {
-            boolean moveOk = true;
-            ArrayList<Integer> position = new ArrayList<Integer>();
 
-            do {
+            return viewClientConsolePrint.getSinglePositionInPatternCard(listOfAvailablePositions);
 
-
-                System.out.println("\nInsert x and y separated by space");
-                Scanner input = new Scanner(System.in);
-                String s = input.nextLine();
-                String[] parts = s.split(" ");
-
-                for (int i = 0; i < 5; i++) {
-                    for (int j = 0; j < 4; j++) {
-                        String app = "" + i + " " + j;
-                        if (app.equals(s)) {
-                            moveOk = false;
-                            position.add(Integer.parseInt(s.split(" ")[0]));
-                            position.add(Integer.parseInt(s.split(" ")[1]));
-                        }
-                    }
-                }
-
-                if (moveOk)
-                    System.out.println("Try again!");
-
-            } while (moveOk);
-
-            return position;
         }
-
         return null;
     }
 
     public ArrayList<Integer> getIncrementedValue() {
 
         if (idPlayerPlaying == idClient) {
-            ArrayList<Integer> dieAndDecision = new ArrayList<Integer>();
-            boolean moveOk1, moveOk2;
 
-            do {
-                moveOk1 = true;
-                moveOk2 = true;
+            return viewClientConsolePrint.getIncrementedValue();
 
-                System.out.println("\nInsert idDie from DiceArena to change followed by 1 to increment value itss value or by 0 to decrement");
-                Scanner input = new Scanner(System.in);
-                String s = input.nextLine();
-                String[] parts = s.split(" ");
-
-                if(parts.length == 2) {
-                    for (int i = 0; i < 90; i++)
-                        if (parts[0].equals(Integer.toString(i)))
-                            moveOk1 = false;
-
-                    if (parts[1].equals("1") || parts[1].equals("0"))
-                        moveOk2 = false;
-                }
-
-                if(moveOk1 || moveOk2){
-                    System.out.println("Try again!");
-                } else {
-                    dieAndDecision.add(Integer.parseInt(parts[0]));
-                    dieAndDecision.add(Integer.parseInt(parts[1]));
-                }
-
-
-
-            }
-            while(moveOk1 || moveOk2);
-
-            return dieAndDecision;
         }
-
         return null;
     }
 
     public Integer getDieFromDiceArena(){
 
         if(idPlayerPlaying == idClient) {
-            boolean moveOk;
-            int idDie = -1;
 
-            do{
-                moveOk = true;
-
-                System.out.println("\nInsert idDie from DiceArena to use");
-                Scanner input = new Scanner(System.in);
-                String s = input.nextLine();
-
-                for(int i = 0; i < 90; i++){
-                    if(s.equals(Integer.toString(i))) {
-                        moveOk = false;
-                        idDie = Integer.parseInt(s);
-                    }
-                }
-
-                if(moveOk)
-                    System.out.println("Try Again!");
-
-            } while(moveOk);
-
-            return idDie;
+            return viewClientConsolePrint.getDieFromDiceArena();
 
         }
         return null;
@@ -372,29 +235,8 @@ public class ViewClientConsole extends ViewClient implements Runnable {
 
     public Integer getDieFromRoundTrack(){
         if(idPlayerPlaying == idClient) {
-            boolean moveOk;
-            int idDie = -1;
 
-            do{
-                moveOk = true;
-
-                System.out.println("\nInsert idDie from RoundTruck to use");
-                Scanner input = new Scanner(System.in);
-                String s = input.nextLine();
-
-                for(int i = 0; i < 90; i++){
-                    if(s.equals(Integer.toString(i))) {
-                        moveOk = false;
-                        idDie = Integer.parseInt(s);
-                    }
-                }
-
-                if(moveOk)
-                    System.out.println("Try Again!");
-
-            } while(moveOk);
-
-            return idDie;
+            return viewClientConsolePrint.getDieFromRoundTrack();
 
         }
         return null;
@@ -402,29 +244,8 @@ public class ViewClientConsole extends ViewClient implements Runnable {
 
     public Integer getValueForDie(){
         if(idPlayerPlaying == idClient) {
-            boolean moveOk;
-            int value = -1;
 
-            do{
-                moveOk = true;
-
-                System.out.println("\nInsert value to assign to Die");
-                Scanner input = new Scanner(System.in);
-                String s = input.nextLine();
-
-                for(int i = 1; i < 7; i++){
-                    if(s.equals(Integer.toString(i))) {
-                        moveOk = false;
-                        value = Integer.parseInt(s);
-                    }
-                }
-
-                if(moveOk)
-                    System.out.println("Try Again!");
-
-            } while(moveOk);
-
-            return value;
+            return viewClientConsolePrint.getValueForDie();
 
         }
         return null;

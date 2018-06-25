@@ -45,7 +45,7 @@ public abstract class ViewClient {
         return null;
     }
 
-    public ArrayList<Integer> getSinglePositionInPatternCard(){
+    public ArrayList<Integer> getSinglePositionInPatternCard(ArrayList<Integer> listOfAvailablePositions){
         return null;
     }
 

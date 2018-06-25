@@ -184,7 +184,7 @@ public class PatternCard {
             diagonalsCellList.add(k[1]);
         }
 
-        if( x+1 < 4 && y-1 >= 0 ) {
+        if( x+1 < 5 && y-1 >= 0 ) {
             k[2][0] = x + 1;
             k[2][1] = y - 1;
             diagonalsCellList.add(k[2]);
@@ -288,6 +288,42 @@ public class PatternCard {
 
     public boolean checkFirstMove(int x, int y){
         return x == 0 || x == 4 || y == 0 || y == 3;
+    }
+
+    public ArrayList<Integer> getAvailablePositions(int idDie) throws DiceContainerUnsupportedIdException {
+
+        Die d = null;
+        ArrayList<Integer> list = new ArrayList<>();
+
+        try {
+            d = diceContainer.getDie(idDie);
+        } catch (DiceContainerUnsupportedIdException e) {
+            e.printStackTrace();
+        }
+
+        for(int i = 0; i < 5; i++)
+            for(int j = 0; j < 4; j++)
+                if(!firstMove){
+                    if(cells[i][j].checkDieValidity(d.getRolledValue(), d.getColor(), false, false)
+                            && this.checkProximityCellsValidity(idDie, i, j) && this.checkDieInAdjacentCells(i,j) &&cells[i][j].isEmpty()) {
+                        list.add(i);
+                        list.add(j);
+                    }
+                }else if(checkFirstMove(i,j) && cells[i][j].checkDieValidity(d.getRolledValue(), d.getColor(), false, false)
+                        && cells[i][j].isEmpty()) {
+                    list.add(i);
+                    list.add(j);
+                }
+        return list;
+    }
+
+    public int getNumberOfDiceInThePatternCard(){
+        int count = 0;
+        for(int i = 0; i < 5; i++)
+            for(int j = 0; j < 4; j++)
+                if(!cells[i][j].isEmpty())
+                    count++;
+        return count;
     }
 
     private void updateDiceRepresentation() {

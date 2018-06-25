@@ -16,7 +16,7 @@ public interface ClientInterface extends Remote {
 
     public ArrayList<Integer> getPositionInPatternCard() throws RemoteException;
 
-    public ArrayList<Integer> getSinglePositionInPatternCard() throws RemoteException;
+    public ArrayList<Integer> getSinglePositionInPatternCard(ArrayList<Integer> listOfAvailablePositions) throws RemoteException;
 
     public Integer getValueForDie() throws RemoteException;
 

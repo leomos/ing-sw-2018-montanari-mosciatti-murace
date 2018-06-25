@@ -16,7 +16,7 @@ import java.rmi.server.UnicastRemoteObject;
 public class Client {
 
     public static void main(String[] args) {
-        int server = 1; //(new Random()).nextInt(2);
+        int server = 1;//(new Random()).nextInt(2);
         ViewClient viewClient = new ViewClientConsole();
         ServerInterface serverInterface = null;
         int id = 0;

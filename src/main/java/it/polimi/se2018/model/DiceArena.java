@@ -57,15 +57,15 @@ public class DiceArena {
                 arena.remove(i);
     }
 
-    public void rollOneDieIntoDiceArena(int idDie, int value){
+    public void rollOneDieIntoDiceArena(int positionInDiceArena, int actualIdDie, int value){
         try {
-            diceContainer.getDie(idDie).setRolledValue(value);
+            diceContainer.getDie(actualIdDie).setRolledValue(value);
         } catch (DieRolledValueOutOfBoundException e) {
             e.printStackTrace();
         } catch (DiceContainerUnsupportedIdException e) {
             e.printStackTrace();
         }
-        arena.add(idDie);
+        arena.add(positionInDiceArena, actualIdDie);
     }
 
     public void rerollDiceArena(RoundTrack roundTrack, Player player) throws RoundTrackNotInSecondPartOfRoundException, PlayerHasAlreadySetDieThisTurnException {
@@ -92,12 +92,8 @@ public class DiceArena {
      * @throws DieNotPresentException if dieIdToRemove is not present arena
      */
     public void swapDie(int dieIdToRemove, int dieIdToAdd) throws DieNotPresentException {
-        if(!arena.contains(dieIdToRemove)) throw new DieNotPresentException();
+        if(!(arena.contains(dieIdToRemove))) throw new DieNotPresentException();
         arena.set(arena.indexOf(dieIdToRemove), dieIdToAdd);
-    }
-
-    public void addOneDieToArena(int idDieToAdd){
-        arena.add(idDieToAdd);
     }
 
     private void updateRepresentation(){

@@ -3,6 +3,7 @@ package it.polimi.se2018.view.console;
 import it.polimi.se2018.model.events.*;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
@@ -24,7 +25,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
     private ModelChangedMessageTokensLeft tokensLeft;
 
-    private ArrayList<ModelChangedMessageRound> roundTrack = new ArrayList<ModelChangedMessageRound>(10);
+    private ArrayList<ModelChangedMessageRound> roundTrack = new ArrayList<ModelChangedMessageRound>();
 
     public ViewClientConsoleGame(int idClient){
         this.idClient = idClient;
@@ -64,7 +65,13 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
         else if(message instanceof ModelChangedMessageDiceArena)
             diceArena = ((ModelChangedMessageDiceArena)message);
         else if(message instanceof ModelChangedMessageRound) {
-            roundTrack.add(Integer.parseInt(((ModelChangedMessageRound) message).getIdRound()), (ModelChangedMessageRound) message);
+            int i = Integer.parseInt(((ModelChangedMessageRound) message).getIdRound());
+            if(i >= roundTrack.size())
+                roundTrack.add((ModelChangedMessageRound) message);
+            else {
+                roundTrack.remove(i);
+                roundTrack.add(i, (ModelChangedMessageRound) message);
+            }
         }
         else if(message instanceof ModelChangedMessageTokensLeft)
             if(((ModelChangedMessageTokensLeft) message).getIdPlayer().equals(Integer.toString(idClient)))
@@ -106,6 +113,225 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
         for (int i = 0; i < 3; i++)
             printToolCards(toolCards.get(i));
 
+        System.out.println("\n\n");
+
+    }
+
+    public ArrayList<Integer> getPositionInPatternCard(){
+        ArrayList<Integer> position = new ArrayList<Integer>();
+        boolean moveOk1, moveOk2;
+
+        do {
+            System.out.println("\nInsert Starting position on PatternCard separated by a space");
+
+            moveOk1 = true;
+            moveOk2 = true;
+
+            Scanner input = new Scanner(System.in);
+            String s = input.nextLine();
+
+            for(int i = 0; i < 5; i++) {
+                for (int j = 0; j < 4; j++) {
+                    String app = "" + i + " " + j;
+                    if (app.equals(s)) {
+                        moveOk1 = false;
+                        position.add(Integer.parseInt(s.split(" ")[0]));
+                        position.add(Integer.parseInt(s.split(" ")[1]));
+                    }
+                }
+            }
+
+            System.out.println("\nInsert Final position on PatternCard separated by a space");
+
+            input = new Scanner(System.in);
+            s = input.nextLine();
+
+            for(int i = 0; i < 5; i++) {
+                for (int j = 0; j < 4; j++) {
+                    String app = "" + i + " " + j;
+                    if (app.equals(s)) {
+                        moveOk2 = false;
+                        position.add(Integer.parseInt(s.split(" ")[0]));
+                        position.add(Integer.parseInt(s.split(" ")[1]));
+                    }
+                }
+            }
+
+            if(moveOk1 || moveOk2)
+                System.out.println("Try Again!");
+        }
+        while(moveOk1 || moveOk2);
+
+        return position;
+    }
+
+    public ArrayList<Integer> getSinglePositionInPatternCard(ArrayList<Integer> listOfAvailablePositions){
+        boolean moveOk = true;
+        ArrayList<Integer> position = new ArrayList<Integer>();
+
+        do {
+
+
+            System.out.println("\nInsert x and y separated by space");
+            if(listOfAvailablePositions.size() != 0)
+                System.out.println("The position must be one of the following" + listOfAvailablePositions);
+            Scanner input = new Scanner(System.in);
+            String s = input.nextLine();
+            String[] parts = s.split(" ");
+
+            for (int i = 0; i < 5; i++) {
+                for (int j = 0; j < 4; j++) {
+                    String app = "" + i + " " + j;
+                    if (app.equals(s)) {
+                        moveOk = false;
+                        position.clear();
+                        position.add(Integer.parseInt(s.split(" ")[0]));
+                        position.add(Integer.parseInt(s.split(" ")[1]));
+                    }
+                }
+            }
+
+            if(listOfAvailablePositions.size() != 0) {
+                for (int i = 0; i < listOfAvailablePositions.size(); i = i + 2)
+                    if (listOfAvailablePositions.get(i).equals(position.get(0)) && listOfAvailablePositions.get(i + 1).equals(position.get(1)))
+                        return position;
+
+
+            }
+
+            if (moveOk)
+                System.out.println("Try again!");
+
+        } while (moveOk  || listOfAvailablePositions.size() != 0);
+
+        return position;
+    }
+
+    public ArrayList<Integer> getIncrementedValue() {
+
+        ArrayList<Integer> dieAndDecision = new ArrayList<Integer>();
+        boolean moveOk1, moveOk2;
+
+        do {
+            moveOk1 = true;
+            moveOk2 = true;
+
+            System.out.println("\nInsert idDie from DiceArena to change followed by 1 to increment value itss value or by 0 to decrement");
+            Scanner input = new Scanner(System.in);
+            String s = input.nextLine();
+            String[] parts = s.split(" ");
+
+            if(parts.length == 2) {
+                for (int i = 0; i < 90; i++)
+                    if (parts[0].equals(Integer.toString(i)))
+                        moveOk1 = false;
+
+                if (parts[1].equals("1") || parts[1].equals("0"))
+                    moveOk2 = false;
+            }
+
+            if(moveOk1 || moveOk2){
+                System.out.println("Try again!");
+            } else {
+                dieAndDecision.add(Integer.parseInt(parts[0]));
+                dieAndDecision.add(Integer.parseInt(parts[1]));
+            }
+
+
+
+        }
+        while(moveOk1 || moveOk2);
+
+        return dieAndDecision;
+
+    }
+
+    public Integer getDieFromDiceArena(){
+
+        boolean moveOk;
+        int idDie = -1;
+
+        do{
+            moveOk = true;
+
+            System.out.println("\nInsert idDie from DiceArena to use");
+            Scanner input = new Scanner(System.in);
+            String s = input.nextLine();
+
+            for(int i = 0; i < 90; i++){
+                if(s.equals(Integer.toString(i))) {
+                    moveOk = false;
+                    idDie = Integer.parseInt(s);
+                }
+            }
+
+            if(moveOk)
+                System.out.println("Try Again!");
+
+        } while(moveOk);
+
+        return idDie;
+
+
+    }
+
+    public Integer getDieFromRoundTrack(){
+        boolean moveOk;
+        int idDie = -1;
+
+        do{
+            moveOk = true;
+
+            System.out.println("\nInsert idDie from RoundTruck to use");
+            Scanner input = new Scanner(System.in);
+            String s = input.nextLine();
+
+            for(int i = 0; i < 90; i++){
+                if(s.equals(Integer.toString(i))) {
+                    moveOk = false;
+                    idDie = Integer.parseInt(s);
+                }
+            }
+
+            if(moveOk)
+                System.out.println("Try Again!");
+
+        } while(moveOk);
+
+        return idDie;
+
+    }
+
+    public Integer getValueForDie(){
+        boolean moveOk;
+        int value = -1;
+
+        do{
+            moveOk = true;
+
+            System.out.println("\nInsert value to assign to Die");
+            Scanner input = new Scanner(System.in);
+            String s = input.nextLine();
+
+            for(int i = 1; i < 7; i++){
+                if(s.equals(Integer.toString(i))) {
+                    moveOk = false;
+                    value = Integer.parseInt(s);
+                }
+            }
+
+            if(moveOk)
+                System.out.println("Try Again!");
+
+        } while(moveOk);
+
+        return value;
+
+    }
+
+    @Override
+    public Integer askForPatternCard() {
+        return null;
     }
 
 

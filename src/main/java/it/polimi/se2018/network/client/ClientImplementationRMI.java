@@ -56,8 +56,8 @@ public class ClientImplementationRMI implements ClientInterface {
     }
 
     @Override
-    public ArrayList<Integer> getSinglePositionInPatternCard() throws RemoteException {
-        return viewClient.getSinglePositionInPatternCard();
+    public ArrayList<Integer> getSinglePositionInPatternCard(ArrayList<Integer> listOfAvailablePositions) throws RemoteException {
+        return viewClient.getSinglePositionInPatternCard(listOfAvailablePositions);
     }
 
     public void block() throws RemoteException {

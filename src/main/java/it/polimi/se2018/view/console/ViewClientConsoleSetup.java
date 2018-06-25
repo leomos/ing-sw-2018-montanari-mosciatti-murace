@@ -41,5 +41,59 @@ public class ViewClientConsoleSetup extends ViewClientConsolePrint {
 
         }
 
+    public Integer askForPatternCard()  {
+        Scanner input = new Scanner(System.in);
+        boolean moveOk = true;
+        do {
+            System.out.println("\nChoose a PatternCard by selecting one of the PatternCardId");
+
+            String s = input.nextLine();
+
+            for(int i = 0; i < 24; i++){
+                String app = "" + i;
+                if(app.equals(s)) {
+                    moveOk = false;
+                    return Integer.parseInt(app);
+                }
+            }
+
+            if(moveOk)
+                System.out.println("Try Again!");
+        }
+        while(moveOk);
+
+        return null;
+    }
+
+    @Override
+    public ArrayList<Integer> getPositionInPatternCard() {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Integer> getSinglePositionInPatternCard(ArrayList<Integer> listOfAvailablePositions) {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Integer> getIncrementedValue() {
+        return null;
+    }
+
+    @Override
+    public Integer getDieFromDiceArena() {
+        return null;
+    }
+
+    @Override
+    public Integer getDieFromRoundTrack() {
+        return null;
+    }
+
+    @Override
+    public Integer getValueForDie() {
+        return null;
+    }
+
 
 }

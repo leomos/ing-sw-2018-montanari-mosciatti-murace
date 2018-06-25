@@ -157,7 +157,7 @@ public class Round {
     public void swapDie(int dieIdToRemove, int dieIdToAdd) {
         for (int i = 0; i < rolledDiceLeft.size(); i++) {
             if(dieIdToRemove == rolledDiceLeft.get(i)) {
-                rolledDiceLeft.add(i, dieIdToAdd);
+                rolledDiceLeft.set(i, dieIdToAdd);
                 return;
             }
         }
@@ -170,7 +170,6 @@ public class Round {
      */
     public boolean isDiePresentInDiceLeft(int idDie) {
         for (int id : rolledDiceLeft) {
-            System.out.println(id);
             if(id == idDie) return true;
         }
         return false;

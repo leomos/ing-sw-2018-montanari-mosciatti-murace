@@ -2,6 +2,8 @@ package it.polimi.se2018.view.console;
 
 import it.polimi.se2018.model.events.*;
 
+import java.util.ArrayList;
+
 public abstract class ViewClientConsolePrint {
 
     protected String printColor(char dieColor) {
@@ -185,5 +187,20 @@ public abstract class ViewClientConsolePrint {
     public abstract void update(ModelChangedMessage message);
 
     public abstract void print();
+
+    public abstract Integer askForPatternCard();
+
+    public abstract ArrayList<Integer> getPositionInPatternCard();
+
+    public abstract ArrayList<Integer> getSinglePositionInPatternCard(ArrayList<Integer> listOfAvailablePositions);
+
+    public abstract ArrayList<Integer> getIncrementedValue();
+
+    public abstract Integer getDieFromDiceArena();
+
+    public abstract Integer getDieFromRoundTrack();
+
+    public abstract Integer getValueForDie();
+
 
 }
