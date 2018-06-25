@@ -37,7 +37,6 @@ public class ViewClientConsole extends ViewClient implements Runnable {
             if(((ModelChangedMessageMoveFailed) message).getPlayer().equals(Integer.toString(idClient))) {
                 System.out.println(((ModelChangedMessageMoveFailed) message).getErrorMessage());
                 System.out.println("\n\nTry again");
-                System.out.println("/help: get List of moves");
             }
         } else if(message instanceof ModelChangedMessageNewEvent){
             if(((ModelChangedMessageNewEvent) message).getPlayer().equals(Integer.toString(idClient))){

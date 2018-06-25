@@ -513,6 +513,28 @@ public class Model extends Observable<ModelChangedMessage> {
 
     }
 
+    public boolean checkMovementPossibility(int idPlayer) {
+
+        if (table.getPlayers(idPlayer).getChosenPatternCard().getNumberOfDiceInThePatternCard() > 1)
+            return true;
+        else{
+            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "You need at least 2 dice on the pattern card to perform a die movement"));
+            return false;
+        }
+
+    }
+
+    public boolean checkEnoughDiceInDiceBag(int idPlayer){
+
+        if(table.getDiceContainer().getUnrolledDice().size() != 0)
+            return true;
+        else{
+            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "There are no more dice in the dice bag"));
+            return false;
+        }
+
+    }
+
     private void updateToolCard(int idPlayer, int idToolCard){
 
         int actualIdToolCard = idToolCard - 1;

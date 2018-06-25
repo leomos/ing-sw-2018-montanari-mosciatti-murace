@@ -184,7 +184,7 @@ public class PatternCard {
             diagonalsCellList.add(k[1]);
         }
 
-        if( x+1 < 4 && y-1 >= 0 ) {
+        if( x+1 < 5 && y-1 >= 0 ) {
             k[2][0] = x + 1;
             k[2][1] = y - 1;
             diagonalsCellList.add(k[2]);
@@ -315,6 +315,15 @@ public class PatternCard {
                     list.add(j);
                 }
         return list;
+    }
+
+    public int getNumberOfDiceInThePatternCard(){
+        int count = 0;
+        for(int i = 0; i < 5; i++)
+            for(int j = 0; j < 4; j++)
+                if(!cells[i][j].isEmpty())
+                    count++;
+        return count;
     }
 
     private void updateDiceRepresentation() {

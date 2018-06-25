@@ -138,7 +138,7 @@ public class Table {
         //TO FORCE A PATTERNCARD FOR TESTS
         toolCardsList.add(0,10);
         toolCardsList.add(1,5);
-        toolCardsList.add(1,11);
+        toolCardsList.add(1,8);
 
 
         for(int j = 0; j < 3; j++)
