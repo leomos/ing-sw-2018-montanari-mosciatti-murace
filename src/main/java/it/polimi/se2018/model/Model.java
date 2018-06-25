@@ -177,7 +177,10 @@ public class Model extends Observable<ModelChangedMessage> {
             try {
                 table.getRoundTrack().startNextRound();
             } catch (RoundTrackNoMoreRoundsException e) {
-                //TODO: here what to do once the rounds finish
+                table.calculateScores();
+
+                notify(new ModelChangedMessageRefresh(GamePhase.ENDGAMEPHASE, null));
+                notify(new ModelChangedMessageEndGame(table.getScoreboard().getRepresentation()));
             }
         }
         table.getPlayers(playerMessageEndTurn.getPlayer()).setHasSetDieThisTurn(false);

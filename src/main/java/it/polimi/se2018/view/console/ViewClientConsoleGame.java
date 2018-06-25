@@ -216,7 +216,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
             moveOk1 = true;
             moveOk2 = true;
 
-            System.out.println("\nInsert idDie from DiceArena to change followed by 1 to increment value itss value or by 0 to decrement");
+            System.out.println("\nInsert idDie from DiceArena to change followed by 1 to increase value its value or by 0 to decrease");
             Scanner input = new Scanner(System.in);
             String s = input.nextLine();
             String[] parts = s.split(" ");

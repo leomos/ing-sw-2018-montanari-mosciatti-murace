@@ -175,16 +175,24 @@ public class Table {
         }
     }
 
-    private void calculateScores() throws DiceContainerUnsupportedIdException {
-        Scoreboard scoreboard = new Scoreboard(roundTrack.getCurrentRound().getIdPlayerPlaying());
-        for(int i = 0; i < players.size(); i++){
+    public void calculateScores() {
+        this.scoreboard = new Scoreboard(roundTrack.getCurrentRound().getIdPlayerPlaying());
+        for (Player player : players) {
             int result = 0;
-            PatternCard patternCard = players.get(i).getChosenPatternCard();
-            for(int j = 0; j < 3; j++)
-                result = result + publicObjectives.get(j).calculateScore(patternCard);
-            result = result + players.get(i).getPrivateObjective().calculateScore(patternCard);
+            PatternCard patternCard = player.getChosenPatternCard();
 
-            scoreboard.setScore(players.get(i).getId(), result, players.get(i).getTokens());
+            for(int j = 0; j < 3; j++)
+                result += publicObjectives.get(j).calculateScore(patternCard);
+
+            try {
+                result += player.getPrivateObjective().calculateScore(patternCard);
+            } catch (DiceContainerUnsupportedIdException e) {
+                e.printStackTrace();
+            }
+
+            result += player.getTokens() + patternCard.getNumberOfDiceInThePatternCard() - 20;
+
+            scoreboard.setScore(player.getId(), result, player.getTokens());
         }
     }
 }
