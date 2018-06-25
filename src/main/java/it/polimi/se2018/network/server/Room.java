@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
-public class Room {
+public class Room extends Thread {
 
     private Model model;
 
@@ -24,8 +24,8 @@ public class Room {
 
     private Set<ConnectedClient> players;
 
-
-    public void start() {
+    @Override
+    public void run() {
         //while(gamePlaying) {
             HashMap<Integer, String> clientsMap = createClientsMap();
             model = new Model(clientsMap);
@@ -56,10 +56,6 @@ public class Room {
 
             //start rounds
         //}
-    }
-
-    public void stop() {
-
     }
 
     public void addPlayers(Set<ConnectedClient> players) {
