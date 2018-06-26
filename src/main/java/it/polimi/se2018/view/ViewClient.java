@@ -57,9 +57,9 @@ public abstract class ViewClient {
         return null;
     }
 
-    public void block() {return;}
+    public Boolean block() {return true;}
 
-    public void free() {return;}
+    public Boolean free() {return true;}
 
     public void startHeartbeating(int id) {
         task = () -> {

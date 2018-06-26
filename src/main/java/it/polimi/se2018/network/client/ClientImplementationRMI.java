@@ -60,11 +60,11 @@ public class ClientImplementationRMI implements ClientInterface {
         return viewClient.getSinglePositionInPatternCard(listOfAvailablePositions);
     }
 
-    public void block() throws RemoteException {
-        viewClient.block();
+    public Boolean block() throws RemoteException {
+        return viewClient.block();
     }
 
-    public void free() throws RemoteException {
-        viewClient.free();
+    public Boolean free() throws RemoteException {
+        return viewClient.free();
     }
 }

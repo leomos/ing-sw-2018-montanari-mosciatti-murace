@@ -182,18 +182,20 @@ public class ViewClientConsole extends ViewClient implements Runnable {
 
     }
 
-    public void block(){
+    public Boolean block(){
         if(idPlayerPlaying == idClient)
             canIPlay = false;
+        return true;
     }
 
-    public void free(){
+    public Boolean free(){
         if (idPlayerPlaying == idClient)
             canIPlay = true;
         if(idPlayerPlaying == idClient && canIPlay) {
             System.out.println("It's your turn");
             System.out.println("/help: get List of moves");
         }
+        return true;
     }
 
     public ArrayList<Integer> getPositionInPatternCard(){
