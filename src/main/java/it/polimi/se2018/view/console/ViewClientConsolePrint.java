@@ -65,7 +65,7 @@ public abstract class ViewClientConsolePrint {
         int n = 0, m = 0;
         String s = "";
 
-        System.out.print("ID Player " + idPlayer + "\n");
+        System.out.print("ID player " + idPlayer + "\n");
         System.out.println("Name\t" + messagePatternCard.getName() + "\tDifficulty\t" + messagePatternCard.getDifficulty());
         System.out.print(ANSI_GREY + "   |" + ANSI_RESET);
         for (int i=0; i<5; i++) {

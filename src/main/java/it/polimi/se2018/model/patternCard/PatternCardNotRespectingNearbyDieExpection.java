@@ -1,4 +1,4 @@
-package it.polimi.se2018.model;
+package it.polimi.se2018.model.patternCard;
 
 public class PatternCardNotRespectingNearbyDieExpection extends Exception {
 }

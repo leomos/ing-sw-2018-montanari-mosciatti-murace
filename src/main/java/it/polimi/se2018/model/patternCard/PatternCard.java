@@ -1,4 +1,4 @@
-package it.polimi.se2018.model;
+package it.polimi.se2018.model.patternCard;
 
 import it.polimi.se2018.model.container.DiceContainer;
 import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;

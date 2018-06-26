@@ -1,11 +1,15 @@
 package it.polimi.se2018.model;
 
+import it.polimi.se2018.model.player.Player;
+import it.polimi.se2018.model.player.PlayerHasAlreadySetDieThisTurnException;
+import it.polimi.se2018.model.player.PlayerHasNotSetDieThisTurnException;
 import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.container.Die;
 import it.polimi.se2018.model.container.DieRolledValueOutOfBoundException;
 import it.polimi.se2018.model.events.*;
 import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.objectives.PublicObjective;
+import it.polimi.se2018.model.patternCard.*;
 import it.polimi.se2018.model.rounds.*;
 import it.polimi.se2018.model.toolcards.ToolCard;
 import it.polimi.se2018.model.toolcards.ToolCardContainer;

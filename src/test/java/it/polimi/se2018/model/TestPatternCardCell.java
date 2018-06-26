@@ -3,6 +3,8 @@ package it.polimi.se2018.model;
 import it.polimi.se2018.model.container.DiceContainer;
 import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.container.DieRolledValueOutOfBoundException;
+import it.polimi.se2018.model.patternCard.CellIsEmptyException;
+import it.polimi.se2018.model.patternCard.PatternCardCell;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

@@ -2,6 +2,7 @@ package it.polimi.se2018.model;
 
 import it.polimi.se2018.model.container.DiceContainer;
 import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
+import it.polimi.se2018.model.rounds.DieNotPresentException;
 import org.junit.Before;
 import org.junit.Test;
 

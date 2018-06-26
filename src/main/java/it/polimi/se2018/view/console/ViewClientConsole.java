@@ -168,7 +168,7 @@ public class ViewClientConsole extends ViewClient implements Runnable {
 
 
                             } else {
-                                System.out.println("\n\nIt's Player  " + idPlayerPlaying + " turn, not yours");
+                                System.out.println("\n\nIt's player  " + idPlayerPlaying + " turn, not yours");
                             }
                         }
                         while (moveOk);

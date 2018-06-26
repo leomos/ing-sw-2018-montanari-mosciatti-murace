@@ -1,6 +1,6 @@
 package it.polimi.se2018.model.objectives;
 
-import it.polimi.se2018.model.PatternCard;
+import it.polimi.se2018.model.patternCard.PatternCard;
 import it.polimi.se2018.model.container.DiceContainer;
 import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.container.DieRolledValueOutOfBoundException;

@@ -1,6 +1,6 @@
 package it.polimi.se2018.utils;
 
-import it.polimi.se2018.model.PatternCard;
+import it.polimi.se2018.model.patternCard.PatternCard;
 import it.polimi.se2018.model.container.DiceContainer;
 import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.toolcards.ToolCard;
@@ -13,7 +13,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Scanner;
 

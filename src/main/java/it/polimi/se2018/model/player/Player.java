@@ -1,7 +1,8 @@
-package it.polimi.se2018.model;
+package it.polimi.se2018.model.player;
 
 import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.objectives.PrivateObjective;
+import it.polimi.se2018.model.patternCard.*;
 
 import java.util.ArrayList;
 

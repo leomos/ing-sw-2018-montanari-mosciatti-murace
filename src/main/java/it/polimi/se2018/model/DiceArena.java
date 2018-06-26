@@ -1,9 +1,12 @@
 package it.polimi.se2018.model;
 
+import it.polimi.se2018.model.player.Player;
+import it.polimi.se2018.model.player.PlayerHasAlreadySetDieThisTurnException;
 import it.polimi.se2018.model.container.DiceContainer;
 import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.container.Die;
 import it.polimi.se2018.model.container.DieRolledValueOutOfBoundException;
+import it.polimi.se2018.model.rounds.DieNotPresentException;
 import it.polimi.se2018.model.rounds.RoundTrack;
 import it.polimi.se2018.model.rounds.RoundTrackNotInSecondPartOfRoundException;
 

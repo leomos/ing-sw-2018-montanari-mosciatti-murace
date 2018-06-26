@@ -1,9 +1,8 @@
 package it.polimi.se2018.model.rounds;
 
 
-import it.polimi.se2018.model.DieNotPresentException;
-import it.polimi.se2018.model.Player;
-import it.polimi.se2018.model.PlayerHasNotSetDieThisTurnException;
+import it.polimi.se2018.model.player.Player;
+import it.polimi.se2018.model.player.PlayerHasNotSetDieThisTurnException;
 import it.polimi.se2018.model.container.DiceContainer;
 import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.container.Die;

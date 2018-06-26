@@ -1,8 +1,10 @@
 package it.polimi.se2018.model;
 
+import it.polimi.se2018.model.player.Player;
 import it.polimi.se2018.model.container.DiceContainer;
 import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.objectives.*;
+import it.polimi.se2018.model.patternCard.PatternCard;
 import it.polimi.se2018.model.rounds.RoundTrack;
 import it.polimi.se2018.model.rounds.RoundTrackNoMoreRoundsException;
 import it.polimi.se2018.model.toolcards.ToolCardContainer;
