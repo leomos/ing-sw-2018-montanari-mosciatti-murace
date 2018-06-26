@@ -270,10 +270,12 @@ public class Model extends Observable<ModelChangedMessage> {
     public void moveDieInsidePatternCard(int idPlayer, ArrayList<Integer> positions, boolean ignoreValueConstraint, boolean ignoreColorConstraint, int idToolCard){
 
         try {
+
             performMoveDieInsidePatternCard(idPlayer, positions.get(0), positions.get(1), positions.get(2), positions.get(3), ignoreValueConstraint, ignoreColorConstraint);
 
             updateToolCard(idPlayer, idToolCard);
             notify(new ModelChangedMessageRefresh(gamePhase, Integer.toString(idPlayer)));
+
 
         } catch (PatternCardMoveFailedException e) {
             //
@@ -290,7 +292,6 @@ public class Model extends Observable<ModelChangedMessage> {
                 performMoveDieInsidePatternCard(idPlayer, positions2.get(0), positions2.get(1), positions2.get(2), positions2.get(3), false, false);
 
                 updateToolCard(idPlayer, idToolCard);
-
                 notify(new ModelChangedMessageRefresh(gamePhase, Integer.toString(idPlayer)));
 
             } catch (PatternCardMoveFailedException e){
@@ -320,18 +321,21 @@ public class Model extends Observable<ModelChangedMessage> {
                                          boolean ignoreValueConstraint,
                                          boolean ignoreColorConstraint) throws PatternCardMoveFailedException {
 
-       if(x_i != x_f || y_i != y_f) {
+
+        if(x_i != x_f || y_i != y_f) {
 
            Player currentPlayer = this.table.getPlayers(idPlayer);
            PatternCard patternCard = currentPlayer.getChosenPatternCard();
            int idDie = patternCard.getPatternCardCell(x_i, y_i).getRolledDieId();
 
            try{
+               boolean moveFailed = true;
                patternCard.getPatternCardCell(x_i, y_i).removeDie();
 
-               boolean moveFailed = true;
+
 
                try{
+
 
                    patternCard.setDieInPatternCard(idDie, x_f, y_f, ignoreValueConstraint, ignoreColorConstraint, false);
                    moveFailed = false;
@@ -367,8 +371,11 @@ public class Model extends Observable<ModelChangedMessage> {
            } catch (CellIsEmptyException e) {
                notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Starting cell is empty"));
            }
-       } else
-           notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Initial and final positions must be different!"));
+        } else {
+            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Initial and final positions must be different!"));
+            throw new PatternCardMoveFailedException();
+        }
+
     }
 
     public void turnDieAround(int idPlayer, int idDie, int idToolCard) {

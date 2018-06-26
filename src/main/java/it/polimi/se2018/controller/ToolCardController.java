@@ -108,6 +108,7 @@ public class ToolCardController{
                 }
 
             } else if(idToolCard == 12){
+
                 if(model.checkMovementPossibility(idPlayer)) {
 
                     ArrayList<Integer> positions = view.getDoublePositionInPatternCard(idPlayer);

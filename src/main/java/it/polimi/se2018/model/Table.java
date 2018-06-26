@@ -129,8 +129,7 @@ public class Table {
     private void setToolCards(){
         ArrayList<Integer> toolCardsList = new ArrayList<>();
         for (Integer i = 0; i < 12; i++)
-            if(i != 4)
-                toolCardsList.add(i);
+            toolCardsList.add(i);
 
         Collections.shuffle(toolCardsList);
 
