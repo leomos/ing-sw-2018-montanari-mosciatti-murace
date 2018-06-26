@@ -52,7 +52,7 @@ public class ToolCardController{
 
             } else if (idToolCard == 5) {
 
-                if(model.checkRoundIsPastSecond(idPlayer)) {
+                if(model.checkRoundIsPastSecond(idPlayer) && model.checkPlayerCanPlaceDie(idPlayer)) {
 
                     Integer idDieDiceArena = view.getDieFromDiceArena(idPlayer);
                     ArrayList<Integer> idDieRoundTrack = view.getDieFromRoundTrack(idPlayer);
@@ -61,15 +61,18 @@ public class ToolCardController{
                 }
             } else if(idToolCard == 6) {
 
-                Integer idDie = view.getDieFromDiceArena(idPlayer);
+                if(model.checkPlayerCanPlaceDie(idPlayer)) {
 
-                model.rollDieAgain(idPlayer, idDie, idToolCard);
-                ArrayList<Integer> list = model.checkAvailablePositions(idPlayer, idDie);
+                    Integer idDie = view.getDieFromDiceArena(idPlayer);
 
-                if(list.size() != 0) {
-                    ArrayList<Integer> position = view.getSinglePositionInPatternCard(idPlayer, list);
+                    model.rollDieAgain(idPlayer, idDie, idToolCard);
+                    ArrayList<Integer> list = model.checkAvailablePositions(idPlayer, idDie);
 
-                    model.setDieInPatternCardFromDiceArena(idPlayer, idDie, position.get(0), position.get(1), false, idToolCard);
+                    if (list.size() != 0) {
+                        ArrayList<Integer> position = view.getSinglePositionInPatternCard(idPlayer, list);
+
+                        model.setDieInPatternCardFromDiceArena(idPlayer, idDie, position.get(0), position.get(1), false, idToolCard);
+                    }
                 }
             } else if (idToolCard == 7) {
 
@@ -81,18 +84,19 @@ public class ToolCardController{
 
             } else if(idToolCard == 9) {
 
-                Integer idDie = view.getDieFromDiceArena(idPlayer);
-                ArrayList<Integer> positions = view.getSinglePositionInPatternCard(idPlayer, new ArrayList<Integer>());
+                if(model.checkPlayerCanPlaceDie(idPlayer)) {
+                    Integer idDie = view.getDieFromDiceArena(idPlayer);
+                    ArrayList<Integer> positions = view.getSinglePositionInPatternCard(idPlayer, new ArrayList<Integer>());
 
-                model.setDieInPatternCardFromDiceArena(idPlayer, idDie, positions.get(0), positions.get(1), true, idToolCard);
-
+                    model.setDieInPatternCardFromDiceArena(idPlayer, idDie, positions.get(0), positions.get(1), true, idToolCard);
+                }
             }else if(idToolCard == 10){
 
                 int dieToTurn = view.getDieFromDiceArena(idPlayer);
                 model.turnDieAround(idPlayer, dieToTurn ,idToolCard);
             } else if(idToolCard == 11){
 
-                if(model.checkEnoughDiceInDiceBag(idPlayer)) {
+                if(model.checkEnoughDiceInDiceBag(idPlayer) && model.checkPlayerCanPlaceDie(idPlayer)) {
 
                     int idDie = view.getDieFromDiceArena(idPlayer);
                     int newIdDie = model.swapDieWithDieFromDiceBag(idPlayer, idDie);

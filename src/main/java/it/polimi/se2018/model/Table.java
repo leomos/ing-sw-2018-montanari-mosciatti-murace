@@ -1,10 +1,9 @@
 package it.polimi.se2018.model;
 
-import it.polimi.se2018.model.player.Player;
 import it.polimi.se2018.model.container.DiceContainer;
-import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.objectives.*;
 import it.polimi.se2018.model.patternCard.PatternCard;
+import it.polimi.se2018.model.player.Player;
 import it.polimi.se2018.model.rounds.RoundTrack;
 import it.polimi.se2018.model.rounds.RoundTrackNoMoreRoundsException;
 import it.polimi.se2018.model.toolcards.ToolCardContainer;
@@ -136,9 +135,9 @@ public class Table {
         Collections.shuffle(toolCardsList);
 
         //TO FORCE A PATTERNCARD FOR TESTS
-        toolCardsList.add(0,10);
+        /*toolCardsList.add(0,10);
         toolCardsList.add(1,3);
-        toolCardsList.add(2,11);
+        toolCardsList.add(2,11);*/
 
 
         for(int j = 0; j < 3; j++)
@@ -184,13 +183,18 @@ public class Table {
             for(int j = 0; j < 3; j++)
                 result += publicObjectives.get(j).calculateScore(patternCard);
 
-            try {
-                result += player.getPrivateObjective().calculateScore(patternCard);
-            } catch (DiceContainerUnsupportedIdException e) {
-                e.printStackTrace();
-            }
 
-            result += player.getTokens() + patternCard.getNumberOfDiceInThePatternCard() - 20;
+            result += player.getPrivateObjective().calculateScore(patternCard);
+
+            result = result + player.getTokens() + patternCard.getNumberOfDiceInThePatternCard() - 20;
+
+
+            //todo: cancella questi
+            System.out.println("Punti di private -> " + player.getPrivateObjective().calculateScore(patternCard));
+            System.out.println("Punti di public1 -> " + publicObjectives.get(0).calculateScore(patternCard));
+            System.out.println("Punti di public2 -> " + publicObjectives.get(1).calculateScore(patternCard));
+            System.out.println("Punti di public3 -> " + publicObjectives.get(2).calculateScore(patternCard));
+
 
             scoreboard.setScore(player.getId(), result, player.getTokens());
         }

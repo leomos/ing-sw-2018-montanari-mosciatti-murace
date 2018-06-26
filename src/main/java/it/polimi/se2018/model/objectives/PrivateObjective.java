@@ -57,13 +57,18 @@ public class PrivateObjective implements Objective {
      * @return PatternCard score at the end of the game based on private objective of card
      * @throws DiceContainerUnsupportedIdException if die's id is not valid
      */
-    public int calculateScore (PatternCard patternCard) throws DiceContainerUnsupportedIdException {
+    public int calculateScore (PatternCard patternCard) {
         int result=0;
 
         for (int x=0; x<5; x++) {
             for (int y=0; y<4; y++) {
                 if(!patternCard.getPatternCardCell(x,y).isEmpty()) {
-                    Die d = diceContainer.getDie(patternCard.getPatternCardCell(x, y).getRolledDieId());
+                    Die d = null;
+                    try {
+                        d = diceContainer.getDie(patternCard.getPatternCardCell(x, y).getRolledDieId());
+                    } catch (DiceContainerUnsupportedIdException e) {
+                        e.printStackTrace();
+                    }
                     if (this.color.equals(d.getColor()))
                         result = result + d.getRolledValue();
                 }

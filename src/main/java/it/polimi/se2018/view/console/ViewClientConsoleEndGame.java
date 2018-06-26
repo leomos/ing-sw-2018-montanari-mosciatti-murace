@@ -31,14 +31,13 @@ public class ViewClientConsoleEndGame extends ViewClientConsolePrint {
 
         String scoreboard = scoreboardMessage.getScoreboard();
 
-        System.out.println(scoreboard);
-
-        for(int i = 0; i < scoreboard.length(); i+=5){
-
-
+        for(int i = 0; i < scoreboard.length(); i+=5)
             System.out.println(((i/5)+1) + "° place ->" + scoreboard.charAt(i) + " with " + scoreboard.substring(i+1, i+4) + "\tTokens Left: " + scoreboard.charAt(i+4));
 
-        }
+        if(scoreboard.charAt(0) == idClient)
+            System.out.println("CONGRATS, YOU WON");
+        else
+            System.out.println("CONGRATS, YOU LOSE");
 
     }
 

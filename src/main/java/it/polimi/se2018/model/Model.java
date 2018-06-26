@@ -591,6 +591,17 @@ public class Model extends Observable<ModelChangedMessage> {
 
     }
 
+    public boolean checkPlayerCanPlaceDie(int idPlayer){
+
+        if(!table.getPlayers(idPlayer).hasSetDieThisTurn())
+            return true;
+        else {
+            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "You have already placed a Die this turn"));
+            return false;
+        }
+
+    }
+
     public boolean checkRoundIsPastSecond(int idPlayer){
 
         if(table.getRoundTrack().getCurrentRound().getId() > 0)
