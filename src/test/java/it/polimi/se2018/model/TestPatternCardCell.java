@@ -42,7 +42,7 @@ public class TestPatternCardCell {
         assertEquals(3, patternCardCell.getRolledDieId());
     }
 
-    @Test
+    /*@Test
     public void setRolledDieId_FirstParamAs6SecondParamAsFalseThirdParamAsFalse_getRolledDieIDShouldBeNegativeOne() {
         try {
             diceContainer.getDie(3).setRolledValue(6);
@@ -53,7 +53,7 @@ public class TestPatternCardCell {
             fail();
         }
         assertEquals(-1, patternCardCell.getRolledDieId());
-    }
+    }*/
 
     @Test
     public void setRolledDieId_FirstParamAs6SecondParamAsFalseThirdParamAsFalse_getRolledDieIDShouldBe5() {
