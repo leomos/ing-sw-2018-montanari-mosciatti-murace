@@ -122,13 +122,13 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
     }
 
     @Override
-    public void block() throws RemoteException {
-        waitForMethodCallResponse("block");
+    public Boolean block() throws RemoteException {
+        return (Boolean) waitForMethodCallResponse("block");
     }
 
     @Override
-    public void free() throws RemoteException {
-        waitForMethodCallResponse("free");
+    public Boolean free() throws RemoteException {
+        return (Boolean) waitForMethodCallResponse("free");
     }
 
 

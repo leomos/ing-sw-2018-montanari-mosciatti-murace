@@ -39,6 +39,14 @@ public class MessageVisitorImplementationServer implements MessageVisitorInterfa
                 answer = new MethodCallMessage(methodCallMessage.getMethodName(),
                         serverImplementationSocket.getViewClient().askForPatternCard());
                 break;
+            case "block":
+                answer = new MethodCallMessage(methodCallMessage.getMethodName(),
+                        serverImplementationSocket.getViewClient().block());
+                break;
+            case "free":
+                answer = new MethodCallMessage(methodCallMessage.getMethodName(),
+                        serverImplementationSocket.getViewClient().free());
+                break;
             default:
                 /* TODO: send a WrongMethodException? */
                 answer = null;

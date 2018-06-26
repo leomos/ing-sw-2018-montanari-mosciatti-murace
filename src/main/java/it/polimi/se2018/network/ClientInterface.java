@@ -26,7 +26,7 @@ public interface ClientInterface extends Remote {
 
     public Integer getDieFromPatternCard() throws RemoteException;
 
-    public void block() throws RemoteException;
+    public Boolean block() throws RemoteException;
 
-    public void free() throws RemoteException;
+    public Boolean free() throws RemoteException;
 }

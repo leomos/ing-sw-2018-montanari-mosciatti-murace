@@ -97,6 +97,11 @@ public class ViewClientConsole extends ViewClient implements Runnable {
 
                 while (c) {
 
+                    try {
+                        TimeUnit.SECONDS.sleep(3);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     if(canIPlay) {
                         boolean moveOk;
                         do {
@@ -184,21 +189,20 @@ public class ViewClientConsole extends ViewClient implements Runnable {
 
     }
 
-    @Override
-    public void block(){
-        System.out.println("arriva al block?");
+    public Boolean block(){
         if(idPlayerPlaying == idClient)
             canIPlay = false;
+        return true;
     }
 
-    @Override
-    public void free(){
+    public Boolean free(){
         if (idPlayerPlaying == idClient)
             canIPlay = true;
         if(idPlayerPlaying == idClient && canIPlay) {
             System.out.println("It's your turn");
             System.out.println("/help: get List of moves");
         }
+        return true;
     }
 
     @Override
