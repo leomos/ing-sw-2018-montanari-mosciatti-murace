@@ -12,11 +12,13 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Random;
 
 public class Client {
 
     public static void main(String[] args) {
-        int server = 0;//(new Random()).nextInt(2);
+        String host = "localhost";
+        int server = (new Random()).nextInt(2);
         ViewClient viewClient = new ViewClientConsole();
         ServerInterface serverInterface = null;
         int id = 0;
@@ -24,7 +26,7 @@ public class Client {
             System.out.println("SOCKET!");
             try {
                 serverInterface = new ServerImplementationSocket(viewClient);
-                Socket socket = new Socket("localhost", 1111);
+                Socket socket = new Socket(host, 1111);
                 id = serverInterface.registerClient(socket, "piero");
             } catch (IOException e) {
                 e.printStackTrace();
@@ -32,7 +34,7 @@ public class Client {
         } else if(server == 1) {
             System.out.println("RMI!");
             try {
-                serverInterface = (ServerInterface) Naming.lookup("//localhost/sagrada");
+                serverInterface = (ServerInterface) Naming.lookup("//"+host+"/sagrada");
                 ClientImplementationRMI clientImplementationRMI = new ClientImplementationRMI(viewClient);
                 ClientInterface remoteRef = (ClientInterface) UnicastRemoteObject.exportObject(clientImplementationRMI, 0);
                 id = serverInterface.registerClient(remoteRef, "piero");
