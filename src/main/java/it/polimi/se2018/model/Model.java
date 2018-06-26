@@ -207,7 +207,7 @@ public class Model extends Observable<ModelChangedMessage> {
 
         if(toolCardPresent) {
             if (!currentPlayer.hasUsedToolCardThisTurn()) {
-                if(currentPlayer.getTokens() >= toolCardContainer.getToolCard(idToolCard).cost()){
+                if(currentPlayer.getTokens() >= toolCardContainer.getToolCard(idToolCard - 1).cost()){
                     enoughTokens = true;
                 } else {
                     notify(new ModelChangedMessageMoveFailed(idPL, "Not enough tokens"));
@@ -515,7 +515,7 @@ public class Model extends Observable<ModelChangedMessage> {
     public ArrayList<Integer> checkAvailablePositions(int idPlayer, int idDie){
 
         try {
-            return table.getPlayers(idPlayer).getChosenPatternCard().getAvailablePositions(idDie);
+            return table.getPlayers(idPlayer).getChosenPatternCard().getAvailablePositions(table.getDiceArena().getArena().get(idDie));
         } catch (DiceContainerUnsupportedIdException e) {
             //niente da fare qui
         }
@@ -537,7 +537,12 @@ public class Model extends Observable<ModelChangedMessage> {
             e.printStackTrace();
         }
 
-        return d1.getColor() == d2.getColor();
+        if( d1.getColor() == d2.getColor() )
+            return true;
+        else {
+            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "The Dice have different colors"));
+            return false;
+        }
 
 
     }

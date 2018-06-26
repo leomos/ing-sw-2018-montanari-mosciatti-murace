@@ -123,13 +123,13 @@ public class ToolCardController{
 
                     if (positions.size() == 4)
                         model.moveDieInsidePatternCard(idPlayer, positions1, false, false, idToolCard);
-                    else
-                        for(int i = 4; i < 8; i++)
+                    else {
+                        for (int i = 4; i < 8; i++)
                             positions2.add(positions.get(i));
 
                         if (model.checkDiceColor(idPlayer, positions1, positions2)) {
                             model.moveTwoDiceInsidePatternCard(idPlayer, positions1, positions2, 4);
-
+                        }
                     }
                 }
             }
