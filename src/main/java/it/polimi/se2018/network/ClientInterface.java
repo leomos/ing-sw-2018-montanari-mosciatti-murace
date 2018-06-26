@@ -24,6 +24,8 @@ public interface ClientInterface extends Remote {
 
     public Integer getDieFromDiceArena() throws RemoteException;
 
+    public ArrayList<Integer> getDoublePositionInPatternCard() throws RemoteException;
+
     public Integer getDieFromPatternCard() throws RemoteException;
 
     public Boolean block() throws RemoteException;

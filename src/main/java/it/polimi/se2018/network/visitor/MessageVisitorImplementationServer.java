@@ -3,6 +3,8 @@ package it.polimi.se2018.network.visitor;
 import it.polimi.se2018.model.events.*;
 import it.polimi.se2018.network.client.ServerImplementationSocket;
 
+import java.util.ArrayList;
+
 public class MessageVisitorImplementationServer implements MessageVisitorInterface {
 
     private ServerImplementationSocket serverImplementationSocket;
@@ -38,6 +40,19 @@ public class MessageVisitorImplementationServer implements MessageVisitorInterfa
             case "askForPatternCard":
                 answer = new MethodCallMessage(methodCallMessage.getMethodName(),
                         serverImplementationSocket.getViewClient().askForPatternCard());
+                break;
+            case "getDieFromDiceArena":
+                answer = new MethodCallMessage(methodCallMessage.getMethodName(),
+                        serverImplementationSocket.getViewClient().getDieFromDiceArena());
+                break;
+            case "getDoublePositionInPatternCard":
+                answer = new MethodCallMessage(methodCallMessage.getMethodName(),
+                        serverImplementationSocket.getViewClient().getDoublePositionInPatternCard());
+                break;
+            case "getSinglePositionInPatternCard":
+                answer = new MethodCallMessage(methodCallMessage.getMethodName(),
+                        serverImplementationSocket.getViewClient().getSinglePositionInPatternCard(
+                                (ArrayList<Integer>) methodCallMessage.getArgument("listOfAvailablePositions")));
                 break;
             case "block":
                 answer = new MethodCallMessage(methodCallMessage.getMethodName(),
