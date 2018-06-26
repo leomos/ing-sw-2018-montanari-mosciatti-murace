@@ -36,7 +36,7 @@ public class ViewClientConsole extends ViewClient implements Runnable {
     public void update(ModelChangedMessage message){
         if(message instanceof ModelChangedMessageMoveFailed){
             if(((ModelChangedMessageMoveFailed) message).getPlayer().equals(Integer.toString(idClient))) {
-                System.out.println(((ModelChangedMessageMoveFailed) message).getErrorMessage());
+                System.out.println("ERROR: " + ((ModelChangedMessageMoveFailed) message).getErrorMessage());
                 System.out.println("\n\nTry again");
             }
         } else if(message instanceof ModelChangedMessageNewEvent){
@@ -97,11 +97,6 @@ public class ViewClientConsole extends ViewClient implements Runnable {
 
                 while (c) {
 
-                    try {
-                        TimeUnit.SECONDS.sleep(3);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
                     if(canIPlay) {
                         boolean moveOk;
                         do {
@@ -120,7 +115,7 @@ public class ViewClientConsole extends ViewClient implements Runnable {
                                 }
 
                                 if (parts.length == 4) {
-                                    for (int i = 0; i < 89; i++)
+                                    for (int i = 0; i < 9; i++)
                                         for (int j = 0; j < 5; j++)
                                             for (int k = 0; k < 4; k++) {
                                                 String app = "set " + i + " " + j + " " + k;
@@ -177,16 +172,26 @@ public class ViewClientConsole extends ViewClient implements Runnable {
                     }
 
                 }
+
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
             }
         }
 
     }
 
+    @Override
     public void block(){
+        System.out.println("arriva al block?");
         if(idPlayerPlaying == idClient)
             canIPlay = false;
     }
 
+    @Override
     public void free(){
         if (idPlayerPlaying == idClient)
             canIPlay = true;
@@ -196,6 +201,7 @@ public class ViewClientConsole extends ViewClient implements Runnable {
         }
     }
 
+    @Override
     public ArrayList<Integer> getPositionInPatternCard(){
         if(idPlayerPlaying == idClient){
 
@@ -205,6 +211,7 @@ public class ViewClientConsole extends ViewClient implements Runnable {
         return null;
     }
 
+    @Override
     public ArrayList<Integer> getSinglePositionInPatternCard(ArrayList<Integer> listOfAvailablePositions){
         if(idPlayerPlaying == idClient) {
 
@@ -214,6 +221,7 @@ public class ViewClientConsole extends ViewClient implements Runnable {
         return null;
     }
 
+    @Override
     public ArrayList<Integer> getIncrementedValue() {
 
         if (idPlayerPlaying == idClient) {
@@ -224,6 +232,7 @@ public class ViewClientConsole extends ViewClient implements Runnable {
         return null;
     }
 
+    @Override
     public Integer getDieFromDiceArena(){
 
         if(idPlayerPlaying == idClient) {
@@ -234,6 +243,7 @@ public class ViewClientConsole extends ViewClient implements Runnable {
         return null;
     }
 
+    @Override
     public ArrayList<Integer> getDieFromRoundTrack(){
         if(idPlayerPlaying == idClient) {
 
@@ -243,6 +253,7 @@ public class ViewClientConsole extends ViewClient implements Runnable {
         return null;
     }
 
+    @Override
     public Integer getValueForDie(){
         if(idPlayerPlaying == idClient) {
 

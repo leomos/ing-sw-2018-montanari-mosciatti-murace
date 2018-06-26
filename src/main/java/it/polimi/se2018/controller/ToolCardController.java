@@ -94,8 +94,6 @@ public class ToolCardController{
 
                 if(model.checkEnoughDiceInDiceBag(idPlayer)) {
 
-                    //todo: tests se idDie non vabene
-
                     int idDie = view.getDieFromDiceArena(idPlayer);
                     int newIdDie = model.swapDieWithDieFromDiceBag(idPlayer, idDie, idToolCard);
 
@@ -110,6 +108,8 @@ public class ToolCardController{
                 }
 
             } else if(idToolCard == 12){
+
+                //todo: gestire lo spostamento di un solo dado meglio -> creare nuova invocazione diversa per la view solo per questa toolCard
 
                 if(model.checkMovementPossibility(idPlayer)) {
 
