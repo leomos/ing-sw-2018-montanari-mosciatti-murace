@@ -41,7 +41,7 @@ public class ViewClientConsole extends ViewClient implements Runnable {
             }
         } else if(message instanceof ModelChangedMessageNewEvent){
             if(((ModelChangedMessageNewEvent) message).getPlayer().equals(Integer.toString(idClient))){
-                System.out.println(((ModelChangedMessageNewEvent) message).getMessage());
+                System.out.println("NEW EVENT: " + ((ModelChangedMessageNewEvent) message).getMessage());
             }
         }
         else if(message instanceof ModelChangedMessageRefresh) {

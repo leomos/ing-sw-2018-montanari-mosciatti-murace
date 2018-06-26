@@ -101,24 +101,29 @@ public class Model extends Observable<ModelChangedMessage> {
         modelChangedMessageRefresh = new ModelChangedMessageRefresh(gamePhase, Integer.toString(table.getRoundTrack().getCurrentRound().getIdPlayerPlaying()));
         notify(modelChangedMessageRefresh);
 
+        for(Integer key : players.keySet()) {
+            if(table.getPlayers(key).hasMissBehaved())
+                notify(new ModelChangedMessageNewEvent(Integer.toString(key), "IdPatternCard chosen was not present; \nYou are going to automatically get the first one available"));
+        }
+
     }
 
     public void setChosenPatternCard(int idPatternCard, int idPlayer){
 
-        boolean moveSucceded = false;
+        boolean moveSucceed = false;
 
         for(PatternCard patternCard : table.getPlayers(idPlayer).getPatternCards())
             if(idPatternCard == patternCard.getId()) {
                 table.getPlayers(idPlayer).setChosenPatternCard(patternCard);
                 table.getPlayers(idPlayer).setTokens(patternCard.getDifficulty());
-                moveSucceded = true;
+                moveSucceed = true;
                 }
 
-        if(!moveSucceded) {
-            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "IdPatternCard was not present; \nYou are going to automatically get the first one available"));
+        if(!moveSucceed) {
             PatternCard patternCard = table.getPlayers(idPlayer).getPatternCards().get(0);
             table.getPlayers(idPlayer).setChosenPatternCard(patternCard);
             table.getPlayers(idPlayer).setTokens(patternCard.getDifficulty());
+            table.getPlayers(idPlayer).setHasMissBehaved(true);
         }
 
     }
