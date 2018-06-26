@@ -105,11 +105,22 @@ public class Model extends Observable<ModelChangedMessage> {
 
     public void setChosenPatternCard(int idPatternCard, int idPlayer){
 
+        boolean moveSucceded = false;
+
         for(PatternCard patternCard : table.getPlayers(idPlayer).getPatternCards())
             if(idPatternCard == patternCard.getId()) {
                 table.getPlayers(idPlayer).setChosenPatternCard(patternCard);
                 table.getPlayers(idPlayer).setTokens(patternCard.getDifficulty());
+                moveSucceded = true;
                 }
+
+        if(!moveSucceded) {
+            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "IdPatternCard was not present; \nYou are going to automatically get the first one available"));
+            PatternCard patternCard = table.getPlayers(idPlayer).getPatternCards().get(0);
+            table.getPlayers(idPlayer).setChosenPatternCard(patternCard);
+            table.getPlayers(idPlayer).setTokens(patternCard.getDifficulty());
+        }
+
     }
 
     public void setDieInPatternCardFromDiceArena(int idPlayer, int idDie, int x, int y, boolean ignoreAdjency, int idToolCard) {
@@ -577,7 +588,7 @@ public class Model extends Observable<ModelChangedMessage> {
 
     public boolean checkEnoughDiceInDiceBag(int idPlayer){
 
-        if(table.getDiceContainer().getUnrolledDice().isEmpty())
+        if(!table.getDiceContainer().getUnrolledDice().isEmpty())
             return true;
         else{
             notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "There are no more dice in the dice bag"));
