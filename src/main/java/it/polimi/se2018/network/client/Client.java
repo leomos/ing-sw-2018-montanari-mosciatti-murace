@@ -12,13 +12,30 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Random;
+import java.util.Scanner;
 
 public class Client {
 
     public static void main(String[] args) {
         String host = "localhost";
-        int server = (new Random()).nextInt(2);
+
+        System.out.println("\nInsert Name");
+        Scanner input = new Scanner(System.in);
+        String name = input.nextLine();
+
+        boolean moveOk = true;
+        String type;
+        do {
+            System.out.println("\nInsert 0 to use SOCKET, 1 to use RMI");
+            type = input.nextLine();
+
+            if(type.equals("0") || type.equals("1"))
+                moveOk = false;
+        }
+        while(moveOk);
+
+
+        int server = Integer.parseInt(type);
         ViewClient viewClient = new ViewClientConsole();
         ServerInterface serverInterface = null;
         int id = 0;
@@ -27,7 +44,7 @@ public class Client {
             try {
                 serverInterface = new ServerImplementationSocket(viewClient);
                 Socket socket = new Socket(host, 1111);
-                id = serverInterface.registerClient(socket, "piero");
+                id = serverInterface.registerClient(socket, name);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -37,7 +54,7 @@ public class Client {
                 serverInterface = (ServerInterface) Naming.lookup("//"+host+"/sagrada");
                 ClientImplementationRMI clientImplementationRMI = new ClientImplementationRMI(viewClient);
                 ClientInterface remoteRef = (ClientInterface) UnicastRemoteObject.exportObject(clientImplementationRMI, 0);
-                id = serverInterface.registerClient(remoteRef, "piero");
+                id = serverInterface.registerClient(remoteRef, name);
             } catch (RemoteException e) {
                 e.printStackTrace();
             } catch (NotBoundException e) {
