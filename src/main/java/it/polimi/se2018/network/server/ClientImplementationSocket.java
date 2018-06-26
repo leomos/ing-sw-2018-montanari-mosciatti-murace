@@ -12,6 +12,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Optional;
 
 public class ClientImplementationSocket extends Thread implements ClientInterface {
 
@@ -83,52 +85,52 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
 
     @Override
     public Integer getDieFromPatternCard() throws RemoteException {
-        return (Integer) waitForMethodCallResponse("getDieFromPatternCard");
+        return (Integer) waitForMethodCallResponse("getDieFromPatternCard", Optional.empty());
     }
 
     @Override
     public ArrayList<Integer> getDieFromRoundTrack() throws RemoteException {
-        return (ArrayList<Integer>) waitForMethodCallResponse("getDieFromRoundTrack");
+        return (ArrayList<Integer>) waitForMethodCallResponse("getDieFromRoundTrack", Optional.empty());
     }
 
     @Override
     public Integer getDieFromDiceArena() throws RemoteException {
-        return (Integer) waitForMethodCallResponse("getDieFromDiceArena");
+        return (Integer) waitForMethodCallResponse("getDieFromDiceArena", Optional.empty());
     }
 
     @Override
     public ArrayList<Integer> getIncrementedValue() throws RemoteException {
-        return (ArrayList<Integer>) waitForMethodCallResponse("getIncrementedValue");
+        return (ArrayList<Integer>) waitForMethodCallResponse("getIncrementedValue", Optional.empty());
     }
 
     @Override
     public ArrayList<Integer> getPositionInPatternCard() throws RemoteException {
-        return (ArrayList<Integer>) waitForMethodCallResponse("getPositionInPatternCard");
+        return (ArrayList<Integer>) waitForMethodCallResponse("getPositionInPatternCard", Optional.empty());
     }
 
     @Override
     public ArrayList<Integer> getSinglePositionInPatternCard(ArrayList<Integer> listOfAvailablePositions) throws RemoteException {
-        return (ArrayList<Integer>) waitForMethodCallResponse("getSinglePositionInPatternCard");
+        return (ArrayList<Integer>) waitForMethodCallResponse("getSinglePositionInPatternCard", Optional.empty());
     }
 
     @Override
     public Integer getValueForDie() throws RemoteException {
-        return (Integer) waitForMethodCallResponse("getValueForDie");
+        return (Integer) waitForMethodCallResponse("getValueForDie", Optional.empty());
     }
 
     @Override
     public Integer askForPatternCard() throws RemoteException {
-        return (Integer) waitForMethodCallResponse("askForPatternCard");
+        return (Integer) waitForMethodCallResponse("askForPatternCard", Optional.empty());
     }
 
     @Override
     public Boolean block() throws RemoteException {
-        return (Boolean) waitForMethodCallResponse("block");
+        return (Boolean) waitForMethodCallResponse("block", Optional.empty());
     }
 
     @Override
     public Boolean free() throws RemoteException {
-        return (Boolean) waitForMethodCallResponse("free");
+        return (Boolean) waitForMethodCallResponse("free", Optional.empty());
     }
 
 
@@ -143,8 +145,13 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
         }
     }
 
-    private Object waitForMethodCallResponse(String methodName) {
+    private Object waitForMethodCallResponse(String methodName, Optional<Map> args) {
         MethodCallMessage methodCallMessage = new MethodCallMessage(methodName);
+        args.ifPresent(argumentsMap -> {
+            argumentsMap.forEach((name, value) -> {
+                methodCallMessage.addArgument((String)name, value);
+            });
+        });
         try {
             objectOutputStream.writeObject(methodCallMessage);
         } catch (IOException e) {
@@ -171,5 +178,9 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
         });
     }
 
+    @Override
+    public String toString() {
+        return clientSocket.getInetAddress().toString();
+    }
 
 }
