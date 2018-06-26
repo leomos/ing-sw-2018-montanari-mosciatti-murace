@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 import static it.polimi.se2018.model.container.DieColor.*;
 
-/* TODO: Create method to read PatternCards from JSON. */
 public class PatternCard {
 
     private int id;

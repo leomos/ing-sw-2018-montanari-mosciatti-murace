@@ -67,8 +67,6 @@ public class ViewClientConsole extends ViewClient implements Runnable {
         }
     }
 
-    /*TODO: need to check if the type of the input is correct somehow in all of them*/
-
     public String askForName(){
 
         System.out.println("\nName");

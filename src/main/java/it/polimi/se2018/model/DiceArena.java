@@ -10,9 +10,7 @@ import it.polimi.se2018.model.rounds.RoundTrackNotInSecondPartOfRoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 
-/* TODO: aggiungere metodo per settare singolo dado */
-/* TODO: aggiungere metodo per rollare tutti i dadi rimasti */
-/* TODO: aggiungere metodo per eliminare dado dall'arena */
+
 public class DiceArena {
 
     private ArrayList<Integer> arena = new ArrayList<Integer>();

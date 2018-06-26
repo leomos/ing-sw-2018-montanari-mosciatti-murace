@@ -80,7 +80,6 @@ public class Table {
         return toolCardContainer;
     }
 
-    /* TODO: exception for non existent id */
     public Player getPlayers(int i) {
         for (Player player : players) {
             if (player.getId() == i) return player;

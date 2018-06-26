@@ -17,7 +17,6 @@ public class DieController  {
      * @param playerMessageDie message passed from controller containing the information required to perform the move
      * @throws
      */
-    /* TODO: tests, check if there is a die in adjacent position + exception*/
     public void execute(PlayerMessageDie playerMessageDie) throws DiceContainerUnsupportedIdException {
 
         int idPlayer = playerMessageDie.getPlayerId();

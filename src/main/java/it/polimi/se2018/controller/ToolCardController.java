@@ -95,10 +95,10 @@ public class ToolCardController{
                 if(model.checkEnoughDiceInDiceBag(idPlayer)) {
 
                     int idDie = view.getDieFromDiceArena(idPlayer);
-                    int newIdDie = model.swapDieWithDieFromDiceBag(idPlayer, idDie, idToolCard);
+                    int newIdDie = model.swapDieWithDieFromDiceBag(idPlayer, idDie);
 
                     int value = view.getValueForDie(idPlayer);
-                    model.giveValueToDie(idPlayer, idDie, newIdDie, value);
+                    model.giveValueToDie(idDie, newIdDie, value);
                     ArrayList<Integer> list = model.checkAvailablePositions(idPlayer, idDie);
 
                     if (list.size() != 0) {
@@ -108,9 +108,6 @@ public class ToolCardController{
                 }
 
             } else if(idToolCard == 12){
-
-                //todo: gestire lo spostamento di un solo dado meglio -> creare nuova invocazione diversa per la view solo per questa toolCard
-
                 if(model.checkMovementPossibility(idPlayer)) {
 
                     ArrayList<Integer> positions = view.getDoublePositionInPatternCard(idPlayer);

@@ -23,7 +23,6 @@ public class Model extends Observable<ModelChangedMessage> {
 
     private HashMap<Integer, String> players;
 
-    /*TODO: costruttore */
 
     public Model(HashMap<Integer, String> players){
         this.players = players;
@@ -226,28 +225,29 @@ public class Model extends Observable<ModelChangedMessage> {
     public void incrementOrDecrementDieValue(int idPlayer, int idDie, int changeValue, int idToolCard) {
 
         if(table.getDiceArena().getArena().size() > idDie) {
-            Die d = null;
             try {
-                d = table.getDiceContainer().getDie(table.getDiceArena().getArena().get(idDie));
+                Die d = table.getDiceContainer().getDie(table.getDiceArena().getArena().get(idDie));
+
+
+
+                try {
+                    if (changeValue == 1)
+                        d.setRolledValue(d.getRolledValue() + 1);
+                    else
+                        d.setRolledValue(d.getRolledValue() - 1);
+
+                    updateToolCard(idPlayer, idToolCard);
+
+                    notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
+
+                    notify(new ModelChangedMessageRefresh(this.gamePhase, Integer.toString(table.getRoundTrack().getCurrentRound().getIdPlayerPlaying())));
+
+                } catch (DieRolledValueOutOfBoundException e) {
+                    notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Can't turn a 6 into a 1 or a 6 into a 1!"));
+                }
+
             } catch (DiceContainerUnsupportedIdException e) {
                 e.printStackTrace();
-            }
-
-
-            try {
-                if (changeValue == 1)
-                    d.setRolledValue(d.getRolledValue() + 1);
-                else
-                    d.setRolledValue(d.getRolledValue() - 1);
-
-                updateToolCard(idPlayer, idToolCard);
-
-                notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
-
-                notify(new ModelChangedMessageRefresh(this.gamePhase, Integer.toString(table.getRoundTrack().getCurrentRound().getIdPlayerPlaying())));
-
-            } catch (DieRolledValueOutOfBoundException e) {
-                notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Can't turn a 6 into a 1 or a 6 into a 1!"));
             }
         } else
             notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "There can't be a die close to the selected cell"));
@@ -301,7 +301,6 @@ public class Model extends Observable<ModelChangedMessage> {
      * @param ignoreValueConstraint
      * @param ignoreColorConstraint
      */
-    /*TODO: a seconda dell'esito di setRolledDieID dovremo creare notify diversi!*/
     public void performMoveDieInsidePatternCard(int idPlayer,
                                          int x_i,
                                          int y_i,
@@ -310,53 +309,55 @@ public class Model extends Observable<ModelChangedMessage> {
                                          boolean ignoreValueConstraint,
                                          boolean ignoreColorConstraint) throws PatternCardMoveFailedException {
 
-        //todo check start and final positions are different
+       if(x_i != x_f || y_i != y_f) {
 
-        Player currentPlayer = this.table.getPlayers(idPlayer);
-        PatternCard patternCard = currentPlayer.getChosenPatternCard();
-        int idDie = patternCard.getPatternCardCell(x_i, y_i).getRolledDieId();
+           Player currentPlayer = this.table.getPlayers(idPlayer);
+           PatternCard patternCard = currentPlayer.getChosenPatternCard();
+           int idDie = patternCard.getPatternCardCell(x_i, y_i).getRolledDieId();
 
-        try {
-            patternCard.getPatternCardCell(x_i, y_i).removeDie();
+           try{
+               patternCard.getPatternCardCell(x_i, y_i).removeDie();
 
-            boolean moveFailed = true;
+               boolean moveFailed = true;
 
-            try {
+               try{
 
-                patternCard.setDieInPatternCard(idDie, x_f, y_f, ignoreValueConstraint, ignoreColorConstraint, false);
-                moveFailed = false;
+                   patternCard.setDieInPatternCard(idDie, x_f, y_f, ignoreValueConstraint, ignoreColorConstraint, false);
+                   moveFailed = false;
 
-                notify(new ModelChangedMessageDiceOnPatternCard(Integer.toString(idPlayer), Integer.toString(patternCard.getId()), patternCard.getDiceRepresentation()));
+                   notify(new ModelChangedMessageDiceOnPatternCard(Integer.toString(idPlayer), Integer.toString(patternCard.getId()), patternCard.getDiceRepresentation()));
 
 
-            } catch (PatternCardDidNotRespectFirstMoveException e) {
-                notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Did not respect first move constraint"));
-            } catch (PatternCardNoAdjacentDieException e) {
-                notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "No die adjacent to the cell selected"));
-            } catch (PatternCardCellIsOccupiedException e) {
-                notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Already a die in that position"));
-            } catch (PatternCardNotRespectingCellConstraintException e) {
-                notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Did not respect cell constraint"));
-            } catch (PatternCardNotRespectingNearbyDieExpection patternCardNotRespectingNearbyDieExpection) {
-                notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Not respecting nearby dice colors or values"));
-            }  catch (DiceContainerUnsupportedIdException e) {
-                e.printStackTrace();
-            } catch (PatternCardAdjacentDieException e) {
-                notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "There can't be a die close to the selected cell"));
-            }
+               } catch (PatternCardDidNotRespectFirstMoveException e) {
+                   notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Did not respect first move constraint"));
+               } catch (PatternCardNoAdjacentDieException e) {
+                   notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "No die adjacent to the cell selected"));
+               } catch (PatternCardCellIsOccupiedException e) {
+                   notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Already a die in that position"));
+               } catch (PatternCardNotRespectingCellConstraintException e) {
+                   notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Did not respect cell constraint"));
+               } catch (PatternCardNotRespectingNearbyDieExpection patternCardNotRespectingNearbyDieExpection) {
+                   notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Not respecting nearby dice colors or values"));
+               } catch (DiceContainerUnsupportedIdException e) {
+                   e.printStackTrace();
+               } catch (PatternCardAdjacentDieException e) {
+                   notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "There can't be a die close to the selected cell"));
+               }
 
-            if(moveFailed) {
-                try {
-                    patternCard.getPatternCardCell(x_i, y_i).setRolledDieId(idDie, true, true);
-                    throw new PatternCardMoveFailedException();
-                } catch (DiceContainerUnsupportedIdException e) {
-                    e.printStackTrace();
-                }
-            }
+               if (moveFailed) {
+                   try {
+                       patternCard.getPatternCardCell(x_i, y_i).setRolledDieId(idDie, true, true);
+                       throw new PatternCardMoveFailedException();
+                   } catch (DiceContainerUnsupportedIdException e) {
+                       e.printStackTrace();
+                   }
+               }
 
-        } catch (CellIsEmptyException e) {
-            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Starting cell is empty"));
-        }
+           } catch (CellIsEmptyException e) {
+               notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Starting cell is empty"));
+           }
+       } else
+           notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Initial and final positions must be different!"));
     }
 
     public void turnDieAround(int idPlayer, int idDie, int idToolCard) {
@@ -478,7 +479,7 @@ public class Model extends Observable<ModelChangedMessage> {
 
     }
 
-    public Integer swapDieWithDieFromDiceBag(int idPlayer, int idDie, int idToolCard){
+    public Integer swapDieWithDieFromDiceBag(int idPlayer, int idDie){
         DiceArena diceArena = table.getDiceArena();
 
         if(diceArena.getArena().size() > idDie) {
@@ -504,7 +505,7 @@ public class Model extends Observable<ModelChangedMessage> {
         return null;
     }
 
-    public void giveValueToDie(int idPlayer, int positionInDiceArena, int actualIdDie, int value){
+    public void giveValueToDie(int positionInDiceArena, int actualIdDie, int value){
 
         table.getDiceArena().rollOneDieIntoDiceArena(positionInDiceArena, actualIdDie, value);
 
@@ -527,22 +528,27 @@ public class Model extends Observable<ModelChangedMessage> {
     public boolean checkDiceColor(int idPlayer, ArrayList<Integer> positions1, ArrayList<Integer> positions2){
 
         PatternCard patternCard = table.getPlayers(idPlayer).getChosenPatternCard();
-        Die d1 = null, d2 = null;
+        Die d1;
+        Die d2;
 
         if(!patternCard.getPatternCardCell(positions1.get(0), positions1.get(1)).isEmpty() && !patternCard.getPatternCardCell(positions1.get(0), positions1.get(1)).isEmpty())
         try {
             d1 = table.getDiceContainer().getDie(patternCard.getPatternCardCell(positions1.get(0), positions1.get(1)).getRolledDieId());
             d2 = table.getDiceContainer().getDie(patternCard.getPatternCardCell(positions2.get(0), positions2.get(1)).getRolledDieId());
+
+            if( d1.getColor() == d2.getColor() )
+                return true;
+            else {
+                notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "The Dice have different colors"));
+                return false;
+            }
+
         } catch (DiceContainerUnsupportedIdException e) {
             e.printStackTrace();
         }
 
-        if( d1.getColor() == d2.getColor() )
-            return true;
-        else {
-            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "The Dice have different colors"));
-            return false;
-        }
+        return false;
+
 
 
     }
@@ -571,7 +577,7 @@ public class Model extends Observable<ModelChangedMessage> {
 
     public boolean checkEnoughDiceInDiceBag(int idPlayer){
 
-        if(table.getDiceContainer().getUnrolledDice().size() != 0)
+        if(table.getDiceContainer().getUnrolledDice().isEmpty())
             return true;
         else{
             notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "There are no more dice in the dice bag"));
