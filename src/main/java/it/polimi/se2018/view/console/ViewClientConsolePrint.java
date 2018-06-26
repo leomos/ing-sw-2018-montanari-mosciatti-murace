@@ -202,5 +202,7 @@ public abstract class ViewClientConsolePrint {
 
     public abstract Integer getValueForDie();
 
+    public abstract ArrayList<Integer> getDoublePositionInPatternCard();
+
 
 }

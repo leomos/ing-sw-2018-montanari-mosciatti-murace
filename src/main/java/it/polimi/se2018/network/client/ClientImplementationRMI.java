@@ -60,6 +60,11 @@ public class ClientImplementationRMI implements ClientInterface {
         return viewClient.getSinglePositionInPatternCard(listOfAvailablePositions);
     }
 
+    @Override
+    public ArrayList<Integer> getDoublePositionInPatternCard() throws RemoteException {
+        return viewClient.getDoublePositionInPatternCard();
+    }
+
     public Boolean block() throws RemoteException {
         return viewClient.block();
     }

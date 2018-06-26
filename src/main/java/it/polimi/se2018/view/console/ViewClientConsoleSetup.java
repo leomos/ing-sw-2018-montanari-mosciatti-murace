@@ -95,5 +95,8 @@ public class ViewClientConsoleSetup extends ViewClientConsolePrint {
         return null;
     }
 
+    @Override
+    public ArrayList<Integer> getDoublePositionInPatternCard() { return null;}
+
 
 }

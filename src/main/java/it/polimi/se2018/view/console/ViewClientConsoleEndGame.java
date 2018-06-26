@@ -76,4 +76,7 @@ public class ViewClientConsoleEndGame extends ViewClientConsolePrint {
     public Integer getValueForDie() {
         return null;
     }
+
+    @Override
+    public ArrayList<Integer> getDoublePositionInPatternCard() { return null;}
 }

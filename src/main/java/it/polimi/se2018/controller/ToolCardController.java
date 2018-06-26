@@ -113,16 +113,22 @@ public class ToolCardController{
 
                 if(model.checkMovementPossibility(idPlayer)) {
 
-                    ArrayList<Integer> positions1 = view.getPositionInPatternCard(idPlayer);
-                    ArrayList<Integer> positions2 = view.getPositionInPatternCard(idPlayer);
+                    ArrayList<Integer> positions = view.getDoublePositionInPatternCard(idPlayer);
+                    ArrayList<Integer> positions1 = new ArrayList<Integer>();
+                    ArrayList<Integer> positions2 = new ArrayList<Integer>();
 
-                    if (positions2.get(0) == -1) {
 
+                    for(int i = 0; i < 4; i++)
+                        positions1.add(positions.get(i));
+
+                    if (positions.size() == 4)
                         model.moveDieInsidePatternCard(idPlayer, positions1, false, false, idToolCard);
+                    else
+                        for(int i = 4; i < 8; i++)
+                            positions2.add(positions.get(i));
 
-                    } else if (model.checkDiceColor(idPlayer, positions1, positions2)) {
-
-                        model.moveTwoDiceInsidePatternCard(idPlayer, positions1, positions2, 4);
+                        if (model.checkDiceColor(idPlayer, positions1, positions2)) {
+                            model.moveTwoDiceInsidePatternCard(idPlayer, positions1, positions2, 4);
 
                     }
                 }

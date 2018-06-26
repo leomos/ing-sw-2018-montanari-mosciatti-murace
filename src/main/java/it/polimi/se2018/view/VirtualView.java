@@ -49,6 +49,8 @@ public class VirtualView extends Observable<PlayerMessage> implements Observer<M
 
     public Integer getValueForDie(int idClient) { return  room.getValueForDie(idClient);}
 
+    public ArrayList<Integer> getDoublePositionInPatternCard(int idClient) { return room.getDoublePositionInPatternCard(idClient);}
+
     public ArrayList<Integer> getSinglePositionInPatternCard(int idClient, ArrayList<Integer> listOfAvailablePositions) { return room.getSinglePositionInPatternCard(idClient, listOfAvailablePositions); }
 
     public void block(int idClient) { room.block(idClient);}

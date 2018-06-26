@@ -165,6 +165,73 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
         return position;
     }
 
+    public ArrayList<Integer> getDoublePositionInPatternCard(){
+        ArrayList<Integer> position = new ArrayList<Integer>();
+        boolean moveOk1, moveOk2;
+        int numberOfMovements = 0;
+
+        do {
+            moveOk1 = true;
+            System.out.println("How many dice of the same color do you want to move? 1 or 2?");
+            Scanner input = new Scanner(System.in);
+            String s = input.nextLine();
+
+            if(s.equals("1")) {
+                moveOk1 = false;
+                numberOfMovements = 1;
+            }else if(s.equals("2")){
+                moveOk1 = false;
+                numberOfMovements = 2;
+            }
+
+        }while(moveOk1);
+
+        for (int k = 0; k < numberOfMovements; k++) {
+            do {
+                System.out.println("\nInsert Starting position for "+ k +"° movement on PatternCard separated by a space ");
+
+                moveOk1 = true;
+                moveOk2 = true;
+
+                Scanner input = new Scanner(System.in);
+                String s = input.nextLine();
+
+                for (int i = 0; i < 5; i++) {
+                    for (int j = 0; j < 4; j++) {
+                        String app = "" + i + " " + j;
+                        if (app.equals(s)) {
+                            moveOk1 = false;
+                            position.add(Integer.parseInt(s.split(" ")[0]));
+                            position.add(Integer.parseInt(s.split(" ")[1]));
+                        }
+                    }
+                }
+
+                System.out.println("\nInsert Final position for " + k + "° movement on PatternCard separated by a space");
+
+                input = new Scanner(System.in);
+                s = input.nextLine();
+
+                for (int i = 0; i < 5; i++) {
+                    for (int j = 0; j < 4; j++) {
+                        String app = "" + i + " " + j;
+                        if (app.equals(s)) {
+                            moveOk2 = false;
+                            position.add(Integer.parseInt(s.split(" ")[0]));
+                            position.add(Integer.parseInt(s.split(" ")[1]));
+                        }
+                    }
+                }
+
+                if (moveOk1 || moveOk2)
+                    System.out.println("Try Again!");
+            }
+            while (moveOk1 || moveOk2);
+        }
+
+        return position;
+    }
+
     public ArrayList<Integer> getSinglePositionInPatternCard(ArrayList<Integer> listOfAvailablePositions){
         boolean moveOk = true;
         ArrayList<Integer> position = new ArrayList<Integer>();

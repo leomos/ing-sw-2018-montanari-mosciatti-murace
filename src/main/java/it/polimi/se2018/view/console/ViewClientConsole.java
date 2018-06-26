@@ -267,4 +267,12 @@ public class ViewClientConsole extends ViewClient implements Runnable {
         return null;
 
     }
+
+    public ArrayList<Integer> getDoublePositionInPatternCard(){
+        if(idPlayerPlaying == idClient) {
+
+            return viewClientConsolePrint.getDoublePositionInPatternCard();
+        }
+        return null;
+    }
 }

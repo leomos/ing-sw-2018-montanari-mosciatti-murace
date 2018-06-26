@@ -12,6 +12,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -99,6 +100,11 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
     }
 
     @Override
+    public ArrayList<Integer> getDoublePositionInPatternCard() throws RemoteException {
+        return (ArrayList<Integer>) waitForMethodCallResponse("getDoublePositionInPatternCard", Optional.empty());
+    }
+
+    @Override
     public ArrayList<Integer> getIncrementedValue() throws RemoteException {
         return (ArrayList<Integer>) waitForMethodCallResponse("getIncrementedValue", Optional.empty());
     }
@@ -110,7 +116,9 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
 
     @Override
     public ArrayList<Integer> getSinglePositionInPatternCard(ArrayList<Integer> listOfAvailablePositions) throws RemoteException {
-        return (ArrayList<Integer>) waitForMethodCallResponse("getSinglePositionInPatternCard", Optional.empty());
+        Map<String, Object> arguments = new HashMap<>();
+        arguments.put("listOfAvailablePositions", listOfAvailablePositions);
+        return (ArrayList<Integer>) waitForMethodCallResponse("getSinglePositionInPatternCard", Optional.of(arguments));
     }
 
     @Override

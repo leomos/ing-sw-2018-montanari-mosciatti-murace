@@ -105,6 +105,20 @@ public class Room extends Thread {
         return null;
     }
 
+    public ArrayList<Integer> getDoublePositionInPatternCard(int idClient){
+        for(ConnectedClient player : players) {
+            if(player.getId() == idClient) {
+                try {
+                    return player.getClientInterface().getDoublePositionInPatternCard();
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
+
+
     public ArrayList<Integer> getSinglePositionInPatternCard(int idClient, ArrayList<Integer> listOfAvailablePositions){
         for(ConnectedClient player : players) {
             if(player.getId() == idClient) {
