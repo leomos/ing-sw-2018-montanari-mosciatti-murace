@@ -17,6 +17,7 @@ import java.util.Scanner;
 public class Client {
 
     public static void main(String[] args) {
+        //String host = "163.172.183.230";
         String host = "localhost";
 
         System.out.println("\nInsert Name");

@@ -157,6 +157,8 @@ public class Model extends Observable<ModelChangedMessage> {
                 notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
                 notify(new ModelChangedMessageRefresh(this.gamePhase, Integer.toString(table.getRoundTrack().getCurrentRound().getIdPlayerPlaying())));
 
+            } catch (PlayerHasAlreadySetDieThisTurnException e) {
+                notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Already set a Die this turn"));
             } catch (PatternCardDidNotRespectFirstMoveException e) {
                 notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Did not respect first move constraint"));
             } catch (PatternCardNoAdjacentDieException e) {
@@ -167,15 +169,13 @@ public class Model extends Observable<ModelChangedMessage> {
                 notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Did not respect cell constraint"));
             } catch (PatternCardNotRespectingNearbyDieExpection patternCardNotRespectingNearbyDieExpection) {
                 notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Not respecting nearby dice colors or values"));
-            } catch (PlayerHasAlreadySetDieThisTurnException e) {
-                notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Already set a Die this turn"));
-            } catch (PatternCardAdjacentDieException e) {
+            }  catch (PatternCardAdjacentDieException e) {
                 notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "There can't be a die close to the selected cell"));
             } catch (DiceContainerUnsupportedIdException e) {
                 e.printStackTrace();
             }
         } else
-            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "idDie non present in diceArena"));
+            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Die id was invalid"));
 
     }
 
@@ -270,7 +270,7 @@ public class Model extends Observable<ModelChangedMessage> {
                 e.printStackTrace();
             }
         } else
-            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "There can't be a die close to the selected cell"));
+            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Die id was invalid"));
 
 
 
@@ -322,7 +322,7 @@ public class Model extends Observable<ModelChangedMessage> {
      * @param ignoreValueConstraint
      * @param ignoreColorConstraint
      */
-    public void performMoveDieInsidePatternCard(int idPlayer,
+    private void performMoveDieInsidePatternCard(int idPlayer,
                                          int x_i,
                                          int y_i,
                                          int x_f,
@@ -404,7 +404,7 @@ public class Model extends Observable<ModelChangedMessage> {
 
             }
         } else
-            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "There can't be a die close to the selected cell"));
+            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Die id was invalid"));
 
 
     }
@@ -463,7 +463,7 @@ public class Model extends Observable<ModelChangedMessage> {
                 e.printStackTrace();
             }
         } else
-            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "There can't be a die close to the selected cell"));
+            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Die id was invalid"));
 
     }
 
@@ -502,7 +502,7 @@ public class Model extends Observable<ModelChangedMessage> {
                 notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Round selected has not been completed yet"));
             }
         } else
-            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "There can't be a die close to the selected cell"));
+            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Die id was invalid"));
 
     }
 
@@ -527,9 +527,9 @@ public class Model extends Observable<ModelChangedMessage> {
             notify(new ModelChangedMessageNewEvent(Integer.toString(idPlayer), "\nThe new die has the color " + d.getColor()));
             return idNewDie;
         } else
-            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "There can't be a die close to the selected cell"));
+            notify(new ModelChangedMessageMoveFailed(Integer.toString(idPlayer), "Die Id was incorrect"));
 
-        return null;
+        return -1;
     }
 
     public void giveValueToDie(int positionInDiceArena, int actualIdDie, int value){
@@ -542,10 +542,12 @@ public class Model extends Observable<ModelChangedMessage> {
 
     public ArrayList<Integer> checkAvailablePositions(int idPlayer, int idDie){
 
-        try {
-            return table.getPlayers(idPlayer).getChosenPatternCard().getAvailablePositions(table.getDiceArena().getArena().get(idDie));
-        } catch (DiceContainerUnsupportedIdException e) {
-            //niente da fare qui
+        if(table.getDiceArena().getArena().size() > idDie) {
+            try {
+                return table.getPlayers(idPlayer).getChosenPatternCard().getAvailablePositions(table.getDiceArena().getArena().get(idDie));
+            } catch (DiceContainerUnsupportedIdException e) {
+                //niente da fare qui
+            }
         }
 
         return new ArrayList<>();

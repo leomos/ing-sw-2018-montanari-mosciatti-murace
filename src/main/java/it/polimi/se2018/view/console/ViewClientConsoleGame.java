@@ -188,7 +188,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
         for (int k = 0; k < numberOfMovements; k++) {
             do {
-                System.out.println("\nInsert Starting position for "+ k +"° movement on PatternCard separated by a space ");
+                System.out.println("\nInsert Starting position for "+ k+1 +"° movement on PatternCard separated by a space ");
 
                 moveOk1 = true;
                 moveOk2 = true;
@@ -207,7 +207,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
                     }
                 }
 
-                System.out.println("\nInsert Final position for " + k + "° movement on PatternCard separated by a space");
+                System.out.println("\nInsert Final position for " + k+1 + "° movement on PatternCard separated by a space");
 
                 input = new Scanner(System.in);
                 s = input.nextLine();
@@ -240,8 +240,11 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
 
             System.out.println("\nInsert x and y separated by space");
-            if(listOfAvailablePositions.size() != 0)
-                System.out.println("The position must be one of the following" + listOfAvailablePositions);
+            if(listOfAvailablePositions.size() != 0) {
+                System.out.println("The position must be one of the following:");
+                for(int i = 0; i < listOfAvailablePositions.size(); i+=2)
+                    System.out.println("[" + listOfAvailablePositions.get(i) + " " + listOfAvailablePositions.get(i+1) + "]");
+            }
             Scanner input = new Scanner(System.in);
             String s = input.nextLine();
             String[] parts = s.split(" ");

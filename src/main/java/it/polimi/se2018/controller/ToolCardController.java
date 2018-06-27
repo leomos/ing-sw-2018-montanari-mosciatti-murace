@@ -101,13 +101,16 @@ public class ToolCardController{
                     int idDie = view.getDieFromDiceArena(idPlayer);
                     int newIdDie = model.swapDieWithDieFromDiceBag(idPlayer, idDie);
 
-                    int value = view.getValueForDie(idPlayer);
-                    model.giveValueToDie(idDie, newIdDie, value);
-                    ArrayList<Integer> list = model.checkAvailablePositions(idPlayer, idDie);
+                    if(newIdDie != -1) {
+                        int value = view.getValueForDie(idPlayer);
 
-                    if (list.size() != 0) {
-                        ArrayList<Integer> position = view.getSinglePositionInPatternCard(idPlayer, list);
-                        model.setDieInPatternCardFromDiceArena(idPlayer, idDie, position.get(0), position.get(1), false, idToolCard);
+                        model.giveValueToDie(idDie, newIdDie, value);
+                        ArrayList<Integer> list = model.checkAvailablePositions(idPlayer, idDie);
+
+                        if (list.size() != 0) {
+                            ArrayList<Integer> position = view.getSinglePositionInPatternCard(idPlayer, list);
+                            model.setDieInPatternCardFromDiceArena(idPlayer, idDie, position.get(0), position.get(1), false, idToolCard);
+                        }
                     }
                 }
 

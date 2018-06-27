@@ -96,10 +96,11 @@ public class ViewClientConsole extends ViewClient implements Runnable {
                 while (c) {
 
                     try {
-                        TimeUnit.SECONDS.sleep(3);
+                        TimeUnit.SECONDS.sleep(1);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+
                     if(canIPlay) {
                         boolean moveOk;
                         do {
@@ -108,6 +109,12 @@ public class ViewClientConsole extends ViewClient implements Runnable {
                             Scanner input = new Scanner(System.in);
                             String s = input.nextLine();
                             String[] parts = s.split(" ");
+
+                            try {
+                                TimeUnit.SECONDS.sleep(1);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
 
                             if (idPlayerPlaying == idClient) {
 
