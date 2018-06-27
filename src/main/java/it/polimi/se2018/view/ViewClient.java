@@ -25,8 +25,6 @@ public abstract class ViewClient {
         this.serverInterface = serverInterface;
     }
 
-    public String askForName() { return null; }
-
     public Integer getDieFromPatternCard() {
         return null;
     }

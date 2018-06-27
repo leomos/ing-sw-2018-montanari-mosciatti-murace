@@ -235,6 +235,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
     public ArrayList<Integer> getSinglePositionInPatternCard(ArrayList<Integer> listOfAvailablePositions){
         boolean moveOk = true;
         ArrayList<Integer> position = new ArrayList<Integer>();
+        Scanner input = new Scanner(System.in);
 
         do {
 
@@ -245,7 +246,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
                 for(int i = 0; i < listOfAvailablePositions.size(); i+=2)
                     System.out.println("[" + listOfAvailablePositions.get(i) + " " + listOfAvailablePositions.get(i+1) + "]");
             }
-            Scanner input = new Scanner(System.in);
+
             String s = input.nextLine();
             String[] parts = s.split(" ");
 
@@ -278,16 +279,16 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
     }
 
     public ArrayList<Integer> getIncrementedValue() {
-
         ArrayList<Integer> dieAndDecision = new ArrayList<Integer>();
         boolean moveOk1, moveOk2;
+        Scanner input = new Scanner(System.in);
+
 
         do {
             moveOk1 = true;
             moveOk2 = true;
 
             System.out.println("\nInsert idDie from DiceArena to change followed by 1 to increase value its value or by 0 to decrease");
-            Scanner input = new Scanner(System.in);
             String s = input.nextLine();
             String[] parts = s.split(" ");
 
@@ -317,7 +318,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
     }
 
     public Integer getDieFromDiceArena(){
-
+        Scanner input = new Scanner(System.in);
         boolean moveOk;
         int idDie = -1;
 
@@ -325,7 +326,6 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
             moveOk = true;
 
             System.out.println("\nInsert idDie from DiceArena to use");
-            Scanner input = new Scanner(System.in);
             String s = input.nextLine();
 
             for(int i = 0; i < 90; i++){
@@ -348,12 +348,12 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
     public ArrayList<Integer> getDieFromRoundTrack(){
         boolean moveOk;
         ArrayList<Integer> idDie = new ArrayList<>();
+        Scanner input = new Scanner(System.in);
 
         do{
             moveOk = true;
 
             System.out.println("\nInsert idRound followed by idDie");
-            Scanner input = new Scanner(System.in);
             String s = input.nextLine();
             String[] parts = s.split(" ");
 
@@ -381,12 +381,12 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
     public Integer getValueForDie(){
         boolean moveOk;
         int value = -1;
+        Scanner input = new Scanner(System.in);
 
         do{
             moveOk = true;
 
             System.out.println("\nInsert value to assign to Die");
-            Scanner input = new Scanner(System.in);
             String s = input.nextLine();
 
             for(int i = 1; i < 7; i++){

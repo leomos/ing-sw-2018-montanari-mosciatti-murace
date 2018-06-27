@@ -39,13 +39,13 @@ public class ViewClientConsoleSetup extends ViewClientConsolePrint {
 
         printPrivateObjective(privateObjective);
 
+        System.out.println("\nChoose a PatternCard by selecting one of the PatternCardId\nNB: ho spostato questo print fuori dal metodo askForPatternCard, non pensare che il parallelString funzioni");
         }
 
     public Integer askForPatternCard()  {
         Scanner input = new Scanner(System.in);
         boolean moveOk = true;
         do {
-            System.out.println("\nChoose a PatternCard by selecting one of the PatternCardId");
 
             String s = input.nextLine();
 

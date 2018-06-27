@@ -67,22 +67,13 @@ public class ViewClientConsole extends ViewClient implements Runnable {
         }
     }
 
-    public String askForName(){
-
-        System.out.println("\nName");
-        Scanner input = new Scanner(System.in);
-        String s = input.nextLine();
-
-        return s;
-
-    }
-
     public Integer askForPatternCard()  {
         return viewClientConsolePrint.askForPatternCard();
     }
 
     public void run(){
         boolean c = true;
+        Scanner input = new Scanner(System.in);
         while(c) {
 
             try {
@@ -106,7 +97,6 @@ public class ViewClientConsole extends ViewClient implements Runnable {
                         do {
                             moveOk = true;
 
-                            Scanner input = new Scanner(System.in);
                             String s = input.nextLine();
                             String[] parts = s.split(" ");
 
