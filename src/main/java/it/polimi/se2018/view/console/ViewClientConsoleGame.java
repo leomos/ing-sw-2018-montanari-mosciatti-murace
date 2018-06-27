@@ -117,6 +117,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
     }
 
+    @Override
     public ArrayList<Integer> getPositionInPatternCard(){
         ArrayList<Integer> position = new ArrayList<Integer>();
         boolean moveOk1, moveOk2;
@@ -165,33 +166,34 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
         return position;
     }
 
+    @Override
     public ArrayList<Integer> getDoublePositionInPatternCard(){
         ArrayList<Integer> position = new ArrayList<Integer>();
-        boolean moveOk1, moveOk2;
+        boolean moveNotOk1, moveNotOk2;
         int numberOfMovements = 0;
 
         do {
-            moveOk1 = true;
+            moveNotOk1 = true;
             System.out.println("How many dice of the same color do you want to move? 1 or 2?");
             Scanner input = new Scanner(System.in);
             String s = input.nextLine();
 
             if(s.equals("1")) {
-                moveOk1 = false;
+                moveNotOk1 = false;
                 numberOfMovements = 1;
             }else if(s.equals("2")){
-                moveOk1 = false;
+                moveNotOk1 = false;
                 numberOfMovements = 2;
             }
 
-        }while(moveOk1);
+        }while(moveNotOk1);
 
         for (int k = 0; k < numberOfMovements; k++) {
             do {
                 System.out.println("\nInsert Starting position for "+ k+1 +"° movement on PatternCard separated by a space ");
 
-                moveOk1 = true;
-                moveOk2 = true;
+                moveNotOk1 = true;
+                moveNotOk2 = true;
 
                 Scanner input = new Scanner(System.in);
                 String s = input.nextLine();
@@ -200,7 +202,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
                     for (int j = 0; j < 4; j++) {
                         String app = "" + i + " " + j;
                         if (app.equals(s)) {
-                            moveOk1 = false;
+                            moveNotOk1 = false;
                             position.add(Integer.parseInt(s.split(" ")[0]));
                             position.add(Integer.parseInt(s.split(" ")[1]));
                         }
@@ -216,24 +218,25 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
                     for (int j = 0; j < 4; j++) {
                         String app = "" + i + " " + j;
                         if (app.equals(s)) {
-                            moveOk2 = false;
+                            moveNotOk2 = false;
                             position.add(Integer.parseInt(s.split(" ")[0]));
                             position.add(Integer.parseInt(s.split(" ")[1]));
                         }
                     }
                 }
 
-                if (moveOk1 || moveOk2)
+                if (moveNotOk1 || moveNotOk2)
                     System.out.println("Try Again!");
             }
-            while (moveOk1 || moveOk2);
+            while (moveNotOk1 || moveNotOk2);
         }
 
         return position;
     }
 
+    @Override
     public ArrayList<Integer> getSinglePositionInPatternCard(ArrayList<Integer> listOfAvailablePositions){
-        boolean moveOk = true;
+        boolean moveNotOk = true;
         ArrayList<Integer> position = new ArrayList<Integer>();
         Scanner input = new Scanner(System.in);
 
@@ -248,13 +251,12 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
             }
 
             String s = input.nextLine();
-            String[] parts = s.split(" ");
 
             for (int i = 0; i < 5; i++) {
                 for (int j = 0; j < 4; j++) {
                     String app = "" + i + " " + j;
                     if (app.equals(s)) {
-                        moveOk = false;
+                        moveNotOk = false;
                         position.clear();
                         position.add(Integer.parseInt(s.split(" ")[0]));
                         position.add(Integer.parseInt(s.split(" ")[1]));
@@ -270,23 +272,24 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
             }
 
-            if (moveOk)
+            if (moveNotOk)
                 System.out.println("Try again!");
 
-        } while (moveOk  || listOfAvailablePositions.size() != 0);
+        } while (moveNotOk  || listOfAvailablePositions.size() != 0);
 
         return position;
     }
 
+    @Override
     public ArrayList<Integer> getIncrementedValue() {
         ArrayList<Integer> dieAndDecision = new ArrayList<Integer>();
-        boolean moveOk1, moveOk2;
+        boolean moveNotOk1, moveNotOk2;
         Scanner input = new Scanner(System.in);
 
 
         do {
-            moveOk1 = true;
-            moveOk2 = true;
+            moveNotOk1 = true;
+            moveNotOk2 = true;
 
             System.out.println("\nInsert idDie from DiceArena to change followed by 1 to increase value its value or by 0 to decrease");
             String s = input.nextLine();
@@ -295,13 +298,13 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
             if(parts.length == 2) {
                 for (int i = 0; i < 90; i++)
                     if (parts[0].equals(Integer.toString(i)))
-                        moveOk1 = false;
+                        moveNotOk1 = false;
 
                 if (parts[1].equals("1") || parts[1].equals("0"))
-                    moveOk2 = false;
+                    moveNotOk2 = false;
             }
 
-            if(moveOk1 || moveOk2){
+            if(moveNotOk1 || moveNotOk2){
                 System.out.println("Try again!");
             } else {
                 dieAndDecision.add(Integer.parseInt(parts[0]));
@@ -311,47 +314,49 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
 
         }
-        while(moveOk1 || moveOk2);
+        while(moveNotOk1 || moveNotOk2);
 
         return dieAndDecision;
 
     }
 
+    @Override
     public Integer getDieFromDiceArena(){
         Scanner input = new Scanner(System.in);
-        boolean moveOk;
+        boolean moveNotOk;
         int idDie = -1;
 
         do{
-            moveOk = true;
+            moveNotOk = true;
 
             System.out.println("\nInsert idDie from DiceArena to use");
             String s = input.nextLine();
 
             for(int i = 0; i < 90; i++){
                 if(s.equals(Integer.toString(i))) {
-                    moveOk = false;
+                    moveNotOk = false;
                     idDie = Integer.parseInt(s);
                 }
             }
 
-            if(moveOk)
+            if(moveNotOk)
                 System.out.println("Try Again!");
 
-        } while(moveOk);
+        } while(moveNotOk);
 
         return idDie;
 
 
     }
 
+    @Override
     public ArrayList<Integer> getDieFromRoundTrack(){
-        boolean moveOk;
+        boolean moveNotOk;
         ArrayList<Integer> idDie = new ArrayList<>();
         Scanner input = new Scanner(System.in);
 
         do{
-            moveOk = true;
+            moveNotOk = true;
 
             System.out.println("\nInsert idRound followed by idDie");
             String s = input.nextLine();
@@ -361,7 +366,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
                 for (int i = 1; i < 11; i++) {
                     for (int j = 0; j < 9; j++) {
                         if (parts[0].equals(Integer.toString(i)) && parts[1].equals(Integer.toString(j))) {
-                            moveOk = false;
+                            moveNotOk = false;
                             idDie.add(Integer.parseInt(parts[0]) - 1);
                             idDie.add(Integer.parseInt(parts[1]));
                         }
@@ -369,37 +374,38 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
                 }
             }
 
-            if(moveOk)
+            if(moveNotOk)
                 System.out.println("Try Again!");
 
-        } while(moveOk);
+        } while(moveNotOk);
 
         return idDie;
 
     }
 
+    @Override
     public Integer getValueForDie(){
-        boolean moveOk;
+        boolean moveNotOk;
         int value = -1;
         Scanner input = new Scanner(System.in);
 
         do{
-            moveOk = true;
+            moveNotOk = true;
 
             System.out.println("\nInsert value to assign to Die");
             String s = input.nextLine();
 
             for(int i = 1; i < 7; i++){
                 if(s.equals(Integer.toString(i))) {
-                    moveOk = false;
+                    moveNotOk = false;
                     value = Integer.parseInt(s);
                 }
             }
 
-            if(moveOk)
+            if(moveNotOk)
                 System.out.println("Try Again!");
 
-        } while(moveOk);
+        } while(moveNotOk);
 
         return value;
 

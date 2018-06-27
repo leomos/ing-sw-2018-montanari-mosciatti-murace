@@ -32,7 +32,7 @@ public class ViewClientConsole extends ViewClient implements Runnable {
         viewClientConsolePrint = new ViewClientConsoleSetup(idClient);
     }
 
-
+    @Override
     public void update(ModelChangedMessage message){
         if(message instanceof ModelChangedMessageMoveFailed){
             if(((ModelChangedMessageMoveFailed) message).getPlayer().equals(Integer.toString(idClient))) {
@@ -67,6 +67,7 @@ public class ViewClientConsole extends ViewClient implements Runnable {
         }
     }
 
+    @Override
     public Integer askForPatternCard()  {
         return viewClientConsolePrint.askForPatternCard();
     }
@@ -184,12 +185,14 @@ public class ViewClientConsole extends ViewClient implements Runnable {
 
     }
 
+    @Override
     public Boolean block(){
         if(idPlayerPlaying == idClient)
             canIPlay = false;
         return true;
     }
 
+    @Override
     public Boolean free(){
         if (idPlayerPlaying == idClient)
             canIPlay = true;
@@ -263,6 +266,7 @@ public class ViewClientConsole extends ViewClient implements Runnable {
 
     }
 
+    @Override
     public ArrayList<Integer> getDoublePositionInPatternCard(){
         if(idPlayerPlaying == idClient) {
 

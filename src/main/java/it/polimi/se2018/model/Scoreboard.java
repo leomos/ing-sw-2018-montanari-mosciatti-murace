@@ -28,13 +28,21 @@ public class Scoreboard {
         return representation;
     }
 
+    public HashMap<Integer, Integer> getScore() {
+        return score;
+    }
+
+    public HashMap<Integer, Integer> getTokens() {
+        return tokens;
+    }
+
     public void setScore(int idPlayer, int score, int tokensLeft) {
         this.player.add(idPlayer);
         this.score.put(idPlayer, score);
         this.tokens.put(idPlayer, tokensLeft);
     }
 
-    /* TODO: order HashMap */
+    /* TODO: finish ordering HashMap */
     public void orderScoreBoard(){
 
         List<Integer> valueList = new ArrayList<>(score.values());

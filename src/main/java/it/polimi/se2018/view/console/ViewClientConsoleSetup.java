@@ -42,9 +42,10 @@ public class ViewClientConsoleSetup extends ViewClientConsolePrint {
         System.out.println("\nChoose a PatternCard by selecting one of the PatternCardId\nNB: ho spostato questo print fuori dal metodo askForPatternCard, non pensare che il parallelString funzioni");
         }
 
+    @Override
     public Integer askForPatternCard()  {
         Scanner input = new Scanner(System.in);
-        boolean moveOk = true;
+        boolean moveNotOk = true;
         do {
 
             String s = input.nextLine();
@@ -52,15 +53,15 @@ public class ViewClientConsoleSetup extends ViewClientConsolePrint {
             for(int i = 0; i < 24; i++){
                 String app = "" + i;
                 if(app.equals(s)) {
-                    moveOk = false;
+                    moveNotOk = false;
                     return Integer.parseInt(app);
                 }
             }
 
-            if(moveOk)
+            if(moveNotOk)
                 System.out.println("Try Again!");
         }
-        while(moveOk);
+        while(moveNotOk);
 
         return null;
     }

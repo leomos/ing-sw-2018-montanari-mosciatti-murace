@@ -57,12 +57,8 @@ public class Table {
         try {
             this.getRoundTrack().startNextRound();
         } catch (RoundTrackNoMoreRoundsException e) {
-            //TODO: dont know what to put here
+            //TODO: dont know what to put here, prob nothing
         }
-    }
-
-    public int getNumberOfPlayers() {
-        return this.players.size();
     }
 
     public DiceArena getDiceArena() {
@@ -134,10 +130,10 @@ public class Table {
 
         Collections.shuffle(toolCardsList);
 
-        //TO FORCE A PATTERNCARD FOR TESTS
-        toolCardsList.add(0,10);
+        //TO FORCE 3 PATTERNCARDS FOR TESTS
+        /*toolCardsList.add(0,10);
         toolCardsList.add(1,5);
-        toolCardsList.add(2,8);
+        toolCardsList.add(2,8);*/
 
 
         for(int j = 0; j < 3; j++)
@@ -174,6 +170,33 @@ public class Table {
         }
     }
 
+    /**
+     * this method was created because otherwise the public objective would always be random.
+     * with this method, we can force the the public objective that we want necessary to test
+     * the method calculateScore
+     * @param listOfPublicObjectiveId list of public objective id that we want to force on the table
+     * @param diceContainer dice container necessary to create public objectives
+     */
+    public void forcePublicObjectiveIntoPlay(ArrayList<Integer> listOfPublicObjectiveId, DiceContainer diceContainer){
+
+        for(int i = 0; i < listOfPublicObjectiveId.size(); i++){
+            switch(listOfPublicObjectiveId.get(i)) {
+                case 0: this.publicObjectives.add(i, new PublicObjective1(diceContainer)); break;
+                case 1: this.publicObjectives.add(i, new PublicObjective2(diceContainer)); break;
+                case 2: this.publicObjectives.add(i, new PublicObjective3(diceContainer)); break;
+                case 3: this.publicObjectives.add(i, new PublicObjective4(diceContainer)); break;
+                case 4: this.publicObjectives.add(i, new PublicObjective5(diceContainer)); break;
+                case 5: this.publicObjectives.add(i, new PublicObjective6(diceContainer)); break;
+                case 6: this.publicObjectives.add(i, new PublicObjective7(diceContainer)); break;
+                case 7: this.publicObjectives.add(i, new PublicObjective8(diceContainer)); break;
+                case 8: this.publicObjectives.add(i, new PublicObjective9(diceContainer)); break;
+                case 9: this.publicObjectives.add(i, new PublicObjective10(diceContainer)); break;
+                default: break;
+            }
+        }
+
+    }
+
     public void calculateScores() {
         this.scoreboard = new Scoreboard(roundTrack.getCurrentRound().getIdPlayerPlaying());
         for (Player player : players) {
@@ -187,14 +210,6 @@ public class Table {
             result += player.getPrivateObjective().calculateScore(patternCard);
 
             result = result + player.getTokens() + patternCard.getNumberOfDiceInThePatternCard() - 20;
-
-
-            //todo: cancella questi
-            System.out.println("Punti di private -> " + player.getPrivateObjective().calculateScore(patternCard));
-            System.out.println("Punti di public1 -> " + publicObjectives.get(0).calculateScore(patternCard));
-            System.out.println("Punti di public2 -> " + publicObjectives.get(1).calculateScore(patternCard));
-            System.out.println("Punti di public3 -> " + publicObjectives.get(2).calculateScore(patternCard));
-
 
             scoreboard.setScore(player.getId(), result, player.getTokens());
         }
