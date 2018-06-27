@@ -1,7 +1,9 @@
 package it.polimi.se2018.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 public class Scoreboard {
 
@@ -14,6 +16,8 @@ public class Scoreboard {
     private String representation;
 
     private HashMap<Integer, Integer> score = new HashMap<>();
+
+    private HashMap<Integer, Integer> orderedScore = new HashMap<>();
 
     public Scoreboard(int lastId){
         this.lastId = lastId;
@@ -33,6 +37,8 @@ public class Scoreboard {
     /* TODO: order HashMap */
     public void orderScoreBoard(){
 
+        List<Integer> valueList = new ArrayList<>(score.values());
+        Collections.sort(valueList);
 
     }
 

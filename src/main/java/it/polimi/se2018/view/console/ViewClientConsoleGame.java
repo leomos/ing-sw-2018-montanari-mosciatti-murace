@@ -93,19 +93,12 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
             else
                 myPatternCardId = i;
 
-        System.out.println("\nYour PatternCard");
-        printPatternCard(idPlayers.get(myPatternCardId), patternCards.get(myPatternCardId), diceOnPatternCards.get(myPatternCardId));
-
-        printPrivateObjective(privateObjective);
-
-        System.out.println("You have left " + tokensLeft.getTokensLeft() + " tokens to use on ToolCards");
-
         for (int i = 0; i < roundTrack.size(); i++)
             printRoundTrack(roundTrack.get(i));
         int app = roundTrack.size() + 1;
         System.out.println("\n\nCURRENT ROUND IS:\t" + app );
 
-        printDiceArena(diceArena);
+
 
         for (int i = 0; i < 3; i++)
             printPublicObjective(publicObjectives.get(i));
@@ -113,7 +106,14 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
         for (int i = 0; i < 3; i++)
             printToolCards(toolCards.get(i));
 
-        System.out.println("\n\n");
+        System.out.println("\n\n\nYour PatternCard");
+        printPatternCard(idPlayers.get(myPatternCardId), patternCards.get(myPatternCardId), diceOnPatternCards.get(myPatternCardId));
+
+        printPrivateObjective(privateObjective);
+
+        System.out.println("You have left " + tokensLeft.getTokensLeft() + " tokens to use on ToolCards");
+        printDiceArena(diceArena);
+        System.out.println("\n");
 
     }
 
