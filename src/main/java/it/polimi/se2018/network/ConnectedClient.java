@@ -48,6 +48,10 @@ public class ConnectedClient {
         this.isSuspended = suspended;
     }
 
+    public boolean isSuspended() {
+        return isSuspended;
+    }
+
     @Override
     public boolean equals(Object object) {
         if (object == null) {

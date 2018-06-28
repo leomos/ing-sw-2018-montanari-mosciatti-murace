@@ -658,6 +658,10 @@ public class Model extends Observable<ModelChangedMessage> {
 
     }
 
+    public int currentPlayerPlaying() {
+        return table.getRoundTrack().getCurrentRound().getIdPlayerPlaying();
+    }
+
     private void updateToolCard(int idPlayer, int idToolCard){
 
         int actualIdToolCard = idToolCard - 1;
