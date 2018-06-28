@@ -9,8 +9,6 @@ import it.polimi.se2018.utils.Observer;
 
 import java.util.ArrayList;
 
-//import it.polimi.se2018.network.server.Room;
-
 public class VirtualView extends Observable<PlayerMessage> implements Observer<ModelChangedMessage>{
 
     private ArrayList<ClientInterface> clientInterfaceList = new ArrayList<>();
