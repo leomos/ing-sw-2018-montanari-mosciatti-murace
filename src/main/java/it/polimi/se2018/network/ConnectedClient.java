@@ -1,7 +1,5 @@
 package it.polimi.se2018.network;
 
-import it.polimi.se2018.network.server.Room;
-
 public class ConnectedClient {
 
     private int id;
@@ -10,9 +8,9 @@ public class ConnectedClient {
 
     private ClientInterface clientInterface;
 
-    private Room room;
+    //private Room room;
 
-    private boolean isSuspended;
+    private boolean isInactive;
 
     public ConnectedClient(int id, String name, ClientInterface clientInterface) {
         this.id = id;
@@ -20,13 +18,9 @@ public class ConnectedClient {
         this.clientInterface = clientInterface;
     }
 
-    public void setClientInterface(ClientInterface clientInterface) {
-        this.clientInterface = clientInterface;
-    }
-
-    public void setRoom(Room room) {
+    /*public void setRoom(Room room) {
         this.room = room;
-    }
+    }*/
 
     public int getId() {
         return id;
@@ -40,16 +34,16 @@ public class ConnectedClient {
         return clientInterface;
     }
 
-    public Room getRoom() {
+    /*public Room getRoom() {
         return room;
+    }*/
+
+    public void setInactive(boolean inactive) {
+        this.isInactive = inactive;
     }
 
-    public void setSuspended(boolean suspended) {
-        this.isSuspended = suspended;
-    }
-
-    public boolean isSuspended() {
-        return isSuspended;
+    public boolean isInactive() {
+        return isInactive;
     }
 
     @Override

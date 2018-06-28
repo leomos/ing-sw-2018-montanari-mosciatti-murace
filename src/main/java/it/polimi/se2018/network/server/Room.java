@@ -2,17 +2,17 @@ package it.polimi.se2018.network.server;
 
 import it.polimi.se2018.controller.Controller;
 import it.polimi.se2018.model.Model;
-import it.polimi.se2018.model.events.Message;
-import it.polimi.se2018.model.events.ModelChangedMessage;
-import it.polimi.se2018.model.events.PlayerMessage;
-import it.polimi.se2018.model.events.PlayerMessageSetup;
+import it.polimi.se2018.model.events.*;
 import it.polimi.se2018.network.ConnectedClient;
+import it.polimi.se2018.network.visitor.MessageVisitorDisconnectionImplementation;
+import it.polimi.se2018.network.visitor.MessageVisitorInterface;
 import it.polimi.se2018.view.VirtualView;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.stream.Stream;
 
 public class Room extends Thread {
 
@@ -24,10 +24,34 @@ public class Room extends Thread {
 
     private Set<ConnectedClient> players;
 
+    private MessageVisitorInterface messageVisitorDisconnection;
+
+
+    private Stream<ConnectedClient> activePlayers() {
+        return players.stream()
+                .filter(player -> !player.isInactive());
+    }
+
+    private ConnectedClient connectedClientById(int id) {
+        return activePlayers()
+                .filter(player -> player.getId() == id)
+                .findFirst()
+                .get();
+    }
+
+    private HashMap<Integer, String> createClientsMap() {
+        HashMap<Integer, String> clientsMap = new HashMap<>();
+        players.forEach(player -> {
+            clientsMap.put(player.getId(), player.getName());
+        });
+        return clientsMap;
+    }
+
     @Override
     public void run() {
         //while(gamePlaying) {
             HashMap<Integer, String> clientsMap = createClientsMap();
+            messageVisitorDisconnection = new MessageVisitorDisconnectionImplementation(this);
             model = new Model(clientsMap);
             controller = new Controller(model);
             view = new VirtualView();
@@ -72,7 +96,13 @@ public class Room extends Thread {
     public void updatePlayers(Message updateMessage) {
         players.forEach((player) -> {
             try {
-                player.getClientInterface().update((ModelChangedMessage) updateMessage);
+                if(!player.isInactive()) {
+                    player.getClientInterface().update((ModelChangedMessage) updateMessage);
+                } else {
+                    if(player.getId() == model.currentPlayerPlaying()) {
+                        updateMessage.accept(messageVisitorDisconnection);
+                    }
+                }
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -80,126 +110,111 @@ public class Room extends Thread {
     }
 
     public ArrayList<Integer> getPositionInPatternCard(int idClient){
-        for(ConnectedClient player : players) {
-            if(player.getId() == idClient) {
-                try {
-                    return player.getClientInterface().getPositionInPatternCard();
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-            }
+        try {
+            return connectedClientById(idClient)
+                    .getClientInterface()
+                    .getPositionInPatternCard();
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
         return null;
     }
 
-    public ArrayList<Integer> getIncrementedValue(int idClient){
-        for(ConnectedClient player : players) {
-            if(player.getId() == idClient) {
-                try {
-                    return player.getClientInterface().getIncrementedValue();
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-            }
+    public ArrayList<Integer> getIncrementedValue(int idClient) {
+        try {
+            return connectedClientById(idClient)
+                    .getClientInterface()
+                    .getIncrementedValue();
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
         return null;
     }
 
     public ArrayList<Integer> getDoublePositionInPatternCard(int idClient){
-        for(ConnectedClient player : players) {
-            if(player.getId() == idClient) {
-                try {
-                    return player.getClientInterface().getDoublePositionInPatternCard();
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-            }
+        try {
+            return connectedClientById(idClient)
+                    .getClientInterface()
+                    .getDoublePositionInPatternCard();
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
         return null;
     }
 
 
     public ArrayList<Integer> getSinglePositionInPatternCard(int idClient, ArrayList<Integer> listOfAvailablePositions){
-        for(ConnectedClient player : players) {
-            if(player.getId() == idClient) {
-                try {
-                    return player.getClientInterface().getSinglePositionInPatternCard(listOfAvailablePositions);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-            }
+        try {
+            return connectedClientById(idClient)
+                    .getClientInterface()
+                    .getSinglePositionInPatternCard(listOfAvailablePositions);
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
         return null;
     }
 
     public Integer getDieFromDiceArena(int idClient){
-        for(ConnectedClient player : players) {
-            if(player.getId() == idClient) {
-                try {
-                    return player.getClientInterface().getDieFromDiceArena();
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-            }
+        try {
+            return connectedClientById(idClient)
+                    .getClientInterface()
+                    .getDieFromDiceArena();
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
         return null;
     }
 
     public Integer getValueForDie(int idClient){
-        for(ConnectedClient player : players) {
-            if(player.getId() == idClient) {
-                try {
-                    return player.getClientInterface().getValueForDie();
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-            }
+        try {
+            return connectedClientById(idClient)
+                    .getClientInterface()
+                    .getValueForDie();
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
         return null;
     }
 
     public ArrayList<Integer> getDieFromRoundTrack(int idClient){
-        for(ConnectedClient player : players) {
-            if(player.getId() == idClient) {
-                try {
-                    return player.getClientInterface().getDieFromRoundTrack();
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-            }
+        try {
+            return connectedClientById(idClient)
+                    .getClientInterface()
+                    .getDieFromRoundTrack();
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
         return null;
     }
 
     public void block(int idClient){
-        for(ConnectedClient player : players) {
-            if(player.getId() == idClient) {
-                try {
-                    player.getClientInterface().block();
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-            }
+        try {
+            connectedClientById(idClient)
+                    .getClientInterface()
+                    .block();
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
     }
 
     public void free(int idClient){
-        for(ConnectedClient player : players) {
-            if(player.getId() == idClient) {
-                try {
-                    player.getClientInterface().free();
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-            }
+        try {
+            connectedClientById(idClient)
+                    .getClientInterface()
+                    .free();
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
     }
 
-    private HashMap<Integer, String> createClientsMap() {
-        HashMap<Integer, String> clientsMap = new HashMap<>();
-        players.forEach(player -> {
-            clientsMap.put(player.getId(), player.getName());
-        });
-        return clientsMap;
+    public synchronized void handleClientDisconnection(int id) {
+        System.out.println("Client " + id + " disconnected!");
+        connectedClientById(id).setInactive(true);
+
+        if(model.currentPlayerPlaying() == id) {
+            System.out.println("arrivato");
+            Message message = new PlayerMessageEndTurn(id);
+            notifyView(message);
+        }
     }
 }

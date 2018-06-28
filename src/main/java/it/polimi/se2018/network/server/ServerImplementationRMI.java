@@ -31,7 +31,7 @@ public class ServerImplementationRMI extends UnicastRemoteObject implements Clie
     @Override
     public void notify(PlayerMessage playerMessage) throws RemoteException {
         Runnable task = () -> {
-            getRoomForId(playerMessage.getPlayerId()).notifyView(playerMessage);
+            roomDispatcher.getRoomForId(playerMessage.getPlayerId()).notifyView(playerMessage);
         };
         Thread t = new Thread(task);
         t.start();
@@ -71,7 +71,7 @@ public class ServerImplementationRMI extends UnicastRemoteObject implements Clie
         System.out.println("RMI started.");
     }
 
-    private Room getRoomForId(int id) {
+    /*private Room getRoomForId(int id) {
         Room room;
         for(ConnectedClient connectedClient : roomDispatcher.getAllConnectedClients()) {
             if(connectedClient.getId() == id) {
@@ -80,5 +80,5 @@ public class ServerImplementationRMI extends UnicastRemoteObject implements Clie
             }
         }
         return null;
-    }
+    }*/
 }

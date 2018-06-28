@@ -24,8 +24,6 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
 
     private ObjectOutputStream objectOutputStream;
 
-    private Room room = null;
-
     private RoomDispatcherInterface roomDispatcher;
 
     private boolean ready = false;
@@ -69,10 +67,7 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
     }
 
     public void notifyRoom(PlayerMessage playerMessage) {
-        if(room == null) {
-            setCurrentRoom(playerMessage.getPlayerId());
-        }
-        room.notifyView(playerMessage);
+        roomDispatcher.getRoomForId(playerMessage.getPlayerId()).notifyView(playerMessage);
     }
 
     @Override
@@ -176,14 +171,6 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
             ready = false;
             return ((MethodCallMessage)inputMessage).getReturnValue();
         }
-    }
-
-    private void setCurrentRoom(int id) {
-        roomDispatcher.getAllConnectedClients().forEach(client -> {
-            if (client.getId() == id) {
-                room = client.getRoom();
-            }
-        });
     }
 
     @Override

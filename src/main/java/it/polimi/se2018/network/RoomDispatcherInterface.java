@@ -1,6 +1,7 @@
 package it.polimi.se2018.network;
 
 import it.polimi.se2018.model.events.HeartbeatMessage;
+import it.polimi.se2018.network.server.Room;
 
 import java.util.Set;
 
@@ -13,5 +14,7 @@ public interface RoomDispatcherInterface extends Runnable {
     public void heartbeat(HeartbeatMessage heartbeatMessage);
 
     public void stopDispatcher();
+
+    public Room getRoomForId(int id);
 
 }

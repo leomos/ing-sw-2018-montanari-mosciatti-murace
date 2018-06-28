@@ -1,12 +1,15 @@
 package it.polimi.se2018.network.server;
 
 import it.polimi.se2018.model.events.HeartbeatMessage;
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -33,11 +36,21 @@ public class HeartbeatHandler extends Thread {
     public void run() {
         while (heartbeatRunning) {
             System.out.println(heartbeats);
-            heartbeats.forEach((id, received) -> {
-                if(Duration.between(received, Instant.now()).getSeconds() > disconnectedThreshold){
-                    simpleRoomDispatcherImplementation.setConnectedClientSuspended(id);
+            synchronized (this) {
+                try {
+                    for (Map.Entry<Integer, Instant> heartbeat : heartbeats.entrySet()) {
+                        Integer id = heartbeat.getKey();
+                        Instant received = heartbeat.getValue();
+                        if (Duration.between(received, Instant.now()).getSeconds() > disconnectedThreshold) {
+                            simpleRoomDispatcherImplementation.setConnectedClientSuspended(id);
+                            heartbeats.remove(id);
+                            System.out.println(heartbeats);
+                        }
+                    }
+                } catch (ConcurrentModificationException e) {
+                    e.printStackTrace();
                 }
-            });
+            }
             try {
                 TimeUnit.SECONDS.sleep(controlRateInSeconds);
             } catch (InterruptedException e) {
