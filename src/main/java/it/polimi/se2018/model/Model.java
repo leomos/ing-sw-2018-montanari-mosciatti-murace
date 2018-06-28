@@ -1,8 +1,5 @@
 package it.polimi.se2018.model;
 
-import it.polimi.se2018.model.player.Player;
-import it.polimi.se2018.model.player.PlayerHasAlreadySetDieThisTurnException;
-import it.polimi.se2018.model.player.PlayerHasNotSetDieThisTurnException;
 import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.container.Die;
 import it.polimi.se2018.model.container.DieRolledValueOutOfBoundException;
@@ -10,6 +7,9 @@ import it.polimi.se2018.model.events.*;
 import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.objectives.PublicObjective;
 import it.polimi.se2018.model.patternCard.*;
+import it.polimi.se2018.model.player.Player;
+import it.polimi.se2018.model.player.PlayerHasAlreadySetDieThisTurnException;
+import it.polimi.se2018.model.player.PlayerHasNotSetDieThisTurnException;
 import it.polimi.se2018.model.rounds.*;
 import it.polimi.se2018.model.toolcards.ToolCard;
 import it.polimi.se2018.model.toolcards.ToolCardContainer;
@@ -18,6 +18,7 @@ import it.polimi.se2018.utils.Observable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.concurrent.ExecutorService;
 
 public class Model extends Observable<ModelChangedMessage> {
 
@@ -27,9 +28,16 @@ public class Model extends Observable<ModelChangedMessage> {
 
     private HashMap<Integer, String> players;
 
+    private ExecutorService executorService;
+
+    private Timer timer;
 
     public Model(HashMap<Integer, String> players){
         this.players = players;
+    }
+
+    public Table getTable() {
+        return table;
     }
 
     public void initSetup() {
@@ -110,6 +118,10 @@ public class Model extends Observable<ModelChangedMessage> {
                 notify(new ModelChangedMessageNewEvent(Integer.toString(key), "IdPatternCard chosen was not present; \nYou are going to automatically get the first one available"));
         }
 
+        timer = new Timer(this);
+
+        timer.start();
+
     }
 
     public void setChosenPatternCard(int idPatternCard, int idPlayer){
@@ -180,35 +192,55 @@ public class Model extends Observable<ModelChangedMessage> {
     }
 
     public void endTurn(PlayerMessageEndTurn playerMessageEndTurn){
-        if(!table.getRoundTrack().getCurrentRound().isRoundOver()) {
-            try {
-                table.getRoundTrack().getCurrentRound().setNextPlayer();
-            } catch (RoundFinishedException e) {
-                e.printStackTrace();
+
+        int idPlayerMessage = playerMessageEndTurn.getPlayer();
+
+        if(idPlayerMessage == table.getRoundTrack().getCurrentRound().getIdPlayerPlaying()) {
+            if (!table.getRoundTrack().getCurrentRound().isRoundOver()) {
+                try {
+                    table.getRoundTrack().getCurrentRound().setNextPlayer();
+                } catch (RoundFinishedException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Round round = table.getRoundTrack().getCurrentRound();
+                table.getRoundTrack().setRolledDiceLeftForCurrentRound(table.getDiceArena().getArena());
+                round.updateRepresentation();
+                table.getDiceArena().rollDiceIntoArena();
+
+                notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
+                notify(new ModelChangedMessageRound(Integer.toString(round.getId()), round.getRepresentation()));
+
+                try {
+                    table.getRoundTrack().startNextRound();
+                } catch (RoundTrackNoMoreRoundsException e) {
+                    table.calculateScores();
+
+                    notify(new ModelChangedMessageRefresh(GamePhase.ENDGAMEPHASE, null));
+                    notify(new ModelChangedMessageEndGame(table.getScoreboard().getRepresentation()));
+                }
             }
+            table.getPlayers(playerMessageEndTurn.getPlayer()).setHasSetDieThisTurn(false);
+            table.getPlayers(playerMessageEndTurn.getPlayer()).setHasUsedToolCardThisTurn(false);
+
+            notify(new ModelChangedMessageRefresh(this.gamePhase, Integer.toString((table.getRoundTrack().getCurrentRound().getIdPlayerPlaying()))));
+
+            timer.stopTimer();
+
+            timer = new Timer(this);
+            timer.start();
         }
-        else {
-            Round round = table.getRoundTrack().getCurrentRound();
-            table.getRoundTrack().setRolledDiceLeftForCurrentRound(table.getDiceArena().getArena());
-            round.updateRepresentation();
-            table.getDiceArena().rollDiceIntoArena();
+    }
 
-            notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
-            notify(new ModelChangedMessageRound(Integer.toString(round.getId()), round.getRepresentation()));
+    public void timesUp(){
 
-            try {
-                table.getRoundTrack().startNextRound();
-            } catch (RoundTrackNoMoreRoundsException e) {
-                table.calculateScores();
+        int idPlayerPlaying = table.getRoundTrack().getCurrentRound().getIdPlayerPlaying();
 
-                notify(new ModelChangedMessageRefresh(GamePhase.ENDGAMEPHASE, null));
-                notify(new ModelChangedMessageEndGame(table.getScoreboard().getRepresentation()));
-            }
-        }
-        table.getPlayers(playerMessageEndTurn.getPlayer()).setHasSetDieThisTurn(false);
-        table.getPlayers(playerMessageEndTurn.getPlayer()).setHasUsedToolCardThisTurn(false);
+        endTurn(new PlayerMessageEndTurn(idPlayerPlaying));
+        notify(new ModelChangedMessagePlayerAFK(Integer.toString(idPlayerPlaying), "You run out of time. You are now suspended. Send anything to come back into the game"));
 
-        notify(new ModelChangedMessageRefresh(this.gamePhase, Integer.toString((table.getRoundTrack().getCurrentRound().getIdPlayerPlaying()))));
+        //todo transform notify in notify to put the guy afk
+
     }
 
     public boolean checkToolCard(int idPlayer, int idToolCard){

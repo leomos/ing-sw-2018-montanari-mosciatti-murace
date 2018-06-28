@@ -54,6 +54,7 @@ public class ViewClientConsole extends ViewClient implements Runnable {
             }else {
                 viewClientConsolePrint.print();
                 if(((ModelChangedMessageRefresh) message).getIdPlayerPlaying() != null) {
+                    viewClientConsolePrint.update(message);
                     idPlayerPlaying = Integer.parseInt(((ModelChangedMessageRefresh) message).getIdPlayerPlaying());
                     if(idPlayerPlaying == idClient && canIPlay) {
                         System.out.println("It's your turn");
@@ -62,7 +63,13 @@ public class ViewClientConsole extends ViewClient implements Runnable {
                 }
             }
 
-        } else {
+        } else if(message instanceof ModelChangedMessagePlayerAFK){
+            block();
+            AFK();
+            free();
+        }
+
+        else {
             viewClientConsolePrint.update(message);
         }
     }
@@ -74,7 +81,7 @@ public class ViewClientConsole extends ViewClient implements Runnable {
 
     public void run(){
         boolean c = true;
-        Scanner input = new Scanner(System.in);
+
         while(c) {
 
             try {
@@ -94,79 +101,82 @@ public class ViewClientConsole extends ViewClient implements Runnable {
                     }
 
                     if(canIPlay) {
+                        Scanner mainInput = new Scanner(System.in);
                         boolean moveOk;
                         do {
                             moveOk = true;
 
-                            String s = input.nextLine();
-                            String[] parts = s.split(" ");
+                            if(mainInput.hasNext()) {
+                                String s = mainInput.nextLine();
+                                String[] parts = s.split(" ");
 
-                            try {
-                                TimeUnit.SECONDS.sleep(1);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-
-                            if (idPlayerPlaying == idClient) {
-
-                                if (s.equals("/help")) {
-                                    System.out.println("\nset + DieId + x_position + y_position  -> to position a die from the dice arena to the patterncard\n" +
-                                            "use + toolCardID -> to use the toolCard\nend  -> to end the turn");
-                                    moveOk = false;
+                                try {
+                                    TimeUnit.SECONDS.sleep(1);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
                                 }
 
-                                if (parts.length == 4) {
-                                    for (int i = 0; i < 9; i++)
-                                        for (int j = 0; j < 5; j++)
-                                            for (int k = 0; k < 4; k++) {
-                                                String app = "set " + i + " " + j + " " + k;
-                                                if (s.equals(app)) {
-                                                    moveOk = false;
-                                                    int idDie = Integer.parseInt(parts[1]);
-                                                    int x = Integer.parseInt(parts[2]);
-                                                    int y = Integer.parseInt(parts[3]);
-                                                    try {
-                                                        serverInterface.notify(new PlayerMessageDie(idClient, idDie, x, y));
-                                                    } catch (RemoteException e) {
-                                                        e.printStackTrace();
+                                if (idPlayerPlaying == idClient) {
+
+                                    if (s.equals("/help")) {
+                                        System.out.println("\nset + DieId + x_position + y_position  -> to position a die from the dice arena to the patterncard\n" +
+                                                "use + toolCardID -> to use the toolCard\nend  -> to end the turn");
+                                        moveOk = false;
+                                    }
+
+                                    if (parts.length == 4) {
+                                        for (int i = 0; i < 9; i++)
+                                            for (int j = 0; j < 5; j++)
+                                                for (int k = 0; k < 4; k++) {
+                                                    String app = "set " + i + " " + j + " " + k;
+                                                    if (s.equals(app)) {
+                                                        moveOk = false;
+                                                        int idDie = Integer.parseInt(parts[1]);
+                                                        int x = Integer.parseInt(parts[2]);
+                                                        int y = Integer.parseInt(parts[3]);
+                                                        try {
+                                                            serverInterface.notify(new PlayerMessageDie(idClient, idDie, x, y));
+                                                        } catch (RemoteException e) {
+                                                            e.printStackTrace();
+                                                        }
                                                     }
                                                 }
-                                            }
-                                }
+                                    }
 
-                                if (parts.length == 2) {
-                                    for (int i = 1; i < 13; i++) {
-                                        String app = "use " + i;
-                                        if (s.equals(app)) {
-                                            moveOk = false;
-                                            int idToolCard = Integer.parseInt(parts[1]);
-                                            try {
-                                                serverInterface.notify(new PlayerMessageToolCard(idClient, idToolCard));
-                                            } catch (RemoteException e) {
-                                                e.printStackTrace();
+                                    if (parts.length == 2) {
+                                        for (int i = 1; i < 13; i++) {
+                                            String app = "use " + i;
+                                            if (s.equals(app)) {
+                                                moveOk = false;
+                                                int idToolCard = Integer.parseInt(parts[1]);
+                                                try {
+                                                    serverInterface.notify(new PlayerMessageToolCard(idClient, idToolCard));
+                                                } catch (RemoteException e) {
+                                                    e.printStackTrace();
+                                                }
                                             }
                                         }
                                     }
-                                }
 
-                                if (s.equals("end")) {
-                                    moveOk = false;
-                                    try {
-                                        serverInterface.notify(new PlayerMessageEndTurn(idClient));
-                                    } catch (RemoteException e) {
-                                        e.printStackTrace();
+                                    if (s.equals("end")) {
+                                        moveOk = false;
+                                        try {
+                                            serverInterface.notify(new PlayerMessageEndTurn(idClient));
+                                        } catch (RemoteException e) {
+                                            e.printStackTrace();
+                                        }
                                     }
+
+                                    if (moveOk == true) {
+                                        System.out.println("Try Again!");
+                                        System.out.println("\n\nIt's your turn");
+                                        System.out.println("/help: get List of moves");
+                                    }
+
+
+                                } else {
+                                    System.out.println("It's player  " + idPlayerPlaying + " turn, not yours");
                                 }
-
-                                if (moveOk == true) {
-                                    System.out.println("Try Again!");
-                                    System.out.println("\n\nIt's your turn");
-                                    System.out.println("/help: get List of moves");
-                                }
-
-
-                            } else {
-                                System.out.println("\n\nIt's player  " + idPlayerPlaying + " turn, not yours");
                             }
                         }
                         while (moveOk);
@@ -185,6 +195,22 @@ public class ViewClientConsole extends ViewClient implements Runnable {
 
     }
 
+    public void AFK(){
+
+        Scanner input = new Scanner(System.in);
+        String s = input.nextLine();
+
+        try {
+            serverInterface.notify(new PlayerMessageNotAFK(idClient));
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+
+        return;
+
+    }
+
     @Override
     public Boolean block(){
         if(idPlayerPlaying == idClient)
@@ -194,8 +220,8 @@ public class ViewClientConsole extends ViewClient implements Runnable {
 
     @Override
     public Boolean free(){
-        if (idPlayerPlaying == idClient)
-            canIPlay = true;
+        canIPlay = true;
+
         if(idPlayerPlaying == idClient && canIPlay) {
             System.out.println("It's your turn");
             System.out.println("/help: get List of moves");
@@ -274,4 +300,5 @@ public class ViewClientConsole extends ViewClient implements Runnable {
         }
         return null;
     }
+
 }

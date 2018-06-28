@@ -9,6 +9,10 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
     private int idClient;
 
+    private boolean isMyTurn;
+
+    private Scanner input;
+
     private ArrayList<String> idPlayers = new ArrayList<String>();
 
     private ArrayList<ModelChangedMessagePatternCard> patternCards = new ArrayList<ModelChangedMessagePatternCard>();
@@ -73,10 +77,13 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
                 roundTrack.add(i, (ModelChangedMessageRound) message);
             }
         }
-        else if(message instanceof ModelChangedMessageTokensLeft)
-            if(((ModelChangedMessageTokensLeft) message).getIdPlayer().equals(Integer.toString(idClient)))
+        else if(message instanceof ModelChangedMessageTokensLeft) {
+            if (((ModelChangedMessageTokensLeft) message).getIdPlayer().equals(Integer.toString(idClient)))
                 tokensLeft = (ModelChangedMessageTokensLeft) message;
-
+        }
+        else if(message instanceof ModelChangedMessageRefresh) {
+                isMyTurn = Integer.parseInt(((ModelChangedMessageRefresh) message).getIdPlayerPlaying()) == idClient;
+            }
     }
 
     @Override
@@ -158,10 +165,11 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
                 }
             }
 
-            if(moveOk1 || moveOk2)
-                System.out.println("Try Again!");
+            if(isMyTurn)
+                if(moveOk1 || moveOk2)
+                    System.out.println("Try Again!");
         }
-        while(moveOk1 || moveOk2);
+        while((moveOk1 || moveOk2) && isMyTurn);
 
         return position;
     }
@@ -171,11 +179,11 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
         ArrayList<Integer> position = new ArrayList<Integer>();
         boolean moveNotOk1, moveNotOk2;
         int numberOfMovements = 0;
+        input = new Scanner(System.in);
 
         do {
             moveNotOk1 = true;
             System.out.println("How many dice of the same color do you want to move? 1 or 2?");
-            Scanner input = new Scanner(System.in);
             String s = input.nextLine();
 
             if(s.equals("1")) {
@@ -186,50 +194,52 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
                 numberOfMovements = 2;
             }
 
-        }while(moveNotOk1);
+        }while(moveNotOk1 && isMyTurn);
 
-        for (int k = 0; k < numberOfMovements; k++) {
-            do {
-                System.out.println("\nInsert Starting position for "+ k+1 +"° movement on PatternCard separated by a space ");
+        if(isMyTurn)
+            for (int k = 0; k < numberOfMovements; k++) {
+                do {
+                    System.out.println("\nInsert Starting position for "+ k+1 +"° movement on PatternCard separated by a space ");
 
-                moveNotOk1 = true;
-                moveNotOk2 = true;
+                    moveNotOk1 = true;
+                    moveNotOk2 = true;
 
-                Scanner input = new Scanner(System.in);
-                String s = input.nextLine();
+                    input = new Scanner(System.in);
+                    String s = input.nextLine();
 
-                for (int i = 0; i < 5; i++) {
-                    for (int j = 0; j < 4; j++) {
-                        String app = "" + i + " " + j;
-                        if (app.equals(s)) {
-                            moveNotOk1 = false;
-                            position.add(Integer.parseInt(s.split(" ")[0]));
-                            position.add(Integer.parseInt(s.split(" ")[1]));
+                    for (int i = 0; i < 5; i++) {
+                        for (int j = 0; j < 4; j++) {
+                            String app = "" + i + " " + j;
+                            if (app.equals(s)) {
+                                moveNotOk1 = false;
+                                position.add(Integer.parseInt(s.split(" ")[0]));
+                                position.add(Integer.parseInt(s.split(" ")[1]));
+                            }
                         }
                     }
-                }
 
-                System.out.println("\nInsert Final position for " + k+1 + "° movement on PatternCard separated by a space");
+                    System.out.println("\nInsert Final position for " + k+1 + "° movement on PatternCard separated by a space");
 
-                input = new Scanner(System.in);
-                s = input.nextLine();
+                    input = new Scanner(System.in);
+                    s = input.nextLine();
 
-                for (int i = 0; i < 5; i++) {
-                    for (int j = 0; j < 4; j++) {
-                        String app = "" + i + " " + j;
-                        if (app.equals(s)) {
-                            moveNotOk2 = false;
-                            position.add(Integer.parseInt(s.split(" ")[0]));
-                            position.add(Integer.parseInt(s.split(" ")[1]));
+                    for (int i = 0; i < 5; i++) {
+                        for (int j = 0; j < 4; j++) {
+                            String app = "" + i + " " + j;
+                            if (app.equals(s)) {
+                                moveNotOk2 = false;
+                                position.add(Integer.parseInt(s.split(" ")[0]));
+                                position.add(Integer.parseInt(s.split(" ")[1]));
+                            }
                         }
                     }
-                }
 
-                if (moveNotOk1 || moveNotOk2)
-                    System.out.println("Try Again!");
+                    if(isMyTurn)
+                        if (moveNotOk1 || moveNotOk2)
+                            System.out.println("Try Again!");
+                }
+                while ((moveNotOk1 || moveNotOk2) && isMyTurn);
             }
-            while (moveNotOk1 || moveNotOk2);
-        }
 
         return position;
     }
@@ -238,7 +248,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
     public ArrayList<Integer> getSinglePositionInPatternCard(ArrayList<Integer> listOfAvailablePositions){
         boolean moveNotOk = true;
         ArrayList<Integer> position = new ArrayList<Integer>();
-        Scanner input = new Scanner(System.in);
+        input = new Scanner(System.in);
 
         do {
 
@@ -264,15 +274,16 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
                 }
             }
 
-            if(listOfAvailablePositions.size() != 0) {
-                for (int i = 0; i < listOfAvailablePositions.size(); i = i + 2)
-                    if (listOfAvailablePositions.get(i).equals(position.get(0)) && listOfAvailablePositions.get(i + 1).equals(position.get(1)))
-                        return position;
+            if(isMyTurn)
+                if(listOfAvailablePositions.size() != 0) {
+                    for (int i = 0; i < listOfAvailablePositions.size(); i = i + 2)
+                        if (listOfAvailablePositions.get(i).equals(position.get(0)) && listOfAvailablePositions.get(i + 1).equals(position.get(1)))
+                            return position;
 
 
             }
 
-            if (moveNotOk)
+            if (moveNotOk && isMyTurn)
                 System.out.println("Try again!");
 
         } while (moveNotOk  || listOfAvailablePositions.size() != 0);
@@ -284,7 +295,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
     public ArrayList<Integer> getIncrementedValue() {
         ArrayList<Integer> dieAndDecision = new ArrayList<Integer>();
         boolean moveNotOk1, moveNotOk2;
-        Scanner input = new Scanner(System.in);
+        input = new Scanner(System.in);
 
 
         do {
@@ -304,17 +315,19 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
                     moveNotOk2 = false;
             }
 
-            if(moveNotOk1 || moveNotOk2){
-                System.out.println("Try again!");
-            } else {
-                dieAndDecision.add(Integer.parseInt(parts[0]));
-                dieAndDecision.add(Integer.parseInt(parts[1]));
+            if(isMyTurn){
+                if(moveNotOk1 || moveNotOk2){
+                    System.out.println("Try again!");
+                } else {
+                    dieAndDecision.add(Integer.parseInt(parts[0]));
+                    dieAndDecision.add(Integer.parseInt(parts[1]));
+                }
             }
 
 
 
         }
-        while(moveNotOk1 || moveNotOk2);
+        while((moveNotOk1 || moveNotOk2) && isMyTurn);
 
         return dieAndDecision;
 
@@ -322,7 +335,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
     @Override
     public Integer getDieFromDiceArena(){
-        Scanner input = new Scanner(System.in);
+        input = new Scanner(System.in);
         boolean moveNotOk;
         int idDie = -1;
 
@@ -339,10 +352,11 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
                 }
             }
 
-            if(moveNotOk)
-                System.out.println("Try Again!");
+            if(isMyTurn)
+                if(moveNotOk)
+                    System.out.println("Try Again!");
 
-        } while(moveNotOk);
+        } while(moveNotOk && isMyTurn);
 
         return idDie;
 
@@ -353,7 +367,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
     public ArrayList<Integer> getDieFromRoundTrack(){
         boolean moveNotOk;
         ArrayList<Integer> idDie = new ArrayList<>();
-        Scanner input = new Scanner(System.in);
+        input = new Scanner(System.in);
 
         do{
             moveNotOk = true;
@@ -374,10 +388,11 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
                 }
             }
 
-            if(moveNotOk)
-                System.out.println("Try Again!");
+            if(isMyTurn)
+                if(moveNotOk)
+                    System.out.println("Try Again!");
 
-        } while(moveNotOk);
+        } while(moveNotOk && isMyTurn);
 
         return idDie;
 
@@ -387,7 +402,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
     public Integer getValueForDie(){
         boolean moveNotOk;
         int value = -1;
-        Scanner input = new Scanner(System.in);
+        input = new Scanner(System.in);
 
         do{
             moveNotOk = true;
@@ -402,10 +417,11 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
                 }
             }
 
-            if(moveNotOk)
-                System.out.println("Try Again!");
+            if(isMyTurn)
+                if(moveNotOk)
+                    System.out.println("Try Again!");
 
-        } while(moveNotOk);
+        } while(moveNotOk && isMyTurn);
 
         return value;
 

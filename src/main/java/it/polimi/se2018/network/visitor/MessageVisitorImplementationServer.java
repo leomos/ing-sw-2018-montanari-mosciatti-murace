@@ -136,6 +136,11 @@ public class MessageVisitorImplementationServer implements MessageVisitorInterfa
     }
 
     @Override
+    public void visitModelChangedMessagePlayerAFK(ModelChangedMessagePlayerAFK modelChangedMessagePlayerAFK) {
+        serverImplementationSocket.updateView(modelChangedMessagePlayerAFK);
+    }
+
+    @Override
     public void visitPlayerMessageDie(PlayerMessageDie playerMessageDie) {
 
     }
@@ -147,6 +152,11 @@ public class MessageVisitorImplementationServer implements MessageVisitorInterfa
 
     @Override
     public void visitPlayerMessageSetup(PlayerMessageSetup playerMessageSetup) {
+
+    }
+
+    @Override
+    public void visitPlayerMessageNotAFK(PlayerMessageNotAFK playerMessageNotAFK) {
 
     }
 

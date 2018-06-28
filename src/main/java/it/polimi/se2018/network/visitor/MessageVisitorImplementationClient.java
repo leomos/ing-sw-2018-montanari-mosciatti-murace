@@ -32,6 +32,11 @@ public class MessageVisitorImplementationClient implements MessageVisitorInterfa
     }
 
     @Override
+    public void visitPlayerMessageNotAFK(PlayerMessageNotAFK playerMessageNotAFK) {
+        clientImplementationSocket.notifyRoom(playerMessageNotAFK);
+    }
+
+    @Override
     public void visitHeartbeatMessage(HeartbeatMessage heartbeatMessage) {
         clientImplementationSocket.notifyHeartbeat(heartbeatMessage);
     }
@@ -103,6 +108,11 @@ public class MessageVisitorImplementationClient implements MessageVisitorInterfa
 
     @Override
     public void visitModelChangedMessageToolCard(ModelChangedMessageToolCard modelChangedMessageToolCard) {
+
+    }
+
+    @Override
+    public void visitModelChangedMessagePlayerAFK(ModelChangedMessagePlayerAFK modelChangedMessagePlayerAFK) {
 
     }
 }

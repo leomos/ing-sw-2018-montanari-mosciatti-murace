@@ -32,6 +32,8 @@ public interface MessageVisitorInterface {
 
     public void visitModelChangedMessageTokensLeft(ModelChangedMessageTokensLeft modelChangedMessageTokensLeft);
 
+    public void visitModelChangedMessagePlayerAFK(ModelChangedMessagePlayerAFK modelChangedMessagePlayerAFK);
+
     public void visitPlayerMessageDie(PlayerMessageDie playerMessageDie);
 
     public void visitPlayerMessageEndTurn(PlayerMessageEndTurn playerMessageEndTurn);
@@ -39,6 +41,8 @@ public interface MessageVisitorInterface {
     public void visitPlayerMessageSetup(PlayerMessageSetup playerMessageSetup);
 
     public void visitPlayerMessageToolCard(PlayerMessageToolCard playerMessageToolCard);
+
+    public void visitPlayerMessageNotAFK(PlayerMessageNotAFK playerMessageNotAFK);
 
     public void visitHeartbeatMessage(HeartbeatMessage heartbeatMessage);
 }
