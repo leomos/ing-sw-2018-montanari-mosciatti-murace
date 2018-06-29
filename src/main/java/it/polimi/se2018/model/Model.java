@@ -32,6 +32,8 @@ public class Model extends Observable<ModelChangedMessage> {
 
     private Timer timer;
 
+    private boolean hasPlayerDoneAnything;
+
     public Model(HashMap<Integer, String> players){
         this.players = players;
     }
@@ -147,6 +149,8 @@ public class Model extends Observable<ModelChangedMessage> {
     public void setDieInPatternCardFromDiceArena(int idPlayer, int idDie, int x, int y, boolean ignoreAdjency, int idToolCard) {
         PatternCard patternCard = table.getPlayers(idPlayer).getChosenPatternCard();
 
+        hasPlayerDoneAnything = true;
+
         if(table.getDiceArena().getArena().size() > idDie) {
             int actualIdDie = table.getDiceArena().getArena().get(idDie);
 
@@ -193,9 +197,17 @@ public class Model extends Observable<ModelChangedMessage> {
 
     public void endTurn(PlayerMessageEndTurn playerMessageEndTurn){
 
+        //todo: problema se il giocatore ha due turni consecutivi e si disconnette al primo
         int idPlayerMessage = playerMessageEndTurn.getPlayer();
 
+
         if(idPlayerMessage == table.getRoundTrack().getCurrentRound().getIdPlayerPlaying()) {
+            System.out.println("Il giocatore " + idPlayerMessage + " ha mandato l'end turn");
+            timer.stopTimer();
+            timer = null;
+            timer = new Timer(this);
+            timer.start();
+
             if (!table.getRoundTrack().getCurrentRound().isRoundOver()) {
                 try {
                     table.getRoundTrack().getCurrentRound().setNextPlayer();
@@ -222,13 +234,10 @@ public class Model extends Observable<ModelChangedMessage> {
             }
             table.getPlayers(playerMessageEndTurn.getPlayer()).setHasSetDieThisTurn(false);
             table.getPlayers(playerMessageEndTurn.getPlayer()).setHasUsedToolCardThisTurn(false);
+            this.hasPlayerDoneAnything = false;
 
             notify(new ModelChangedMessageRefresh(this.gamePhase, Integer.toString((table.getRoundTrack().getCurrentRound().getIdPlayerPlaying()))));
 
-            timer.stopTimer();
-
-            timer = new Timer(this);
-            timer.start();
         }
     }
 
@@ -236,10 +245,15 @@ public class Model extends Observable<ModelChangedMessage> {
 
         int idPlayerPlaying = table.getRoundTrack().getCurrentRound().getIdPlayerPlaying();
 
-        endTurn(new PlayerMessageEndTurn(idPlayerPlaying));
-        notify(new ModelChangedMessagePlayerAFK(Integer.toString(idPlayerPlaying), "You run out of time. You are now suspended. Send anything to come back into the game"));
+        ModelChangedMessage message;
+        if(hasPlayerDoneAnything)
+            message = (new ModelChangedMessageNewEvent(Integer.toString(idPlayerPlaying), "Time's Up!"));
+        else
+            message = (new ModelChangedMessagePlayerAFK(Integer.toString(idPlayerPlaying), "You run out of time. You are now suspended. Type anything to get back into the game"));
 
-        //todo transform notify in notify to put the guy afk
+
+        endTurn(new PlayerMessageEndTurn(idPlayerPlaying));
+        notify(message);
 
     }
 
@@ -247,6 +261,8 @@ public class Model extends Observable<ModelChangedMessage> {
         Player currentPlayer = this.table.getPlayers(idPlayer);
         ToolCardContainer toolCardContainer = this.table.getToolCardContainer();
         String idPL = "" + idPlayer;
+
+        hasPlayerDoneAnything = true;
 
         boolean toolCardPresent = false;
         boolean enoughTokens = false;
@@ -677,6 +693,40 @@ public class Model extends Observable<ModelChangedMessage> {
 
         notify(new ModelChangedMessageTokensLeft(Integer.toString(idPlayer), Integer.toString(table.getPlayers(idPlayer).getTokens())));
         notify(new ModelChangedMessageToolCard(Integer.toString(idToolCard), toolCard.getName(), toolCard.getDescription(), Integer.toString(toolCard.cost())));
+    }
+
+    public void updatePlayerThatCameBackIntoTheGame(int idPlayer){
+
+        for(Integer key : players.keySet()) {
+            PatternCard patternCard = table.getPlayers(key).getChosenPatternCard();
+
+            notify(new ModelChangedMessageDiceOnPatternCard(Integer.toString(key),
+                    Integer.toString(patternCard.getId()),
+                    patternCard.getDiceRepresentation()));
+
+
+            notify(new ModelChangedMessageTokensLeft(Integer.toString(key),
+                    Integer.toString(table.getPlayers(key).getTokens())));
+
+        }
+
+        for(int j = 0; j < 3; j ++) {
+
+            ToolCard toolCard = table.getToolCardContainer().getToolCardInPlay().get(j);
+            notify(new ModelChangedMessageToolCard(Integer.toString(toolCard.getToolCardId()),
+                    toolCard.getName(),
+                    toolCard.getDescription(),
+                    Integer.toString(toolCard.cost())));
+        }
+
+        notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
+
+        //todo: mancano i round
+
+        ModelChangedMessageRefresh modelChangedMessageRefresh = new ModelChangedMessageRefresh(gamePhase, Integer.toString(table.getRoundTrack().getCurrentRound().getIdPlayerPlaying()));
+        notify(modelChangedMessageRefresh);
+
+        notify(new ModelChangedMessageNewEvent(Integer.toString(idPlayer), "You are back in the game!"));
     }
 }
 
