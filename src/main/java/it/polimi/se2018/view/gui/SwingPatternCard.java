@@ -4,8 +4,10 @@ import it.polimi.se2018.model.events.ModelChangedMessagePatternCard;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class SwingPatternCard extends JPanel {
+
     public SwingPatternCard(ModelChangedMessagePatternCard modelChangedMessagePatternCard, boolean enable) {
         JPanel p = new JPanel();
         p.setLayout(new GridLayout(4, 5));
