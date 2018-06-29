@@ -7,9 +7,12 @@ import it.polimi.se2018.model.patternCard.PatternCard;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
-public class PatternCardsFrame extends SwingPhase {
+public class PatternCardsFrame extends SwingPhase implements ActionListener {
 
     JFrame jFrame = new JFrame();
 
@@ -18,6 +21,10 @@ public class PatternCardsFrame extends SwingPhase {
     private ArrayList<ModelChangedMessagePatternCard> patternCards = new ArrayList<ModelChangedMessagePatternCard>();
 
     private ModelChangedMessagePrivateObjective privateObjective;
+
+    private String idPatternCardChosen = "";
+
+    private ButtonGroup group;
 
     public PatternCardsFrame(int idClient) {
         this.idClient = idClient;
@@ -54,12 +61,18 @@ public class PatternCardsFrame extends SwingPhase {
         l.setForeground(Color.WHITE);
 
         JButton b = new JButton("CONFERMA");
+        b.addActionListener(this);
 
         JRadioButton rb1 = new JRadioButton("PATTERNCARD 1");
+        rb1.setActionCommand(patternCards.get(0).getIdPatternCard());
         JRadioButton rb2 = new JRadioButton("PATTERNCARD 2");
+        rb2.setActionCommand(patternCards.get(1).getIdPatternCard());
         JRadioButton rb3 = new JRadioButton("PATTERNCARD 3");
+        rb3.setActionCommand(patternCards.get(2).getIdPatternCard());
         JRadioButton rb4 = new JRadioButton("PATTERNCARD 4");
-        ButtonGroup group = new ButtonGroup();
+        rb4.setActionCommand(patternCards.get(3).getIdPatternCard());
+
+        group = new ButtonGroup();
         group.add(rb1);
         group.add(rb2);
         group.add(rb3);
@@ -112,6 +125,20 @@ public class PatternCardsFrame extends SwingPhase {
         jFrame.add(b, BorderLayout.SOUTH);
 
         jFrame.setVisible(true);
+    }
 
+    public void actionPerformed(ActionEvent e) {
+        idPatternCardChosen = idPatternCardChosen + group.getSelection().getActionCommand();
+    }
+
+    public Integer askForPatternCard() {
+        do {
+            try {
+                TimeUnit.SECONDS.sleep(3);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        } while (idPatternCardChosen.length()==0);
+        return Integer.parseInt(idPatternCardChosen);
     }
 }

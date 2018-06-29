@@ -8,4 +8,5 @@ public abstract class SwingPhase {
 
     public abstract void print();
 
+    public abstract Integer askForPatternCard();
 }

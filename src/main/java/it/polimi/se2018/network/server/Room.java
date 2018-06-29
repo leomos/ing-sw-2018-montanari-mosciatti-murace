@@ -5,7 +5,7 @@ import it.polimi.se2018.model.GamePhase;
 import it.polimi.se2018.model.Model;
 import it.polimi.se2018.model.events.*;
 import it.polimi.se2018.network.ConnectedClient;
-import it.polimi.se2018.network.visitor.MessageVisitorDisconnectionImplementation;
+import it.polimi.se2018.network.visitor.MessageVisitorImplementationUpdate;
 import it.polimi.se2018.network.visitor.MessageVisitorInterface;
 import it.polimi.se2018.view.VirtualView;
 
@@ -25,7 +25,7 @@ public class Room extends Thread {
 
     private Set<ConnectedClient> players;
 
-    private MessageVisitorInterface messageVisitorDisconnection;
+    private MessageVisitorInterface messageVisitorUpdate;
 
 
     private Stream<ConnectedClient> activePlayers() {
@@ -52,7 +52,7 @@ public class Room extends Thread {
     public void run() {
         //while(gamePlaying) {
             HashMap<Integer, String> clientsMap = createClientsMap();
-            messageVisitorDisconnection = new MessageVisitorDisconnectionImplementation(this);
+            messageVisitorUpdate = new MessageVisitorImplementationUpdate(this);
             model = new Model(clientsMap);
             controller = new Controller(model);
             view = new VirtualView();
@@ -113,11 +113,11 @@ public class Room extends Thread {
 
     public void updatePlayers(Message updateMessage) {
 
-        //se il messaggio è playerAFK, vuol dire che il time out del timer è scaduto, quindi metto il giocatore in
+        //se il messaggio è playerAFK, vuol dire che il time out del timerSuspendThreshold è scaduto, quindi metto il giocatore in
         //AFK inoltrando solo a lui questo tipo di messaggio. a dire la verità lo inoltra due volte?
         //bisogna togliere il INSTANCE OF e si può mettere nel for sotto volendo
 
-        if(updateMessage instanceof ModelChangedMessagePlayerAFK){
+        /*if(updateMessage instanceof ModelChangedMessagePlayerAFK){
             players.forEach((player) -> {
 
                 if(((ModelChangedMessagePlayerAFK) updateMessage).getPlayer().equals(Integer.toString(player.getId()))) {
@@ -131,22 +131,25 @@ public class Room extends Thread {
                 }
 
             });
-        }
+        }*/
 
+        ((MessageVisitorImplementationUpdate)messageVisitorUpdate).setCurrentPlayerPlayingId(model.currentPlayerPlaying());
 
         players.forEach((player) -> {
-            try {
+            ((MessageVisitorImplementationUpdate)messageVisitorUpdate).setPlayer(player);
+            updateMessage.accept(messageVisitorUpdate);
+            /*try {
                 if(!player.isInactive()) {
                     player.getClientInterface().update((ModelChangedMessage) updateMessage);
                 } else {
                     //todo: da fare solo se il gamephase è GAMEPHASE
                     if(player.getId() == model.currentPlayerPlaying()) {
-                        updateMessage.accept(messageVisitorDisconnection);
+                        updateMessage.accept(messageVisitorUpdate);
                     }
                 }
             } catch (RemoteException e) {
                 e.printStackTrace();
-            }
+            }*/
         });
     }
 
