@@ -32,8 +32,10 @@ public class Model extends Observable<ModelChangedMessage> {
 
     private Timer timer;
 
+
     public Model(HashMap<Integer, String> players){
         this.players = players;
+        this.timer = Timer.getInstance();
     }
 
     public Table getTable() {
@@ -130,9 +132,9 @@ public class Model extends Observable<ModelChangedMessage> {
                 notify(new ModelChangedMessageNewEvent(Integer.toString(key), "IdPatternCard chosen was not present; \nYou are going to automatically get the first one available"));
         }
 
-        timer = new Timer(this);
+        timer.setModel(this);
 
-        timer.start();
+        timer.startTimer();
 
     }
 
@@ -240,8 +242,7 @@ public class Model extends Observable<ModelChangedMessage> {
         if(idPlayerMessage == table.getRoundTrack().getCurrentRound().getIdPlayerPlaying()) {
             System.out.println("Il giocatore " + idPlayerMessage + " ha mandato l'end turn");
             timer.stopTimer();
-            timer = new Timer(this);
-            timer.start();
+            timer.startTimer();
 
             if (!table.getRoundTrack().getCurrentRound().isRoundOver()) {
                 try {
@@ -287,10 +288,9 @@ public class Model extends Observable<ModelChangedMessage> {
 
         int idPlayerPlaying = table.getRoundTrack().getCurrentRound().getIdPlayerPlaying();
 
-        ModelChangedMessage message = (new ModelChangedMessagePlayerAFK(Integer.toString(idPlayerPlaying), "You run out of time. You are now suspended. Type anything to get back into the game"));
+        notify(new ModelChangedMessagePlayerAFK(Integer.toString(idPlayerPlaying), "You run out of time. You are now suspended. Type anything to get back into the game"));
 
         endTurn(new PlayerMessageEndTurn(idPlayerPlaying));
-        notify(message);
 
     }
 
