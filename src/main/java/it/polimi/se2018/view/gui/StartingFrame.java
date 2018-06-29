@@ -5,6 +5,7 @@ import it.polimi.se2018.view.ViewClient;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -42,7 +43,7 @@ public class StartingFrame extends ViewClient implements ActionListener {
 
         ImageIcon i = new ImageIcon(ImageIO.read(new File("../PROGETTO\\src\\images\\Sagrada.jpg")));
         Image i1 = i.getImage().getScaledInstance(500, 670, Image.SCALE_SMOOTH);
-        Panel p = new Panel(i1);
+        it.polimi.se2018.view.gui.Panel p = new it.polimi.se2018.view.gui.Panel(i1);
         this.jFrame.setContentPane(p);
 
         GridBagConstraints constraints = new GridBagConstraints();

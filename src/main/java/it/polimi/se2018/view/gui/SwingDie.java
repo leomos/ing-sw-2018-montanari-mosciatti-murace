@@ -7,6 +7,8 @@ import java.util.ArrayList;
 public class SwingDie extends JButton {
     private int val;
 
+    private int id;
+
     public SwingDie(int val) {
         this.val = val;
         setPreferredSize(new Dimension(50, 50));
@@ -14,6 +16,10 @@ public class SwingDie extends JButton {
 
     public void setVal(int val) {
         this.val = val;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void paintComponent(Graphics g) {

@@ -3,7 +3,6 @@ package it.polimi.se2018.view.gui;
 import it.polimi.se2018.model.events.ModelChangedMessage;
 import it.polimi.se2018.model.events.ModelChangedMessagePatternCard;
 import it.polimi.se2018.model.events.ModelChangedMessagePrivateObjective;
-import it.polimi.se2018.model.patternCard.PatternCard;
 
 import javax.swing.*;
 import java.awt.*;
