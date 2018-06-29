@@ -1,6 +1,7 @@
 package it.polimi.se2018.model.rounds;
 
 
+import it.polimi.se2018.model.Table;
 import it.polimi.se2018.model.player.Player;
 import it.polimi.se2018.model.player.PlayerHasNotSetDieThisTurnException;
 import it.polimi.se2018.model.container.DiceContainer;
@@ -84,10 +85,16 @@ public class Round {
      * from the turns array and then removing it.
      * @throws RoundFinishedException if no more rounds are available.
      */
-    public void setNextPlayer() throws RoundFinishedException {
+    public void setNextPlayer(Table table) throws RoundFinishedException {
         if(!turns.isEmpty()) {
             idPlayerPlaying = turns.get(0);
             turns.remove(0);
+
+            if(table.getPlayers(idPlayerPlaying).isSuspended()) {
+                System.out.println("faccio skippare un turno perchè è sospeso");
+                this.setNextPlayer(table);
+            }
+
         } else {
             throw new RoundFinishedException();
         }

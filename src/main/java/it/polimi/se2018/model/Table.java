@@ -3,6 +3,7 @@ package it.polimi.se2018.model;
 import it.polimi.se2018.model.container.DiceContainer;
 import it.polimi.se2018.model.objectives.*;
 import it.polimi.se2018.model.patternCard.PatternCard;
+import it.polimi.se2018.model.player.OnlyOnePlayerLeftException;
 import it.polimi.se2018.model.player.Player;
 import it.polimi.se2018.model.rounds.RoundTrack;
 import it.polimi.se2018.model.rounds.RoundTrackNoMoreRoundsException;
@@ -55,7 +56,7 @@ public class Table {
 
         this.diceArena.rollDiceIntoArena();
         try {
-            this.getRoundTrack().startNextRound();
+            this.getRoundTrack().startNextRound(this);
         } catch (RoundTrackNoMoreRoundsException e) {
             //TODO: dont know what to put here, prob nothing
         }
@@ -196,6 +197,19 @@ public class Table {
             }
         }
 
+    }
+
+    public void checkActivePlayers() throws OnlyOnePlayerLeftException {
+
+        int count = players.size();
+
+        for(int i = 0; i < players.size(); i++) {
+            if (players.get(i).isSuspended())
+                count--;
+        }
+
+        if(count <= 1)
+            throw new OnlyOnePlayerLeftException();
     }
 
     public void calculateScores() {

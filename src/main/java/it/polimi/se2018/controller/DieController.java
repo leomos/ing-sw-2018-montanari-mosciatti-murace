@@ -1,7 +1,6 @@
 package it.polimi.se2018.controller;
 
 import it.polimi.se2018.model.Model;
-import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.events.PlayerMessageDie;
 
 public class DieController  {
@@ -17,7 +16,7 @@ public class DieController  {
      * @param playerMessageDie message passed from controller containing the information required to perform the move
      * @throws
      */
-    public void execute(PlayerMessageDie playerMessageDie) throws DiceContainerUnsupportedIdException {
+    public void execute(PlayerMessageDie playerMessageDie) {
 
         int idPlayer = playerMessageDie.getPlayerId();
         int idDie = playerMessageDie.getDie();

@@ -1,5 +1,6 @@
 package it.polimi.se2018.model.rounds;
 
+import it.polimi.se2018.model.Table;
 import it.polimi.se2018.model.player.Player;
 import it.polimi.se2018.model.container.DiceContainer;
 import org.junit.After;
@@ -17,7 +18,7 @@ public class TestRoundTrack {
 
     private DiceContainer diceContainer;
 
-
+    private Table table;
 
     @Before
     public void setUp() {
@@ -37,7 +38,7 @@ public class TestRoundTrack {
     @Test
     public void startNextRound_CalledOneTime_currentRoundIdShouldBe0() {
         try {
-            roundTrack.startNextRound();
+            roundTrack.startNextRound(table);
         } catch (RoundTrackNoMoreRoundsException e) {
             e.printStackTrace();
         }
@@ -48,7 +49,7 @@ public class TestRoundTrack {
     public void startNextRound_Called10Times_currentRoundIdShouldBe9() {
         for (int i = 0; i < 10; i++) {
             try {
-                roundTrack.startNextRound();
+                roundTrack.startNextRound(table);
             } catch (RoundTrackNoMoreRoundsException e) {
                 e.printStackTrace();
             }
@@ -59,7 +60,7 @@ public class TestRoundTrack {
     @Test(expected = RoundTrackNoMoreRoundsException.class)
     public void startNextRound_Called11Times_ExceptionThrown() throws RoundTrackNoMoreRoundsException {
         for (int i = 0; i < 11; i++) {
-            roundTrack.startNextRound();
+            roundTrack.startNextRound(table);
         }
         assertEquals(9,roundTrack.getCurrentRound().getId());
     }
@@ -71,7 +72,7 @@ public class TestRoundTrack {
         diceLeft.add(22);
         diceLeft.add(90);
         try {
-            roundTrack.startNextRound();
+            roundTrack.startNextRound(table);
         } catch (RoundTrackNoMoreRoundsException e) {
             e.printStackTrace();
         }

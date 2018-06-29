@@ -12,6 +12,8 @@ public class Player {
 
     private String name;
 
+    private boolean suspended = false;
+
     private ArrayList<PatternCard> patternCards;
 
     private PatternCard chosenPatternCard;
@@ -73,8 +75,16 @@ public class Player {
         return this.missBehaved;
     }
 
+    public boolean isSuspended() {
+        return suspended;
+    }
+
     public void setTokens(int tokens) {
         this.tokens = tokens;
+    }
+
+    public void setSuspended(boolean suspended) {
+        this.suspended = suspended;
     }
 
     public void setChosenPatternCard(PatternCard chosenPatternCard) {
