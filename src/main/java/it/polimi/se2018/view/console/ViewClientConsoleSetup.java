@@ -3,6 +3,7 @@ package it.polimi.se2018.view.console;
 import it.polimi.se2018.model.events.ModelChangedMessage;
 import it.polimi.se2018.model.events.ModelChangedMessagePatternCard;
 import it.polimi.se2018.model.events.ModelChangedMessagePrivateObjective;
+import it.polimi.se2018.model.events.PlayerMessage;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -98,6 +99,11 @@ public class ViewClientConsoleSetup extends ViewClientConsolePrint {
 
     @Override
     public ArrayList<Integer> getDoublePositionInPatternCard() { return null;}
+
+    @Override
+    public PlayerMessage getMainMove(String s) {
+        return null;
+    }
 
 
 }

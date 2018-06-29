@@ -108,15 +108,14 @@ public class ViewClientConsole extends ViewClient implements Runnable {
                     if(canIPlay) {
 
                         Scanner mainInput = new Scanner(System.in);
-
                         boolean moveOk;
+
                         do {
                             moveOk = true;
 
                             if(mainInput.hasNext()) {
 
                                 String s = mainInput.nextLine();
-                                String[] parts = s.split(" ");
 
                                 try {
                                     TimeUnit.SECONDS.sleep(1);
@@ -126,59 +125,16 @@ public class ViewClientConsole extends ViewClient implements Runnable {
                                 if(!clientSuspended) {
                                     if (idPlayerPlaying == idClient) {
 
-                                        if (s.equals("/help")) {
-                                            System.out.println("\nset + DieId + x_position + y_position  -> to position a die from the dice arena to the patterncard\n" +
-                                                    "use + toolCardID -> to use the toolCard\nend  -> to end the turn");
-                                            moveOk = false;
-                                        }
+                                        PlayerMessage message = viewClientConsolePrint.getMainMove(s);
 
-                                        if (parts.length == 4) {
-                                            for (int i = 0; i < 9; i++)
-                                                for (int j = 0; j < 5; j++)
-                                                    for (int k = 0; k < 4; k++) {
-                                                        String app = "set " + i + " " + j + " " + k;
-                                                        if (s.equals(app)) {
-                                                            moveOk = false;
-                                                            int idDie = Integer.parseInt(parts[1]);
-                                                            int x = Integer.parseInt(parts[2]);
-                                                            int y = Integer.parseInt(parts[3]);
-                                                            try {
-                                                                serverInterface.notify(new PlayerMessageDie(idClient, idDie, x, y));
-                                                            } catch (RemoteException e) {
-                                                                e.printStackTrace();
-                                                            }
-                                                        }
-                                                    }
-                                        }
-
-                                        if (parts.length == 2) {
-                                            for (int i = 1; i < 13; i++) {
-                                                String app = "use " + i;
-                                                if (s.equals(app)) {
-                                                    moveOk = false;
-                                                    int idToolCard = Integer.parseInt(parts[1]);
-                                                    try {
-                                                        serverInterface.notify(new PlayerMessageToolCard(idClient, idToolCard));
-                                                    } catch (RemoteException e) {
-                                                        e.printStackTrace();
-                                                    }
-                                                }
-                                            }
-                                        }
-
-                                        if (s.equals("end")) {
-                                            moveOk = false;
+                                        if(message != null)
                                             try {
-                                                serverInterface.notify(new PlayerMessageEndTurn(idClient));
+                                                serverInterface.notify(message);
                                             } catch (RemoteException e) {
                                                 e.printStackTrace();
                                             }
-                                        }
-
-                                        if (moveOk == true) {
-                                            System.out.println("Try Again!");
-                                        }
-
+                                        else
+                                            moveOk = false;
 
                                     } else {
                                         System.out.println("It's player  " + idPlayerPlaying + " turn, not yours!");
@@ -210,20 +166,14 @@ public class ViewClientConsole extends ViewClient implements Runnable {
 
     }
 
-    public void AFK(){
-
-        Scanner input = new Scanner(System.in);
-        String s = input.nextLine();
-
+    public void unSuspend(){
+        System.out.println("You are not suspended anymore!");
+        clientSuspended = false;
         try {
-            serverInterface.notify(new PlayerMessageNotAFK(this.idClient));
+            serverInterface.notify(new PlayerMessageNotAFK(idClient));
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-
-
-        return;
-
     }
 
     @Override
@@ -248,7 +198,12 @@ public class ViewClientConsole extends ViewClient implements Runnable {
     public ArrayList<Integer> getPositionInPatternCard(){
         if(idPlayerPlaying == idClient){
 
-            return viewClientConsolePrint.getPositionInPatternCard();
+            ArrayList<Integer> returnValues = viewClientConsolePrint.getPositionInPatternCard();
+
+            if(returnValues.isEmpty())
+                unSuspend();
+
+            return returnValues;
 
         }
         return null;
@@ -258,7 +213,12 @@ public class ViewClientConsole extends ViewClient implements Runnable {
     public ArrayList<Integer> getSinglePositionInPatternCard(ArrayList<Integer> listOfAvailablePositions){
         if(idPlayerPlaying == idClient) {
 
-            return viewClientConsolePrint.getSinglePositionInPatternCard(listOfAvailablePositions);
+            ArrayList<Integer> returnValues = viewClientConsolePrint.getSinglePositionInPatternCard(listOfAvailablePositions);
+
+            if(returnValues.isEmpty())
+                unSuspend();
+
+            return returnValues;
 
         }
         return null;
@@ -269,7 +229,13 @@ public class ViewClientConsole extends ViewClient implements Runnable {
 
         if (idPlayerPlaying == idClient) {
 
-            return viewClientConsolePrint.getIncrementedValue();
+            ArrayList<Integer> returnValues = viewClientConsolePrint.getIncrementedValue();
+
+
+            if(returnValues.isEmpty())
+                unSuspend();
+
+            return returnValues;
 
         }
         return null;
@@ -280,7 +246,13 @@ public class ViewClientConsole extends ViewClient implements Runnable {
 
         if(idPlayerPlaying == idClient) {
 
-            return viewClientConsolePrint.getDieFromDiceArena();
+            Integer returnValues = viewClientConsolePrint.getDieFromDiceArena();
+
+
+            if(returnValues == -1)
+                unSuspend();
+
+            return returnValues;
 
         }
         return null;
@@ -290,7 +262,12 @@ public class ViewClientConsole extends ViewClient implements Runnable {
     public ArrayList<Integer> getDieFromRoundTrack(){
         if(idPlayerPlaying == idClient) {
 
-            return viewClientConsolePrint.getDieFromRoundTrack();
+            ArrayList<Integer> returnValues = viewClientConsolePrint.getDieFromRoundTrack();
+
+            if(returnValues.isEmpty())
+                unSuspend();
+
+            return returnValues;
 
         }
         return null;
@@ -300,7 +277,13 @@ public class ViewClientConsole extends ViewClient implements Runnable {
     public Integer getValueForDie(){
         if(idPlayerPlaying == idClient) {
 
-            return viewClientConsolePrint.getValueForDie();
+            Integer returnValues = viewClientConsolePrint.getValueForDie();
+
+
+            if(returnValues == -1)
+                unSuspend();
+
+            return returnValues;
 
         }
         return null;
@@ -311,7 +294,12 @@ public class ViewClientConsole extends ViewClient implements Runnable {
     public ArrayList<Integer> getDoublePositionInPatternCard(){
         if(idPlayerPlaying == idClient) {
 
-            return viewClientConsolePrint.getDoublePositionInPatternCard();
+            ArrayList<Integer> returnValues = viewClientConsolePrint.getDieFromRoundTrack();
+
+            if(returnValues.isEmpty())
+                unSuspend();
+
+            return returnValues;
         }
         return null;
     }

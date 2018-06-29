@@ -2,6 +2,7 @@ package it.polimi.se2018.view.console;
 
 import it.polimi.se2018.model.events.ModelChangedMessage;
 import it.polimi.se2018.model.events.ModelChangedMessageEndGame;
+import it.polimi.se2018.model.events.PlayerMessage;
 
 import java.util.ArrayList;
 
@@ -78,4 +79,9 @@ public class ViewClientConsoleEndGame extends ViewClientConsolePrint {
 
     @Override
     public ArrayList<Integer> getDoublePositionInPatternCard() { return null;}
+
+    @Override
+    public PlayerMessage getMainMove(String s) {
+        return null;
+    }
 }

@@ -204,5 +204,6 @@ public abstract class ViewClientConsolePrint {
 
     public abstract ArrayList<Integer> getDoublePositionInPatternCard();
 
+    public abstract PlayerMessage getMainMove(String s);
 
 }

@@ -174,6 +174,49 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
         return position;
     }
 
+    public PlayerMessage getMainMove(String s){
+
+
+        String[] parts = s.split(" ");
+
+        if (s.equals("/help")) {
+            System.out.println("\nset + DieId + x_position + y_position  -> to position a die from the dice arena to the patterncard\n" +
+                    "use + toolCardID -> to use the toolCard\nend  -> to end the turn");
+        }
+
+        if (parts.length == 4) {
+            for (int i = 0; i < 9; i++)
+                for (int j = 0; j < 5; j++)
+                    for (int k = 0; k < 4; k++) {
+                        String app = "set " + i + " " + j + " " + k;
+                        if (s.equals(app)) {
+                            int idDie = Integer.parseInt(parts[1]);
+                            int x = Integer.parseInt(parts[2]);
+                            int y = Integer.parseInt(parts[3]);
+                            return new PlayerMessageDie(idClient, idDie, x, y);
+                        }
+                    }
+        }
+
+        if (parts.length == 2) {
+            for (int i = 1; i < 13; i++) {
+                String app = "use " + i;
+                if (s.equals(app)) {
+                    int idToolCard = Integer.parseInt(parts[1]);
+                    return new PlayerMessageToolCard(idClient, idToolCard);
+                }
+            }
+        }
+
+        if (s.equals("end")) {
+            return new PlayerMessageEndTurn(idClient);
+        }
+
+        return null;
+
+    }
+
+
     @Override
     public ArrayList<Integer> getDoublePositionInPatternCard(){
         ArrayList<Integer> position = new ArrayList<Integer>();
