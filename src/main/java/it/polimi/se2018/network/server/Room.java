@@ -1,6 +1,7 @@
 package it.polimi.se2018.network.server;
 
 import it.polimi.se2018.controller.Controller;
+import it.polimi.se2018.model.GamePhase;
 import it.polimi.se2018.model.Model;
 import it.polimi.se2018.model.events.*;
 import it.polimi.se2018.network.ConnectedClient;
@@ -87,18 +88,58 @@ public class Room extends Thread {
     }
 
     public void notifyView(Message playerMessage) {
-        System.out.println("arrivato " + playerMessage.toString());
-        view.callNotify((PlayerMessage) playerMessage);
+
+        //se il messaggio è un notAFK, allora setto il giocatore in attivo e gli mando un refresh
+        //così si "riaggiorna" con ciò che è successo in sua assenza;
+        //bisogna togliere INSTANCE OF
+
+        if(playerMessage instanceof PlayerMessageNotAFK) {
+            players.forEach((player) -> {
+                if (((PlayerMessageNotAFK) playerMessage).getPlayer() == player.getId()) {
+                    player.setInactive(false);
+
+                    System.out.println("giocatore ACTIVE");
+
+                    //todo: non ti basta mandare il modelChangedMessage ma devi rimandare tutto
+                    //es: model.mandatutto()
+                    updatePlayers(new ModelChangedMessageRefresh(GamePhase.GAMEPHASE, Integer.toString(model.currentPlayerPlaying())));
+                }
+            });
+        }else
+            view.callNotify((PlayerMessage) playerMessage);
     }
 
 
 
     public void updatePlayers(Message updateMessage) {
+
+        //se il messaggio è playerAFK, vuol dire che il time out del timer è scaduto, quindi metto il giocatore in
+        //AFK inoltrando solo a lui questo tipo di messaggio. a dire la verità lo inoltra due volte?
+        //bisogna togliere il INSTANCE OF e si può mettere nel for sotto volendo
+
+        if(updateMessage instanceof ModelChangedMessagePlayerAFK){
+            players.forEach((player) -> {
+
+                if(((ModelChangedMessagePlayerAFK) updateMessage).getPlayer().equals(Integer.toString(player.getId()))) {
+                    try {
+                        player.setInactive(true);
+                        System.out.println("giocatore INACTIVE");
+                        player.getClientInterface().update((ModelChangedMessage) updateMessage);
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            });
+        }
+
+
         players.forEach((player) -> {
             try {
                 if(!player.isInactive()) {
                     player.getClientInterface().update((ModelChangedMessage) updateMessage);
                 } else {
+                    //todo: da fare solo se il gamephase è GAMEPHASE
                     if(player.getId() == model.currentPlayerPlaying()) {
                         updateMessage.accept(messageVisitorDisconnection);
                     }
@@ -212,7 +253,6 @@ public class Room extends Thread {
         connectedClientById(id).setInactive(true);
 
         if(model.currentPlayerPlaying() == id) {
-            System.out.println("arrivato");
             Message message = new PlayerMessageEndTurn(id);
             notifyView(message);
         }
