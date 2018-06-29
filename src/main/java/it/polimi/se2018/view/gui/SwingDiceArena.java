@@ -14,6 +14,7 @@ public class SwingDiceArena extends JPanel {
 
         int l = dice.size();
         for (int i=0; i<l; i++) {
+            dice.get(i).setToolTipText("Dice Arena");
             add(dice.get(i));
         }
     }

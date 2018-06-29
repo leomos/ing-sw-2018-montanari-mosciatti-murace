@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class SwingDie extends JButton {
     private int val;
 
-    private int id;
+    private String id;
 
     public SwingDie(int val) {
         this.val = val;
@@ -18,10 +18,11 @@ public class SwingDie extends JButton {
         this.val = val;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Color c = new Color(200,0,0,5);
@@ -62,7 +63,6 @@ public class SwingDie extends JButton {
             c = representation.charAt(i);
             n = representation.charAt(i+1);
             SwingDie d = new SwingDie(0);
-            d.setToolTipText("Dice Arena");
 
             switch (n) {
                 case '1':

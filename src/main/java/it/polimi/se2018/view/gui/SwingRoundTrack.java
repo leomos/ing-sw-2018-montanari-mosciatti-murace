@@ -2,11 +2,9 @@ package it.polimi.se2018.view.gui;
 
 import it.polimi.se2018.model.events.ModelChangedMessageDiceArena;
 import it.polimi.se2018.model.events.ModelChangedMessageRound;
-import javafx.scene.layout.Pane;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
