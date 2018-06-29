@@ -4,6 +4,7 @@ import it.polimi.se2018.network.ClientInterface;
 import it.polimi.se2018.network.ServerInterface;
 import it.polimi.se2018.view.ViewClient;
 import it.polimi.se2018.view.console.ViewClientConsole;
+import it.polimi.se2018.view.gui.SwingMainView;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -20,8 +21,13 @@ public class Client {
         //String host = "163.172.183.230";
         String host = "localhost";
 
-        System.out.println("\nInsert Name");
+
+        System.out.println("\nInsert Type View");
         Scanner input = new Scanner(System.in);
+        String typeView = input.nextLine();
+
+        System.out.println("\nInsert Name");
+        input = new Scanner(System.in);
         String name = input.nextLine();
 
         boolean moveOk = true;
@@ -37,7 +43,11 @@ public class Client {
 
 
         int server = Integer.parseInt(type);
-        ViewClient viewClient = new ViewClientConsole();
+        ViewClient viewClient;
+        if(typeView.equals(0))
+            viewClient = new ViewClientConsole();
+        else
+            viewClient = new SwingMainView();
         ServerInterface serverInterface = null;
         int id = 0;
         if(server == 0) {

@@ -1,22 +1,54 @@
 package it.polimi.se2018.view.gui;
 
+import it.polimi.se2018.model.events.ModelChangedMessage;
 import it.polimi.se2018.model.events.ModelChangedMessagePatternCard;
+import it.polimi.se2018.model.events.ModelChangedMessagePrivateObjective;
 import it.polimi.se2018.model.patternCard.PatternCard;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
-public class PatternCardsFrame extends JFrame {
-    public PatternCardsFrame(SwingPatternCard p1, SwingPatternCard p2, SwingPatternCard p3, SwingPatternCard p4) {
-        setTitle("SCELTA PATTERNCARD");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(550, 700);
-        setLayout(new BorderLayout());
+public class PatternCardsFrame extends SwingPhase {
+
+    JFrame jFrame = new JFrame();
+
+    private int idClient;
+
+    private ArrayList<ModelChangedMessagePatternCard> patternCards = new ArrayList<ModelChangedMessagePatternCard>();
+
+    private ModelChangedMessagePrivateObjective privateObjective;
+
+    public PatternCardsFrame(int idClient) {
+        this.idClient = idClient;
+    }
+
+    public void update(ModelChangedMessage message){
+        if(message instanceof ModelChangedMessagePatternCard) {
+            if (((ModelChangedMessagePatternCard) message).getIdPlayer().equals(Integer.toString(idClient)))
+                patternCards.add((ModelChangedMessagePatternCard) message);
+        }
+        else if(message instanceof ModelChangedMessagePrivateObjective)
+            if (((ModelChangedMessagePrivateObjective) message).getIdPlayer().equals(Integer.toString(idClient)))
+                privateObjective = ((ModelChangedMessagePrivateObjective) message);
+
+    }
+
+    public void print(){
+        SwingPatternCard p1 = new SwingPatternCard(patternCards.get(0), true);
+        SwingPatternCard p2 = new SwingPatternCard(patternCards.get(1), true);
+        SwingPatternCard p3 = new SwingPatternCard(patternCards.get(2), true);
+        SwingPatternCard p4 = new SwingPatternCard(patternCards.get(3), true);
+
+        jFrame.setTitle("SCELTA PATTERNCARD");
+        jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        jFrame.setSize(550, 700);
+        jFrame.setLayout(new BorderLayout());
         JPanel p = new JPanel();
         Color c = new Color(34, 139, 34);
         p.setBackground(c);
 
-        setContentPane(p);
+        jFrame.setContentPane(p);
 
         JLabel l = new JLabel("SCEGLI LA PATTERNCARD CON CUI GIOCARE", SwingConstants.CENTER);
         l.setForeground(Color.WHITE);
@@ -75,24 +107,11 @@ public class PatternCardsFrame extends JFrame {
         constraints.gridy = 1;
         panel.add(panel4, constraints);
 
-        add(l, BorderLayout.NORTH);
-        add(panel, BorderLayout.CENTER);
-        add(b, BorderLayout.SOUTH);
+        jFrame.add(l, BorderLayout.NORTH);
+        jFrame.add(panel, BorderLayout.CENTER);
+        jFrame.add(b, BorderLayout.SOUTH);
 
-        setVisible(true);
-    }
+        jFrame.setVisible(true);
 
-    public static void main(String args[]) {
-        ModelChangedMessagePatternCard message1 = new ModelChangedMessagePatternCard("1", "2", "Bellesguard", "3", "b600y03b00056200401g");
-        ModelChangedMessagePatternCard message2 = new ModelChangedMessagePatternCard("1", "7", "Symphony of Light", "6", "20501y6p2r0b4g003050");
-        ModelChangedMessagePatternCard message3 = new ModelChangedMessagePatternCard("1", "11", "Batllo", "5", "0060005b403gyp214r53");
-        ModelChangedMessagePatternCard message4 = new ModelChangedMessagePatternCard("1", "21", "Comitas", "5", "y02060405y000y512y30");
-
-        SwingPatternCard p1 = new SwingPatternCard(message1, true);
-        SwingPatternCard p2 = new SwingPatternCard(message2, true);
-        SwingPatternCard p3 = new SwingPatternCard(message3, true);
-        SwingPatternCard p4 = new SwingPatternCard(message4, true);
-
-        new PatternCardsFrame(p1, p2, p3, p4);
     }
 }
