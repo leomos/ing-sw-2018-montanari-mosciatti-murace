@@ -98,6 +98,8 @@ public class Room extends Thread {
                 if (((PlayerMessageNotAFK) playerMessage).getPlayer() == player.getId()) {
                     player.setInactive(false);
 
+                    System.out.println("giocatore ACTIVE");
+
                     //todo: non ti basta mandare il modelChangedMessage ma devi rimandare tutto
                     //es: model.mandatutto()
                     updatePlayers(new ModelChangedMessageRefresh(GamePhase.GAMEPHASE, Integer.toString(model.currentPlayerPlaying())));
@@ -120,8 +122,9 @@ public class Room extends Thread {
 
                 if(((ModelChangedMessagePlayerAFK) updateMessage).getPlayer().equals(Integer.toString(player.getId()))) {
                     try {
-                        player.getClientInterface().update((ModelChangedMessage) updateMessage);
                         player.setInactive(true);
+                        System.out.println("giocatore INACTIVE");
+                        player.getClientInterface().update((ModelChangedMessage) updateMessage);
                     } catch (RemoteException e) {
                         e.printStackTrace();
                     }
@@ -136,6 +139,7 @@ public class Room extends Thread {
                 if(!player.isInactive()) {
                     player.getClientInterface().update((ModelChangedMessage) updateMessage);
                 } else {
+                    //todo: da fare solo se il gamephase è GAMEPHASE
                     if(player.getId() == model.currentPlayerPlaying()) {
                         updateMessage.accept(messageVisitorDisconnection);
                     }

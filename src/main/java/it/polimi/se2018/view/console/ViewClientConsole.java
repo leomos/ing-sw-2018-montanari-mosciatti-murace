@@ -106,12 +106,15 @@ public class ViewClientConsole extends ViewClient implements Runnable {
                     }
 
                     if(canIPlay) {
+
                         Scanner mainInput = new Scanner(System.in);
+
                         boolean moveOk;
                         do {
                             moveOk = true;
 
                             if(mainInput.hasNext()) {
+
                                 String s = mainInput.nextLine();
                                 String[] parts = s.split(" ");
 

@@ -36,7 +36,8 @@ public class Timer extends Thread{
         if(i >= timer) {
             System.out.println("è scaduto il timer!");
             model.timesUp();
-        }
+        } else
+            System.out.println("il timer è stato effetivamente stopppato");
 
 
     }
