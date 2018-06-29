@@ -44,10 +44,14 @@ public class Client {
 
         int server = Integer.parseInt(type);
         ViewClient viewClient;
-        if(typeView.equals(0))
+        if(typeView.equals("0")) {
+            System.out.println("Starting console");
             viewClient = new ViewClientConsole();
-        else
+        }
+        else {
+            System.out.println("Starting GUI");
             viewClient = new SwingMainView();
+        }
         ServerInterface serverInterface = null;
         int id = 0;
         if(server == 0) {
@@ -74,10 +78,11 @@ public class Client {
                 e.printStackTrace();
             }
         }
+        viewClient.setServerInterface(serverInterface);
         viewClient.startHeartbeating(id);
         System.out.println(id);
-        ((ViewClientConsole) viewClient).setIdClient(id);
-        viewClient.setServerInterface(serverInterface);
-        ((ViewClientConsole) viewClient).run();
+        viewClient.setIdClient(id);
+        if(typeView.equals("0"))
+            ((ViewClientConsole)viewClient).run();
     }
 }

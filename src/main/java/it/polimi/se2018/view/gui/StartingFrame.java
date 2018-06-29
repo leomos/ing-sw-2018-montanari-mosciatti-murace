@@ -1,6 +1,5 @@
 package it.polimi.se2018.view.gui;
 
-import it.polimi.se2018.network.client.Client;
 import it.polimi.se2018.view.ViewClient;
 
 import javax.imageio.ImageIO;
@@ -81,5 +80,11 @@ public class StartingFrame extends ViewClient implements ActionListener {
 
     public ArrayList<String> getChoices() {
         return this.choices;
+    }
+
+
+    @Override
+    public void setIdClient(int idClient) {
+
     }
 }

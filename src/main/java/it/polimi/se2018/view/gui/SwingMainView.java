@@ -3,14 +3,9 @@ package it.polimi.se2018.view.gui;
 import it.polimi.se2018.model.GamePhase;
 import it.polimi.se2018.model.events.*;
 import it.polimi.se2018.view.ViewClient;
-import it.polimi.se2018.view.console.ViewClientConsoleEndGame;
-import it.polimi.se2018.view.console.ViewClientConsoleGame;
-
-import javax.swing.*;
 
 import static it.polimi.se2018.model.GamePhase.ENDGAMEPHASE;
 import static it.polimi.se2018.model.GamePhase.GAMEPHASE;
-import static it.polimi.se2018.model.GamePhase.SETUPPHASE;
 
 public class SwingMainView extends ViewClient {
 
@@ -80,5 +75,9 @@ public class SwingMainView extends ViewClient {
             swingPhase.update(message);
         }
     }
+
+    /*public Integer askForPatternCard()  {
+        return swingPhase.askForPatternCard();
+    }*/
 
 }

@@ -61,6 +61,8 @@ public abstract class ViewClient {
 
     public Boolean free() {return true;}
 
+    public abstract void setIdClient(int idClient);
+
     public void startHeartbeating(int id) {
         task = () -> {
             try {
