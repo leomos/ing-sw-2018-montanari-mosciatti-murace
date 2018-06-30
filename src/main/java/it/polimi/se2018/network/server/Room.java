@@ -3,6 +3,7 @@ package it.polimi.se2018.network.server;
 import it.polimi.se2018.controller.Controller;
 import it.polimi.se2018.model.Model;
 import it.polimi.se2018.model.events.*;
+import it.polimi.se2018.network.ClientInterface;
 import it.polimi.se2018.network.ConnectedClient;
 import it.polimi.se2018.network.visitor.MessageVisitorImplementationUpdate;
 import it.polimi.se2018.network.visitor.MessageVisitorInterface;
@@ -256,5 +257,14 @@ public class Room extends Thread {
             Message message = new PlayerMessageEndTurn(id);
             notifyView(message);
         }
+    }
+
+    public Boolean reconnectPlayer(ClientInterface clientInterface, int id) {
+        ConnectedClient reconnectedClient = connectedClientById(id);
+        reconnectedClient.setInactive(false);
+        reconnectedClient.setClientInterface(clientInterface);
+        model.setPlayerSuspended(id, false);
+        model.updatePlayerThatCameBackIntoTheGame(id);
+        return true;
     }
 }
