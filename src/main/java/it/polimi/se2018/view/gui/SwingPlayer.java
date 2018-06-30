@@ -4,8 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class SwingPlayer extends JPanel {
-    public SwingPlayer(String name, SwingPatternCard patternCard, SwingPrivateObjective privateObjective, String tokens) {
-        JLabel titolo = new JLabel("NAME: " + name, SwingConstants.CENTER);
+    public SwingPlayer(SwingPatternCard patternCard, SwingPrivateObjective privateObjective, String tokens) {
         Color c = new Color(34, 139, 34);
         setBackground(c);
 
@@ -23,7 +22,6 @@ public class SwingPlayer extends JPanel {
         t.setToolTipText("Tokens left");
 
         setLayout(new BorderLayout());
-        add(titolo, BorderLayout.NORTH);
         add(panel, BorderLayout.CENTER);
         add(t, BorderLayout.SOUTH);
     }
