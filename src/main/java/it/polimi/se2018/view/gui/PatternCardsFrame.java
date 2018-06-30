@@ -3,7 +3,6 @@ package it.polimi.se2018.view.gui;
 import it.polimi.se2018.model.events.ModelChangedMessage;
 import it.polimi.se2018.model.events.ModelChangedMessagePatternCard;
 import it.polimi.se2018.model.events.ModelChangedMessagePrivateObjective;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 public class PatternCardsFrame extends SwingPhase implements ActionListener {
 
-    JFrame jFrame = new JFrame();
+    private JFrame jFrame = new JFrame();
 
     private int idClient;
 
@@ -24,6 +23,8 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
     private String idPatternCardChosen = "";
 
     private ButtonGroup group;
+
+    private boolean table = false;
 
     public PatternCardsFrame(int idClient) {
         this.idClient = idClient;
@@ -37,7 +38,6 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
         else if(message instanceof ModelChangedMessagePrivateObjective)
             if (((ModelChangedMessagePrivateObjective) message).getIdPlayer().equals(Integer.toString(idClient)))
                 privateObjective = ((ModelChangedMessagePrivateObjective) message);
-
     }
 
     public void print(){
@@ -45,7 +45,21 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
         SwingPatternCard p2 = new SwingPatternCard(patternCards.get(1), true);
         SwingPatternCard p3 = new SwingPatternCard(patternCards.get(2), true);
         SwingPatternCard p4 = new SwingPatternCard(patternCards.get(3), true);
+        JButton po = new JButton("PRIVATE OBJECTIVE");
+        po.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame f = new JFrame();
+                f.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+                SwingPrivateObjective p = new SwingPrivateObjective(privateObjective);
+                f.getContentPane().add(p);
+                f.setVisible(true);
+                f.pack();
+                f.setResizable(false);
+            }
+        });
 
+        jFrame.setResizable(false);
         jFrame.setTitle("SCELTA PATTERNCARD");
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         jFrame.setSize(550, 700);
@@ -55,9 +69,6 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
         p.setBackground(c);
 
         jFrame.setContentPane(p);
-
-        JLabel l = new JLabel("SCEGLI LA PATTERNCARD CON CUI GIOCARE", SwingConstants.CENTER);
-        l.setForeground(Color.WHITE);
 
         JButton b = new JButton("CONFERMA");
         b.addActionListener(this);
@@ -119,7 +130,7 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
         constraints.gridy = 1;
         panel.add(panel4, constraints);
 
-        jFrame.add(l, BorderLayout.NORTH);
+        jFrame.add(po, BorderLayout.NORTH);
         jFrame.add(panel, BorderLayout.CENTER);
         jFrame.add(b, BorderLayout.SOUTH);
 
@@ -128,6 +139,7 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         idPatternCardChosen = idPatternCardChosen + group.getSelection().getActionCommand();
+        askForPatternCard();
     }
 
     public Integer askForPatternCard() {

@@ -98,7 +98,7 @@ public class ViewClientGUIGame extends SwingPhase {
         for (int i=0; i<3; i++) {
             publicObjective[i] = new SwingPublicObjective(publicObjectives.get(i));
         }
-        
+
         SwingPatternCard myPatternCard = null;
         SwingPatternCard[] patternCard = new SwingPatternCard[3];
         for (int i=0; i<patternCards.size(); i++) {
@@ -107,10 +107,10 @@ public class ViewClientGUIGame extends SwingPhase {
             else
                 patternCard[i] = new SwingPatternCard(patternCards.get(i), true);
         }
-        
+
         SwingDiceArena Arena = new SwingDiceArena(diceArena);
-        
-        SwingPlayer player = new SwingPlayer(Integer.toString(idClient), myPatternCard, new SwingPrivateObjective(privateObjective), tokensLeft.getTokensLeft());
+
+        SwingPlayer player = new SwingPlayer(myPatternCard, new SwingPrivateObjective(privateObjective), tokensLeft.getTokensLeft());
 
         GridBagConstraints constraints = new GridBagConstraints();
         jFrame.setLayout(new GridBagLayout());

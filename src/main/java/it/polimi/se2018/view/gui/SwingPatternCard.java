@@ -91,14 +91,4 @@ public class SwingPatternCard extends JPanel {
         add(p, BorderLayout.CENTER);
         add(p1, BorderLayout.SOUTH);
     }
-
-    public static void main(String args[]) {
-        ModelChangedMessagePatternCard message = new ModelChangedMessagePatternCard("1", "2", "Aurorae Magnificus", "5", "b600y03b0p056200401g");
-
-        JFrame f = new JFrame();
-        f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        f.add(new SwingPatternCard(message, false));
-        f.setVisible(true);
-        f.setSize(300,300);
-    }
 }
