@@ -4,6 +4,7 @@ import it.polimi.se2018.model.events.HeartbeatMessage;
 import it.polimi.se2018.network.ClientInterface;
 import it.polimi.se2018.network.ConnectedClient;
 import it.polimi.se2018.network.RoomDispatcherInterface;
+import it.polimi.se2018.network.client.Client;
 
 import java.util.*;
 import java.util.concurrent.*;
@@ -139,5 +140,9 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
 
     public void setConnectedClientSuspended(int id) {
         clientRoomMap.get(id).handleClientDisconnection(id);
+    }
+
+    public Boolean reconnectClient(ClientInterface clientInterface, int id) {
+        return getRoomForId(id).reconnectPlayer(clientInterface, id);
     }
 }

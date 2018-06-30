@@ -48,6 +48,11 @@ public class ServerImplementationRMI extends UnicastRemoteObject implements Clie
     }
 
     @Override
+    public Boolean reconnect(ClientInterface clientInterface, Integer id) throws RemoteException {
+        return roomDispatcher.reconnectClient(clientInterface, id);
+    }
+
+    @Override
     public void setRoomDispatcher(RoomDispatcherInterface roomDispatcher) {
         this.roomDispatcher = roomDispatcher;
     }

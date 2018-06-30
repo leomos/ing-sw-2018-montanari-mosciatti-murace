@@ -9,6 +9,7 @@ import it.polimi.se2018.view.ViewClient;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.Method;
 import java.net.Socket;
 import java.rmi.RemoteException;
 
@@ -59,6 +60,27 @@ public class ServerImplementationSocket extends Thread implements ServerInterfac
     @Override
     public void sendHeartbeat(HeartbeatMessage heartbeatMessage) {
         send(heartbeatMessage);
+    }
+
+    @Override
+    public Boolean reconnect(Socket client, Integer id) throws RemoteException {
+        MethodCallMessage methodCallMessage;
+        try {
+            this.objectOutputStream = new ObjectOutputStream(client.getOutputStream());
+            methodCallMessage = new MethodCallMessage("reconnectClient");
+            methodCallMessage.addArgument("id", id);
+            this.objectOutputStream.writeObject(methodCallMessage);
+
+            this.objectInputStream = new ObjectInputStream(client.getInputStream());
+            methodCallMessage = (MethodCallMessage)this.objectInputStream.readObject();
+            this.start();
+            return (Boolean) methodCallMessage.getReturnValue();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Override

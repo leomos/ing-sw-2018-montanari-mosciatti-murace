@@ -290,4 +290,17 @@ public class ViewClientConsole extends ViewClient implements Runnable {
         return null;
     }
 
+    @Override
+    public void handleDisconnection() {
+        System.out.println("Disconnesso!");
+        this.serverInterface = null;
+        this.executor.shutdown();
+        try {
+            TimeUnit.SECONDS.sleep(3);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        this.reconnect(idClient, 0);
+    }
+
 }

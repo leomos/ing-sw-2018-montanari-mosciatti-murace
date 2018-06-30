@@ -17,4 +17,6 @@ public interface RoomDispatcherInterface extends Runnable {
 
     public Room getRoomForId(int id);
 
+    public Boolean reconnectClient(ClientInterface clientInterface, int id);
+
 }

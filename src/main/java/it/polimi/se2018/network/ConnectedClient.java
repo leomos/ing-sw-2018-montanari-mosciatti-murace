@@ -18,10 +18,6 @@ public class ConnectedClient {
         this.clientInterface = clientInterface;
     }
 
-    /*public void setRoom(Room room) {
-        this.room = room;
-    }*/
-
     public int getId() {
         return id;
     }
@@ -34,9 +30,9 @@ public class ConnectedClient {
         return clientInterface;
     }
 
-    /*public Room getRoom() {
-        return room;
-    }*/
+    public void setClientInterface(ClientInterface clientInterface) {
+        this.clientInterface = clientInterface;
+    }
 
     public void setInactive(boolean inactive) {
         this.isInactive = inactive;

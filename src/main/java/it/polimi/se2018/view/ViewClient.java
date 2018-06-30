@@ -3,8 +3,10 @@ package it.polimi.se2018.view;
 import it.polimi.se2018.model.events.HeartbeatMessage;
 import it.polimi.se2018.model.events.ModelChangedMessage;
 import it.polimi.se2018.network.ServerInterface;
+import it.polimi.se2018.network.client.ServerImplementationSocket;
 
 import java.io.IOException;
+import java.net.Socket;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
@@ -13,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 public abstract class ViewClient {
 
-    private ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+    protected ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 
     private Runnable task;
 
@@ -85,6 +87,29 @@ public abstract class ViewClient {
 
     public void handleDisconnection() {
         System.out.println("Problema di connessione!");
+        // QUESTE DUE OPERAZIONI VANNO FATTE ASSOLUTAMENTE NELLE IMPLEMENTAZIONI DI QUESTO METODO!!!
+        this.serverInterface = null;
+        this.executor.shutdown();
+    }
+
+    protected Boolean reconnect(int id, int connectionType) {
+        switch (connectionType) {
+            case 0:
+                serverInterface = new ServerImplementationSocket(this);
+                Socket socket = null;
+                try {
+                    socket = new Socket("localhost", 1111);
+                    return serverInterface.reconnect(socket, id);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case 1:
+                break;
+            default:
+                break;
+        }
+        return false;
     }
 
 }
