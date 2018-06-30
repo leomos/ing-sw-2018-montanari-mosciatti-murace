@@ -195,7 +195,11 @@ public class ViewClientConsole extends ViewClient implements Runnable {
     public ArrayList<Integer> getPositionInPatternCard(){
         if(idPlayerPlaying == idClient){
 
-            return viewClientConsolePrint.getPositionInPatternCard();
+            ArrayList<Integer> returnValues = viewClientConsolePrint.getPositionInPatternCard();
+
+            if(returnValues.isEmpty())
+                unSuspend();
+            return returnValues;
 
         }
         return null;
@@ -205,7 +209,11 @@ public class ViewClientConsole extends ViewClient implements Runnable {
     public ArrayList<Integer> getSinglePositionInPatternCard(ArrayList<Integer> listOfAvailablePositions){
         if(idPlayerPlaying == idClient) {
 
-            return viewClientConsolePrint.getSinglePositionInPatternCard(listOfAvailablePositions);
+            ArrayList<Integer> returnValues = viewClientConsolePrint.getSinglePositionInPatternCard(listOfAvailablePositions);
+
+            if(returnValues.isEmpty())
+                unSuspend();
+            return returnValues;
 
         }
         return null;
@@ -217,9 +225,8 @@ public class ViewClientConsole extends ViewClient implements Runnable {
 
             ArrayList<Integer> returnValues = viewClientConsolePrint.getIncrementedValue();
 
-            if( returnValues.isEmpty())
+            if(returnValues.isEmpty())
                 unSuspend();
-
             return returnValues;
 
         }
@@ -230,7 +237,11 @@ public class ViewClientConsole extends ViewClient implements Runnable {
     public Integer getDieFromDiceArena(){
         if(idPlayerPlaying == idClient) {
 
-            return viewClientConsolePrint.getDieFromDiceArena();
+            int returnValues = viewClientConsolePrint.getDieFromDiceArena();
+
+            if(returnValues == -1)
+                unSuspend();
+            return returnValues;
 
         }
         return null;
@@ -240,7 +251,11 @@ public class ViewClientConsole extends ViewClient implements Runnable {
     public ArrayList<Integer> getDieFromRoundTrack(){
         if(idPlayerPlaying == idClient) {
 
-            return viewClientConsolePrint.getDieFromRoundTrack();
+            ArrayList<Integer> returnValues = viewClientConsolePrint.getDieFromRoundTrack();
+
+            if(returnValues.isEmpty())
+                unSuspend();
+            return returnValues;
 
         }
         return null;
@@ -250,7 +265,11 @@ public class ViewClientConsole extends ViewClient implements Runnable {
     public Integer getValueForDie(){
         if(idPlayerPlaying == idClient) {
 
-            return viewClientConsolePrint.getValueForDie();
+            int returnValues = viewClientConsolePrint.getValueForDie();
+
+            if(returnValues == -1)
+                unSuspend();
+            return returnValues;
 
         }
         return null;
@@ -261,7 +280,11 @@ public class ViewClientConsole extends ViewClient implements Runnable {
     public ArrayList<Integer> getDoublePositionInPatternCard(){
         if(idPlayerPlaying == idClient) {
 
-            return viewClientConsolePrint.getDieFromRoundTrack();
+            ArrayList<Integer> returnValues = viewClientConsolePrint.getDoublePositionInPatternCard();
+
+            if(returnValues.isEmpty())
+                unSuspend();
+            return returnValues;
 
         }
         return null;

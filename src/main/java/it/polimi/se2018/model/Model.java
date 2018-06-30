@@ -92,10 +92,6 @@ public class Model extends Observable<ModelChangedMessage> {
                     Integer.toString(patternCard.getDifficulty()),
                     patternCard.getPatternCardRepresentation()));
 
-            notify(new ModelChangedMessageDiceOnPatternCard(Integer.toString(key),
-                    Integer.toString(patternCard.getId()),
-                    patternCard.getDiceRepresentation()));
-
             PrivateObjective privateObjective = table.getPlayers(key).getPrivateObjective();
             notify(new ModelChangedMessagePrivateObjective(Integer.toString(key),
                     Integer.toString(privateObjective.getId()),
@@ -104,6 +100,10 @@ public class Model extends Observable<ModelChangedMessage> {
 
             notify(new ModelChangedMessageTokensLeft(Integer.toString(key),
                     Integer.toString(table.getPlayers(key).getTokens())));
+
+            notify(new ModelChangedMessageDiceOnPatternCard(Integer.toString(key),
+                    Integer.toString(patternCard.getId()),
+                    patternCard.getDiceRepresentation()));
 
         }
 

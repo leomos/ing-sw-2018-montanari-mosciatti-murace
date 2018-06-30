@@ -29,7 +29,7 @@ public class Timer implements Runnable {
 
     private Thread thread;
 
-    public static final int timer = 30;
+    public static final int timer = 20;
 
     private boolean stopTimer = false;
 
