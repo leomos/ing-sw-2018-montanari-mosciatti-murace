@@ -105,5 +105,10 @@ public class ViewClientConsoleSetup extends ViewClientConsolePrint {
         return null;
     }
 
+    @Override
+    public void setSuspended(boolean suspended) {
+
+    }
+
 
 }

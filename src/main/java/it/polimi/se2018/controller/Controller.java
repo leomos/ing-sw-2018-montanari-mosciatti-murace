@@ -46,6 +46,8 @@ public class Controller implements Observer<PlayerMessage> {
     @Override
     public void update(PlayerMessage playerMessage){
 
+        System.out.println(playerMessage);
+
         if(playerMessage instanceof PlayerMessageSetup){
             PlayerMessageSetup playerMessageSetup = (PlayerMessageSetup) playerMessage;
 

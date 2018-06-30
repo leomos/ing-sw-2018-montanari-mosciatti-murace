@@ -19,7 +19,6 @@ import it.polimi.se2018.utils.Observable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.concurrent.ExecutorService;
 
 public class Model extends Observable<ModelChangedMessage> {
 
@@ -28,8 +27,6 @@ public class Model extends Observable<ModelChangedMessage> {
     private Table table;
 
     private HashMap<Integer, String> players;
-
-    private ExecutorService executorService;
 
     private Timer timer;
 
@@ -624,12 +621,20 @@ public class Model extends Observable<ModelChangedMessage> {
     }
 
     /**
-     * Method needed for tool card 5.
-     * @param idPlayer
-     * @param dieIdInRoundTrack
-     * @param idRound
-     * @param dieIdInDiceArena
-     * @param idToolCard
+     * Method needed for tool card 5. The method first checks if the die di in draft pool is present or not. After that
+     * the method gets the actualIdDie (the player will have selected a die id that goes from 0 to 8, while the actual die id
+     * can go from 0 to 89) and it puts it in the round selected by the player while it removes the die id in round track
+     * selected by the player. If the die is not present in the round track, it catches a DieNotPresentException.
+     * After that the method swaps the die in the draft pool: if everything goes fine, the tool card cost and the
+     * player tokens gets updated and the method ends. If the die id in dice arena chosen by the player does not exist,
+     * the method catches another DieNotPresentException and swaps back the dice in the round track. Whenever it catches
+     * and exception, the method sends a notify with a ModelChangedMessageMoveFailed to the player currently playing
+     * explaining what went wrong
+     * @param idPlayer player id that wants to perform the swap
+     * @param dieIdInRoundTrack die id selected by the player on the roundTrack
+     * @param idRound round it selected by the player where the dieIdInRoundTrack should be present
+     * @param dieIdInDiceArena die id selected by the player in the draft pool
+     * @param idToolCard tool card id needed to update tool card cost and player's tokens
      */
     public void swapDieAmongRoundTrackAndDiceArena(int idPlayer, int dieIdInRoundTrack, int idRound, int dieIdInDiceArena, int idToolCard) {
         RoundTrack roundTrack = table.getRoundTrack();
@@ -670,6 +675,16 @@ public class Model extends Observable<ModelChangedMessage> {
 
     }
 
+    /**
+     * This methos serves for tool card number 11.
+     * This method removes a die from the draft pool and it sets it back to unrolled and extract a new die, sending the
+     * player a ModelChangedMessageNewEvent containing the color of the new die extracted. If the die id choses by the
+     * player is not acceptable, the method notifies the player with a ModelChangedMessageMoveFailed
+     * @param idPlayer player id choosing the die
+     * @param idDie die id chosen by the player to remove from the draft pool
+     * @return idNewDie that contains the id of the new die extracted from the dice bag. If die id chosen by the player
+     * was not acceptable, it return -1 so that the following steps of the tool card are not executed
+     */
     public Integer swapDieWithDieFromDiceBag(int idPlayer, int idDie){
         DiceArena diceArena = table.getDiceArena();
 
@@ -696,6 +711,13 @@ public class Model extends Observable<ModelChangedMessage> {
         return -1;
     }
 
+    /**
+     * This method purpose is to give the value chosen by the player to the new die extracted from the dice bag during
+     * tool card number 11.
+     * @param positionInDiceArena the new die is put in the same position of the die chosen by the player to remove
+     * @param actualIdDie actual die id (the one that goes from 0 to 89)
+     * @param value value (from 1 to 6) chosen by the player to assign to the die extracted
+     */
     public void giveValueToDie(int positionInDiceArena, int actualIdDie, int value){
 
         table.getDiceArena().rollOneDieIntoDiceArena(positionInDiceArena, actualIdDie, value);
@@ -704,6 +726,13 @@ public class Model extends Observable<ModelChangedMessage> {
         notify(new ModelChangedMessageRefresh(this.gamePhase, Integer.toString(table.getRoundTrack().getCurrentRound().getIdPlayerPlaying())));
     }
 
+    /**
+     * this method returns a list of available position given a die. It serves for tool card 11 and tool card 6, where
+     * the player has to put down the die if possible
+     * @param idPlayer player id using the tool card 6 or 11
+     * @param idDie die id that the player has to place in its pattern card
+     * @return array list containing all the available positions in the player's pattern card for the die
+     */
     public ArrayList<Integer> checkAvailablePositions(int idPlayer, int idDie){
 
         if(table.getDiceArena().getArena().size() > idDie) {
@@ -718,6 +747,15 @@ public class Model extends Observable<ModelChangedMessage> {
 
     }
 
+    /**
+     * this method servers for tool card 12. it checks if the two dice chosen by the player are actually the same color
+     * if he chose to move two dice. If the check does not go through, it
+     * notify the player with a ModelChangedMessageMoveFailed
+     * @param idPlayer player id using tool card 12
+     * @param positions1 starting position of movement 1 ( x and y )
+     * @param positions2 starting position of movement 2 ( x and y )
+     * @return boolean representing whether or not the two dice had the same color
+     */
     public boolean checkDiceColor(int idPlayer, ArrayList<Integer> positions1, ArrayList<Integer> positions2){
 
         PatternCard patternCard = table.getPlayers(idPlayer).getChosenPatternCard();
@@ -746,6 +784,13 @@ public class Model extends Observable<ModelChangedMessage> {
 
     }
 
+    /**
+     * This methods check if there are at least 2 dice in the pattern card so that the the player can use one of the
+     * tool card that give the possibility to move dice inside the pattern card. If the check does not go through, it
+     * notify the player with a ModelChangedMessageMoveFailed
+     * @param idPlayer player id wanting to use one of the tool cards
+     * @return boolean representing whether or not there are at least two dice on the player's pattern card
+     */
     public boolean checkMovementPossibility(int idPlayer) {
 
         if (table.getPlayers(idPlayer).getChosenPatternCard().getNumberOfDiceInThePatternCard() > 1)
@@ -757,6 +802,12 @@ public class Model extends Observable<ModelChangedMessage> {
 
     }
 
+    /**
+     * This method checks whether the player has already set a die this turn. If the check does not go through, it
+     * notify the player with a ModelChangedMessageMoveFailed
+     * @param idPlayer player id wanting to use one of the tool cards
+     * @return boolean representing whether or not the player has already set a die this turn
+     */
     public boolean checkPlayerCanPlaceDie(int idPlayer){
 
         if(!table.getPlayers(idPlayer).hasSetDieThisTurn())
@@ -768,6 +819,12 @@ public class Model extends Observable<ModelChangedMessage> {
 
     }
 
+    /**
+     * This method checks whether we are at least at round 2. It is needed to use tool card 5. If the check does not go through, it
+     * notify the player with a ModelChangedMessageMoveFailed
+     * @param idPlayer player id wanting to use one of the tool cards
+     * @return boolean representing whether or not the game is past round 1
+     */
     public boolean checkRoundIsPastSecond(int idPlayer){
 
         if(table.getRoundTrack().getCurrentRound().getId() > 0)
@@ -779,6 +836,13 @@ public class Model extends Observable<ModelChangedMessage> {
 
     }
 
+    /**
+     * This method checks if there are any more dice in the dice bag. This can happen if a player uses tool card 11 at
+     * the last round in a game of 4 people because all the dice have already been used. If the check does not go through, it
+     * notify the player with a ModelChangedMessageMoveFailed
+     * @param idPlayer player id wanting to use one of the tool cards
+     * @return boolean representing whether or not there are any more dice in the dice bag
+     */
     public boolean checkEnoughDiceInDiceBag(int idPlayer){
 
         if(!table.getDiceContainer().getUnrolledDice().isEmpty())
@@ -790,10 +854,20 @@ public class Model extends Observable<ModelChangedMessage> {
 
     }
 
+    /**
+     * @return player id currently playing
+     */
     public int currentPlayerPlaying() {
         return table.getRoundTrack().getCurrentRound().getIdPlayerPlaying();
     }
 
+    /**
+     * This method updates the tool card cost and the player remaining tokens after the use of a tool card. After that,
+     * it notifies all the players with the change of the tool card cost and the player who just has used the tool card
+     * with the number of tokens left
+     * @param idPlayer
+     * @param idToolCard
+     */
     private void updateToolCard(int idPlayer, int idToolCard){
 
         int actualIdToolCard = idToolCard - 1;
@@ -811,6 +885,12 @@ public class Model extends Observable<ModelChangedMessage> {
         notify(new ModelChangedMessageToolCard(Integer.toString(idToolCard), toolCard.getName(), toolCard.getDescription(), Integer.toString(toolCard.cost())));
     }
 
+    /**
+     * This method puts a certain player suspended or un-suspended, whether he didn't finish his turn or whether he disconnected. If
+     * the number of players remaining is only 1, it finishes the game.
+     * @param idPlayer player id that just left or got back in game
+     * @param afk boolean representing whether you have to put the player suspended or un-suspended
+     */
     public void setPlayerSuspended(int idPlayer, boolean afk){
         try {
             table.getPlayers(idPlayer).setSuspended(afk);
@@ -826,6 +906,11 @@ public class Model extends Observable<ModelChangedMessage> {
 
     }
 
+    /**
+     * When a player comes back into the game after being suspended, it need to get back all the info that he lost.
+     * This method sends that player all the info back through notifies necessary to start playing the game again.
+     * @param idPlayer player id that got back into the game
+     */
     public void updatePlayerThatCameBackIntoTheGame(int idPlayer){
 
         for(Integer key : players.keySet()) {
@@ -852,7 +937,9 @@ public class Model extends Observable<ModelChangedMessage> {
 
         notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
 
-        //todo: mancano i round
+        for(int i = 0; i < table.getRoundTrack().getCurrentRound().getId(); i ++){
+            notify(new ModelChangedMessageRound(Integer.toString(i), table.getRoundTrack().getRound(i).getRepresentation()));
+        }
 
         ModelChangedMessageRefresh modelChangedMessageRefresh = new ModelChangedMessageRefresh(gamePhase, Integer.toString(table.getRoundTrack().getCurrentRound().getIdPlayerPlaying()));
         notify(modelChangedMessageRefresh);

@@ -1,7 +1,6 @@
 package it.polimi.se2018.network.server;
 
 import it.polimi.se2018.controller.Controller;
-import it.polimi.se2018.model.GamePhase;
 import it.polimi.se2018.model.Model;
 import it.polimi.se2018.model.events.*;
 import it.polimi.se2018.network.ConnectedClient;
@@ -98,10 +97,7 @@ public class Room extends Thread {
                 if (((PlayerMessageNotAFK) playerMessage).getPlayer() == player.getId()) {
                     player.setInactive(false);
 
-
-                    //todo: non ti basta mandare il modelChangedMessage ma devi rimandare tutto
-                    //es: model.mandatutto()
-                    updatePlayers(new ModelChangedMessageRefresh(GamePhase.GAMEPHASE, Integer.toString(model.currentPlayerPlaying())));
+                    model.updatePlayerThatCameBackIntoTheGame(player.getId());
                 }
             });
         }
@@ -194,7 +190,7 @@ public class Room extends Thread {
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-        return null;
+        return new ArrayList<>();
     }
 
     public Integer getDieFromDiceArena(int idClient){

@@ -9,7 +9,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
     private int idClient;
 
-    private boolean suspended;
+    private boolean suspended = false;
 
     private Scanner input;
 
@@ -83,12 +83,12 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
         }
     }
 
-
+    public void setSuspended(boolean suspended) {
+        this.suspended = suspended;
+    }
 
     @Override
     public void print() {
-
-        this.suspended = false;
 
         System.out.println("/°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°/");
         System.out.println("/°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°/");
@@ -351,7 +351,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
             String[] parts = s.split(" ");
 
             if(parts.length == 2) {
-                for (int i = 0; i < 90; i++)
+                for (int i = 0; i < 9; i++)
                     if (parts[0].equals(Integer.toString(i)))
                         moveNotOk1 = false;
 
@@ -359,9 +359,9 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
                     moveNotOk2 = false;
             }
 
-            if(suspended){
+            if(!suspended){
                 if(moveNotOk1 || moveNotOk2){
-                    System.out.println("Try again!");
+                    System.out.println("Try again bloop!");
                 } else {
                     dieAndDecision.add(Integer.parseInt(parts[0]));
                     dieAndDecision.add(Integer.parseInt(parts[1]));
@@ -371,7 +371,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
 
         }
-        while((moveNotOk1 || moveNotOk2) && suspended);
+        while((moveNotOk1 || moveNotOk2) && !suspended);
 
         return dieAndDecision;
 
