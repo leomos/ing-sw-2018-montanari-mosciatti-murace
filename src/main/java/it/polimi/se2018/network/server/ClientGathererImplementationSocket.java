@@ -60,13 +60,13 @@ public class ClientGathererImplementationSocket implements ClientGathererInterfa
 
             startNewClientGathererSocket();
 
-            handleNewClientRegistration(newClientConnection);
+            handleClient(newClientConnection);
 
         } catch (IOException e) {
             LOGGER.severe(loggingSuffix + "IOException in serverSocket.accept()!");
             LOGGER.severe(loggingSuffix + e.getMessage());
         } catch (WrongMethodException e) {
-            LOGGER.warning(loggingSuffix + "WrongMethodException in handleNewClientRegistration!");
+            LOGGER.warning(loggingSuffix + "WrongMethodException in handleClient!");
             LOGGER.warning(loggingSuffix + "Sending WrongMethodException to client. ");
             try {
                 objectOutputStream = new ObjectOutputStream(newClientConnection.getOutputStream());
@@ -86,40 +86,59 @@ public class ClientGathererImplementationSocket implements ClientGathererInterfa
 
     }
 
-    private void handleNewClientRegistration(Socket clientConnection) throws WrongMethodException {
+    private void handleClient(Socket clientConnection) throws WrongMethodException {
         ObjectInputStream objectInputStream;
         ObjectOutputStream objectOutputStream;
         ClientInterface newClientInterface;
-        MethodCallMessage registerClientMethodMessage;
+        MethodCallMessage clientMethodMessage;
         String clientName;
 
         Integer clientId;
-        MethodCallMessage registerClientReturnMessage;
+
+        Boolean reconnectResult;
+        MethodCallMessage clientReturnMessage;
 
         try {
             objectInputStream = new ObjectInputStream(clientConnection.getInputStream());
-            registerClientMethodMessage = (MethodCallMessage) objectInputStream.readObject();
+            clientMethodMessage = (MethodCallMessage) objectInputStream.readObject();
 
-            if(!registerClientMethodMessage.getMethodName().equals("registerNewClient")) {
-                throw new WrongMethodException();
-            }
+            switch (clientMethodMessage.getMethodName()) {
+                case "registerNewClient":
+                    clientName = (String)clientMethodMessage.getArgument("name");
 
-            clientName = (String)registerClientMethodMessage.getArgument("name");
+                    objectOutputStream = new ObjectOutputStream(clientConnection.getOutputStream());
 
-            objectOutputStream = new ObjectOutputStream(clientConnection.getOutputStream());
+                    newClientInterface = new ClientImplementationSocket(objectInputStream, objectOutputStream, roomDispatcher);
 
-            newClientInterface = new ClientImplementationSocket(objectInputStream, objectOutputStream, roomDispatcher);
+                    clientId = roomDispatcher.handleClient(newClientInterface, clientName);
 
-            clientId = roomDispatcher.handleClient(newClientInterface, clientName);
+                    clientReturnMessage = new MethodCallMessage("registerNewClient", clientId);
 
-            registerClientReturnMessage = new MethodCallMessage("registerNewClient", clientId);
+                    objectOutputStream.writeObject(clientReturnMessage);
 
-            objectOutputStream.writeObject(registerClientReturnMessage);
+                    ((ClientImplementationSocket) newClientInterface).start();
+                    break;
+                case "reconnectClient":
+                    clientId = (Integer) clientMethodMessage.getArgument("id");
 
-            ((ClientImplementationSocket) newClientInterface).start();
+                    objectOutputStream = new ObjectOutputStream(clientConnection.getOutputStream());
+
+                    newClientInterface = new ClientImplementationSocket(objectInputStream, objectOutputStream, roomDispatcher);
+
+                    reconnectResult = roomDispatcher.reconnectClient(newClientInterface, clientId);
+
+                    clientReturnMessage = new MethodCallMessage("reconnectClient", reconnectResult);
+
+                    objectOutputStream.writeObject(clientReturnMessage);
+
+                    ((ClientImplementationSocket) newClientInterface).start();
+                    break;
+                default:
+                    throw new WrongMethodException();
+             }
 
         } catch (IOException e) {
-            LOGGER.severe(loggingSuffix + "IOException in handleNewClientRegistration!");
+            LOGGER.severe(loggingSuffix + "IOException in handleClient!");
         } catch (ClassNotFoundException e) {
             LOGGER.severe(loggingSuffix + "ClassNotFoundException in objectInputStream.readObject()");
             LOGGER.severe(e.getMessage());
