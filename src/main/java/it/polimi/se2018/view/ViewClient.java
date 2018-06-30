@@ -4,6 +4,7 @@ import it.polimi.se2018.model.events.HeartbeatMessage;
 import it.polimi.se2018.model.events.ModelChangedMessage;
 import it.polimi.se2018.network.ServerInterface;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
@@ -68,7 +69,10 @@ public abstract class ViewClient {
             try {
                 HeartbeatMessage heartbeatMessage = new HeartbeatMessage(id, Instant.now());
                 serverInterface.sendHeartbeat(heartbeatMessage);
-            } catch (Exception e) {
+            } catch (IOException e) {
+                handleDisconnection();
+            }
+            catch (Exception e) {
                 e.printStackTrace();
             }
         };
@@ -77,6 +81,10 @@ public abstract class ViewClient {
         int period = 1;
         executor.scheduleAtFixedRate(task, initialDelay, period, TimeUnit.SECONDS);
         System.out.println("Heartbeat started for client " + id);
+    }
+
+    public void handleDisconnection() {
+        System.out.println("Problema di connessione!");
     }
 
 }
