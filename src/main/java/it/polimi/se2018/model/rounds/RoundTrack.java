@@ -1,5 +1,6 @@
 package it.polimi.se2018.model.rounds;
 
+import it.polimi.se2018.model.Table;
 import it.polimi.se2018.model.player.Player;
 import it.polimi.se2018.model.container.DiceContainer;
 
@@ -41,12 +42,12 @@ public class RoundTrack {
      *          that more than NUMBER_OF_ROUNDS rounds are trying to be
      *          played.
      */
-    public void startNextRound() throws RoundTrackNoMoreRoundsException {
+    public void startNextRound(Table table) throws RoundTrackNoMoreRoundsException {
         if(isLastRound()) {
             throw new RoundTrackNoMoreRoundsException();
         }
         currentRoundId++;
-        initNewRound();
+        initNewRound(table);
     }
 
     /**
@@ -80,7 +81,7 @@ public class RoundTrack {
      * the round.
      * Fills the rounds array with the newly created Round object.
      */
-    private void initNewRound() {
+    private void initNewRound(Table table) {
         Round newRound = new Round(currentRoundId, diceContainer);
         if(idFirstPlayerPlaying == 0)
             idFirstPlayerPlaying = players.get(0);
@@ -92,6 +93,14 @@ public class RoundTrack {
             rounds[currentRoundId] = newRound;
         } catch (RoundFirstPlayerAlreadySetException roundFirstPlayerAlreadySet) {
             roundFirstPlayerAlreadySet.printStackTrace();
+        }
+
+        if(table.getPlayers(idFirstPlayerPlaying).isSuspended()) {
+            try {
+                rounds[currentRoundId].setNextPlayer(table);
+            } catch (RoundFinishedException e) {
+                e.printStackTrace();
+            }
         }
     }
 

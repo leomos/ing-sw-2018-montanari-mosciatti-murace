@@ -7,6 +7,7 @@ import it.polimi.se2018.model.events.*;
 import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.objectives.PublicObjective;
 import it.polimi.se2018.model.patternCard.*;
+import it.polimi.se2018.model.player.OnlyOnePlayerLeftException;
 import it.polimi.se2018.model.player.Player;
 import it.polimi.se2018.model.player.PlayerHasAlreadySetDieThisTurnException;
 import it.polimi.se2018.model.player.PlayerHasNotSetDieThisTurnException;
@@ -35,7 +36,7 @@ public class Model extends Observable<ModelChangedMessage> {
 
     public Model(HashMap<Integer, String> players){
         this.players = players;
-        this.timer = Timer.getInstance();
+        this.timer = new Timer();
     }
 
     public Table getTable() {
@@ -241,16 +242,13 @@ public class Model extends Observable<ModelChangedMessage> {
 
         if(idPlayerMessage == table.getRoundTrack().getCurrentRound().getIdPlayerPlaying()) {
             System.out.println("Il giocatore " + idPlayerMessage + " ha mandato l'end turn");
-            timer.stopTimer();
-            timer.startTimer();
+            timer.reStartTimer();
 
-            if (!table.getRoundTrack().getCurrentRound().isRoundOver()) {
+
                 try {
-                    table.getRoundTrack().getCurrentRound().setNextPlayer();
+                    table.getRoundTrack().getCurrentRound().setNextPlayer(table);
                 } catch (RoundFinishedException e) {
-                    e.printStackTrace();
-                }
-            } else {
+
                 Round round = table.getRoundTrack().getCurrentRound();
                 table.getRoundTrack().setRolledDiceLeftForCurrentRound(table.getDiceArena().getArena());
                 round.updateRepresentation();
@@ -260,14 +258,13 @@ public class Model extends Observable<ModelChangedMessage> {
                 notify(new ModelChangedMessageRound(Integer.toString(round.getId()), round.getRepresentation()));
 
                 try {
-                    table.getRoundTrack().startNextRound();
-                } catch (RoundTrackNoMoreRoundsException e) {
+                    table.getRoundTrack().startNextRound(table);
+                } catch (RoundTrackNoMoreRoundsException i) {
                     table.calculateScores();
 
                     notify(new ModelChangedMessageRefresh(GamePhase.ENDGAMEPHASE, null));
                     notify(new ModelChangedMessageEndGame(table.getScoreboard().getRepresentation()));
 
-                    //todo: giusto qui?
                     timer.stopTimer();
                 }
             }
@@ -287,6 +284,7 @@ public class Model extends Observable<ModelChangedMessage> {
     public void timesUp(){
 
         int idPlayerPlaying = table.getRoundTrack().getCurrentRound().getIdPlayerPlaying();
+        this.setPlayerSuspended(idPlayerPlaying,true);
 
         notify(new ModelChangedMessagePlayerAFK(Integer.toString(idPlayerPlaying), "You run out of time. You are now suspended. Type anything to get back into the game"));
 
@@ -811,6 +809,21 @@ public class Model extends Observable<ModelChangedMessage> {
 
         notify(new ModelChangedMessageTokensLeft(Integer.toString(idPlayer), Integer.toString(table.getPlayers(idPlayer).getTokens())));
         notify(new ModelChangedMessageToolCard(Integer.toString(idToolCard), toolCard.getName(), toolCard.getDescription(), Integer.toString(toolCard.cost())));
+    }
+
+    public void setPlayerSuspended(int idPlayer, boolean afk){
+        try {
+            table.getPlayers(idPlayer).setSuspended(afk);
+            table.checkActivePlayers();
+        } catch (OnlyOnePlayerLeftException e) {
+            table.calculateScores();
+            notify(new ModelChangedMessageRefresh(GamePhase.ENDGAMEPHASE, null));
+            notify(new ModelChangedMessageEndGame(table.getScoreboard().getRepresentation()));
+
+            timer.stopTimer();
+        }
+
+
     }
 
     public void updatePlayerThatCameBackIntoTheGame(int idPlayer){

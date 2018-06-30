@@ -1,7 +1,6 @@
 package it.polimi.se2018.controller;
 
 import it.polimi.se2018.model.Model;
-import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.events.*;
 import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.view.VirtualView;
@@ -20,6 +19,8 @@ public class Controller implements Observer<PlayerMessage> {
 
     private EndTurnController endTurnController;
 
+    private AfkController afkController;
+
     /**
      * @param view
      */
@@ -34,6 +35,7 @@ public class Controller implements Observer<PlayerMessage> {
         this.setUpController = new SetUpController(model);
         this.endTurnController = new EndTurnController(model);
         this.toolCardController = new ToolCardController(model);
+        this.afkController = new AfkController(model);
     }
 
     /**
@@ -54,11 +56,7 @@ public class Controller implements Observer<PlayerMessage> {
 
         if(playerMessage instanceof PlayerMessageDie) {
             PlayerMessageDie playerMessageDie = (PlayerMessageDie) playerMessage;
-            try {
-                this.dieController.execute(playerMessageDie);
-            } catch (DiceContainerUnsupportedIdException e) {
-                e.printStackTrace();
-            }
+            this.dieController.execute(playerMessageDie);
         }
 
         if(playerMessage instanceof PlayerMessageToolCard) {
@@ -69,6 +67,11 @@ public class Controller implements Observer<PlayerMessage> {
         if(playerMessage instanceof PlayerMessageEndTurn) {
             PlayerMessageEndTurn playerMessageEndTurn = (PlayerMessageEndTurn) playerMessage;
             this.endTurnController.execute(playerMessageEndTurn);
+        }
+
+        if(playerMessage instanceof PlayerMessageNotAFK){
+            PlayerMessageNotAFK playerMessageNotAFK = (PlayerMessageNotAFK) playerMessage;
+            this.afkController.execute(playerMessageNotAFK);
         }
 
     }

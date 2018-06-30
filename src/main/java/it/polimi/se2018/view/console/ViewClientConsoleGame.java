@@ -9,7 +9,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
     private int idClient;
 
-    private boolean isMyTurn;
+    private boolean suspended;
 
     private Scanner input;
 
@@ -81,13 +81,14 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
             if (((ModelChangedMessageTokensLeft) message).getIdPlayer().equals(Integer.toString(idClient)))
                 tokensLeft = (ModelChangedMessageTokensLeft) message;
         }
-        else if(message instanceof ModelChangedMessageRefresh) {
-                isMyTurn = Integer.parseInt(((ModelChangedMessageRefresh) message).getIdPlayerPlaying()) == idClient;
-            }
     }
+
+
 
     @Override
     public void print() {
+
+        this.suspended = false;
 
         System.out.println("/°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°/");
         System.out.println("/°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°/");
@@ -165,11 +166,11 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
                 }
             }
 
-            if(isMyTurn)
+            if(suspended)
                 if(moveOk1 || moveOk2)
                     System.out.println("Try Again!");
         }
-        while((moveOk1 || moveOk2) && isMyTurn);
+        while((moveOk1 || moveOk2) && suspended);
 
         return position;
     }
@@ -212,7 +213,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
             return new PlayerMessageEndTurn(idClient);
         }
 
-        return null;
+        return new PlayerMessageNotAFK(-1);
 
     }
 
@@ -237,9 +238,9 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
                 numberOfMovements = 2;
             }
 
-        }while(moveNotOk1 && isMyTurn);
+        }while(moveNotOk1 && suspended);
 
-        if(isMyTurn)
+        if(suspended)
             for (int k = 0; k < numberOfMovements; k++) {
                 do {
                     System.out.println("\nInsert Starting position for "+ k+1 +"° movement on PatternCard separated by a space ");
@@ -277,11 +278,11 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
                         }
                     }
 
-                    if(isMyTurn)
+                    if(suspended)
                         if (moveNotOk1 || moveNotOk2)
                             System.out.println("Try Again!");
                 }
-                while ((moveNotOk1 || moveNotOk2) && isMyTurn);
+                while ((moveNotOk1 || moveNotOk2) && suspended);
             }
 
         return position;
@@ -317,7 +318,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
                 }
             }
 
-            if(isMyTurn)
+            if(suspended)
                 if(listOfAvailablePositions.size() != 0) {
                     for (int i = 0; i < listOfAvailablePositions.size(); i = i + 2)
                         if (listOfAvailablePositions.get(i).equals(position.get(0)) && listOfAvailablePositions.get(i + 1).equals(position.get(1)))
@@ -326,7 +327,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
             }
 
-            if (moveNotOk && isMyTurn)
+            if (moveNotOk && suspended)
                 System.out.println("Try again!");
 
         } while (moveNotOk  || listOfAvailablePositions.size() != 0);
@@ -358,7 +359,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
                     moveNotOk2 = false;
             }
 
-            if(isMyTurn){
+            if(suspended){
                 if(moveNotOk1 || moveNotOk2){
                     System.out.println("Try again!");
                 } else {
@@ -370,7 +371,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
 
         }
-        while((moveNotOk1 || moveNotOk2) && isMyTurn);
+        while((moveNotOk1 || moveNotOk2) && suspended);
 
         return dieAndDecision;
 
@@ -395,11 +396,11 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
                 }
             }
 
-            if(isMyTurn)
+            if(suspended)
                 if(moveNotOk)
                     System.out.println("Try Again!");
 
-        } while(moveNotOk && isMyTurn);
+        } while(moveNotOk && suspended);
 
         return idDie;
 
@@ -431,11 +432,11 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
                 }
             }
 
-            if(isMyTurn)
+            if(suspended)
                 if(moveNotOk)
                     System.out.println("Try Again!");
 
-        } while(moveNotOk && isMyTurn);
+        } while(moveNotOk && suspended);
 
         return idDie;
 
@@ -460,11 +461,11 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
                 }
             }
 
-            if(isMyTurn)
+            if(suspended)
                 if(moveNotOk)
                     System.out.println("Try Again!");
 
-        } while(moveNotOk && isMyTurn);
+        } while(moveNotOk && suspended);
 
         return value;
 

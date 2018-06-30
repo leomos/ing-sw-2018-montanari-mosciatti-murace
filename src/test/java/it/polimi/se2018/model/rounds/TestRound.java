@@ -1,5 +1,6 @@
 package it.polimi.se2018.model.rounds;
 
+import it.polimi.se2018.model.Table;
 import it.polimi.se2018.model.container.DiceContainer;
 import org.junit.*;
 
@@ -12,6 +13,8 @@ public class TestRound {
     private Round round;
 
     private DiceContainer diceContainer;
+
+    private Table table;
 
     @Before
     public void setUp() {
@@ -68,7 +71,7 @@ public class TestRound {
         round.setFirstPlayer(0);
         for (int i = 0; i < 5; i++) {
             try {
-                round.setNextPlayer();
+                round.setNextPlayer(table);
             } catch (RoundFinishedException e) {
                 e.printStackTrace();
             }
@@ -89,7 +92,7 @@ public class TestRound {
             fail();
         }
         for (int i = 0; i < 6; i++) {
-            round.setNextPlayer();
+            round.setNextPlayer(table);
         }
         fail();
         assertEquals(1, round.getIdPlayerPlaying());
@@ -107,7 +110,7 @@ public class TestRound {
         } catch (RoundFirstPlayerAlreadySetException roundFirstPlayerAlreadySet) {
             fail();
         }
-        round.setNextPlayer();
+        round.setNextPlayer(table);
         assertEquals(1,round.turnsPlayedByPlayer(34));
     }
 
@@ -123,7 +126,7 @@ public class TestRound {
         } catch (RoundFirstPlayerAlreadySetException roundFirstPlayerAlreadySet) {
             fail();
         }
-        round.setNextPlayer();
+        round.setNextPlayer(table);
         assertEquals(0,round.turnsPlayedByPlayer(0));
     }
 
@@ -139,9 +142,9 @@ public class TestRound {
         } catch (RoundFirstPlayerAlreadySetException roundFirstPlayerAlreadySet) {
             fail();
         }
-        round.setNextPlayer();
-        round.setNextPlayer();
-        round.setNextPlayer();
+        round.setNextPlayer(table);
+        round.setNextPlayer(table);
+        round.setNextPlayer(table);
         assertEquals(1, round.turnsPlayedByPlayer(1));
     }
 
@@ -158,19 +161,19 @@ public class TestRound {
         } catch (RoundFirstPlayerAlreadySetException roundFirstPlayerAlreadySet) {
             fail();
         }
-        round.setNextPlayer();
+        round.setNextPlayer(table);
         assertEquals(false, round.isSecondPartOfRound());
-        round.setNextPlayer();
+        round.setNextPlayer(table);
         assertEquals(false, round.isSecondPartOfRound());
-        round.setNextPlayer();
+        round.setNextPlayer(table);
         assertEquals(false, round.isSecondPartOfRound());
-        round.setNextPlayer();
+        round.setNextPlayer(table);
         assertEquals(true, round.isSecondPartOfRound());
-        round.setNextPlayer();
+        round.setNextPlayer(table);
         assertEquals(true, round.isSecondPartOfRound());
-        round.setNextPlayer();
+        round.setNextPlayer(table);
         assertEquals(true, round.isSecondPartOfRound());
-        round.setNextPlayer();
+        round.setNextPlayer(table);
         assertEquals(true, round.isSecondPartOfRound());
 
     }

@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 public class Timer implements Runnable {
 
     /* Singleton implementation */
+    /*
     private static volatile Timer timerInstance;
 
     private Timer() {
@@ -23,6 +24,7 @@ public class Timer implements Runnable {
         }
         return timerInstance;
     }
+    */
     /*end Singleton implementation */
 
     private Thread thread;
@@ -33,31 +35,37 @@ public class Timer implements Runnable {
 
     private Model model;
 
+    private int i;
+
     @Override
     public void run(){
 
-        stopTimer = false;
-        int i = 0;
-        System.out.println("è cominciato un nuovo timer");
-        while(!stopTimer && i < timer) {
+        do {
+
+            i = 0;
+            System.out.println("è cominciato un nuovo timer");
+            while (i < timer && !stopTimer) {
 
 
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
-            try {
-                TimeUnit.SECONDS.sleep(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                i++;
             }
 
-            i++;
-        }
 
-        if(i >= timer) {
-            System.out.println("è scaduto il timer!");
-            model.timesUp();
-        } else
-            System.out.println("il timer è stato effetivamente stopppato");
 
+            if (i >= timer) {
+                System.out.println("è scaduto il timer!");
+                model.timesUp();
+            }
+
+        }while(!stopTimer);
+
+        System.out.println("IL TIMER THREAD è CHIUSO!!!");
 
     }
 
@@ -65,15 +73,17 @@ public class Timer implements Runnable {
         this.model = model;
     }
 
+    public void reStartTimer(){
+
+        i = 0;
+        System.out.println("ho restartato il timer: " + i);
+
+    }
+
     public void stopTimer(){
 
         stopTimer = true;
         System.out.println("ho stoppato il timer!");
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     public void startTimer() {

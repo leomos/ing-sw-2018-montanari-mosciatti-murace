@@ -44,8 +44,9 @@ public class MessageVisitorImplementationUpdate implements MessageVisitorInterfa
                 && (this.player.getId() == this.currentPlayerPlayingId)
                 && modelChangedMessageRefresh.getGamePhase() == GamePhase.GAMEPHASE) {
             Integer id = Integer.parseInt(modelChangedMessageRefresh.getIdPlayerPlaying());
-            Message fakeMessage = new PlayerMessageEndTurn(id);
-            this.room.notifyView(fakeMessage);
+
+//            Message fakeMessage = new PlayerMessageEndTurn(id);
+  //          this.room.notifyView(fakeMessage);
         } else {
             update(modelChangedMessageRefresh);
         }

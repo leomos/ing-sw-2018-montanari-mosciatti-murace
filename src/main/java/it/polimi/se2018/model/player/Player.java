@@ -12,6 +12,8 @@ public class Player {
 
     private String name;
 
+    private boolean suspended = false;
+
     private ArrayList<PatternCard> patternCards;
 
     private PatternCard chosenPatternCard;
@@ -25,6 +27,8 @@ public class Player {
     private boolean hasSetDieThisTurn;
 
     private boolean hasUsedToolCardThisTurn;
+
+    public int finalScore;
 
     public Player(int id, String name) {
         this.id = id;
@@ -61,6 +65,14 @@ public class Player {
         return hasSetDieThisTurn;
     }
 
+    public void setFinalScore(int finalScore) {
+        this.finalScore = finalScore;
+    }
+
+    public int getFinalScore() {
+        return finalScore;
+    }
+
     public boolean hasUsedToolCardThisTurn() {
         return hasUsedToolCardThisTurn;
     }
@@ -73,8 +85,16 @@ public class Player {
         return this.missBehaved;
     }
 
+    public boolean isSuspended() {
+        return suspended;
+    }
+
     public void setTokens(int tokens) {
         this.tokens = tokens;
+    }
+
+    public void setSuspended(boolean suspended) {
+        this.suspended = suspended;
     }
 
     public void setChosenPatternCard(PatternCard chosenPatternCard) {

@@ -1,9 +1,7 @@
 package it.polimi.se2018.model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 
 public class Scoreboard {
 
@@ -42,23 +40,12 @@ public class Scoreboard {
         this.tokens.put(idPlayer, tokensLeft);
     }
 
-    /* TODO: finish ordering HashMap */
-    public void orderScoreBoard(){
-
-        List<Integer> valueList = new ArrayList<>(score.values());
-        Collections.sort(valueList);
-
-    }
-
     private void updateRepresentation(){
-        System.out.println(score);
-        System.out.println(tokens);
-
         representation = "";
-        int i = 0;
-        for(Integer key : score.keySet()){
 
-            representation += player.get(i);
+        for(Integer key : player){
+
+            representation += key;
 
             if(score.get(key) < 100)
                 representation += "0";
@@ -71,9 +58,9 @@ public class Scoreboard {
 
             representation += tokens.get(key);
 
-            i++;
-
         }
+
+        representation += lastId;
 
     }
 

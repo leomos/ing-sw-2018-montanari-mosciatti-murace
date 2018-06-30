@@ -3,6 +3,7 @@ package it.polimi.se2018.model;
 import it.polimi.se2018.model.container.DiceContainer;
 import it.polimi.se2018.model.objectives.*;
 import it.polimi.se2018.model.patternCard.PatternCard;
+import it.polimi.se2018.model.player.OnlyOnePlayerLeftException;
 import it.polimi.se2018.model.player.Player;
 import it.polimi.se2018.model.rounds.RoundTrack;
 import it.polimi.se2018.model.rounds.RoundTrackNoMoreRoundsException;
@@ -55,7 +56,7 @@ public class Table {
 
         this.diceArena.rollDiceIntoArena();
         try {
-            this.getRoundTrack().startNextRound();
+            this.getRoundTrack().startNextRound(this);
         } catch (RoundTrackNoMoreRoundsException e) {
             //TODO: dont know what to put here, prob nothing
         }
@@ -198,13 +199,29 @@ public class Table {
 
     }
 
+    public void checkActivePlayers() throws OnlyOnePlayerLeftException {
+
+        int count = players.size();
+
+        for(int i = 0; i < players.size(); i++) {
+            if (players.get(i).isSuspended())
+                count--;
+        }
+
+        if(count <= 1)
+            throw new OnlyOnePlayerLeftException();
+    }
+
     public void calculateScores() {
         this.scoreboard = new Scoreboard(roundTrack.getCurrentRound().getIdPlayerPlaying());
+        ArrayList<Integer>  orderedScores = new ArrayList<>();
+        HashMap<Player, Integer> playerScore = new HashMap<>();
+
         for (Player player : players) {
             int result = 0;
             PatternCard patternCard = player.getChosenPatternCard();
 
-            for(int j = 0; j < 3; j++)
+            for (int j = 0; j < 3; j++)
                 result += publicObjectives.get(j).calculateScore(patternCard);
 
 
@@ -212,7 +229,22 @@ public class Table {
 
             result = result + player.getTokens() + patternCard.getNumberOfDiceInThePatternCard() - 20;
 
+            orderedScores.add(result);
+            player.setFinalScore(result);
+
+            //todo da togliere questo
             scoreboard.setScore(player.getId(), result, player.getTokens());
         }
+
+
+        //todo: fare l'ordinamento guardando tokens left e last player playing
+        Collections.sort(orderedScores);
+        Collections.reverse(orderedScores);
+
+
+        
+
+
+
     }
 }
