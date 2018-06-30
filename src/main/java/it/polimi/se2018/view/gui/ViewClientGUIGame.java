@@ -89,16 +89,19 @@ public class ViewClientGUIGame extends SwingPhase {
     }
 
     public void print(){
+        //GENERO LE TOOLCARDS
         SwingToolCards[] toolCard = new SwingToolCards[3];
         for (int i=0; i<3; i++) {
             toolCard[i] = new SwingToolCards(toolCards.get(i));
         }
 
+        //GENERO LE PUBLIC OBJECTIVES
         SwingPublicObjective[] publicObjective = new SwingPublicObjective[3];
         for (int i=0; i<3; i++) {
             publicObjective[i] = new SwingPublicObjective(publicObjectives.get(i));
         }
-        
+
+        //GENERO LA MIA PATTERNCARD E QUELLA DEGLI ALTRI GIOCATORI
         SwingPatternCard myPatternCard = null;
         SwingPatternCard[] patternCard = new SwingPatternCard[3];
         for (int i=0; i<patternCards.size(); i++) {
@@ -107,10 +110,15 @@ public class ViewClientGUIGame extends SwingPhase {
             else
                 patternCard[i] = new SwingPatternCard(patternCards.get(i), true);
         }
-        
+
+        //GENERO LA DICE ARENA
         SwingDiceArena Arena = new SwingDiceArena(diceArena);
-        
+
+        //GENERO IL PLAYER
         SwingPlayer player = new SwingPlayer(myPatternCard, new SwingPrivateObjective(privateObjective), tokensLeft.getTokensLeft());
+
+        //GENERO LA ROUNDTRACK
+        SwingRoundTrack rt = new SwingRoundTrack(roundTrack);
 
         GridBagConstraints constraints = new GridBagConstraints();
         jFrame.setLayout(new GridBagLayout());

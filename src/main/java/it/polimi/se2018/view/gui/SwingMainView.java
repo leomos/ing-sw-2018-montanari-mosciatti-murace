@@ -47,8 +47,7 @@ public class SwingMainView extends ViewClient {
                 gamePhase = ((ModelChangedMessageRefresh) message).getGamePhase();
                 if(gamePhase == GAMEPHASE)
                     swingPhase = new PatternCardsFrame(this.idClient);
-                if(gamePhase == ENDGAMEPHASE)
-                    ;
+                if(gamePhase == ENDGAMEPHASE);
                     //japne = new (this.idClient);
             }else {
                 swingPhase.print();

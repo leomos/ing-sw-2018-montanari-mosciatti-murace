@@ -23,7 +23,7 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
     private String idPatternCardChosen = "";
 
     private ButtonGroup group;
-
+    
     public PatternCardsFrame(int idClient) {
         this.idClient = idClient;
     }
