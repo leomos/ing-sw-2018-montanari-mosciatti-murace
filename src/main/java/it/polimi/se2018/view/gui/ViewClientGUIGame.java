@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class ViewClientGUIGame extends SwingPhase {
 
-    private JFrame jFrame;
+    private JFrame jFrame = new JFrame();
 
     private int idClient;
 
@@ -35,7 +35,8 @@ public class ViewClientGUIGame extends SwingPhase {
 
     private ArrayList<ModelChangedMessageRound> roundTrack = new ArrayList<ModelChangedMessageRound>();
 
-    public ViewClientGUIGame () {
+    public ViewClientGUIGame (int idClient) {
+        this.idClient = idClient;
     }
 
     @Override
