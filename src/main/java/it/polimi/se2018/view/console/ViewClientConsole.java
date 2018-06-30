@@ -70,7 +70,7 @@ public class ViewClientConsole extends ViewClient implements Runnable {
                 clientSuspended = true;
                 viewClientConsolePrint.setSuspended(true);
             } else {
-                System.out.println("Player " + ((ModelChangedMessagePlayerAFK) message).getPlayer() + " is now suspended");
+                System.out.println("\nPlayer " + ((ModelChangedMessagePlayerAFK) message).getPlayer() + " is now suspended");
             }
         }
         else {

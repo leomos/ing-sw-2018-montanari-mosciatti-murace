@@ -44,7 +44,7 @@ public class ViewClientConsoleEndGame extends ViewClientConsolePrint {
             System.out.println("CONGRATS, YOU LOSE");
 
         try {
-            TimeUnit.SECONDS.sleep(10);
+            TimeUnit.SECONDS.sleep(30);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
