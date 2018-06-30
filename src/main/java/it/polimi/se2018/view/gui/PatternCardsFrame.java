@@ -3,6 +3,8 @@ package it.polimi.se2018.view.gui;
 import it.polimi.se2018.model.events.ModelChangedMessage;
 import it.polimi.se2018.model.events.ModelChangedMessagePatternCard;
 import it.polimi.se2018.model.events.ModelChangedMessagePrivateObjective;
+import it.polimi.se2018.model.events.PlayerMessage;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -139,7 +141,7 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         idPatternCardChosen = idPatternCardChosen + group.getSelection().getActionCommand();
-        askForPatternCard();
+        jFrame.setVisible(false);
     }
 
     public Integer askForPatternCard() {
@@ -151,5 +153,10 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
             }
         } while (idPatternCardChosen.length()==0);
         return Integer.parseInt(idPatternCardChosen);
+    }
+
+    @Override
+    public PlayerMessage getMainMove() {
+        return null;
     }
 }

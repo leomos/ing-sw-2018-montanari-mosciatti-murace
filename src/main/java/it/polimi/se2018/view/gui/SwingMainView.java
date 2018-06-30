@@ -4,6 +4,8 @@ import it.polimi.se2018.model.GamePhase;
 import it.polimi.se2018.model.events.*;
 import it.polimi.se2018.view.ViewClient;
 
+import java.rmi.RemoteException;
+
 import static it.polimi.se2018.model.GamePhase.ENDGAMEPHASE;
 import static it.polimi.se2018.model.GamePhase.GAMEPHASE;
 
@@ -54,6 +56,11 @@ public class SwingMainView extends ViewClient {
                     swingPhase.update(message);
                     idPlayerPlaying = Integer.parseInt(((ModelChangedMessageRefresh) message).getIdPlayerPlaying());
                     if(idPlayerPlaying == idClient && canIPlay) {
+                        try {
+                            serverInterface.notify(swingPhase.getMainMove());
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                        }
                         System.out.println("It's your turn");
                         System.out.println("/help: get List of moves");
                     }

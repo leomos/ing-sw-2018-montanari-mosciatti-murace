@@ -4,12 +4,17 @@ import it.polimi.se2018.model.events.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ViewClientGUIGame extends SwingPhase {
 
     private JFrame jFrame = new JFrame();
+
+    private String idDieChosen;
+
+    private String toolCardChosen;
 
     private int idClient;
 
@@ -116,7 +121,7 @@ public class ViewClientGUIGame extends SwingPhase {
         GridBagConstraints constraints = new GridBagConstraints();
         jFrame.setLayout(new GridBagLayout());
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        jFrame.setTitle("TAVOLO DI GIOCO");
+        jFrame.setTitle("TABLE");
         Color c = new Color(34, 139, 34);
         jFrame.getContentPane().setBackground(c);
 
@@ -129,13 +134,15 @@ public class ViewClientGUIGame extends SwingPhase {
         jFrame.add(player, constraints);
 
         JPanel pc = new JPanel();
+        pc.setBackground(c);
         pc.setPreferredSize(new Dimension(760, 250));
         int n = patternCards.size();
-        pc.setLayout(new GridLayout(1, n-1, 5, 0));
+        pc.setLayout(new FlowLayout());
         for (int i=0; i<n; i++) {
             if (!patternCards.get(i).getIdPlayer().equals(Integer.toString(idClient)))
                 pc.add(patternCard[i]);
         }
+
         constraints.insets.left = 0;
         constraints.gridx = 0;
         constraints.gridy = 0;
@@ -180,8 +187,16 @@ public class ViewClientGUIGame extends SwingPhase {
         jFrame.setVisible(true);
     }
 
+    public void ActionPerformed(ActionEvent e) {}
+
     @Override
     public Integer askForPatternCard() {
         return null;
+    }
+
+    public PlayerMessage getMainMove() {
+        do {
+            //Se sono entrambi premuti ritorna PlayerMessageDie
+        } while (true);
     }
 }

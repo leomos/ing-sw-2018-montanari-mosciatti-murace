@@ -59,10 +59,12 @@ public class SwingDie extends JButton {
         char n;
         int l = representation.length();
 
-        for (int i=0; i<l;) {
-            c = representation.charAt(i);
-            n = representation.charAt(i+1);
+        for (int i=0; i<l; i+=4) {
+            c = representation.charAt(i+2);
+            n = representation.charAt(i+3);
             SwingDie d = new SwingDie(0);
+            Integer m = i/4;
+            d.id = m.toString();
 
             switch (n) {
                 case '1':
@@ -107,7 +109,6 @@ public class SwingDie extends JButton {
                     break;
             }
             dice.add(d);
-            i = i + 2;
         }
         return dice;
     }
