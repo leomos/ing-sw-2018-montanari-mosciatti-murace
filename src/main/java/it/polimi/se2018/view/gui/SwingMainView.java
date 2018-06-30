@@ -45,7 +45,7 @@ public class SwingMainView extends ViewClient {
             if (((ModelChangedMessageRefresh) message).getGamePhase() != gamePhase) {
                 gamePhase = ((ModelChangedMessageRefresh) message).getGamePhase();
                 if(gamePhase == GAMEPHASE)
-                    swingPhase = new PatternCardsFrame(this.idClient);
+                    swingPhase = new ViewClientGUIGame(this.idClient);
                 if(gamePhase == ENDGAMEPHASE) ;
                     //japne = new (this.idClient);
             }else {
