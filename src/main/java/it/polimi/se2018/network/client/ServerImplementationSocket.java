@@ -32,11 +32,7 @@ public class ServerImplementationSocket extends Thread implements ServerInterfac
 
     @Override
     public void notify(PlayerMessage playerMessage) throws RemoteException {
-        try {
-            this.objectOutputStream.writeObject(playerMessage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        send(playerMessage);
     }
 
     @Override
@@ -62,11 +58,7 @@ public class ServerImplementationSocket extends Thread implements ServerInterfac
 
     @Override
     public void sendHeartbeat(HeartbeatMessage heartbeatMessage) {
-        try {
-            this.objectOutputStream.writeObject(heartbeatMessage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        send(heartbeatMessage);
     }
 
     @Override
@@ -91,10 +83,14 @@ public class ServerImplementationSocket extends Thread implements ServerInterfac
     }
 
     public void writeMessage(Message message) {
+        send(message);
+    }
+
+    private void send(Object object) {
         try {
-            this.objectOutputStream.writeObject(message);
+            this.objectOutputStream.writeObject(object);
         } catch (IOException e) {
-            e.printStackTrace();
+            viewClient.handleDisconnection();
         }
     }
 
