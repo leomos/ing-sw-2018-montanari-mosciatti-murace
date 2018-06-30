@@ -23,7 +23,9 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
     private String idPatternCardChosen = "";
 
     private ButtonGroup group;
-    
+
+    private boolean table = false;
+
     public PatternCardsFrame(int idClient) {
         this.idClient = idClient;
     }
@@ -137,28 +139,7 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         idPatternCardChosen = idPatternCardChosen + group.getSelection().getActionCommand();
-        jFrame.getContentPane().removeAll();
-        jFrame.repaint();
-        for (int i=0; i<4; i++) {
-            if (patternCards.get(i).getIdPatternCard().equals(idPatternCardChosen)) {
-                SwingPrivateObjective po = new SwingPrivateObjective(privateObjective);
-                SwingPatternCard pc = new SwingPatternCard(patternCards.get(i), false);
-                SwingPlayer player = new SwingPlayer(pc, po, patternCards.get(i).getDifficulty());
-
-                JLabel label = new JLabel("Waiting for other players...", SwingConstants.CENTER);
-                label.setFont(new Font("Calibri", Font.ITALIC, 18));
-                label.setForeground(Color.WHITE);
-
-                jFrame.setTitle("YOUR CHOICE");
-
-                jFrame.setLayout(new BorderLayout());
-                jFrame.add(label, BorderLayout.NORTH);
-                jFrame.add(player, BorderLayout.CENTER);
-
-                jFrame.pack();
-                jFrame.setVisible(true);
-            }
-        }
+        askForPatternCard();
     }
 
     public Integer askForPatternCard() {
