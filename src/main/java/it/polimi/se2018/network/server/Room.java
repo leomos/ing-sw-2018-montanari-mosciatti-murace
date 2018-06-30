@@ -250,6 +250,8 @@ public class Room extends Thread {
         System.out.println("Client " + id + " disconnected!");
         connectedClientById(id).setInactive(true);
 
+        model.setPlayerSuspended(id, true);
+
         if(model.currentPlayerPlaying() == id) {
             Message message = new PlayerMessageEndTurn(id);
             notifyView(message);
