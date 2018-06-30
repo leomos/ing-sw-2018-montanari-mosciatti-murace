@@ -130,9 +130,12 @@ public class ViewClientGUIGame extends SwingPhase {
 
         JPanel pc = new JPanel();
         pc.setPreferredSize(new Dimension(760, 250));
-        pc.setLayout(new GridLayout(1, 3, 5, 0));
-        for (int i=0; i<3; i++)
-            pc.add(patternCard[i]);
+        int n = patternCards.size();
+        pc.setLayout(new GridLayout(1, n-1, 5, 0));
+        for (int i=0; i<n; i++) {
+            if (!patternCards.get(i).getIdPlayer().equals(Integer.toString(idClient)))
+                pc.add(patternCard[i]);
+        }
         constraints.insets.left = 0;
         constraints.gridx = 0;
         constraints.gridy = 0;
