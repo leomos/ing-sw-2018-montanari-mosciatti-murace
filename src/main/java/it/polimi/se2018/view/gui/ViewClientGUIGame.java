@@ -110,7 +110,7 @@ public class ViewClientGUIGame extends SwingPhase {
         
         SwingDiceArena Arena = new SwingDiceArena(diceArena);
         
-        SwingPlayer player = new SwingPlayer(Integer.toString(idClient), myPatternCard, new SwingPrivateObjective(privateObjective), tokensLeft.getTokensLeft());
+        SwingPlayer player = new SwingPlayer(myPatternCard, new SwingPrivateObjective(privateObjective), tokensLeft.getTokensLeft());
 
         GridBagConstraints constraints = new GridBagConstraints();
         jFrame.setLayout(new GridBagLayout());

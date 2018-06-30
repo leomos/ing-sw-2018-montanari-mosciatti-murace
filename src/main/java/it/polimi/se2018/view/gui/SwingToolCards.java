@@ -7,7 +7,7 @@ import java.awt.*;
 
 public class SwingToolCards extends JPanel {
     public SwingToolCards(ModelChangedMessageToolCard message) {
-        String path = "C:\\Users\\Alessandro Murace\\Pictures\\TOOLCARDS\\Toolcard";
+        String path = "../ing-sw-2018-montanari-mosciatti-murace\\src\\images\\toolcards\\Toolcard";
         path = path + message.getIdToolCard() + ".jpg";
 
         JButton b = new JButton();
@@ -15,7 +15,7 @@ public class SwingToolCards extends JPanel {
         b.setPreferredSize(new Dimension(185, 255));
         b.setToolTipText("Toolcards");
 
-        JLabel l = new JLabel("COSTO: " + message.getCost(), SwingConstants.CENTER);
+        JLabel l = new JLabel("COST: " + message.getCost(), SwingConstants.CENTER);
 
         setLayout(new BorderLayout());
         add(b, BorderLayout.CENTER);

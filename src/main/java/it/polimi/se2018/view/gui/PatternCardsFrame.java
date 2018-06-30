@@ -47,7 +47,7 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
         po.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFrame f = new JFrame("PRIVATE OBJECTIVE");
+                JFrame f = new JFrame();
                 f.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
                 SwingPrivateObjective p = new SwingPrivateObjective(privateObjective);
                 f.getContentPane().add(p);
@@ -67,7 +67,6 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
         p.setBackground(c);
 
         jFrame.setContentPane(p);
-        p.setToolTipText("Chose your patternCard and click CONFERMA");
 
         JButton b = new JButton("CONFERMA");
         b.addActionListener(this);
