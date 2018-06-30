@@ -894,10 +894,11 @@ public class Model extends Observable<ModelChangedMessage> {
     public void setPlayerSuspended(int idPlayer, boolean afk){
         try {
             table.getPlayers(idPlayer).setSuspended(afk);
-            table.checkActivePlayers();
-            endTurn(new PlayerMessageEndTurn(idPlayer));
-            notify(new ModelChangedMessagePlayerAFK(Integer.toString(idPlayer), "\nYou run out of time. You are now suspended. Type anything to get back into the game\n"));
-
+            if(afk) {
+                table.checkActivePlayers();
+                endTurn(new PlayerMessageEndTurn(idPlayer));
+                notify(new ModelChangedMessagePlayerAFK(Integer.toString(idPlayer), "\nYou run out of time. You are now suspended. Type anything to get back into the game\n"));
+            }
         } catch (OnlyOnePlayerLeftException e) {
 
             notify(new ModelChangedMessagePlayerAFK(Integer.toString(idPlayer), "\nYou run out of time. You are now suspended. Type anything to get back into the game\n"));
