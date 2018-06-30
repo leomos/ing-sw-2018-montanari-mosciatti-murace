@@ -86,4 +86,9 @@ public class ViewClientConsoleEndGame extends ViewClientConsolePrint {
     public PlayerMessage getMainMove(String s) {
         return null;
     }
+
+    @Override
+    public void setSuspended(boolean suspended) {
+
+    }
 }

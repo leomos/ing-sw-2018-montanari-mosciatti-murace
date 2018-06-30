@@ -68,7 +68,7 @@ public class ViewClientConsole extends ViewClient implements Runnable {
             if(((ModelChangedMessagePlayerAFK) message).getPlayer().equals(Integer.toString(idClient))) {
                 System.out.println(((ModelChangedMessagePlayerAFK) message).getMessage());
                 clientSuspended = true;
-                viewClientConsolePrint.update(message);
+                viewClientConsolePrint.setSuspended(true);
             } else {
                 System.out.println("Player " + ((ModelChangedMessagePlayerAFK) message).getPlayer() + " is now suspended");
             }
@@ -99,26 +99,25 @@ public class ViewClientConsole extends ViewClient implements Runnable {
                 while (c) {
 
                     try {
-                        TimeUnit.SECONDS.sleep(1);
+                        TimeUnit.SECONDS.sleep(3);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
 
-                    if(canIPlay) {
+                    boolean moveOk;
 
-                        Scanner mainInput = new Scanner(System.in);
-                        boolean moveOk;
+                    do{
+                        try {
+                            TimeUnit.SECONDS.sleep(1);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        moveOk = true;
+                        if(canIPlay) {
 
-                        do {
-                            moveOk = true;
+                            Scanner mainInput = new Scanner(System.in);
 
                             if(mainInput.hasNext()) {
-
-                                try {
-                                    TimeUnit.SECONDS.sleep(1);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
 
                                 String s = mainInput.nextLine();
 
@@ -135,7 +134,7 @@ public class ViewClientConsole extends ViewClient implements Runnable {
                                             }
                                         else {
                                             moveOk = false;
-                                            System.out.println("Try again!");
+                                            System.out.println("Try again! /help");
                                         }
 
                                     } else {
@@ -152,8 +151,8 @@ public class ViewClientConsole extends ViewClient implements Runnable {
                                 }
                             }
                         }
-                        while (moveOk);
                     }
+                    while (moveOk);
 
                 }
 
@@ -165,6 +164,7 @@ public class ViewClientConsole extends ViewClient implements Runnable {
     public void unSuspend(){
         System.out.println("You are not suspended anymore!");
         clientSuspended = false;
+        viewClientConsolePrint.setSuspended(false);
         try {
             serverInterface.notify(new PlayerMessageNotAFK(idClient));
         } catch (RemoteException e) {
@@ -174,6 +174,7 @@ public class ViewClientConsole extends ViewClient implements Runnable {
 
     @Override
     public Boolean block(){
+
         if(idPlayerPlaying == idClient)
             canIPlay = false;
         return true;
@@ -214,7 +215,12 @@ public class ViewClientConsole extends ViewClient implements Runnable {
     public ArrayList<Integer> getIncrementedValue() {
         if (idPlayerPlaying == idClient) {
 
-            return viewClientConsolePrint.getIncrementedValue();
+            ArrayList<Integer> returnValues = viewClientConsolePrint.getIncrementedValue();
+
+            if( returnValues.isEmpty())
+                unSuspend();
+
+            return returnValues;
 
         }
         return null;

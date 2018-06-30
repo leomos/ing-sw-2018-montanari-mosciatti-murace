@@ -132,10 +132,10 @@ public class Table {
         Collections.shuffle(toolCardsList);
 
         //TO FORCE 3 PATTERNCARDS FOR TESTS
-        /*
+
         toolCardsList.add(0,0);
         toolCardsList.add(1,1);
-        toolCardsList.add(2,2); */
+        toolCardsList.add(2,2);
 
 
         for(int j = 0; j < 3; j++)
@@ -242,7 +242,7 @@ public class Table {
         Collections.reverse(orderedScores);
 
 
-        
+
 
 
 

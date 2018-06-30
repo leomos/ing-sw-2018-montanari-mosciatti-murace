@@ -206,4 +206,6 @@ public abstract class ViewClientConsolePrint {
 
     public abstract PlayerMessage getMainMove(String s);
 
+    public abstract void setSuspended(boolean suspended);
+
 }
