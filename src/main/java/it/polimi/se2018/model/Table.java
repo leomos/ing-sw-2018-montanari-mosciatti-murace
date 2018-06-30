@@ -214,11 +214,14 @@ public class Table {
 
     public void calculateScores() {
         this.scoreboard = new Scoreboard(roundTrack.getCurrentRound().getIdPlayerPlaying());
+        ArrayList<Integer>  orderedScores = new ArrayList<>();
+        HashMap<Player, Integer> playerScore = new HashMap<>();
+
         for (Player player : players) {
             int result = 0;
             PatternCard patternCard = player.getChosenPatternCard();
 
-            for(int j = 0; j < 3; j++)
+            for (int j = 0; j < 3; j++)
                 result += publicObjectives.get(j).calculateScore(patternCard);
 
 
@@ -226,7 +229,22 @@ public class Table {
 
             result = result + player.getTokens() + patternCard.getNumberOfDiceInThePatternCard() - 20;
 
+            orderedScores.add(result);
+            player.setFinalScore(result);
+
+            //todo da togliere questo
             scoreboard.setScore(player.getId(), result, player.getTokens());
         }
+
+
+        //todo: fare l'ordinamento guardando tokens left e last player playing
+        Collections.sort(orderedScores);
+        Collections.reverse(orderedScores);
+
+
+        
+
+
+
     }
 }

@@ -28,6 +28,8 @@ public class Player {
 
     private boolean hasUsedToolCardThisTurn;
 
+    public int finalScore;
+
     public Player(int id, String name) {
         this.id = id;
         this.name = name;
@@ -61,6 +63,14 @@ public class Player {
 
     public boolean hasSetDieThisTurn() {
         return hasSetDieThisTurn;
+    }
+
+    public void setFinalScore(int finalScore) {
+        this.finalScore = finalScore;
+    }
+
+    public int getFinalScore() {
+        return finalScore;
     }
 
     public boolean hasUsedToolCardThisTurn() {
