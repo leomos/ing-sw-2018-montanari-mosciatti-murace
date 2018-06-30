@@ -5,6 +5,7 @@ import it.polimi.se2018.model.events.ModelChangedMessageEndGame;
 import it.polimi.se2018.model.events.PlayerMessage;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class ViewClientConsoleEndGame extends ViewClientConsolePrint {
 
@@ -41,6 +42,15 @@ public class ViewClientConsoleEndGame extends ViewClientConsolePrint {
             System.out.println("CONGRATS, YOU WON");
         else
             System.out.println("CONGRATS, YOU LOSE");
+
+        try {
+            TimeUnit.SECONDS.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+        System.exit(0);
 
     }
 
