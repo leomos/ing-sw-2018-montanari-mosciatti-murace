@@ -130,7 +130,7 @@ public class ViewClientConsole extends ViewClient implements Runnable {
                                             try {
                                                 serverInterface.notify(message);
                                             } catch (RemoteException e) {
-                                                e.printStackTrace();
+                                                handleDisconnection();
                                             }
                                         else {
                                             moveOk = false;
@@ -146,7 +146,7 @@ public class ViewClientConsole extends ViewClient implements Runnable {
                                     try {
                                         serverInterface.notify(new PlayerMessageNotAFK(idClient));
                                     } catch (RemoteException e) {
-                                        e.printStackTrace();
+                                        handleDisconnection();
                                     }
                                 }
                             }
@@ -168,7 +168,7 @@ public class ViewClientConsole extends ViewClient implements Runnable {
         try {
             serverInterface.notify(new PlayerMessageNotAFK(idClient));
         } catch (RemoteException e) {
-            e.printStackTrace();
+            handleDisconnection();
         }
     }
 
