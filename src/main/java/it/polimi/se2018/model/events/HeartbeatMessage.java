@@ -8,6 +8,8 @@ import java.time.Instant;
 
 public class HeartbeatMessage implements Message, Serializable {
 
+    private static final long serialVersionUID = 1000L;
+
     private int id;
 
     private Instant sent;

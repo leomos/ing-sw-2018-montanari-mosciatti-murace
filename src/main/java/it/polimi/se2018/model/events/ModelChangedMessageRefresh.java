@@ -4,6 +4,8 @@ import it.polimi.se2018.network.visitor.MessageVisitorInterface;
 
 public class ModelChangedMessageRefresh extends ModelChangedMessage implements Message {
 
+    private static final long serialVersionUID = 2000L;
+
     String idPlayerPlaying;
 
     public ModelChangedMessageRefresh(String idPlayerPlaying){
