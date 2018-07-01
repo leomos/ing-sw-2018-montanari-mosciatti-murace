@@ -98,7 +98,11 @@ public class ServerImplementationSocket extends Thread implements ServerInterfac
     }
 
     public void updateView(Message message) {
-        viewClient.update((ModelChangedMessage) message);
+        Runnable task = () -> {
+            viewClient.update((ModelChangedMessage) message);
+        };
+        Thread thread = new Thread(task);
+        thread.start();
     }
 
     public void writeMessage(Message message) {
