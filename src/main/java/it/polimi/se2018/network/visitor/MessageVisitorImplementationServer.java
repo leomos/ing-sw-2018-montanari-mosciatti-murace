@@ -15,59 +15,103 @@ public class MessageVisitorImplementationServer implements MessageVisitorInterfa
 
     @Override
     public void visitMethodCallMessage(MethodCallMessage methodCallMessage) {
-        Message answer;
+        Runnable task;
+        Thread thread;
         switch (methodCallMessage.getMethodName()) {
             case "getDieFromPatternCard":
-                answer = new MethodCallMessage(methodCallMessage.getMethodName(),
-                        serverImplementationSocket.getViewClient().getDieFromPatternCard());
+                task = () -> {
+                    serverImplementationSocket.writeMessage(new MethodCallMessage(methodCallMessage.getMethodName(),
+                            serverImplementationSocket.getViewClient().getDieFromPatternCard()));
+                };
+                thread = new Thread(task);
+                thread.start();
                 break;
             case "getDieFromRoundTrack":
-                answer = new MethodCallMessage(methodCallMessage.getMethodName(),
-                        serverImplementationSocket.getViewClient().getDieFromRoundTrack());
+                task = () -> {
+                    serverImplementationSocket.writeMessage(new MethodCallMessage(methodCallMessage.getMethodName(),
+                            serverImplementationSocket.getViewClient().getDieFromRoundTrack()));
+                };
+                thread = new Thread(task);
+                thread.start();
                 break;
             case "getIncrementedValue":
-                answer = new MethodCallMessage(methodCallMessage.getMethodName(),
-                        serverImplementationSocket.getViewClient().getIncrementedValue());
+                task = () -> {
+                    serverImplementationSocket.writeMessage(new MethodCallMessage(methodCallMessage.getMethodName(),
+                            serverImplementationSocket.getViewClient().getIncrementedValue()));
+                };
+                thread = new Thread(task);
+                thread.start();
                 break;
             case "getPositionInPatternCard":
-                answer = new MethodCallMessage(methodCallMessage.getMethodName(),
-                        serverImplementationSocket.getViewClient().getPositionInPatternCard());
+                task = () -> {
+                    serverImplementationSocket.writeMessage(new MethodCallMessage(methodCallMessage.getMethodName(),
+                            serverImplementationSocket.getViewClient().getPositionInPatternCard()));
+                };
+                thread = new Thread(task);
+                thread.start();
                 break;
             case "getValueForDie":
-                answer = new MethodCallMessage(methodCallMessage.getMethodName(),
-                        serverImplementationSocket.getViewClient().getValueForDie());
+                task = () -> {
+                    serverImplementationSocket.writeMessage(new MethodCallMessage(methodCallMessage.getMethodName(),
+                            serverImplementationSocket.getViewClient().getValueForDie()));
+                };
+                thread = new Thread(task);
+                thread.start();
                 break;
             case "askForPatternCard":
-                answer = new MethodCallMessage(methodCallMessage.getMethodName(),
-                        serverImplementationSocket.getViewClient().askForPatternCard());
+                task = () -> {
+                    serverImplementationSocket.writeMessage(new MethodCallMessage(methodCallMessage.getMethodName(),
+                            serverImplementationSocket.getViewClient().askForPatternCard()));
+                };
+                thread = new Thread(task);
+                thread.start();
                 break;
             case "getDieFromDiceArena":
-                answer = new MethodCallMessage(methodCallMessage.getMethodName(),
-                        serverImplementationSocket.getViewClient().getDieFromDiceArena());
+                task = () -> {
+                    serverImplementationSocket.writeMessage(new MethodCallMessage(methodCallMessage.getMethodName(),
+                            serverImplementationSocket.getViewClient().getDieFromDiceArena()));
+                };
+                thread = new Thread(task);
+                thread.start();
                 break;
             case "getDoublePositionInPatternCard":
-                answer = new MethodCallMessage(methodCallMessage.getMethodName(),
-                        serverImplementationSocket.getViewClient().getDoublePositionInPatternCard());
+                task = () -> {
+                    serverImplementationSocket.writeMessage(new MethodCallMessage(methodCallMessage.getMethodName(),
+                            serverImplementationSocket.getViewClient().getDoublePositionInPatternCard()));
+                };
+                thread = new Thread(task);
+                thread.start();
                 break;
             case "getSinglePositionInPatternCard":
-                answer = new MethodCallMessage(methodCallMessage.getMethodName(),
-                        serverImplementationSocket.getViewClient().getSinglePositionInPatternCard(
-                                (ArrayList<Integer>) methodCallMessage.getArgument("listOfAvailablePositions")));
+                task = () -> {
+                    serverImplementationSocket.writeMessage(new MethodCallMessage(methodCallMessage.getMethodName(),
+                            serverImplementationSocket.getViewClient().getSinglePositionInPatternCard(
+                                    (ArrayList<Integer>) methodCallMessage.getArgument("listOfAvailablePositions"))));
+                };
+                thread = new Thread(task);
+                thread.start();
                 break;
             case "block":
-                answer = new MethodCallMessage(methodCallMessage.getMethodName(),
-                        serverImplementationSocket.getViewClient().block());
+                task = () -> {
+                    serverImplementationSocket.writeMessage(new MethodCallMessage(methodCallMessage.getMethodName(),
+                            serverImplementationSocket.getViewClient().block()));
+                };
+                thread = new Thread(task);
+                thread.start();
                 break;
             case "free":
-                answer = new MethodCallMessage(methodCallMessage.getMethodName(),
-                        serverImplementationSocket.getViewClient().free());
+                task = () -> {
+                    serverImplementationSocket.writeMessage(new MethodCallMessage(methodCallMessage.getMethodName(),
+                            serverImplementationSocket.getViewClient().free()));
+                };
+                thread = new Thread(task);
+                thread.start();
                 break;
             default:
                 /* TODO: send a WrongMethodException? */
-                answer = null;
                 break;
         }
-        serverImplementationSocket.writeMessage(answer);
+
     }
 
     @Override

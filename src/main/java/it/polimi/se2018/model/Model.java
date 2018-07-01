@@ -130,7 +130,6 @@ public class Model extends Observable<ModelChangedMessage> {
         }
 
         timer.setModel(this);
-
         timer.startTimer();
 
     }
@@ -277,14 +276,23 @@ public class Model extends Observable<ModelChangedMessage> {
 
     /**
      * This method is called by the thread timer only if the player doesn't end the turn before the 90 seconds timer ends.
-     * It invokes the method endTurn() and sends a message to the current player playing saying that he run out of time
+     * If it happens during the choosing of the pattern card, it gives the player the first available pattern card.
+     * If it happens during the GAMEPHASE, it invokes the method endTurn() and sends a message to the current
+     * player playing saying that he run out of time
      * and he is now considered AFK.
      */
     public void timesUp(){
 
-        int idPlayerPlaying = table.getRoundTrack().getCurrentRound().getIdPlayerPlaying();
+        if(gamePhase == GamePhase.SETUPPHASE)
+        {
+            for(Integer key : players.keySet()) {
+                setChosenPatternCard(-1 , key);
+            }
+        }
 
-        this.setPlayerSuspended(idPlayerPlaying,true);
+        int idPlayerPlaying = table.getRoundTrack().getCurrentRound().getIdPlayerPlaying();
+        this.setPlayerSuspended(idPlayerPlaying, true);
+
 
     }
 
@@ -895,7 +903,8 @@ public class Model extends Observable<ModelChangedMessage> {
             table.getPlayers(idPlayer).setSuspended(afk);
             if(afk) {
                 table.checkActivePlayers();
-                endTurn(new PlayerMessageEndTurn(idPlayer));
+                if(gamePhase == GamePhase.GAMEPHASE)
+                    endTurn(new PlayerMessageEndTurn(idPlayer));
                 notify(new ModelChangedMessagePlayerAFK(Integer.toString(idPlayer), "\nYou run out of time. You are now suspended. Type anything to get back into the game\n"));
             }
         } catch (OnlyOnePlayerLeftException e) {
