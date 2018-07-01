@@ -3,6 +3,7 @@ package it.polimi.se2018.view.console;
 import it.polimi.se2018.model.GamePhase;
 import it.polimi.se2018.model.events.*;
 import it.polimi.se2018.view.ViewClient;
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -298,13 +299,26 @@ public class ViewClientConsole extends ViewClient implements Runnable {
     public void handleDisconnection() {
         System.out.println("Disconnesso!");
         this.serverInterface = null;
-        this.executor.shutdown();
+        this.executor.shutdownNow();
         try {
-            TimeUnit.SECONDS.sleep(3);
+            this.executor.awaitTermination(3, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            System.out.println("Heartbeat terminato prima del previsto.");
+        }
+        System.out.println("Heartbeat terminato!");
+        try {
+            TimeUnit.SECONDS.sleep(10);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        System.out.println("provo a riconnettermi");
+        tryToReconnect();
+    }
+
+    private void tryToReconnect() {
         this.reconnect(idClient, 0);
+        initNewExecutor();
+        startHeartbeating(idClient);
     }
 
 }
