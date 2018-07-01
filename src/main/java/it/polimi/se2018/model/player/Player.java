@@ -20,8 +20,6 @@ public class Player {
 
     private int tokens;
 
-    private boolean missBehaved = false;
-
     private PrivateObjective privateObjective;
 
     private boolean hasChosenPatternCard = false;
@@ -81,14 +79,6 @@ public class Player {
 
     public boolean hasUsedToolCardThisTurn() {
         return hasUsedToolCardThisTurn;
-    }
-
-    public void setHasMissBehaved(boolean missBehaved){
-        this.missBehaved = missBehaved;
-    }
-
-    public boolean hasMissBehaved(){
-        return this.missBehaved;
     }
 
     public boolean isSuspended() {

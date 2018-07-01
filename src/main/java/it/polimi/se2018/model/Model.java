@@ -128,11 +128,6 @@ public class Model extends Observable<ModelChangedMessage> {
         modelChangedMessageRefresh = new ModelChangedMessageRefresh(Integer.toString(table.getRoundTrack().getCurrentRound().getIdPlayerPlaying()));
         notify(modelChangedMessageRefresh);
 
-        for(Integer key : players.keySet()) {
-            if(table.getPlayers(key).hasMissBehaved())
-                notify(new ModelChangedMessageNewEvent(Integer.toString(key), "IdPatternCard chosen was not present; \nYou are going to automatically get the first one available"));
-        }
-
     }
 
     /**
@@ -156,7 +151,6 @@ public class Model extends Observable<ModelChangedMessage> {
             PatternCard patternCard = table.getPlayers(idPlayer).getPatternCards().get(0);
             table.getPlayers(idPlayer).setChosenPatternCard(patternCard);
             table.getPlayers(idPlayer).setTokens(patternCard.getDifficulty());
-            table.getPlayers(idPlayer).setHasMissBehaved(true);
             setPlayerSuspended(idPlayer, true);
         }
 
@@ -299,6 +293,7 @@ public class Model extends Observable<ModelChangedMessage> {
         {
             for(Integer key : players.keySet()) {
                 setChosenPatternCard(-1 , key);
+
             }
         }
 

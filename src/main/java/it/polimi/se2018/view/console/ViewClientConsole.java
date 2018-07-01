@@ -100,12 +100,15 @@ public class ViewClientConsole extends ViewClient implements Runnable {
                 if (!clientSuspended) {
 
                     int chosenPatternCard = viewClientConsolePrint.askForPatternCard(app);
-                    hasChoosePatternCard = true;
+                    if(chosenPatternCard != -1) {
 
-                    try {
-                        serverInterface.notify(new PlayerMessageSetup(idClient, chosenPatternCard));
-                    } catch (RemoteException e) {
-                        e.printStackTrace();
+                        try {
+                            serverInterface.notify(new PlayerMessageSetup(idClient, chosenPatternCard));
+                            hasChoosePatternCard = true;
+                            System.out.println("Wait for other players to choose their pattern cards!");
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                        }
                     }
 
                 } else {
@@ -121,7 +124,7 @@ public class ViewClientConsole extends ViewClient implements Runnable {
                 System.out.println("Wait for game to start");
             }
         }
-        while(gamePhase != SETUPPHASE);
+        while(gamePhase != SETUPPHASE || !hasChoosePatternCard);
 
 
 
