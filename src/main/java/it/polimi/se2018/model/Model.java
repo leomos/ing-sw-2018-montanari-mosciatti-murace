@@ -7,10 +7,7 @@ import it.polimi.se2018.model.events.*;
 import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.objectives.PublicObjective;
 import it.polimi.se2018.model.patternCard.*;
-import it.polimi.se2018.model.player.OnlyOnePlayerLeftException;
-import it.polimi.se2018.model.player.Player;
-import it.polimi.se2018.model.player.PlayerHasAlreadySetDieThisTurnException;
-import it.polimi.se2018.model.player.PlayerHasNotSetDieThisTurnException;
+import it.polimi.se2018.model.player.*;
 import it.polimi.se2018.model.rounds.*;
 import it.polimi.se2018.model.toolcards.ToolCard;
 import it.polimi.se2018.model.toolcards.ToolCardContainer;
@@ -48,6 +45,10 @@ public class Model extends Observable<ModelChangedMessage> {
 
         table = new Table(players);
 
+        this.gamePhase = GamePhase.SETUPPHASE;
+        ModelChangedMessageChangeGamePhase modelChangedMessageChangeGamePhase = new ModelChangedMessageChangeGamePhase(gamePhase);
+        notify(modelChangedMessageChangeGamePhase);
+
         for(Integer key : players.keySet()) {
             for (int j = 0; j < 4; j++) {
                 PatternCard patternCard = table.getPlayers(key).getPatternCards().get(j);
@@ -66,6 +67,9 @@ public class Model extends Observable<ModelChangedMessage> {
 
         }
         notify(new ModelChangedMessageRefresh(null));
+
+        timer.setModel(this);
+        timer.startTimer();
     }
 
     /**
@@ -129,9 +133,6 @@ public class Model extends Observable<ModelChangedMessage> {
                 notify(new ModelChangedMessageNewEvent(Integer.toString(key), "IdPatternCard chosen was not present; \nYou are going to automatically get the first one available"));
         }
 
-        timer.setModel(this);
-        timer.startTimer();
-
     }
 
     /**
@@ -151,11 +152,18 @@ public class Model extends Observable<ModelChangedMessage> {
                 moveSucceed = true;
                 }
 
-        if(!moveSucceed) {
+        if(!moveSucceed && !table.getPlayers(idPlayer).hasChosenPatternCard()) {
             PatternCard patternCard = table.getPlayers(idPlayer).getPatternCards().get(0);
             table.getPlayers(idPlayer).setChosenPatternCard(patternCard);
             table.getPlayers(idPlayer).setTokens(patternCard.getDifficulty());
             table.getPlayers(idPlayer).setHasMissBehaved(true);
+            setPlayerSuspended(idPlayer, true);
+        }
+
+        try {
+            table.checkAllPlayerHasChosenAPatternCard();
+            this.initGame();
+        } catch (PlayerHasYetToChooseAPatternCardException e) {
         }
 
     }
@@ -278,10 +286,14 @@ public class Model extends Observable<ModelChangedMessage> {
      * This method is called by the thread timer only if the player doesn't end the turn before the 90 seconds timer ends.
      * If it happens during the choosing of the pattern card, it gives the player the first available pattern card.
      * If it happens during the GAMEPHASE, it invokes the method endTurn() and sends a message to the current
-     * player playing saying that he run out of time
-     * and he is now considered AFK.
+     * player playing saying that he run out of time and he is now considered AFK.
      */
     public void timesUp(){
+
+        if(gamePhase == gamePhase.GAMEPHASE) {
+            int idPlayerPlaying = table.getRoundTrack().getCurrentRound().getIdPlayerPlaying();
+            this.setPlayerSuspended(idPlayerPlaying, true);
+        }
 
         if(gamePhase == GamePhase.SETUPPHASE)
         {
@@ -290,8 +302,6 @@ public class Model extends Observable<ModelChangedMessage> {
             }
         }
 
-        int idPlayerPlaying = table.getRoundTrack().getCurrentRound().getIdPlayerPlaying();
-        this.setPlayerSuspended(idPlayerPlaying, true);
 
 
     }
@@ -933,20 +943,37 @@ public class Model extends Observable<ModelChangedMessage> {
 
         if(gamePhase == GamePhase.GAMEPHASE) {
 
+            notify(new ModelChangedMessageChangeGamePhase(gamePhase));
+
             for (Integer key : players.keySet()) {
                 PatternCard patternCard = table.getPlayers(key).getChosenPatternCard();
+
+                notify(new ModelChangedMessagePatternCard(Integer.toString(key),
+                        Integer.toString(patternCard.getId()),
+                        patternCard.getName(),
+                        Integer.toString(patternCard.getDifficulty()),
+                        patternCard.getPatternCardRepresentation()));
+
+                PrivateObjective privateObjective = table.getPlayers(key).getPrivateObjective();
+                notify(new ModelChangedMessagePrivateObjective(Integer.toString(key),
+                        Integer.toString(privateObjective.getId()),
+                        privateObjective.getName(),
+                        privateObjective.getDescription()));
+
+                notify(new ModelChangedMessageTokensLeft(Integer.toString(key),
+                        Integer.toString(table.getPlayers(key).getTokens())));
 
                 notify(new ModelChangedMessageDiceOnPatternCard(Integer.toString(key),
                         Integer.toString(patternCard.getId()),
                         patternCard.getDiceRepresentation()));
 
-
-                notify(new ModelChangedMessageTokensLeft(Integer.toString(key),
-                        Integer.toString(table.getPlayers(key).getTokens())));
-
             }
 
             for (int j = 0; j < 3; j++) {
+                PublicObjective publicObjective = table.getPublicObjective(j);
+                notify(new ModelChangedMessagePublicObjective(Integer.toString(publicObjective.getId()),
+                        publicObjective.getName(),
+                        publicObjective.getDescription()));
 
                 ToolCard toolCard = table.getToolCardContainer().getToolCardInPlay().get(j);
                 notify(new ModelChangedMessageToolCard(Integer.toString(toolCard.getToolCardId()),

@@ -65,6 +65,7 @@ public class Room extends Thread {
             model.initSetup();
             //patterncard choise
 
+        /*
             players.parallelStream().forEach(player -> {
                 try {
                     Integer m = player.getClientInterface().askForPatternCard();
@@ -74,10 +75,10 @@ public class Room extends Thread {
                     e.printStackTrace();
                 }
             });
+            */
 
-            System.out.println("Starting game in model");
 
-            model.initGame();
+            //model.initGame();
 
             //start rounds
         //}

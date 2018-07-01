@@ -44,7 +44,7 @@ public class Controller implements Observer<PlayerMessage> {
      */
     /* TODO: tests, finish update without instanceOf(). */
     @Override
-    public void update(PlayerMessage playerMessage){
+    public synchronized void update(PlayerMessage playerMessage){
 
         System.out.println(playerMessage);
 

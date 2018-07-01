@@ -9,8 +9,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
-import static it.polimi.se2018.model.GamePhase.ENDGAMEPHASE;
-import static it.polimi.se2018.model.GamePhase.GAMEPHASE;
+import static it.polimi.se2018.model.GamePhase.*;
 
 public class ViewClientConsole extends ViewClient implements Runnable {
 
@@ -20,7 +19,7 @@ public class ViewClientConsole extends ViewClient implements Runnable {
 
     private boolean canIPlay = true;
 
-    private GamePhase gamePhase = GamePhase.SETUPPHASE;
+    private GamePhase gamePhase;
 
     private boolean clientSuspended = false;
 
@@ -31,13 +30,10 @@ public class ViewClientConsole extends ViewClient implements Runnable {
 
     public void setIdClient(int idClient){
         this.idClient = idClient;
-        viewClientConsolePrint = new ViewClientConsoleSetup(idClient);
     }
 
     @Override
     public synchronized void update(ModelChangedMessage message){
-
-        System.out.println(message);
 
         if(message instanceof ModelChangedMessageMoveFailed){
             if(((ModelChangedMessageMoveFailed) message).getPlayer().equals(Integer.toString(idClient))) {
@@ -50,16 +46,22 @@ public class ViewClientConsole extends ViewClient implements Runnable {
             }
         }
         else if(message instanceof ModelChangedMessageChangeGamePhase) {
-            if (((ModelChangedMessageChangeGamePhase) message).getGamePhase() != gamePhase) {
-                gamePhase = ((ModelChangedMessageChangeGamePhase) message).getGamePhase();
-                if (gamePhase == GAMEPHASE)
-                    viewClientConsolePrint = new ViewClientConsoleGame(this.idClient);
-                if (gamePhase == ENDGAMEPHASE)
-                    viewClientConsolePrint = new ViewClientConsoleEndGame(this.idClient);
-            }
+            gamePhase = ((ModelChangedMessageChangeGamePhase) message).getGamePhase();
+            if(gamePhase == SETUPPHASE)
+                viewClientConsolePrint = new ViewClientConsoleSetup(this.idClient);
+            if (gamePhase == GAMEPHASE)
+                viewClientConsolePrint = new ViewClientConsoleGame(this.idClient);
+            if (gamePhase == ENDGAMEPHASE)
+                viewClientConsolePrint = new ViewClientConsoleEndGame(this.idClient);
+
         }
         else if (message instanceof ModelChangedMessageRefresh){
             viewClientConsolePrint.print();
+            if(gamePhase == SETUPPHASE) {
+
+                ;
+
+            }
             if(((ModelChangedMessageRefresh) message).getIdPlayerPlaying() != null) {
                 idPlayerPlaying = Integer.parseInt(((ModelChangedMessageRefresh) message).getIdPlayerPlaying());
                 if(idPlayerPlaying == idClient && canIPlay) {
@@ -82,13 +84,44 @@ public class ViewClientConsole extends ViewClient implements Runnable {
         }
     }
 
-    @Override
-    public Integer askForPatternCard()  {
-        return viewClientConsolePrint.askForPatternCard();
-    }
 
     public void run(){
         boolean c = true;
+
+
+
+        do {
+
+            Scanner input = new Scanner(System.in);
+            String app = input.nextLine();
+
+            if (gamePhase == SETUPPHASE) {
+
+                if (!clientSuspended) {
+
+                    int chosenPatternCard = viewClientConsolePrint.askForPatternCard(app);
+
+                    try {
+                        serverInterface.notify(new PlayerMessageSetup(idClient, chosenPatternCard));
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    System.out.println("You are not suspended anymore!");
+                    clientSuspended = false;
+                    try {
+                        serverInterface.notify(new PlayerMessageNotAFK(idClient));
+                    } catch (RemoteException e) {
+                        handleDisconnection();
+                    }
+                }
+
+            } else {
+                System.out.println("Wait for game to start");
+            }
+        }
+        while(gamePhase != SETUPPHASE);
 
         while(c) {
 

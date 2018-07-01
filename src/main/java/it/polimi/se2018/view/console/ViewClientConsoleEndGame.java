@@ -55,7 +55,7 @@ public class ViewClientConsoleEndGame extends ViewClientConsolePrint {
     }
 
     @Override
-    public Integer askForPatternCard() {
+    public Integer askForPatternCard(String s) {
         return null;
     }
 

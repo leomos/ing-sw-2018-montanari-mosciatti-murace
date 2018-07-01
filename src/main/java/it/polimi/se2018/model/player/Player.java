@@ -24,6 +24,8 @@ public class Player {
 
     private PrivateObjective privateObjective;
 
+    private boolean hasChosenPatternCard = false;
+
     private boolean hasSetDieThisTurn;
 
     private boolean hasUsedToolCardThisTurn;
@@ -59,6 +61,10 @@ public class Player {
 
     public int getTokens() {
         return tokens;
+    }
+
+    public boolean hasChosenPatternCard() {
+        return hasChosenPatternCard;
     }
 
     public boolean hasSetDieThisTurn() {
@@ -98,6 +104,7 @@ public class Player {
     }
 
     public void setChosenPatternCard(PatternCard chosenPatternCard) {
+        this.hasChosenPatternCard = true;
         this.chosenPatternCard = chosenPatternCard;
     }
 
