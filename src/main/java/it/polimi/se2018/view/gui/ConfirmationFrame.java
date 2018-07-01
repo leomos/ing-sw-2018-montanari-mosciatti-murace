@@ -9,9 +9,9 @@ public class ConfirmationFrame extends JFrame {
     private int isok;
 
     public ConfirmationFrame(String idDie, int x, int y, String toolCard) {
-        this.isok = 0;
+        isok = 0;
         setLayout(new BorderLayout());
-        setVisible(true);
+        setResizable(false);
 
         JLabel label = new JLabel("Do you confirn your move?", SwingConstants.CENTER);
         String move = "MOVE: ";
@@ -37,7 +37,7 @@ public class ConfirmationFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 isok = 1;
-                setVisible(false);
+                dispose();
             }
         });
         pannelloPulsanti.add(esci);
@@ -47,7 +47,7 @@ public class ConfirmationFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 isok = 2;
-                setVisible(false);
+                dispose();
             }
         });
         pannelloPulsanti.add(annulla);
@@ -57,6 +57,7 @@ public class ConfirmationFrame extends JFrame {
         add(pannelloPulsanti, BorderLayout.SOUTH);
 
         pack();
+        setVisible(true);
     }
 
     public int isOk() {

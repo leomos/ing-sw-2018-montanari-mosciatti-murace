@@ -4,15 +4,15 @@ import it.polimi.se2018.model.events.*;
 import it.polimi.se2018.network.visitor.MessageVisitorInterface;
 
 import javax.swing.*;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class ViewClientGUIGame extends SwingPhase implements ActionListener {
+public class ViewClientGUIGame extends SwingPhase {
     private JFrame jFrame = new JFrame();
 
     private String idDieChosen = "";
@@ -29,7 +29,7 @@ public class ViewClientGUIGame extends SwingPhase implements ActionListener {
 
     private boolean isMyTurn;
 
-    private Scanner input;
+    private boolean move = false;
 
     private ArrayList<String> idPlayers = new ArrayList<String>();
 
@@ -100,6 +100,8 @@ public class ViewClientGUIGame extends SwingPhase implements ActionListener {
         }
         else if(message instanceof ModelChangedMessageRefresh) {
             isMyTurn = Integer.parseInt(((ModelChangedMessageRefresh) message).getIdPlayerPlaying()) == idClient;
+            if (isMyTurn)
+                new TurnFrame();
         }
     }
 
@@ -121,7 +123,7 @@ public class ViewClientGUIGame extends SwingPhase implements ActionListener {
             publicObjective[i] = new SwingPublicObjective(publicObjectives.get(i));
         }
 
-        SwingPatternCard myPatternCard = null;
+        SwingPatternCard myPatternCard;
         SwingDiceOnPatternCard mine = null;
         SwingDiceOnPatternCard[] patternCard = new SwingDiceOnPatternCard[3];
         for (int i=0; i<patternCards.size(); i++) {
@@ -175,19 +177,47 @@ public class ViewClientGUIGame extends SwingPhase implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (isMyTurn) {
-                    ConfirmationFrame f = null;
-                    if (!idDieChosen.equals(""))
-                        f = new ConfirmationFrame(idDieChosen, colonna, riga, toolCardChosen);
-                    while (f.isOk() == 0);
-                    if (f.isOk() == 1)
-                        getMainMove();
-                    if (f.isOk() == 2) {
-                        toolCardChosen = "";
-                        idDieChosen = "";
+                    if (!idDieChosen.equals("")) {
+                        ConfirmationFrame f = new ConfirmationFrame(idDieChosen, colonna, riga, toolCardChosen);
+                        f.addWindowListener(new WindowListener() {
+                            @Override
+                            public void windowOpened(WindowEvent e) {
+                            }
+
+                            @Override
+                            public void windowClosing(WindowEvent e) {
+                            }
+
+                            @Override
+                            public void windowClosed(WindowEvent e) {
+                                if (f.isOk() == 1)
+                                    move = true;
+                                if (f.isOk() == 2) {
+                                    toolCardChosen = "";
+                                    idDieChosen = "";
+                                }
+                            }
+
+                            @Override
+                            public void windowIconified(WindowEvent e) {
+                            }
+
+                            @Override
+                            public void windowDeiconified(WindowEvent e) {
+                            }
+
+                            @Override
+                            public void windowActivated(WindowEvent e) {
+                            }
+
+                            @Override
+                            public void windowDeactivated(WindowEvent e) {
+                            }
+                        });
                     }
                 }
                 else {
-                    new NotYourTunFrame();
+                    new NotYourTurnFrame();
                     toolCardChosen = "";
                     idDieChosen = "";
                 }
@@ -199,7 +229,6 @@ public class ViewClientGUIGame extends SwingPhase implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 end = true;
-                getMainMove();
             }
         });
 
@@ -307,10 +336,6 @@ public class ViewClientGUIGame extends SwingPhase implements ActionListener {
         return null;
     }
 
-    public void actionPerformed(ActionEvent e) {
-        getMainMove();
-    }
-
     public PlayerMessage getMainMove() {
         PlayerMessage message = new PlayerMessage() {
             @Override
@@ -318,12 +343,14 @@ public class ViewClientGUIGame extends SwingPhase implements ActionListener {
 
             }
         };
-        if (!idDieChosen.equals("") && toolCardChosen.equals("")) {
+
+        if (!idDieChosen.equals("") && toolCardChosen.equals("") && move) {
             message = new PlayerMessageDie(idClient, Integer.parseInt(idDieChosen), colonna, riga);
             idDieChosen = "";
             toolCardChosen = "";
+            new NotYourTurnFrame();
         }
-        if (idDieChosen.equals("") && !toolCardChosen.equals("")) {
+        if (idDieChosen.equals("") && !toolCardChosen.equals("") && move) {
             message = new PlayerMessageToolCard(idClient, Integer.parseInt(toolCardChosen));
             idDieChosen = "";
             toolCardChosen = "";

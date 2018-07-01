@@ -60,7 +60,7 @@ public class SwingMainView extends ViewClient {
                         } catch (RemoteException e) {
                             e.printStackTrace();
                         }
-                        new TurnFrame();
+
                     }
                 }
             }
