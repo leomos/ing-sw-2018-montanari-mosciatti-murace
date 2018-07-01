@@ -1,16 +1,18 @@
 package it.polimi.se2018.view.gui;
 
 import it.polimi.se2018.model.events.*;
+import it.polimi.se2018.network.visitor.MessageVisitorInterface;
 
 import javax.swing.*;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class ViewClientGUIGame extends SwingPhase {
-
+public class ViewClientGUIGame extends SwingPhase implements ActionListener {
     private JFrame jFrame = new JFrame();
 
     private String idDieChosen = "";
@@ -22,6 +24,8 @@ public class ViewClientGUIGame extends SwingPhase {
     private int colonna;
 
     private int idClient;
+
+    private boolean end = false;
 
     private boolean isMyTurn;
 
@@ -102,7 +106,14 @@ public class ViewClientGUIGame extends SwingPhase {
     public void print(){
         SwingToolCards[] toolCard = new SwingToolCards[3];
         for (int i=0; i<3; i++) {
+            int finalI = i;
             toolCard[i] = new SwingToolCards(toolCards.get(i));
+            toolCard[i].getCard().addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    toolCardChosen = toolCardChosen + toolCards.get(finalI).getIdToolCard();
+                }
+            });
         }
 
         SwingPublicObjective[] publicObjective = new SwingPublicObjective[3];
@@ -111,13 +122,19 @@ public class ViewClientGUIGame extends SwingPhase {
         }
 
         SwingPatternCard myPatternCard = null;
-        SwingPatternCard[] patternCard = new SwingPatternCard[3];
+        SwingDiceOnPatternCard mine = null;
+        SwingDiceOnPatternCard[] patternCard = new SwingDiceOnPatternCard[3];
         for (int i=0; i<patternCards.size(); i++) {
             if (patternCards.get(i).getIdPlayer().equals(Integer.toString(idClient))) {
                 myPatternCard = new SwingPatternCard(patternCards.get(i), false);
+
+                for (int m=0; m<diceOnPatternCards.size(); m++) {
+                    if (diceOnPatternCards.get(m).getIdPlayer().equals(Integer.toString(idClient)))
+                        mine = new SwingDiceOnPatternCard(diceOnPatternCards.get(m), patternCards.get(i), myPatternCard.getPatternCard());
+                }
                 for (int n=0; n<20; n++) {
                     int finalN = n;
-                    SwingDie die = myPatternCard.getPatternCard().get(n);
+                    SwingDie die = mine.getPc().get(n);
                     die.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
@@ -129,8 +146,13 @@ public class ViewClientGUIGame extends SwingPhase {
                     });
                 }
             }
-            else
-                patternCard[i] = new SwingPatternCard(patternCards.get(i), true);
+            else {
+                SwingPatternCard card = new SwingPatternCard(patternCards.get(i), true);
+                for (int m=0; m<diceOnPatternCards.size(); m++) {
+                    if (diceOnPatternCards.get(m).getIdPatternCard().equals(card.getId()))
+                        patternCard[m] = new SwingDiceOnPatternCard(diceOnPatternCards.get(m), patternCards.get(i), card.getPatternCard());
+                }
+            }
         }
 
         SwingDiceArena arena = new SwingDiceArena(diceArena);
@@ -146,20 +168,40 @@ public class ViewClientGUIGame extends SwingPhase {
             });
         }
 
-        SwingPlayer player = new SwingPlayer(myPatternCard, new SwingPrivateObjective(privateObjective), tokensLeft.getTokensLeft());
+        SwingPlayer player = new SwingPlayer(mine, new SwingPrivateObjective(privateObjective), tokensLeft.getTokensLeft());
 
         JButton conferma = new JButton("CONFERMA MOSSA");
         conferma.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!idDieChosen.equals(""))
-                    new ConfirmationFrame(idClient, idDieChosen, colonna, riga, toolCardChosen);
-                idDieChosen = "";
-                toolCardChosen = "";
+                if (isMyTurn) {
+                    ConfirmationFrame f = null;
+                    if (!idDieChosen.equals(""))
+                        f = new ConfirmationFrame(idDieChosen, colonna, riga, toolCardChosen);
+                    while (f.isOk() == 0);
+                    if (f.isOk() == 1)
+                        getMainMove();
+                    if (f.isOk() == 2) {
+                        toolCardChosen = "";
+                        idDieChosen = "";
+                    }
+                }
+                else {
+                    new NotYourTunFrame();
+                    toolCardChosen = "";
+                    idDieChosen = "";
+                }
             }
         });
 
         JButton endTurn = new JButton("END TURN");
+        endTurn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                end = true;
+                getMainMove();
+            }
+        });
 
         SwingRoundTrack rt = new SwingRoundTrack(roundTrack);
 
@@ -211,8 +253,9 @@ public class ViewClientGUIGame extends SwingPhase {
         JPanel t = new JPanel();
         t.setPreferredSize(new Dimension(555, 270));
         t.setLayout(new GridLayout(1, 3, 5, 0));
-        for (int i=0; i<3; i++)
+        for (int i=0; i<3; i++) {
             t.add(toolCard[i]);
+        }
         constraints.insets.bottom = 20;
         constraints.gridx = 1;
         constraints.gridy = 1;
@@ -264,10 +307,33 @@ public class ViewClientGUIGame extends SwingPhase {
         return null;
     }
 
+    public void actionPerformed(ActionEvent e) {
+        getMainMove();
+    }
+
     public PlayerMessage getMainMove() {
-        do {
-            //Se sono entrambi premuti ritorna PlayerMessageDie
-        } while (true);
+        PlayerMessage message = new PlayerMessage() {
+            @Override
+            public void accept(MessageVisitorInterface messageVisitorInterface) {
+
+            }
+        };
+        if (!idDieChosen.equals("") && toolCardChosen.equals("")) {
+            message = new PlayerMessageDie(idClient, Integer.parseInt(idDieChosen), colonna, riga);
+            idDieChosen = "";
+            toolCardChosen = "";
+        }
+        if (idDieChosen.equals("") && !toolCardChosen.equals("")) {
+            message = new PlayerMessageToolCard(idClient, Integer.parseInt(toolCardChosen));
+            idDieChosen = "";
+            toolCardChosen = "";
+        }
+        if (end) {
+            message = new PlayerMessageEndTurn(idClient);
+            end = false;
+        }
+
+        return message;
     }
 
 }

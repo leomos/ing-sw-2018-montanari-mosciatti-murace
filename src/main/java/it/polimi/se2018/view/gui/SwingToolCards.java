@@ -6,11 +6,13 @@ import javax.swing.*;
 import java.awt.*;
 
 public class SwingToolCards extends JPanel {
+    private JButton b;
+
     public SwingToolCards(ModelChangedMessageToolCard message) {
         String path = "../ing-sw-2018-montanari-mosciatti-murace\\src\\images\\toolcards\\Toolcard";
         path = path + message.getIdToolCard() + ".jpg";
 
-        JButton b = new JButton();
+        b = new JButton();
         b.setIcon(new ImageIcon(path));
         b.setPreferredSize(new Dimension(185, 255));
         b.setToolTipText("Toolcards");
@@ -20,5 +22,9 @@ public class SwingToolCards extends JPanel {
         setLayout(new BorderLayout());
         add(b, BorderLayout.CENTER);
         add(l, BorderLayout.SOUTH);
+    }
+
+    public JButton getCard() {
+        return b;
     }
 }

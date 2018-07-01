@@ -26,8 +26,6 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
 
     private ButtonGroup group;
 
-    private boolean table = false;
-
     public PatternCardsFrame(int idClient) {
         this.idClient = idClient;
     }
@@ -73,16 +71,41 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
         jFrame.setContentPane(p);
 
         JButton b = new JButton("CONFERMA");
+        b.setEnabled(false);
         b.addActionListener(this);
 
         JRadioButton rb1 = new JRadioButton("PATTERNCARD 1");
         rb1.setActionCommand(patternCards.get(0).getIdPatternCard());
+        rb1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                b.setEnabled(true);
+            }
+        });
         JRadioButton rb2 = new JRadioButton("PATTERNCARD 2");
         rb2.setActionCommand(patternCards.get(1).getIdPatternCard());
+        rb2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                b.setEnabled(true);
+            }
+        });
         JRadioButton rb3 = new JRadioButton("PATTERNCARD 3");
         rb3.setActionCommand(patternCards.get(2).getIdPatternCard());
+        rb3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                b.setEnabled(true);
+            }
+        });
         JRadioButton rb4 = new JRadioButton("PATTERNCARD 4");
         rb4.setActionCommand(patternCards.get(3).getIdPatternCard());
+        rb4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                b.setEnabled(true);
+            }
+        });
 
         group = new ButtonGroup();
         group.add(rb1);

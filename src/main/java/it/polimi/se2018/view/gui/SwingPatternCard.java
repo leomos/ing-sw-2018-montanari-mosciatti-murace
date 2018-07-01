@@ -9,7 +9,10 @@ import java.util.ArrayList;
 public class SwingPatternCard extends JPanel {
     private ArrayList<SwingDie> patternCard = new ArrayList<>();
 
+    private String id;
+
     public SwingPatternCard(ModelChangedMessagePatternCard modelChangedMessagePatternCard, boolean enable) {
+        id = modelChangedMessagePatternCard.getIdPatternCard();
         JPanel p = new JPanel();
         p.setLayout(new GridLayout(4, 5));
         p.setPreferredSize(new Dimension(250, 200));
@@ -75,6 +78,8 @@ public class SwingPatternCard extends JPanel {
                 case '0':
                     d.setBackground(Color.WHITE);
                     break;
+                default:
+                    break;
             }
             patternCard.add(d);
             p.add(d);
@@ -86,5 +91,9 @@ public class SwingPatternCard extends JPanel {
 
     public ArrayList<SwingDie> getPatternCard() {
         return patternCard;
+    }
+
+    public String getId() {
+        return id;
     }
 }

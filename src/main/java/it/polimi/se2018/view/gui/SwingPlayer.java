@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class SwingPlayer extends JPanel {
-    public SwingPlayer(SwingPatternCard patternCard, SwingPrivateObjective privateObjective, String tokens) {
+    public SwingPlayer(SwingDiceOnPatternCard patternCard, SwingPrivateObjective privateObjective, String tokens) {
         Color c = new Color(34, 139, 34);
         setBackground(c);
 

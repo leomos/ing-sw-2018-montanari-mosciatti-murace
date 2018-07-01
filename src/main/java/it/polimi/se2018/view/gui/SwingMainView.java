@@ -48,8 +48,7 @@ public class SwingMainView extends ViewClient {
                 gamePhase = ((ModelChangedMessageRefresh) message).getGamePhase();
                 if(gamePhase == GAMEPHASE)
                     swingPhase = new ViewClientGUIGame(this.idClient);
-                if(gamePhase == ENDGAMEPHASE) ;
-                    //japne = new (this.idClient);
+                if(gamePhase == ENDGAMEPHASE);
             }else {
                 swingPhase.print();
                 if(((ModelChangedMessageRefresh) message).getIdPlayerPlaying() != null) {
@@ -61,8 +60,7 @@ public class SwingMainView extends ViewClient {
                         } catch (RemoteException e) {
                             e.printStackTrace();
                         }
-                        System.out.println("It's your turn");
-                        System.out.println("/help: get List of moves");
+                        new TurnFrame();
                     }
                 }
             }
@@ -81,6 +79,7 @@ public class SwingMainView extends ViewClient {
         }
     }
 
+    @Override
     public Integer askForPatternCard()  {
         return swingPhase.askForPatternCard();
     }

@@ -1,17 +1,16 @@
 package it.polimi.se2018.view.gui;
 
-import it.polimi.se2018.model.events.PlayerMessage;
-import it.polimi.se2018.model.events.PlayerMessageDie;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ConfirmationFrame extends JFrame {
-    public ConfirmationFrame(int idClient, String idDie, int x, int y, String toolCard) {
+    private int isok;
+
+    public ConfirmationFrame(String idDie, int x, int y, String toolCard) {
+        this.isok = 0;
         setLayout(new BorderLayout());
-        setSize(300, 100);
         setVisible(true);
 
         JLabel label = new JLabel("Do you confirn your move?", SwingConstants.CENTER);
@@ -26,7 +25,7 @@ public class ConfirmationFrame extends JFrame {
         JLabel toolcard = new JLabel(t, SwingConstants.CENTER);
 
         JPanel choices = new JPanel();
-        choices.setLayout(new FlowLayout());
+        choices.setLayout(new GridLayout(2, 1));
         choices.add(mossa);
         choices.add(toolcard);
 
@@ -37,7 +36,7 @@ public class ConfirmationFrame extends JFrame {
         esci.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                PlayerMessage message = new PlayerMessageDie(idClient, Integer.parseInt(idDie), x, y);
+                isok = 1;
                 setVisible(false);
             }
         });
@@ -47,6 +46,7 @@ public class ConfirmationFrame extends JFrame {
         annulla.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                isok = 2;
                 setVisible(false);
             }
         });
@@ -55,5 +55,11 @@ public class ConfirmationFrame extends JFrame {
         add(label, BorderLayout.NORTH);
         add(choices, BorderLayout.CENTER);
         add(pannelloPulsanti, BorderLayout.SOUTH);
+
+        pack();
+    }
+
+    public int isOk() {
+        return isok;
     }
 }

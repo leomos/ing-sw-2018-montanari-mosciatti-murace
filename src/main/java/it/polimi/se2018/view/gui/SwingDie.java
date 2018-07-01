@@ -116,4 +116,8 @@ public class SwingDie extends JButton {
     public String getId() {
         return this.id;
     }
+
+    public int getVal() {
+        return val;
+    }
 }
