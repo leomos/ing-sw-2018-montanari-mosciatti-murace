@@ -2,11 +2,18 @@ package it.polimi.se2018.view;
 
 import it.polimi.se2018.model.events.HeartbeatMessage;
 import it.polimi.se2018.model.events.ModelChangedMessage;
+import it.polimi.se2018.network.ClientInterface;
 import it.polimi.se2018.network.ServerInterface;
+import it.polimi.se2018.network.client.ClientImplementationRMI;
 import it.polimi.se2018.network.client.ServerImplementationSocket;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.Socket;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
@@ -99,17 +106,34 @@ public abstract class ViewClient {
                 Socket socket = null;
                 try {
                     socket = new Socket("localhost", 1111);
+                    System.out.println("socket connesso");
                     return serverInterface.reconnect(socket, id);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 break;
             case 1:
+                try {
+                    serverInterface = (ServerInterface) Naming.lookup("//localhost/sagrada");
+                    ClientImplementationRMI clientImplementationRMI = new ClientImplementationRMI(this);
+                    ClientInterface remoteRef = (ClientInterface) UnicastRemoteObject.exportObject(clientImplementationRMI, 0);
+                    return serverInterface.reconnect(remoteRef, id);
+                } catch (NotBoundException e) {
+                    e.printStackTrace();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
                 break;
             default:
                 break;
         }
         return false;
+    }
+
+    protected void initNewExecutor() {
+        this.executor = Executors.newScheduledThreadPool(1);
     }
 
 }
