@@ -4,8 +4,10 @@ import it.polimi.se2018.model.events.ModelChangedMessagePatternCard;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class SwingPatternCard extends JPanel {
+    private ArrayList<SwingDie> patternCard = new ArrayList<>();
 
     public SwingPatternCard(ModelChangedMessagePatternCard modelChangedMessagePatternCard, boolean enable) {
         JPanel p = new JPanel();
@@ -32,63 +34,57 @@ public class SwingPatternCard extends JPanel {
                 case '1':
                     d.setVal(1);
                     d.setBackground(Color.gray);
-                    p.add(d);
                     break;
                 case '2':
                     d.setVal(2);
                     d.setBackground(Color.gray);
-                    p.add(d);
                     break;
                 case '3':
                     d.setVal(3);
                     d.setBackground(Color.gray);
-                    p.add(d);
                     break;
                 case '4':
                     d.setVal(4);
                     d.setBackground(Color.gray);
-                    p.add(d);
                     break;
                 case '5':
                     d.setVal(5);
                     d.setBackground(Color.gray);
-                    p.add(d);
                     break;
                 case '6':
                     d.setVal(6);
                     d.setBackground(Color.gray);
-                    p.add(d);
                     break;
 
                 case 'r':
                     d.setBackground(Color.RED);
-                    p.add(d);
                     break;
                 case 'b':
                     d.setBackground(Color.BLUE);
-                    p.add(d);
                     break;
                 case 'y':
                     d.setBackground(Color.YELLOW);
-                    p.add(d);
                     break;
                 case 'p':
                     d.setBackground(new Color(143, 0, 255));
-                    p.add(d);
                     break;
                 case 'g':
                     d.setBackground(Color.GREEN);
-                    p.add(d);
                     break;
 
                 case '0':
                     d.setBackground(Color.WHITE);
-                    p.add(d);
                     break;
             }
+            patternCard.add(d);
+            p.add(d);
         }
         setLayout(new BorderLayout());
         add(p, BorderLayout.CENTER);
         add(p1, BorderLayout.SOUTH);
+    }
+
+    public ArrayList<SwingDie> getPatternCard() {
+        return patternCard;
     }
 }

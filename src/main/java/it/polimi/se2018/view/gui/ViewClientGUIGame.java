@@ -5,6 +5,7 @@ import it.polimi.se2018.model.events.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -12,9 +13,13 @@ public class ViewClientGUIGame extends SwingPhase {
 
     private JFrame jFrame = new JFrame();
 
-    private String idDieChosen;
+    private String idDieChosen = "";
 
-    private String toolCardChosen;
+    private String toolCardChosen = "";
+
+    private int riga;
+
+    private int colonna;
 
     private int idClient;
 
@@ -108,15 +113,53 @@ public class ViewClientGUIGame extends SwingPhase {
         SwingPatternCard myPatternCard = null;
         SwingPatternCard[] patternCard = new SwingPatternCard[3];
         for (int i=0; i<patternCards.size(); i++) {
-            if (patternCards.get(i).getIdPlayer().equals(Integer.toString(idClient)))
+            if (patternCards.get(i).getIdPlayer().equals(Integer.toString(idClient))) {
                 myPatternCard = new SwingPatternCard(patternCards.get(i), false);
+                for (int n=0; n<20; n++) {
+                    int finalN = n;
+                    SwingDie die = myPatternCard.getPatternCard().get(n);
+                    die.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            if (!idDieChosen.equals("")) {
+                                riga = finalN / 5;
+                                colonna = finalN % 5;
+                            }
+                        }
+                    });
+                }
+            }
             else
                 patternCard[i] = new SwingPatternCard(patternCards.get(i), true);
         }
 
-        SwingDiceArena Arena = new SwingDiceArena(diceArena);
+        SwingDiceArena arena = new SwingDiceArena(diceArena);
+        for (int i=0; i<arena.getButtons().size(); i++){
+            SwingDie b = arena.getButtons().get(i);
+            b.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (idDieChosen.equals("")) {
+                        idDieChosen = idDieChosen + b.getId();
+                    }
+                }
+            });
+        }
 
         SwingPlayer player = new SwingPlayer(myPatternCard, new SwingPrivateObjective(privateObjective), tokensLeft.getTokensLeft());
+
+        JButton conferma = new JButton("CONFERMA MOSSA");
+        conferma.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!idDieChosen.equals(""))
+                    new ConfirmationFrame(idClient, idDieChosen, colonna, riga, toolCardChosen);
+                idDieChosen = "";
+                toolCardChosen = "";
+            }
+        });
+
+        JButton endTurn = new JButton("END TURN");
 
         GridBagConstraints constraints = new GridBagConstraints();
         jFrame.setLayout(new GridBagLayout());
@@ -181,13 +224,26 @@ public class ViewClientGUIGame extends SwingPhase {
         constraints.weightx = 1;
         constraints.weighty = 1;
         constraints.anchor = GridBagConstraints.SOUTH;
-        jFrame.add(Arena, constraints);
+        jFrame.add(arena, constraints);
+
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        constraints.anchor = GridBagConstraints.EAST;
+        jFrame.add(conferma, constraints);
+
+        constraints.insets.top = 70;
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        constraints.anchor = GridBagConstraints.EAST;
+        jFrame.add(endTurn, constraints);
 
         jFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         jFrame.setVisible(true);
     }
-
-    public void ActionPerformed(ActionEvent e) {}
 
     @Override
     public Integer askForPatternCard() {
@@ -199,4 +255,5 @@ public class ViewClientGUIGame extends SwingPhase {
             //Se sono entrambi premuti ritorna PlayerMessageDie
         } while (true);
     }
+
 }

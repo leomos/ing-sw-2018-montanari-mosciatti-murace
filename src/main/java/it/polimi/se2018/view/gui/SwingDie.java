@@ -112,4 +112,8 @@ public class SwingDie extends JButton {
         }
         return dice;
     }
+
+    public String getId() {
+        return this.id;
+    }
 }

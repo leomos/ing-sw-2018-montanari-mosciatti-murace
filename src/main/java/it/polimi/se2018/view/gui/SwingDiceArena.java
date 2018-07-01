@@ -7,15 +7,22 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class SwingDiceArena extends JPanel {
+    private ArrayList<SwingDie> buttons;
+
     public SwingDiceArena(ModelChangedMessageDiceArena message) {
         SwingDie d = new SwingDie(0);
-        ArrayList<SwingDie> dice = d.setOfDice(message.getRepresentation());
+        buttons = d.setOfDice(message.getRepresentation());
+
         setLayout(new GridLayout(1, 9));
 
-        int l = dice.size();
+        int l = buttons.size();
         for (int i=0; i<l; i++) {
-            dice.get(i).setToolTipText("Dice Arena");
-            add(dice.get(i));
+            buttons.get(i).setToolTipText("Dice Arena");
+            add(buttons.get(i));
         }
+    }
+
+    public ArrayList<SwingDie> getButtons() {
+        return buttons;
     }
 }
