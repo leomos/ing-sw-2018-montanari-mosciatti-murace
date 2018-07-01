@@ -9,7 +9,6 @@ import it.polimi.se2018.view.ViewClient;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.lang.reflect.Method;
 import java.net.Socket;
 import java.rmi.RemoteException;
 

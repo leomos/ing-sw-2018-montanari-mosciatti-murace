@@ -41,26 +41,27 @@ public class SwingMainView extends ViewClient {
                 System.out.println("NEW EVENT: " + ((ModelChangedMessageNewEvent) message).getMessage());
             }
         }
-        else if(message instanceof ModelChangedMessageRefresh) {
-            if (((ModelChangedMessageRefresh) message).getGamePhase() != gamePhase) {
-                gamePhase = ((ModelChangedMessageRefresh) message).getGamePhase();
-                if(gamePhase == GAMEPHASE)
+        else if(message instanceof ModelChangedMessageChangeGamePhase) {
+            if (((ModelChangedMessageChangeGamePhase) message).getGamePhase() != gamePhase) {
+                gamePhase = ((ModelChangedMessageChangeGamePhase) message).getGamePhase();
+                if (gamePhase == GAMEPHASE)
                     swingPhase = new ViewClientGUIGame(this.idClient);
-                if(gamePhase == ENDGAMEPHASE) ;
-                    //japne = new (this.idClient);
-            }else {
-                swingPhase.print();
-                if(((ModelChangedMessageRefresh) message).getIdPlayerPlaying() != null) {
-                    swingPhase.update(message);
-                    idPlayerPlaying = Integer.parseInt(((ModelChangedMessageRefresh) message).getIdPlayerPlaying());
-                    if(idPlayerPlaying == idClient && canIPlay) {
-                        System.out.println("It's your turn");
-                        System.out.println("/help: get List of moves");
-                    }
+                if (gamePhase == ENDGAMEPHASE) ;
+                //japne = new (this.idClient);
+            }
+        }
+        else if(message instanceof ModelChangedMessageRefresh){
+            swingPhase.print();
+            if(((ModelChangedMessageRefresh) message).getIdPlayerPlaying() != null) {
+                swingPhase.update(message);
+                idPlayerPlaying = Integer.parseInt(((ModelChangedMessageRefresh) message).getIdPlayerPlaying());
+                if(idPlayerPlaying == idClient && canIPlay) {
+                    System.out.println("It's your turn");
+                    System.out.println("/help: get List of moves");
                 }
             }
-
-        } else if(message instanceof ModelChangedMessagePlayerAFK){
+        }
+        else if(message instanceof ModelChangedMessagePlayerAFK){
             if(((ModelChangedMessagePlayerAFK) message).getPlayer().equals(Integer.toString(idClient))) {
                 System.out.println(((ModelChangedMessagePlayerAFK) message).getMessage());
 

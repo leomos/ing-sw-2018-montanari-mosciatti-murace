@@ -67,6 +67,11 @@ public class MessageVisitorImplementationClient implements MessageVisitorInterfa
     }
 
     @Override
+    public void visitModelChangedMessageChangeGamePhase(ModelChangedMessageChangeGamePhase modelChangedMessageChangeGamePhase) {
+
+    }
+
+    @Override
     public void visitModelChangedMessageEndGame(ModelChangedMessageEndGame modelChangedMessageEndGame) {
 
     }

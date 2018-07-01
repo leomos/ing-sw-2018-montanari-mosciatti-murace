@@ -35,7 +35,10 @@ public class ViewClientConsole extends ViewClient implements Runnable {
     }
 
     @Override
-    public void update(ModelChangedMessage message){
+    public synchronized void update(ModelChangedMessage message){
+
+        System.out.println(message);
+
         if(message instanceof ModelChangedMessageMoveFailed){
             if(((ModelChangedMessageMoveFailed) message).getPlayer().equals(Integer.toString(idClient))) {
                 System.out.println("ERROR: " + ((ModelChangedMessageMoveFailed) message).getErrorMessage());
@@ -46,21 +49,22 @@ public class ViewClientConsole extends ViewClient implements Runnable {
                 System.out.println("NEW EVENT: " + ((ModelChangedMessageNewEvent) message).getMessage());
             }
         }
-        else if(message instanceof ModelChangedMessageRefresh) {
-            if (((ModelChangedMessageRefresh) message).getGamePhase() != gamePhase) {
-                gamePhase = ((ModelChangedMessageRefresh) message).getGamePhase();
-                if(gamePhase == GAMEPHASE)
+        else if(message instanceof ModelChangedMessageChangeGamePhase) {
+            if (((ModelChangedMessageChangeGamePhase) message).getGamePhase() != gamePhase) {
+                gamePhase = ((ModelChangedMessageChangeGamePhase) message).getGamePhase();
+                if (gamePhase == GAMEPHASE)
                     viewClientConsolePrint = new ViewClientConsoleGame(this.idClient);
-                if(gamePhase == ENDGAMEPHASE)
+                if (gamePhase == ENDGAMEPHASE)
                     viewClientConsolePrint = new ViewClientConsoleEndGame(this.idClient);
-            }else {
-                viewClientConsolePrint.print();
-                if(((ModelChangedMessageRefresh) message).getIdPlayerPlaying() != null) {
-                    idPlayerPlaying = Integer.parseInt(((ModelChangedMessageRefresh) message).getIdPlayerPlaying());
-                    if(idPlayerPlaying == idClient && canIPlay) {
-                        System.out.println("It's your turn");
-                        System.out.println("/help: get List of moves");
-                    }
+            }
+        }
+        else if (message instanceof ModelChangedMessageRefresh){
+            viewClientConsolePrint.print();
+            if(((ModelChangedMessageRefresh) message).getIdPlayerPlaying() != null) {
+                idPlayerPlaying = Integer.parseInt(((ModelChangedMessageRefresh) message).getIdPlayerPlaying());
+                if(idPlayerPlaying == idClient && canIPlay) {
+                    System.out.println("It's your turn");
+                    System.out.println("/help: get List of moves");
                 }
             }
 

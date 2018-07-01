@@ -1,6 +1,5 @@
 package it.polimi.se2018.network.visitor;
 
-import it.polimi.se2018.model.GamePhase;
 import it.polimi.se2018.model.events.*;
 import it.polimi.se2018.network.ConnectedClient;
 import it.polimi.se2018.network.server.Room;
@@ -39,17 +38,18 @@ public class MessageVisitorImplementationUpdate implements MessageVisitorInterfa
     }
 
     @Override
-    public void visitModelChangedMessageRefresh(ModelChangedMessageRefresh modelChangedMessageRefresh) {
-        if(this.player.isInactive()
+    public void visitModelChangedMessageChangeGamePhase(ModelChangedMessageChangeGamePhase modelChangedMessageChangeGamePhase) {
+    /*    if(this.player.isInactive()
                 && (this.player.getId() == this.currentPlayerPlayingId)
-                && modelChangedMessageRefresh.getGamePhase() == GamePhase.GAMEPHASE) {
-            Integer id = Integer.parseInt(modelChangedMessageRefresh.getIdPlayerPlaying());
+                && modelChangedMessageChangeGamePhase.getGamePhase() == GamePhase.GAMEPHASE) {
+//            Integer id = Integer.parseInt(modelChangedMessageRefresh.getIdPlayerPlaying());
+            ;
 
 //            Message fakeMessage = new PlayerMessageEndTurn(id);
   //          this.room.notifyView(fakeMessage);
-        } else {
-            update(modelChangedMessageRefresh);
-        }
+        } else { */
+            update(modelChangedMessageChangeGamePhase);
+     //   }
     }
 
 
@@ -73,6 +73,11 @@ public class MessageVisitorImplementationUpdate implements MessageVisitorInterfa
     @Override
     public void visitModelChangedMessageDiceArena(ModelChangedMessageDiceArena modelChangedMessageDiceArena) {
         update(modelChangedMessageDiceArena);
+    }
+
+    @Override
+    public void visitModelChangedMessageRefresh(ModelChangedMessageRefresh modelChangedMessageRefresh) {
+        update(modelChangedMessageRefresh);
     }
 
     @Override

@@ -21,7 +21,7 @@ public abstract class ViewClient {
 
     protected ServerInterface serverInterface;
 
-    public void update(ModelChangedMessage modelChangedMessage) {
+    public synchronized void update(ModelChangedMessage modelChangedMessage) {
     }
 
     public void setServerInterface(ServerInterface serverInterface) {

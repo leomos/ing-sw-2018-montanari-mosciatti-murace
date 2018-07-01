@@ -116,6 +116,11 @@ public class MessageVisitorImplementationServer implements MessageVisitorInterfa
     }
 
     @Override
+    public void visitModelChangedMessageChangeGamePhase(ModelChangedMessageChangeGamePhase modelChangedMessageChangeGamePhase) {
+        serverImplementationSocket.updateView(modelChangedMessageChangeGamePhase);
+    }
+
+    @Override
     public void visitModelChangedMessageRound(ModelChangedMessageRound modelChangedMessageRound) {
         serverImplementationSocket.updateView(modelChangedMessageRound);
     }
