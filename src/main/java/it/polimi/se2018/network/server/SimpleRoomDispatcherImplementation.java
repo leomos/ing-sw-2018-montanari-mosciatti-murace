@@ -145,4 +145,8 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
     public Boolean reconnectClient(ClientInterface clientInterface, int id) {
         return getRoomForId(id).reconnectPlayer(clientInterface, id);
     }
+
+    public void sendGameStateToReconnectedClient(int id) {
+        getRoomForId(id).sendGameStateToReconnectedPlayer(id);
+    }
 }

@@ -19,4 +19,6 @@ public interface RoomDispatcherInterface extends Runnable {
 
     public Boolean reconnectClient(ClientInterface clientInterface, int id);
 
+    public void sendGameStateToReconnectedClient(int id);
+
 }

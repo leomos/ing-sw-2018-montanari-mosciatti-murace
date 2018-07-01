@@ -62,6 +62,7 @@ public class ServerImplementationSocket extends Thread implements ServerInterfac
     @Override
     public Boolean reconnect(Socket client, Integer id) throws RemoteException {
         MethodCallMessage methodCallMessage;
+        Object received;
         try {
             this.objectOutputStream = new ObjectOutputStream(client.getOutputStream());
             methodCallMessage = new MethodCallMessage("reconnectClient");
@@ -69,9 +70,24 @@ public class ServerImplementationSocket extends Thread implements ServerInterfac
             this.objectOutputStream.writeObject(methodCallMessage);
 
             this.objectInputStream = new ObjectInputStream(client.getInputStream());
-            methodCallMessage = (MethodCallMessage)this.objectInputStream.readObject();
-            this.start();
-            return (Boolean) methodCallMessage.getReturnValue();
+            while((received = this.objectInputStream.readObject()) != null) {
+                System.out.println(received);
+                if(received instanceof MethodCallMessage) {
+                    methodCallMessage = (MethodCallMessage) received;
+                    this.start();
+
+                    return (Boolean) methodCallMessage.getReturnValue();
+                }
+            }
+            /*methodCallMessage = (MethodCallMessage) this.objectInputStream.readObject();
+
+            Boolean returnValue = (Boolean) methodCallMessage.getReturnValue();
+
+            if(returnValue) {
+                methodCallMessage = new MethodCallMessage("reconnectClientSendUpdates");
+                this.objectOutputStream.writeObject(methodCallMessage);
+                this.start();
+            }*/
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {

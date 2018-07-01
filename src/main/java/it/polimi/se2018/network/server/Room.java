@@ -33,6 +33,11 @@ public class Room extends Thread {
                 .filter(player -> !player.isInactive());
     }
 
+    private Stream<ConnectedClient> inactivePlayers() {
+        return players.stream()
+                .filter(player -> player.isInactive());
+    }
+
     private ConnectedClient connectedClientById(int id) {
         return activePlayers()
                 .filter(player -> player.getId() == id)
@@ -260,11 +265,17 @@ public class Room extends Thread {
     }
 
     public Boolean reconnectPlayer(ClientInterface clientInterface, int id) {
-        ConnectedClient reconnectedClient = connectedClientById(id);
+        ConnectedClient reconnectedClient = inactivePlayers()
+                .filter(player -> player.getId() == id)
+                .findFirst()
+                .get();
         reconnectedClient.setInactive(false);
         reconnectedClient.setClientInterface(clientInterface);
         model.setPlayerSuspended(id, false);
-        model.updatePlayerThatCameBackIntoTheGame(id);
         return true;
+    }
+
+    public void sendGameStateToReconnectedPlayer(int id) {
+        model.updatePlayerThatCameBackIntoTheGame(id);
     }
 }

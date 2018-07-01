@@ -120,7 +120,7 @@ public class ClientGathererImplementationSocket implements ClientGathererInterfa
                     break;
                 case "reconnectClient":
                     clientId = (Integer) clientMethodMessage.getArgument("id");
-
+                    System.out.println("TENTATIVO DI RICONNESSIONE DA " + clientId);
                     objectOutputStream = new ObjectOutputStream(clientConnection.getOutputStream());
 
                     newClientInterface = new ClientImplementationSocket(objectInputStream, objectOutputStream, roomDispatcher);
@@ -132,6 +132,9 @@ public class ClientGathererImplementationSocket implements ClientGathererInterfa
                     objectOutputStream.writeObject(clientReturnMessage);
 
                     ((ClientImplementationSocket) newClientInterface).start();
+
+                    roomDispatcher.sendGameStateToReconnectedClient(clientId);
+
                     break;
                 default:
                     throw new WrongMethodException();
