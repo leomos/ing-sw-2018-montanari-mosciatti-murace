@@ -24,8 +24,6 @@ public class ServerImplementationSocket extends Thread implements ServerInterfac
 
     private ViewClient viewClient;
 
-
-
     public ServerImplementationSocket(ViewClient viewClient) {
         this.viewClient = viewClient;
     }
