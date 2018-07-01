@@ -23,6 +23,8 @@ public class ViewClientConsole extends ViewClient implements Runnable {
 
     private boolean clientSuspended = false;
 
+    private boolean hasChoosePatternCard = false;
+
     private ViewClientConsolePrint viewClientConsolePrint;
 
     public ViewClientConsole(){
@@ -88,8 +90,6 @@ public class ViewClientConsole extends ViewClient implements Runnable {
     public void run(){
         boolean c = true;
 
-
-
         do {
 
             Scanner input = new Scanner(System.in);
@@ -100,6 +100,7 @@ public class ViewClientConsole extends ViewClient implements Runnable {
                 if (!clientSuspended) {
 
                     int chosenPatternCard = viewClientConsolePrint.askForPatternCard(app);
+                    hasChoosePatternCard = true;
 
                     try {
                         serverInterface.notify(new PlayerMessageSetup(idClient, chosenPatternCard));
@@ -116,85 +117,75 @@ public class ViewClientConsole extends ViewClient implements Runnable {
                         handleDisconnection();
                     }
                 }
-
             } else {
                 System.out.println("Wait for game to start");
             }
         }
         while(gamePhase != SETUPPHASE);
 
+
+
+
         while(c) {
 
-            try {
-                TimeUnit.SECONDS.sleep(3);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
 
-            if(gamePhase == GAMEPHASE) {
+            boolean moveOk;
 
-                while (c) {
+            do{
 
-                    try {
-                        TimeUnit.SECONDS.sleep(3);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                moveOk = true;
+                if(canIPlay) {
 
-                    boolean moveOk;
+                    Scanner mainInput = new Scanner(System.in);
+                    String s = mainInput.nextLine();
+                    if (gamePhase == GAMEPHASE) {
 
-                    do{
-                        try {
-                            TimeUnit.SECONDS.sleep(1);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        moveOk = true;
-                        if(canIPlay) {
+                        if (!clientSuspended) {
+                            if (idPlayerPlaying == idClient) {
 
-                            Scanner mainInput = new Scanner(System.in);
+                                PlayerMessage message = viewClientConsolePrint.getMainMove(s);
 
-                            if(mainInput.hasNext()) {
-
-                                String s = mainInput.nextLine();
-
-                                if(!clientSuspended) {
-                                    if (idPlayerPlaying == idClient) {
-
-                                        PlayerMessage message = viewClientConsolePrint.getMainMove(s);
-
-                                        if(message.getPlayerId() != -1)
-                                            try {
-                                                serverInterface.notify(message);
-                                            } catch (RemoteException e) {
-                                                handleDisconnection();
-                                            }
-                                        else {
-                                            moveOk = false;
-                                            System.out.println("Try again! /help");
-                                        }
-
-                                    } else {
-                                        System.out.println("It's player  " + idPlayerPlaying + " turn, not yours!");
-                                    }
-                                } else {
-                                    System.out.println("You are not suspended anymore!");
-                                    clientSuspended = false;
+                                if (message.getPlayerId() != -1)
                                     try {
-                                        serverInterface.notify(new PlayerMessageNotAFK(idClient));
+                                        serverInterface.notify(message);
                                     } catch (RemoteException e) {
                                         handleDisconnection();
                                     }
+                                else {
+                                    moveOk = false;
+                                    System.out.println("Try again! /help");
                                 }
+
+                            } else {
+                                System.out.println("It's player  " + idPlayerPlaying + " turn, not yours!");
+                            }
+                        } else {
+                            System.out.println("You are not suspended anymore!");
+                            clientSuspended = false;
+                            try {
+                                serverInterface.notify(new PlayerMessageNotAFK(idClient));
+                            } catch (RemoteException e) {
+                                handleDisconnection();
                             }
                         }
-                    }
-                    while (moveOk);
+                    } else
+                        System.out.println("Wait for other players to choose their pattern cards!");
 
                 }
 
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
             }
+            while (moveOk);
+
         }
+
+
+
 
     }
 
