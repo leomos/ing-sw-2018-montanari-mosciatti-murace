@@ -161,6 +161,8 @@ public class ViewClientGUIGame extends SwingPhase {
 
         JButton endTurn = new JButton("END TURN");
 
+        SwingRoundTrack rt = new SwingRoundTrack(roundTrack);
+
         GridBagConstraints constraints = new GridBagConstraints();
         jFrame.setLayout(new GridBagLayout());
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -211,21 +213,22 @@ public class ViewClientGUIGame extends SwingPhase {
         t.setLayout(new GridLayout(1, 3, 5, 0));
         for (int i=0; i<3; i++)
             t.add(toolCard[i]);
-        constraints.gridx = 1;
-        constraints.gridy = 1;
-        constraints.weightx = 1;
-        constraints.weighty = 1;
-        constraints.anchor = GridBagConstraints.NORTHEAST;
-        jFrame.add(t, constraints);
-
         constraints.insets.bottom = 20;
         constraints.gridx = 1;
         constraints.gridy = 1;
         constraints.weightx = 1;
         constraints.weighty = 1;
+        constraints.anchor = GridBagConstraints.SOUTHEAST;
+        jFrame.add(t, constraints);
+
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        constraints.weightx = 1;
+        constraints.weighty = 1;
         constraints.anchor = GridBagConstraints.SOUTH;
         jFrame.add(arena, constraints);
 
+        constraints.insets.right = 30;
         constraints.gridx = 0;
         constraints.gridy = 1;
         constraints.weightx = 1;
@@ -234,12 +237,23 @@ public class ViewClientGUIGame extends SwingPhase {
         jFrame.add(conferma, constraints);
 
         constraints.insets.top = 70;
+        constraints.insets.right = 50;
         constraints.gridx = 0;
         constraints.gridy = 1;
         constraints.weightx = 1;
         constraints.weighty = 1;
         constraints.anchor = GridBagConstraints.EAST;
         jFrame.add(endTurn, constraints);
+
+        constraints.fill = GridBagConstraints.NONE;
+        constraints.insets.top = 300;
+        constraints.insets.left = 10;
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        constraints.anchor = GridBagConstraints.SOUTHWEST;
+        jFrame.add(rt, constraints);
 
         jFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         jFrame.setVisible(true);
