@@ -471,7 +471,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
     }
 
     @Override
-    public Integer askForPatternCard() {
+    public Integer askForPatternCard(String s) {
         return null;
     }
 

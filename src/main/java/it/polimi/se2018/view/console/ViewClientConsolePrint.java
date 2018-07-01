@@ -188,7 +188,7 @@ public abstract class ViewClientConsolePrint {
 
     public abstract void print();
 
-    public abstract Integer askForPatternCard();
+    public abstract Integer askForPatternCard(String s);
 
     public abstract ArrayList<Integer> getPositionInPatternCard();
 
