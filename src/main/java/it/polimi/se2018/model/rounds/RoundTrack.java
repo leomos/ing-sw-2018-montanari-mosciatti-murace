@@ -80,6 +80,9 @@ public class RoundTrack {
      * Increments idFirstPlayerPlaying and sets the players for
      * the round.
      * Fills the rounds array with the newly created Round object.
+     * If the first player is suspended, it automatically calls for setNextPlayer
+     * @param table the table is needed to check whether or not the first player of this round is suspended or not.
+     *
      */
     private void initNewRound(Table table) {
         Round newRound = new Round(currentRoundId, diceContainer);
@@ -105,22 +108,10 @@ public class RoundTrack {
     }
 
     /**
-     * @param idDie
-     * @return the id of the Round to which dieId belongs
-     * @throws DieNotPresentException if no Round has dieId in its rolledDiceLeft
-     */
-    public int getRoundIdForDieId(int idDie) throws DieNotPresentException {
-        for (int i = 0; i <= currentRoundId; i++) {
-            if(rounds[i].isDiePresentInDiceLeft(idDie)) return i;
-        }
-        throw new DieNotPresentException();
-    }
-
-    /**
-     * @param dieIdToRemove
-     * @param dieIdToAdd
-     * @throws DieNotPresentException   if dieIdToRemove is not present
-     *          in any of round's rolledDiceLeft.
+     * Method needed for tool card n.5 where the player swaps a die between round track and draft pool
+     * @param dieIdToRemove die id to remove from round track
+     * @param dieIdToAdd die id to add to round track
+     * @throws DieNotPresentException   if dieIdToRemove is not present in any of round's rolledDiceLeft.
      */
     public int swapDieInRound(int dieIdToRemove, int roundIdForDieIdToRemove, int dieIdToAdd) throws RoundHasNotBeenInitializedYetException, DieNotPresentException {
         if(roundIdForDieIdToRemove < currentRoundId)

@@ -20,7 +20,7 @@ public class TestPatternCardCell {
     @Before
     public void setUp() {
         diceContainer = new DiceContainer();
-        patternCardCell = new PatternCardCell(diceContainer, null, 4);
+        patternCardCell = new PatternCardCell(null, 4);
     }
 
     @After

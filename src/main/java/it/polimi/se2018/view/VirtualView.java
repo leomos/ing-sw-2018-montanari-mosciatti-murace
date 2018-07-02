@@ -9,7 +9,7 @@ import it.polimi.se2018.utils.Observer;
 
 import java.util.ArrayList;
 
-public class VirtualView extends Observable<PlayerMessage> implements Observer<ModelChangedMessage>{
+public class    VirtualView extends Observable<PlayerMessage> implements Observer<ModelChangedMessage>{
 
     private ArrayList<ClientInterface> clientInterfaceList = new ArrayList<>();
 
@@ -19,7 +19,7 @@ public class VirtualView extends Observable<PlayerMessage> implements Observer<M
         this.clientInterfaceList.add(clientInterface);
     }
 
-    public void setRoom(Room room) {
+        public void setRoom(Room room) {
         this.room = room;
     }
 
@@ -31,28 +31,24 @@ public class VirtualView extends Observable<PlayerMessage> implements Observer<M
         notify(playerMessage);
     }
 
-    public ArrayList<ClientInterface> getClientInterfaceList() {
-        return clientInterfaceList;
+    public ArrayList<Integer> getPositionInPatternCard(int clientId){
+        return room.getPositionInPatternCard(clientId);
     }
 
-    public ArrayList<Integer> getPositionInPatternCard(int idClient){
-        return room.getPositionInPatternCard(idClient);
-    }
+    public ArrayList<Integer> getIncrementedValue(int clientId) {return room.getIncrementedValue(clientId);}
 
-    public ArrayList<Integer> getIncrementedValue(int idClient) {return room.getIncrementedValue(idClient);}
+    public Integer getDieFromDiceArena(int clientId) { return room.getDieFromDiceArena(clientId);}
 
-    public Integer getDieFromDiceArena(int idClient) { return room.getDieFromDiceArena(idClient);}
+    public ArrayList<Integer> getDieFromRoundTrack(int clientId) { return  room.getDieFromRoundTrack(clientId);}
 
-    public ArrayList<Integer> getDieFromRoundTrack(int idClient) { return  room.getDieFromRoundTrack(idClient);}
+    public Integer getValueForDie(int clientId) { return  room.getValueForDie(clientId);}
 
-    public Integer getValueForDie(int idClient) { return  room.getValueForDie(idClient);}
+    public ArrayList<Integer> getDoublePositionInPatternCard(int clientId) { return room.getDoublePositionInPatternCard(clientId);}
 
-    public ArrayList<Integer> getDoublePositionInPatternCard(int idClient) { return room.getDoublePositionInPatternCard(idClient);}
+    public ArrayList<Integer> getSinglePositionInPatternCard(int clientId, ArrayList<Integer> listOfAvailablePositions) { return room.getSinglePositionInPatternCard(clientId, listOfAvailablePositions); }
 
-    public ArrayList<Integer> getSinglePositionInPatternCard(int idClient, ArrayList<Integer> listOfAvailablePositions) { return room.getSinglePositionInPatternCard(idClient, listOfAvailablePositions); }
+    public void block(int clientId) { room.block(clientId);}
 
-    public void block(int idClient) { room.block(idClient);}
-
-    public void free(int idClient) { room.free(idClient);}
+    public void free(int clientId) { room.free(clientId);}
 
 }

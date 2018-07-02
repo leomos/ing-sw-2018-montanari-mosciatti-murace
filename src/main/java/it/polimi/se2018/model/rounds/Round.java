@@ -11,9 +11,7 @@ import it.polimi.se2018.model.container.Die;
 import java.util.ArrayList;
 import java.util.Collections;
 
-/* TODO: test swapDie */
-/* TODO: test isDiePresentInLeftDice */
-/* TODO: test giveConsecutiveTurnsToPlayer */
+
 public class Round {
 
     private int id;
@@ -47,6 +45,10 @@ public class Round {
         return rolledDiceLeft;
     }
 
+    /**
+     * before returning the representation, it updates it
+     * @return string containing the representation of the dice left in the round
+     */
     public String getRepresentation(){
         updateRepresentation();
         return representation;}
@@ -82,7 +84,9 @@ public class Round {
 
     /**
      * This method sets idPlayerPlaying taking the first element
-     * from the turns array and then removing it.
+     * from the turns array and then removing it. If the player is suspended,
+     * it invokes itself again to go to the next player
+     * @param table the table is needed to check if the player playing is suspended
      * @throws RoundFinishedException if no more rounds are available.
      */
     public void setNextPlayer(Table table) throws RoundFinishedException {
@@ -91,7 +95,6 @@ public class Round {
             turns.remove(0);
 
             if(table.getPlayers(idPlayerPlaying).isSuspended()) {
-                System.out.println("faccio skippare un turno perchè è sospeso");
                 this.setNextPlayer(table);
             }
 
@@ -123,6 +126,10 @@ public class Round {
         turns.remove(0);
     }
 
+    /**
+     * Creates a single string that represents the dice left in this round. This string is gonna be sent to the player.
+     * For each die left, it adds to the string the die id, followed by its color, followed by its rolled value
+     */
     public void updateRepresentation(){
         representation = "";
         for(int i = 0; i < rolledDiceLeft.size(); i++){
@@ -156,8 +163,9 @@ public class Round {
 
 
     /**
-     * @param dieIdToRemove
-     * @param dieIdToAdd
+     * Method needed for tool card n.5
+     * @param dieIdToRemove die id to remove from the dice left in this round
+     * @param dieIdToAdd die id to add to the dice left in this round
      * This method expects that the two params are valid,
      * that is, they need to be present in rolledDiceLeft.
      */
@@ -172,21 +180,12 @@ public class Round {
     }
 
     /**
-     * @param idDie the id of the die to be searched
-     * @return      true if rolledDiceLeft contains dieId,
-     *              false otherwise
+     * This method is needed for tool card n.8 where the player gets the possibility to have two round in a tow
+     * @param playerId player id using the tool card
+     * @param player player needed to check if it already placed a die this turn
+     * @throws RoundPlayerAlreadyPlayedSecondTurnException if the player is trying to use this tool card in the second part of the round
+     * @throws PlayerHasNotSetDieThisTurnException if the player tries to use this tool card before placing a die
      */
-    public boolean isDiePresentInDiceLeft(int idDie) {
-        for (int id : rolledDiceLeft) {
-            if(id == idDie) return true;
-        }
-        return false;
-    }
-
-    public boolean isRoundOver(){
-        return turns.isEmpty();
-    }
-
     public void giveConsecutiveTurnsToPlayer(int playerId, Player player)
             throws RoundPlayerAlreadyPlayedSecondTurnException, PlayerHasNotSetDieThisTurnException {
 

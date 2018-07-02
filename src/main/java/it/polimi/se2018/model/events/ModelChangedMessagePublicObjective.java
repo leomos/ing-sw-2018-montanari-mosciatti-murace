@@ -10,6 +10,12 @@ public class ModelChangedMessagePublicObjective extends ModelChangedMessage impl
 
     private String description;
 
+    /**
+     * Message created by the model and put in a notify when the game sends the players the public objective in game
+     * @param idPublicObjective public objective id
+     * @param name public objective name
+     * @param description public objective description
+     */
     public ModelChangedMessagePublicObjective (String idPublicObjective, String name, String description){
         this.idPublicObjective = idPublicObjective;
         this.name = name;

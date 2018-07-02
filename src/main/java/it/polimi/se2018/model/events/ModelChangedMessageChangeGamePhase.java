@@ -7,6 +7,10 @@ public class ModelChangedMessageChangeGamePhase extends ModelChangedMessage {
 
     private GamePhase gamePhase;
 
+    /**
+     * Message created by the model and put in a notify when the game phase changes in the model
+     * @param gamePhase value of the game phase in model
+     */
     public ModelChangedMessageChangeGamePhase(GamePhase gamePhase){
         this.gamePhase = gamePhase;
     }

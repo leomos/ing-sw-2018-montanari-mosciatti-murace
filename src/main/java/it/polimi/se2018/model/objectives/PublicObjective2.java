@@ -12,12 +12,13 @@ public class PublicObjective2 extends PublicObjective {
 
     public PublicObjective2(DiceContainer diceContainer) {
         super(diceContainer);
-        this.name = "Colori diversi - Colonna";
-        this.description = "Colonne senza colori ripetuti";
+        this.name = "Columns Color Variety";
+        this.description = "Columns with no repeated colors";
         this.id = 2;
     }
 
     /**
+     * Calculates the score of the pattern card given: + 5 for each columns without any repeated color
      * @param patternCard
      * @return PatternCard score at the end of the game based on public objective of card 2
      * @throws DiceContainerUnsupportedIdException if die's id is not valid

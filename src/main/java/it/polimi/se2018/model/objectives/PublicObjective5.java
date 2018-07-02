@@ -9,13 +9,13 @@ public class PublicObjective5 extends PublicObjective{
 
     public PublicObjective5(DiceContainer diceContainer) {
         super(diceContainer);
-        this.name = "Sfumature chiare";
-        this.description = "Set di 1&2 ovunque";
+        this.name = "Light Shade";
+        this.description = "Set of 1&2 values anywhere";
         this.id = 5;
     }
 
     /**
-     *
+     * Calculates the score of the pattern card given: + 2 for each set of 1&2 anywhere
      * @param patternCard
      * @return PatternCard score at the end of the game based on public objective of card 5
      * @throws DiceContainerUnsupportedIdException If die's id is not valid

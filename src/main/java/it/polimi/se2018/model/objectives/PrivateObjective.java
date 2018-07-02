@@ -52,7 +52,8 @@ public class PrivateObjective implements Objective {
     }
 
     /**
-     *
+     * Calculates the score of the pattern card given: for each die of the color of the private objective,
+     * the results increments of the die rolled value
      * @param patternCard
      * @return PatternCard score at the end of the game based on private objective of card
      * @throws DiceContainerUnsupportedIdException if die's id is not valid

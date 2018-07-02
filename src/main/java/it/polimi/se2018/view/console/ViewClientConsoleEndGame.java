@@ -37,16 +37,19 @@ public class ViewClientConsoleEndGame extends ViewClientConsolePrint {
         System.out.println("/°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°/");
         System.out.println("/°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°/");
 
+        if(scoreboard != null) {
 
-        for(int i = 0; i < scoreboard.length() - 1; i+=5)
-            System.out.println(((i/5)+1) + "° place ->" + scoreboard.charAt(i) + " with " + scoreboard.substring(i+1, i+4) + "\tTokens Left: " + scoreboard.charAt(i+4));
+            for (int i = 0; i < scoreboard.length() - 1; i += 5)
+                System.out.println(((i / 5) + 1) + "° place ->" + scoreboard.charAt(i) + " with " + scoreboard.substring(i + 1, i + 4) + "\tTokens Left: " + scoreboard.charAt(i + 4));
 
-        System.out.println("The last player to play was " + scoreboard.charAt(scoreboard.length() - 1));
+            System.out.println("The last player to play was " + scoreboard.charAt(scoreboard.length() - 1));
 
-        if(scoreboard.charAt(0) == idClient + '0')
-            System.out.println("CONGRATS, YOU WON");
-        else
-            System.out.println("CONGRATS, YOU LOSE");
+            if (scoreboard.charAt(0) == idClient + '0')
+                System.out.println("CONGRATS, YOU WON");
+            else
+                System.out.println("CONGRATS, YOU LOSE");
+
+        }
 
         try {
             TimeUnit.SECONDS.sleep(30);

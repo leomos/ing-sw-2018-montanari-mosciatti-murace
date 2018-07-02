@@ -8,6 +8,10 @@ public class ModelChangedMessageConnected extends ModelChangedMessage implements
 
     private int idClient;
 
+    /**
+     * Message created by the model and put in a notify when a player reconnects to the game
+     * @param id player id reconnecting
+     */
     public ModelChangedMessageConnected(int id){
         this.idClient = id;
     }

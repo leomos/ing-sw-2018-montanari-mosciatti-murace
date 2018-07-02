@@ -6,6 +6,10 @@ public class ModelChangedMessageEndGame extends ModelChangedMessage implements M
 
     private String scoreboard;
 
+    /**
+     * Message created by the model and put in a notify when the game ends and the players need the final scoreboard
+     * @param scoreboard representation of the scoreboard
+     */
     public ModelChangedMessageEndGame(String scoreboard){
         this.scoreboard = scoreboard;
     }

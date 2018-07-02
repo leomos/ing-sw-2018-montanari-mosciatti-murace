@@ -51,8 +51,10 @@ public class ViewClientConsole extends ViewClient  {
             gamePhase = ((ModelChangedMessageChangeGamePhase) message).getGamePhase();
             if(gamePhase == SETUPPHASE)
                 viewClientConsolePrint = new ViewClientConsoleSetup(this.idClient);
-            if (gamePhase == GAMEPHASE)
+            if (gamePhase == GAMEPHASE) {
+                hasChoosePatternCard = true;
                 viewClientConsolePrint = new ViewClientConsoleGame(this.idClient);
+            }
             if (gamePhase == ENDGAMEPHASE)
                 viewClientConsolePrint = new ViewClientConsoleEndGame(this.idClient);
 
@@ -94,15 +96,15 @@ public class ViewClientConsole extends ViewClient  {
 
             Scanner input = new Scanner(System.in);
             String app = input.nextLine();
+            if (!clientSuspended) {
+                if (this.gamePhase == SETUPPHASE) {
 
-            if (this.gamePhase.equals(SETUPPHASE)) {
-
-                if (!clientSuspended) {
                     int chosenPatternCard = viewClientConsolePrint.askForPatternCard(app);
                     if (chosenPatternCard != -1) {
 
                         try {
                             serverInterface.notify(new PlayerMessageSetup(idClient, chosenPatternCard));
+                            System.out.println("Good choice!");
                             hasChoosePatternCard = true;
                             System.out.println("Wait for other players to choose their pattern cards!");
                         } catch (RemoteException e) {
@@ -110,13 +112,13 @@ public class ViewClientConsole extends ViewClient  {
                         }
                     }
                 } else {
-                    unSuspend();
+                    System.out.println("Wait for game to start");
                 }
             } else {
-                System.out.println("Wait for game to start and game phasz = " + gamePhase);
+                unSuspend();
             }
         }
-        while(gamePhase != SETUPPHASE && !hasChoosePatternCard);
+        while(!hasChoosePatternCard);
 
 
 
@@ -157,7 +159,9 @@ public class ViewClientConsole extends ViewClient  {
                         } else {
                             unSuspend();
                         }
-                    } else
+                    } else if(gamePhase == ENDGAMEPHASE)
+                        System.out.println("Game is over!");
+                    else
                         System.out.println("Wait for other players to choose their pattern cards!");
 
                 }
