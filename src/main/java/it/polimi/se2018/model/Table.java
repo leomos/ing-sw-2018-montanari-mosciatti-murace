@@ -5,7 +5,7 @@ import it.polimi.se2018.model.objectives.*;
 import it.polimi.se2018.model.patternCard.PatternCard;
 import it.polimi.se2018.model.player.OnlyOnePlayerLeftException;
 import it.polimi.se2018.model.player.Player;
-import it.polimi.se2018.model.player.PlayerHasYetToChooseAPatternCardException;
+import it.polimi.se2018.model.player.PlayersHaveAllChosenAPatternCard;
 import it.polimi.se2018.model.rounds.RoundTrack;
 import it.polimi.se2018.model.rounds.RoundTrackNoMoreRoundsException;
 import it.polimi.se2018.model.toolcards.ToolCardContainer;
@@ -59,7 +59,7 @@ public class Table {
         try {
             this.getRoundTrack().startNextRound(this);
         } catch (RoundTrackNoMoreRoundsException e) {
-            //TODO: dont know what to put here, prob nothing
+
         }
     }
 
@@ -213,11 +213,24 @@ public class Table {
             throw new OnlyOnePlayerLeftException();
     }
 
-    public void checkAllPlayerHasChosenAPatternCard() throws PlayerHasYetToChooseAPatternCardException {
+    public void checkPlayerDidNotDisconnectDuringPatternCardSelection(){
+        /*
+        if(this.players.get(this.roundTrack.getCurrentRound().getIdPlayerPlaying() - 1).isSuspended()) {
+            try {
+                roundTrack.getCurrentRound().setNextPlayer(this);
+            } catch (RoundFinishedException e) {
+                e.printStackTrace();
+            }
+        } */
+    }
+
+    public void checkAllPlayerHasChosenAPatternCard() throws PlayersHaveAllChosenAPatternCard {
 
         for(Player player : this.players)
             if(!player.hasChosenPatternCard())
-                throw new PlayerHasYetToChooseAPatternCardException();
+                return;
+
+        throw new PlayersHaveAllChosenAPatternCard();
 
     }
 

@@ -12,7 +12,7 @@ public class Player {
 
     private String name;
 
-    private boolean suspended = false;
+    private boolean suspended;
 
     private ArrayList<PatternCard> patternCards;
 
@@ -34,6 +34,7 @@ public class Player {
         this.id = id;
         this.name = name;
         hasSetDieThisTurn = false;
+        suspended = false;
         hasUsedToolCardThisTurn = false;
     }
 

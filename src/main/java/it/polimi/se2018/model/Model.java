@@ -42,9 +42,7 @@ public class Model extends Observable<ModelChangedMessage> {
      * a private objective for each player and send them so that they can pick one
      */
     public void initSetup() {
-
         table = new Table(players);
-
         this.gamePhase = GamePhase.SETUPPHASE;
         ModelChangedMessageChangeGamePhase modelChangedMessageChangeGamePhase = new ModelChangedMessageChangeGamePhase(gamePhase);
         notify(modelChangedMessageChangeGamePhase);
@@ -81,6 +79,9 @@ public class Model extends Observable<ModelChangedMessage> {
      * It also starts the timer of 90 seconds for the first player playing
      */
     public void initGame() {
+
+        table.checkPlayerDidNotDisconnectDuringPatternCardSelection();
+
         ModelChangedMessageRefresh modelChangedMessageRefresh;
         this.gamePhase = GamePhase.GAMEPHASE;
         ModelChangedMessageChangeGamePhase modelChangedMessageChangeGamePhase = new ModelChangedMessageChangeGamePhase(gamePhase);
@@ -138,26 +139,31 @@ public class Model extends Observable<ModelChangedMessage> {
      */
     public void setChosenPatternCard(int idPatternCard, int idPlayer){
 
-        boolean moveSucceed = false;
-
         for(PatternCard patternCard : table.getPlayers(idPlayer).getPatternCards())
             if(idPatternCard == patternCard.getId()) {
                 table.getPlayers(idPlayer).setChosenPatternCard(patternCard);
                 table.getPlayers(idPlayer).setTokens(patternCard.getDifficulty());
-                moveSucceed = true;
+
+                try {
+                    table.checkAllPlayerHasChosenAPatternCard();
+                } catch (PlayersHaveAllChosenAPatternCard e) {
+                    this.initGame();
                 }
 
-        if(!moveSucceed && !table.getPlayers(idPlayer).hasChosenPatternCard()) {
+                }
+
+        if(!table.getPlayers(idPlayer).hasChosenPatternCard()) {
             PatternCard patternCard = table.getPlayers(idPlayer).getPatternCards().get(0);
             table.getPlayers(idPlayer).setChosenPatternCard(patternCard);
             table.getPlayers(idPlayer).setTokens(patternCard.getDifficulty());
             setPlayerSuspended(idPlayer, true);
-        }
 
-        try {
-            table.checkAllPlayerHasChosenAPatternCard();
-            this.initGame();
-        } catch (PlayerHasYetToChooseAPatternCardException e) {
+            try {
+                table.checkAllPlayerHasChosenAPatternCard();
+            } catch (PlayersHaveAllChosenAPatternCard e) {
+                this.initGame();
+            }
+
         }
 
     }
@@ -232,8 +238,6 @@ public class Model extends Observable<ModelChangedMessage> {
      *                             player who just finished its turn
      */
     public void endTurn(PlayerMessageEndTurn playerMessageEndTurn){
-
-        //todo: problema se il giocatore ha due turni consecutivi e si disconnette al primo
         int idPlayerMessage = playerMessageEndTurn.getPlayer();
 
 
@@ -293,8 +297,8 @@ public class Model extends Observable<ModelChangedMessage> {
         {
             for(Integer key : players.keySet()) {
                 setChosenPatternCard(-1 , key);
-
             }
+
         }
 
 
@@ -905,9 +909,9 @@ public class Model extends Observable<ModelChangedMessage> {
      */
     public void setPlayerSuspended(int idPlayer, boolean afk){
         try {
-            table.getPlayers(idPlayer).setSuspended(afk);
+            this.table.getPlayers(idPlayer).setSuspended(afk);
             if(afk) {
-                table.checkActivePlayers();
+                this.table.checkActivePlayers();
                 if(gamePhase == GamePhase.GAMEPHASE)
                     endTurn(new PlayerMessageEndTurn(idPlayer));
                 notify(new ModelChangedMessagePlayerAFK(Integer.toString(idPlayer), "\nYou run out of time. You are now suspended. Type anything to get back into the game\n"));
@@ -916,10 +920,9 @@ public class Model extends Observable<ModelChangedMessage> {
 
             notify(new ModelChangedMessagePlayerAFK(Integer.toString(idPlayer), "\nYou run out of time. You are now suspended. Type anything to get back into the game\n"));
 
+            this.gamePhase = GamePhase.ENDGAMEPHASE;
 
-            gamePhase = GamePhase.ENDGAMEPHASE;
-
-            table.calculateScores();
+            this.table.calculateScores();
             notify(new ModelChangedMessageChangeGamePhase(GamePhase.ENDGAMEPHASE));
             notify(new ModelChangedMessageEndGame(table.getScoreboard().getRepresentation()));
 
