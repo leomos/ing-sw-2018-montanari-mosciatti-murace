@@ -46,9 +46,11 @@ public class SwingMainView extends ViewClient {
             gamePhase = ((ModelChangedMessageChangeGamePhase) message).getGamePhase();
             if (gamePhase == SETUPPHASE) {
                 swingPhase = new PatternCardsFrame(this.idClient);
+                swingPhase.setServerInterface(this.serverInterface);
             }
             if (gamePhase == GAMEPHASE) {
                 swingPhase = new ViewClientGUIGame(this.idClient);
+                swingPhase.setServerInterface(this.serverInterface);
             }
             if (gamePhase == ENDGAMEPHASE) ;
 
@@ -76,24 +78,6 @@ public class SwingMainView extends ViewClient {
         else {
             swingPhase.update(message);
         }
-    }
-
-
-    public void run(){
-
-        boolean c = true;
-
-        do {
-            if(idPlayerPlaying == idClient) {
-                try {
-                    serverInterface.notify(swingPhase.getMainMove());
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        while(c);
-
     }
 
     @Override

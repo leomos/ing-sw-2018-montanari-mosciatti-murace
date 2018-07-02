@@ -136,6 +136,4 @@ public abstract class ViewClient {
         this.executor = Executors.newScheduledThreadPool(1);
     }
 
-    public abstract void run();
-
 }

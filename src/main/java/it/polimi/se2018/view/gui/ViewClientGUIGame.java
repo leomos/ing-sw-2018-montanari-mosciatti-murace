@@ -1,7 +1,6 @@
 package it.polimi.se2018.view.gui;
 
 import it.polimi.se2018.model.events.*;
-import it.polimi.se2018.network.visitor.MessageVisitorInterface;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,8 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class ViewClientGUIGame extends SwingPhase {
     private JFrame jFrame = new JFrame();
@@ -190,8 +189,13 @@ public class ViewClientGUIGame extends SwingPhase {
 
                             @Override
                             public void windowClosed(WindowEvent e) {
-                                if (f.isOk() == 1)
-                                    move = true;
+                                if (f.isOk() == 1) {
+                                    try {
+                                        serverInterface.notify(getMainMove());
+                                    } catch (RemoteException e1) {
+                                        e1.printStackTrace();
+                                    }
+                                }
                                 if (f.isOk() == 2) {
                                     toolCardChosen = "";
                                     idDieChosen = "";
@@ -337,30 +341,21 @@ public class ViewClientGUIGame extends SwingPhase {
     }
 
     public PlayerMessage getMainMove() {
-        PlayerMessage message = new PlayerMessage() {
-            @Override
-            public void accept(MessageVisitorInterface messageVisitorInterface) {
 
-            }
-        };
-
-        if (!idDieChosen.equals("") && toolCardChosen.equals("") && move) {
-            message = new PlayerMessageDie(idClient, Integer.parseInt(idDieChosen), colonna, riga);
+        if (!idDieChosen.equals("") && toolCardChosen.length() == 0) {
+            int s = Integer.parseInt(idDieChosen);
             idDieChosen = "";
-            toolCardChosen = "";
-            new NotYourTurnFrame();
+            return  new PlayerMessageDie(idClient, s, colonna, riga);
         }
-        if (idDieChosen.equals("") && !toolCardChosen.equals("") && move) {
-            message = new PlayerMessageToolCard(idClient, Integer.parseInt(toolCardChosen));
-            idDieChosen = "";
-            toolCardChosen = "";
+        if (idDieChosen.equals("") && !toolCardChosen.equals("")) {
+            return new PlayerMessageToolCard(idClient, Integer.parseInt(toolCardChosen));
         }
         if (end) {
-            message = new PlayerMessageEndTurn(idClient);
-            end = false;
+            return new PlayerMessageEndTurn(idClient);
         }
 
-        return message;
+        return null;
+
     }
 
 }
