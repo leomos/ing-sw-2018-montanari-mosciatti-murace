@@ -5,6 +5,7 @@ import it.polimi.se2018.model.objectives.*;
 import it.polimi.se2018.model.patternCard.PatternCard;
 import it.polimi.se2018.model.player.OnlyOnePlayerLeftException;
 import it.polimi.se2018.model.player.Player;
+import it.polimi.se2018.model.player.PlayerHasYetToChooseAPatternCardException;
 import it.polimi.se2018.model.rounds.RoundTrack;
 import it.polimi.se2018.model.rounds.RoundTrackNoMoreRoundsException;
 import it.polimi.se2018.model.toolcards.ToolCardContainer;
@@ -132,11 +133,11 @@ public class Table {
         Collections.shuffle(toolCardsList);
 
         //TO FORCE 3 PATTERNCARDS FOR TESTS
-
+        /*
         toolCardsList.add(0,0);
         toolCardsList.add(1,1);
         toolCardsList.add(2,2);
-
+        */
 
         for(int j = 0; j < 3; j++)
             toolCardContainer.setToolCardInPlay(toolCardsList.get(j));
@@ -210,6 +211,14 @@ public class Table {
 
         if(count <= 1)
             throw new OnlyOnePlayerLeftException();
+    }
+
+    public void checkAllPlayerHasChosenAPatternCard() throws PlayerHasYetToChooseAPatternCardException {
+
+        for(Player player : this.players)
+            if(!player.hasChosenPatternCard())
+                throw new PlayerHasYetToChooseAPatternCardException();
+
     }
 
     public void calculateScores() {

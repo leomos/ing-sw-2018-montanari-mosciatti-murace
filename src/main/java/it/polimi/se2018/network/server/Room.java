@@ -3,6 +3,7 @@ package it.polimi.se2018.network.server;
 import it.polimi.se2018.controller.Controller;
 import it.polimi.se2018.model.Model;
 import it.polimi.se2018.model.events.*;
+import it.polimi.se2018.network.ClientInterface;
 import it.polimi.se2018.network.ConnectedClient;
 import it.polimi.se2018.network.visitor.MessageVisitorImplementationUpdate;
 import it.polimi.se2018.network.visitor.MessageVisitorInterface;
@@ -30,6 +31,11 @@ public class Room extends Thread {
     private Stream<ConnectedClient> activePlayers() {
         return players.stream()
                 .filter(player -> !player.isInactive());
+    }
+
+    private Stream<ConnectedClient> inactivePlayers() {
+        return players.stream()
+                .filter(player -> player.isInactive());
     }
 
     private ConnectedClient connectedClientById(int id) {
@@ -64,6 +70,7 @@ public class Room extends Thread {
             model.initSetup();
             //patterncard choise
 
+        /*
             players.parallelStream().forEach(player -> {
                 try {
                     Integer m = player.getClientInterface().askForPatternCard();
@@ -73,10 +80,10 @@ public class Room extends Thread {
                     e.printStackTrace();
                 }
             });
+            */
 
-            System.out.println("Starting game in model");
 
-            model.initGame();
+            //model.initGame();
 
             //start rounds
         //}
@@ -256,5 +263,20 @@ public class Room extends Thread {
             Message message = new PlayerMessageEndTurn(id);
             notifyView(message);
         }
+    }
+
+    public Boolean reconnectPlayer(ClientInterface clientInterface, int id) {
+        ConnectedClient reconnectedClient = inactivePlayers()
+                .filter(player -> player.getId() == id)
+                .findFirst()
+                .get();
+        reconnectedClient.setInactive(false);
+        reconnectedClient.setClientInterface(clientInterface);
+        model.setPlayerSuspended(id, false);
+        return true;
+    }
+
+    public void sendGameStateToReconnectedPlayer(int id) {
+        model.updatePlayerThatCameBackIntoTheGame(id);
     }
 }

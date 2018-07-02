@@ -14,4 +14,6 @@ public interface ServerInterface<T> extends Remote {
 
     public void sendHeartbeat(HeartbeatMessage heartbeatMessage) throws RemoteException;
 
+    public Boolean reconnect(T client, Integer id) throws RemoteException;
+
 }

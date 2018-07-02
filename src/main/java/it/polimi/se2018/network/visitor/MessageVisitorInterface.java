@@ -22,6 +22,8 @@ public interface MessageVisitorInterface {
 
     public void visitModelChangedMessagePublicObjective(ModelChangedMessagePublicObjective modelChangedMessagePublicObjective);
 
+    public void visitModelChangedMessageChangeGamePhase(ModelChangedMessageChangeGamePhase modelChangedMessageChangeGamePhase);
+
     public void visitModelChangedMessageRefresh(ModelChangedMessageRefresh modelChangedMessageRefresh);
 
     public void visitModelChangedMessageRound(ModelChangedMessageRound modelChangedMessageRound);

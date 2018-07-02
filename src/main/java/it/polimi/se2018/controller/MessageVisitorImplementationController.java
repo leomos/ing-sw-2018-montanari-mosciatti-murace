@@ -1,49 +1,45 @@
-package it.polimi.se2018.network.visitor;
+package it.polimi.se2018.controller;
 
 import it.polimi.se2018.model.events.*;
-import it.polimi.se2018.network.server.ClientImplementationSocket;
+import it.polimi.se2018.network.visitor.MessageVisitorInterface;
 
-public class MessageVisitorImplementationClient implements MessageVisitorInterface {
+public class MessageVisitorImplementationController implements MessageVisitorInterface {
 
-    private ClientImplementationSocket clientImplementationSocket;
+    private Controller controller;
 
-    public MessageVisitorImplementationClient(ClientImplementationSocket clientImplementationSocket) {
-        this.clientImplementationSocket = clientImplementationSocket;
+    public MessageVisitorImplementationController(Controller controller){
+        this.controller = controller;
     }
+
 
     @Override
     public void visitPlayerMessageDie(PlayerMessageDie playerMessageDie) {
-        clientImplementationSocket.notifyRoom(playerMessageDie);
+        controller.execute(playerMessageDie);
     }
 
     @Override
     public void visitPlayerMessageEndTurn(PlayerMessageEndTurn playerMessageEndTurn) {
-        clientImplementationSocket.notifyRoom(playerMessageEndTurn);
+        controller.execute(playerMessageEndTurn);
     }
 
     @Override
     public void visitPlayerMessageSetup(PlayerMessageSetup playerMessageSetup) {
-        clientImplementationSocket.notifyRoom(playerMessageSetup);
+        controller.execute(playerMessageSetup);
     }
 
     @Override
     public void visitPlayerMessageToolCard(PlayerMessageToolCard playerMessageToolCard) {
-        clientImplementationSocket.notifyRoom(playerMessageToolCard);
+        controller.execute(playerMessageToolCard);
     }
 
     @Override
     public void visitPlayerMessageNotAFK(PlayerMessageNotAFK playerMessageNotAFK) {
-        clientImplementationSocket.notifyRoom(playerMessageNotAFK);
-    }
-
-    @Override
-    public void visitHeartbeatMessage(HeartbeatMessage heartbeatMessage) {
-        clientImplementationSocket.notifyHeartbeat(heartbeatMessage);
+        controller.execute(playerMessageNotAFK);
     }
 
     @Override
     public void visitMethodCallMessage(MethodCallMessage methodCallMessage) {
-        clientImplementationSocket.unlockAndSetReady();
+
     }
 
     @Override
@@ -58,16 +54,6 @@ public class MessageVisitorImplementationClient implements MessageVisitorInterfa
 
     @Override
     public void visitModelChangedMessageDiceOnPatternCard(ModelChangedMessageDiceOnPatternCard modelChangedMessageDiceOnPatternCard) {
-
-    }
-
-    @Override
-    public void visitModelChangedMessageNewEvent(ModelChangedMessageNewEvent modelChangedMessageNewEvent) {
-
-    }
-
-    @Override
-    public void visitModelChangedMessageChangeGamePhase(ModelChangedMessageChangeGamePhase modelChangedMessageChangeGamePhase) {
 
     }
 
@@ -97,7 +83,7 @@ public class MessageVisitorImplementationClient implements MessageVisitorInterfa
     }
 
     @Override
-    public void visitModelChangedMessageTokensLeft(ModelChangedMessageTokensLeft modelChangedMessageTokensLeft) {
+    public void visitModelChangedMessageChangeGamePhase(ModelChangedMessageChangeGamePhase modelChangedMessageChangeGamePhase) {
 
     }
 
@@ -112,12 +98,28 @@ public class MessageVisitorImplementationClient implements MessageVisitorInterfa
     }
 
     @Override
+    public void visitModelChangedMessageNewEvent(ModelChangedMessageNewEvent modelChangedMessageNewEvent) {
+
+    }
+
+    @Override
     public void visitModelChangedMessageToolCard(ModelChangedMessageToolCard modelChangedMessageToolCard) {
 
     }
 
     @Override
+    public void visitModelChangedMessageTokensLeft(ModelChangedMessageTokensLeft modelChangedMessageTokensLeft) {
+
+    }
+
+    @Override
     public void visitModelChangedMessagePlayerAFK(ModelChangedMessagePlayerAFK modelChangedMessagePlayerAFK) {
+
+    }
+
+
+    @Override
+    public void visitHeartbeatMessage(HeartbeatMessage heartbeatMessage) {
 
     }
 }

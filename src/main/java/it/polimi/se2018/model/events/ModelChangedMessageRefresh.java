@@ -1,21 +1,15 @@
 package it.polimi.se2018.model.events;
 
-import it.polimi.se2018.model.GamePhase;
 import it.polimi.se2018.network.visitor.MessageVisitorInterface;
 
 public class ModelChangedMessageRefresh extends ModelChangedMessage implements Message {
 
-    GamePhase gamePhase;
+    private static final long serialVersionUID = 2000L;
 
     String idPlayerPlaying;
 
-    public ModelChangedMessageRefresh(GamePhase gamePhase, String idPlayerPlaying){
-        this.gamePhase = gamePhase;
+    public ModelChangedMessageRefresh(String idPlayerPlaying){
         this.idPlayerPlaying = idPlayerPlaying;
-    }
-
-    public GamePhase getGamePhase() {
-        return gamePhase;
     }
 
     @Override

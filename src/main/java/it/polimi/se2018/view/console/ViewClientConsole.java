@@ -3,14 +3,14 @@ package it.polimi.se2018.view.console;
 import it.polimi.se2018.model.GamePhase;
 import it.polimi.se2018.model.events.*;
 import it.polimi.se2018.view.ViewClient;
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
-import static it.polimi.se2018.model.GamePhase.ENDGAMEPHASE;
-import static it.polimi.se2018.model.GamePhase.GAMEPHASE;
+import static it.polimi.se2018.model.GamePhase.*;
 
 public class ViewClientConsole extends ViewClient implements Runnable {
 
@@ -20,9 +20,11 @@ public class ViewClientConsole extends ViewClient implements Runnable {
 
     private boolean canIPlay = true;
 
-    private GamePhase gamePhase = GamePhase.SETUPPHASE;
+    private GamePhase gamePhase;
 
     private boolean clientSuspended = false;
+
+    private boolean hasChoosePatternCard = false;
 
     private ViewClientConsolePrint viewClientConsolePrint;
 
@@ -31,11 +33,11 @@ public class ViewClientConsole extends ViewClient implements Runnable {
 
     public void setIdClient(int idClient){
         this.idClient = idClient;
-        viewClientConsolePrint = new ViewClientConsoleSetup(idClient);
     }
 
     @Override
-    public void update(ModelChangedMessage message){
+    public synchronized void update(ModelChangedMessage message){
+
         if(message instanceof ModelChangedMessageMoveFailed){
             if(((ModelChangedMessageMoveFailed) message).getPlayer().equals(Integer.toString(idClient))) {
                 System.out.println("ERROR: " + ((ModelChangedMessageMoveFailed) message).getErrorMessage());
@@ -46,21 +48,28 @@ public class ViewClientConsole extends ViewClient implements Runnable {
                 System.out.println("NEW EVENT: " + ((ModelChangedMessageNewEvent) message).getMessage());
             }
         }
-        else if(message instanceof ModelChangedMessageRefresh) {
-            if (((ModelChangedMessageRefresh) message).getGamePhase() != gamePhase) {
-                gamePhase = ((ModelChangedMessageRefresh) message).getGamePhase();
-                if(gamePhase == GAMEPHASE)
-                    viewClientConsolePrint = new ViewClientConsoleGame(this.idClient);
-                if(gamePhase == ENDGAMEPHASE)
-                    viewClientConsolePrint = new ViewClientConsoleEndGame(this.idClient);
-            }else {
-                viewClientConsolePrint.print();
-                if(((ModelChangedMessageRefresh) message).getIdPlayerPlaying() != null) {
-                    idPlayerPlaying = Integer.parseInt(((ModelChangedMessageRefresh) message).getIdPlayerPlaying());
-                    if(idPlayerPlaying == idClient && canIPlay) {
-                        System.out.println("It's your turn");
-                        System.out.println("/help: get List of moves");
-                    }
+        else if(message instanceof ModelChangedMessageChangeGamePhase) {
+            gamePhase = ((ModelChangedMessageChangeGamePhase) message).getGamePhase();
+            if(gamePhase == SETUPPHASE)
+                viewClientConsolePrint = new ViewClientConsoleSetup(this.idClient);
+            if (gamePhase == GAMEPHASE)
+                viewClientConsolePrint = new ViewClientConsoleGame(this.idClient);
+            if (gamePhase == ENDGAMEPHASE)
+                viewClientConsolePrint = new ViewClientConsoleEndGame(this.idClient);
+
+        }
+        else if (message instanceof ModelChangedMessageRefresh){
+            viewClientConsolePrint.print();
+            if(gamePhase == SETUPPHASE) {
+
+                ;
+
+            }
+            if(((ModelChangedMessageRefresh) message).getIdPlayerPlaying() != null) {
+                idPlayerPlaying = Integer.parseInt(((ModelChangedMessageRefresh) message).getIdPlayerPlaying());
+                if(idPlayerPlaying == idClient && canIPlay) {
+                    System.out.println("It's your turn");
+                    System.out.println("/help: get List of moves");
                 }
             }
 
@@ -70,7 +79,7 @@ public class ViewClientConsole extends ViewClient implements Runnable {
                 clientSuspended = true;
                 viewClientConsolePrint.setSuspended(true);
             } else {
-                System.out.println("Player " + ((ModelChangedMessagePlayerAFK) message).getPlayer() + " is now suspended");
+                System.out.println("\nPlayer " + ((ModelChangedMessagePlayerAFK) message).getPlayer() + " is now suspended");
             }
         }
         else {
@@ -78,86 +87,109 @@ public class ViewClientConsole extends ViewClient implements Runnable {
         }
     }
 
-    @Override
-    public Integer askForPatternCard()  {
-        return viewClientConsolePrint.askForPatternCard();
-    }
 
     public void run(){
         boolean c = true;
 
-        while(c) {
+        do {
 
-            try {
-                TimeUnit.SECONDS.sleep(3);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            Scanner input = new Scanner(System.in);
+            String app = input.nextLine();
 
-            if(gamePhase == GAMEPHASE) {
+            if (gamePhase == SETUPPHASE) {
 
-                while (c) {
+                if (!clientSuspended) {
 
-                    try {
-                        TimeUnit.SECONDS.sleep(3);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    int chosenPatternCard = viewClientConsolePrint.askForPatternCard(app);
+                    if(chosenPatternCard != -1) {
 
-                    boolean moveOk;
-
-                    do{
                         try {
-                            TimeUnit.SECONDS.sleep(1);
-                        } catch (InterruptedException e) {
+                            serverInterface.notify(new PlayerMessageSetup(idClient, chosenPatternCard));
+                            hasChoosePatternCard = true;
+                            System.out.println("Wait for other players to choose their pattern cards!");
+                        } catch (RemoteException e) {
                             e.printStackTrace();
                         }
-                        moveOk = true;
-                        if(canIPlay) {
+                    }
 
-                            Scanner mainInput = new Scanner(System.in);
+                } else {
+                    System.out.println("You are not suspended anymore!");
+                    clientSuspended = false;
+                    try {
+                        serverInterface.notify(new PlayerMessageNotAFK(idClient));
+                    } catch (RemoteException e) {
+                        handleDisconnection();
+                    }
+                }
+            } else {
+                System.out.println("Wait for game to start");
+            }
+        }
+        while(gamePhase != SETUPPHASE || !hasChoosePatternCard);
 
-                            if(mainInput.hasNext()) {
 
-                                String s = mainInput.nextLine();
 
-                                if(!clientSuspended) {
-                                    if (idPlayerPlaying == idClient) {
 
-                                        PlayerMessage message = viewClientConsolePrint.getMainMove(s);
+        while(c) {
 
-                                        if(message.getPlayerId() != -1)
-                                            try {
-                                                serverInterface.notify(message);
-                                            } catch (RemoteException e) {
-                                                handleDisconnection();
-                                            }
-                                        else {
-                                            moveOk = false;
-                                            System.out.println("Try again! /help");
-                                        }
 
-                                    } else {
-                                        System.out.println("It's player  " + idPlayerPlaying + " turn, not yours!");
-                                    }
-                                } else {
-                                    System.out.println("You are not suspended anymore!");
-                                    clientSuspended = false;
+            boolean moveOk;
+
+            do{
+
+                moveOk = true;
+                if(canIPlay) {
+
+                    Scanner mainInput = new Scanner(System.in);
+                    String s = mainInput.nextLine();
+                    if (gamePhase == GAMEPHASE) {
+
+                        if (!clientSuspended) {
+                            if (idPlayerPlaying == idClient) {
+
+                                PlayerMessage message = viewClientConsolePrint.getMainMove(s);
+
+                                if (message.getPlayerId() != -1)
                                     try {
-                                        serverInterface.notify(new PlayerMessageNotAFK(idClient));
+                                        serverInterface.notify(message);
                                     } catch (RemoteException e) {
                                         handleDisconnection();
                                     }
+                                else {
+                                    moveOk = false;
+                                    System.out.println("Try again! /help");
                                 }
+
+                            } else {
+                                System.out.println("It's player  " + idPlayerPlaying + " turn, not yours!");
+                            }
+                        } else {
+                            System.out.println("You are not suspended anymore!");
+                            clientSuspended = false;
+                            try {
+                                serverInterface.notify(new PlayerMessageNotAFK(idClient));
+                            } catch (RemoteException e) {
+                                handleDisconnection();
                             }
                         }
-                    }
-                    while (moveOk);
+                    } else
+                        System.out.println("Wait for other players to choose their pattern cards!");
 
                 }
 
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
             }
+            while (moveOk);
+
         }
+
+
+
 
     }
 
@@ -195,7 +227,11 @@ public class ViewClientConsole extends ViewClient implements Runnable {
     public ArrayList<Integer> getPositionInPatternCard(){
         if(idPlayerPlaying == idClient){
 
-            return viewClientConsolePrint.getPositionInPatternCard();
+            ArrayList<Integer> returnValues = viewClientConsolePrint.getPositionInPatternCard();
+
+            if(returnValues.isEmpty())
+                unSuspend();
+            return returnValues;
 
         }
         return null;
@@ -205,7 +241,11 @@ public class ViewClientConsole extends ViewClient implements Runnable {
     public ArrayList<Integer> getSinglePositionInPatternCard(ArrayList<Integer> listOfAvailablePositions){
         if(idPlayerPlaying == idClient) {
 
-            return viewClientConsolePrint.getSinglePositionInPatternCard(listOfAvailablePositions);
+            ArrayList<Integer> returnValues = viewClientConsolePrint.getSinglePositionInPatternCard(listOfAvailablePositions);
+
+            if(returnValues.isEmpty())
+                unSuspend();
+            return returnValues;
 
         }
         return null;
@@ -217,9 +257,8 @@ public class ViewClientConsole extends ViewClient implements Runnable {
 
             ArrayList<Integer> returnValues = viewClientConsolePrint.getIncrementedValue();
 
-            if( returnValues.isEmpty())
+            if(returnValues.isEmpty())
                 unSuspend();
-
             return returnValues;
 
         }
@@ -230,7 +269,11 @@ public class ViewClientConsole extends ViewClient implements Runnable {
     public Integer getDieFromDiceArena(){
         if(idPlayerPlaying == idClient) {
 
-            return viewClientConsolePrint.getDieFromDiceArena();
+            int returnValues = viewClientConsolePrint.getDieFromDiceArena();
+
+            if(returnValues == -1)
+                unSuspend();
+            return returnValues;
 
         }
         return null;
@@ -240,7 +283,11 @@ public class ViewClientConsole extends ViewClient implements Runnable {
     public ArrayList<Integer> getDieFromRoundTrack(){
         if(idPlayerPlaying == idClient) {
 
-            return viewClientConsolePrint.getDieFromRoundTrack();
+            ArrayList<Integer> returnValues = viewClientConsolePrint.getDieFromRoundTrack();
+
+            if(returnValues.isEmpty())
+                unSuspend();
+            return returnValues;
 
         }
         return null;
@@ -250,7 +297,11 @@ public class ViewClientConsole extends ViewClient implements Runnable {
     public Integer getValueForDie(){
         if(idPlayerPlaying == idClient) {
 
-            return viewClientConsolePrint.getValueForDie();
+            int returnValues = viewClientConsolePrint.getValueForDie();
+
+            if(returnValues == -1)
+                unSuspend();
+            return returnValues;
 
         }
         return null;
@@ -261,10 +312,40 @@ public class ViewClientConsole extends ViewClient implements Runnable {
     public ArrayList<Integer> getDoublePositionInPatternCard(){
         if(idPlayerPlaying == idClient) {
 
-            return viewClientConsolePrint.getDieFromRoundTrack();
+            ArrayList<Integer> returnValues = viewClientConsolePrint.getDoublePositionInPatternCard();
+
+            if(returnValues.isEmpty())
+                unSuspend();
+            return returnValues;
 
         }
         return null;
+    }
+
+    @Override
+    public void handleDisconnection() {
+        System.out.println("Disconnesso!");
+        this.serverInterface = null;
+        this.executor.shutdownNow();
+        try {
+            this.executor.awaitTermination(3, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            System.out.println("Heartbeat terminato prima del previsto.");
+        }
+        System.out.println("Heartbeat terminato!");
+        try {
+            TimeUnit.SECONDS.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("provo a riconnettermi");
+        tryToReconnect();
+    }
+
+    private void tryToReconnect() {
+        this.reconnect(idClient, 0);
+        initNewExecutor();
+        startHeartbeating(idClient);
     }
 
 }

@@ -6,7 +6,6 @@ import it.polimi.se2018.model.events.ModelChangedMessagePrivateObjective;
 import it.polimi.se2018.model.events.PlayerMessage;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class ViewClientConsoleSetup extends ViewClientConsolePrint {
 
@@ -39,32 +38,24 @@ public class ViewClientConsoleSetup extends ViewClientConsolePrint {
             printPatternCard(patternCards.get(i));
 
         printPrivateObjective(privateObjective);
+        System.out.println("\nChoose a PatternCard by selecting one of the PatternCardId");
 
-        System.out.println("\nChoose a PatternCard by selecting one of the PatternCardId\nNB: ho spostato questo print fuori dal metodo askForPatternCard, non pensare che il parallelString funzioni");
-        }
+    }
 
     @Override
-    public Integer askForPatternCard()  {
-        Scanner input = new Scanner(System.in);
-        boolean moveNotOk = true;
-        do {
+    public Integer askForPatternCard(String s)  {
 
-            String s = input.nextLine();
 
-            for(int i = 0; i < 24; i++){
-                String app = "" + i;
-                if(app.equals(s)) {
-                    moveNotOk = false;
-                    return Integer.parseInt(app);
+
+            for(int i = 0; i < patternCards.size(); i++){
+                if(patternCards.get(i).getIdPatternCard().equals(s)) {
+                    return Integer.parseInt(s);
                 }
             }
 
-            if(moveNotOk)
-                System.out.println("Try Again!");
-        }
-        while(moveNotOk);
+            System.out.println("Try Again!");
 
-        return null;
+        return -1;
     }
 
     @Override

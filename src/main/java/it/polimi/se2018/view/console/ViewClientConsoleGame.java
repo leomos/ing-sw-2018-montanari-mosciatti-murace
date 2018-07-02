@@ -125,56 +125,6 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
     }
 
-    @Override
-    public ArrayList<Integer> getPositionInPatternCard(){
-        ArrayList<Integer> position = new ArrayList<Integer>();
-        boolean moveOk1, moveOk2;
-
-        do {
-            System.out.println("\nInsert Starting position on PatternCard separated by a space");
-
-            moveOk1 = true;
-            moveOk2 = true;
-
-            Scanner input = new Scanner(System.in);
-            String s = input.nextLine();
-
-            for(int i = 0; i < 5; i++) {
-                for (int j = 0; j < 4; j++) {
-                    String app = "" + i + " " + j;
-                    if (app.equals(s)) {
-                        moveOk1 = false;
-                        position.add(Integer.parseInt(s.split(" ")[0]));
-                        position.add(Integer.parseInt(s.split(" ")[1]));
-                    }
-                }
-            }
-
-            System.out.println("\nInsert Final position on PatternCard separated by a space");
-
-            input = new Scanner(System.in);
-            s = input.nextLine();
-
-            for(int i = 0; i < 5; i++) {
-                for (int j = 0; j < 4; j++) {
-                    String app = "" + i + " " + j;
-                    if (app.equals(s)) {
-                        moveOk2 = false;
-                        position.add(Integer.parseInt(s.split(" ")[0]));
-                        position.add(Integer.parseInt(s.split(" ")[1]));
-                    }
-                }
-            }
-
-            if(suspended)
-                if(moveOk1 || moveOk2)
-                    System.out.println("Try Again!");
-        }
-        while((moveOk1 || moveOk2) && suspended);
-
-        return position;
-    }
-
     public PlayerMessage getMainMove(String s){
 
 
@@ -217,6 +167,55 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
     }
 
+    @Override
+    public ArrayList<Integer> getPositionInPatternCard(){
+        ArrayList<Integer> position = new ArrayList<Integer>();
+        boolean moveOk1, moveOk2;
+
+        do {
+            System.out.println("\nInsert Starting position on PatternCard separated by a space");
+
+            moveOk1 = true;
+            moveOk2 = true;
+
+            Scanner input = new Scanner(System.in);
+            String s = input.nextLine();
+
+            for(int i = 0; i < 5; i++) {
+                for (int j = 0; j < 4; j++) {
+                    String app = "" + i + " " + j;
+                    if (app.equals(s)) {
+                        moveOk1 = false;
+                        position.add(Integer.parseInt(s.split(" ")[0]));
+                        position.add(Integer.parseInt(s.split(" ")[1]));
+                    }
+                }
+            }
+
+            System.out.println("\nInsert Final position on PatternCard separated by a space");
+
+            input = new Scanner(System.in);
+            s = input.nextLine();
+
+            for(int i = 0; i < 5; i++) {
+                for (int j = 0; j < 4; j++) {
+                    String app = "" + i + " " + j;
+                    if (app.equals(s)) {
+                        moveOk2 = false;
+                        position.add(Integer.parseInt(s.split(" ")[0]));
+                        position.add(Integer.parseInt(s.split(" ")[1]));
+                    }
+                }
+            }
+
+            if(!suspended)
+                if(moveOk1 || moveOk2)
+                    System.out.println("Try Again!");
+        }
+        while((moveOk1 || moveOk2) && !suspended);
+
+        return position;
+    }
 
     @Override
     public ArrayList<Integer> getDoublePositionInPatternCard(){
@@ -238,9 +237,9 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
                 numberOfMovements = 2;
             }
 
-        }while(moveNotOk1 && suspended);
+        }while(moveNotOk1 && !suspended);
 
-        if(suspended)
+        if(!suspended)
             for (int k = 0; k < numberOfMovements; k++) {
                 do {
                     System.out.println("\nInsert Starting position for "+ k+1 +"° movement on PatternCard separated by a space ");
@@ -278,11 +277,11 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
                         }
                     }
 
-                    if(suspended)
+                    if(!suspended)
                         if (moveNotOk1 || moveNotOk2)
                             System.out.println("Try Again!");
                 }
-                while ((moveNotOk1 || moveNotOk2) && suspended);
+                while ((moveNotOk1 || moveNotOk2) && !suspended);
             }
 
         return position;
@@ -318,7 +317,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
                 }
             }
 
-            if(suspended)
+            if(!suspended)
                 if(listOfAvailablePositions.size() != 0) {
                     for (int i = 0; i < listOfAvailablePositions.size(); i = i + 2)
                         if (listOfAvailablePositions.get(i).equals(position.get(0)) && listOfAvailablePositions.get(i + 1).equals(position.get(1)))
@@ -327,7 +326,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
             }
 
-            if (moveNotOk && suspended)
+            if (moveNotOk && !suspended)
                 System.out.println("Try again!");
 
         } while (moveNotOk  || listOfAvailablePositions.size() != 0);
@@ -396,11 +395,11 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
                 }
             }
 
-            if(suspended)
+            if(!suspended)
                 if(moveNotOk)
                     System.out.println("Try Again!");
 
-        } while(moveNotOk && suspended);
+        } while(moveNotOk && !suspended);
 
         return idDie;
 
@@ -432,11 +431,11 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
                 }
             }
 
-            if(suspended)
+            if(!suspended)
                 if(moveNotOk)
                     System.out.println("Try Again!");
 
-        } while(moveNotOk && suspended);
+        } while(moveNotOk && !suspended);
 
         return idDie;
 
@@ -461,18 +460,18 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
                 }
             }
 
-            if(suspended)
+            if(!suspended)
                 if(moveNotOk)
                     System.out.println("Try Again!");
 
-        } while(moveNotOk && suspended);
+        } while(moveNotOk && !suspended);
 
         return value;
 
     }
 
     @Override
-    public Integer askForPatternCard() {
+    public Integer askForPatternCard(String s) {
         return null;
     }
 

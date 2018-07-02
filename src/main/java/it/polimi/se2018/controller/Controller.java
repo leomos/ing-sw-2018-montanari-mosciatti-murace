@@ -21,6 +21,8 @@ public class Controller implements Observer<PlayerMessage> {
 
     private AfkController afkController;
 
+    private MessageVisitorImplementationController messageVisitorImplementationController;
+
     /**
      * @param view
      */
@@ -36,6 +38,7 @@ public class Controller implements Observer<PlayerMessage> {
         this.endTurnController = new EndTurnController(model);
         this.toolCardController = new ToolCardController(model);
         this.afkController = new AfkController(model);
+        this.messageVisitorImplementationController = new MessageVisitorImplementationController(this);
     }
 
     /**
@@ -44,37 +47,29 @@ public class Controller implements Observer<PlayerMessage> {
      */
     /* TODO: tests, finish update without instanceOf(). */
     @Override
-    public void update(PlayerMessage playerMessage){
-
-        System.out.println(playerMessage);
-
-        if(playerMessage instanceof PlayerMessageSetup){
-            PlayerMessageSetup playerMessageSetup = (PlayerMessageSetup) playerMessage;
-
-            setUpController.execute(playerMessageSetup);
-
-        }
-
-
-        if(playerMessage instanceof PlayerMessageDie) {
-            PlayerMessageDie playerMessageDie = (PlayerMessageDie) playerMessage;
-            this.dieController.execute(playerMessageDie);
-        }
-
-        if(playerMessage instanceof PlayerMessageToolCard) {
-            PlayerMessageToolCard playerMessageToolCard = (PlayerMessageToolCard) playerMessage;
-            this.toolCardController.execute(playerMessageToolCard, view);
-        }
-
-        if(playerMessage instanceof PlayerMessageEndTurn) {
-            PlayerMessageEndTurn playerMessageEndTurn = (PlayerMessageEndTurn) playerMessage;
-            this.endTurnController.execute(playerMessageEndTurn);
-        }
-
-        if(playerMessage instanceof PlayerMessageNotAFK){
-            PlayerMessageNotAFK playerMessageNotAFK = (PlayerMessageNotAFK) playerMessage;
-            this.afkController.execute(playerMessageNotAFK);
-        }
-
+    public synchronized void update(PlayerMessage playerMessage) {
+        playerMessage.accept(messageVisitorImplementationController);
     }
+
+    public void execute(PlayerMessageDie playerMessageDie) {
+        this.dieController.execute(playerMessageDie);
+    }
+
+    public void execute(PlayerMessageToolCard playerMessageToolCard) {
+        this.toolCardController.execute(playerMessageToolCard, view);
+    }
+
+    public void execute(PlayerMessageEndTurn playerMessageEndTurn) {
+        this.endTurnController.execute(playerMessageEndTurn);
+    }
+
+    public void execute(PlayerMessageSetup playerMessageSetup) {
+        this.setUpController.execute(playerMessageSetup);
+    }
+
+    public void execute(PlayerMessageNotAFK playerMessageNotAFK) {
+        this.afkController.execute(playerMessageNotAFK);
+    }
+
+
 }
