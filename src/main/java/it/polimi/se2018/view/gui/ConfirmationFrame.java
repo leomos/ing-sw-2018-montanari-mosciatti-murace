@@ -2,8 +2,6 @@ package it.polimi.se2018.view.gui;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class ConfirmationFrame extends JFrame {
     private int isok;
@@ -33,22 +31,17 @@ public class ConfirmationFrame extends JFrame {
         pannelloPulsanti.setLayout(new FlowLayout());
 
         JButton esci = new JButton("Sì");
-        esci.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        esci.addActionListener(actionListener -> {
                 isok = 1;
                 dispose();
-            }
         });
         pannelloPulsanti.add(esci);
 
         JButton annulla = new JButton("No");
-        annulla.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        annulla.addActionListener(actionListener -> {
                 isok = 2;
                 dispose();
-            }
+
         });
         pannelloPulsanti.add(annulla);
 

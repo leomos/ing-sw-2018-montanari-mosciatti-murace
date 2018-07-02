@@ -11,14 +11,15 @@ import java.util.ArrayList;
 
 public class SwingRoundTrack extends JPanel {
     public SwingRoundTrack(ArrayList<ModelChangedMessageRound> roundtrack) {
-        setLayout(new GridLayout(1, 10, 5, 0));
-        setPreferredSize(new Dimension(600, 60));
-        setBackground(Color.ORANGE);
+        setLayout(new FlowLayout());
+        setPreferredSize(new Dimension(500, 60));
+        setBackground(new Color(210, 210, 210, 200));
 
         Integer m = roundtrack.size();
 
         for (Integer i = 1; i < 11; i++) {
             JButton b = new JButton();
+            b.setPreferredSize(new Dimension(50, 50));
             b.setText(i.toString());
             b.setToolTipText("RoundTrack");
             if (i - 1 < m) {

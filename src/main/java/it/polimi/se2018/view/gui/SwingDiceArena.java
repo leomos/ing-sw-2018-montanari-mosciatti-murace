@@ -13,7 +13,7 @@ public class SwingDiceArena extends JPanel {
         SwingDie d = new SwingDie(0);
         buttons = d.setOfDice(message.getRepresentation());
 
-        setLayout(new GridLayout(1, buttons.size()));
+        setLayout(new FlowLayout());
 
         int l = buttons.size();
         for (int i=0; i<l; i++) {

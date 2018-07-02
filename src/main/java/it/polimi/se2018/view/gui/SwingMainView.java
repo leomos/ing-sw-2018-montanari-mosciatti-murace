@@ -12,7 +12,7 @@ public class SwingMainView extends ViewClient {
 
     private int idClient;
 
-    SwingPhase swingPhase;
+    private SwingPhase swingPhase;
 
     private int idPlayerPlaying;
 

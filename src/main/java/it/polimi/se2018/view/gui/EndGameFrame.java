@@ -6,9 +6,6 @@ import it.polimi.se2018.model.events.PlayerMessage;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 public class EndGameFrame extends SwingPhase {
     private JFrame jFrame = new JFrame();
@@ -48,11 +45,8 @@ public class EndGameFrame extends SwingPhase {
         GridBagConstraints constraints = new GridBagConstraints();
 
         JButton esci = new JButton("EXIT");
-        esci.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        esci.addActionListener(actionListener -> {
                 jFrame.dispose();
-            }
         });
 
         constraints.weightx = 1;
@@ -103,12 +97,6 @@ public class EndGameFrame extends SwingPhase {
 
     public void set() {
         this.messageEndGame = new ModelChangedMessageEndGame("1231246231124050");
-    }
-
-    public static void main(String args[]) {
-        EndGameFrame endGameFrame = new EndGameFrame(1);
-        endGameFrame.set();
-        endGameFrame.print();
     }
 
     @Override

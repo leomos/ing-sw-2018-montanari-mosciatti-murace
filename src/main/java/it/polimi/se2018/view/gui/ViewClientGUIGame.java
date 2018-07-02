@@ -4,8 +4,6 @@ import it.polimi.se2018.model.events.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.rmi.RemoteException;
@@ -23,8 +21,6 @@ public class ViewClientGUIGame extends SwingPhase {
     private int colonna;
 
     private int idClient;
-
-    private boolean end = false;
 
     private boolean isMyTurn;
 
@@ -116,11 +112,8 @@ public class ViewClientGUIGame extends SwingPhase {
         for (int i=0; i<3; i++) {
             int finalI = i;
             toolCard[i] = new SwingToolCards(toolCards.get(i));
-            toolCard[i].getCard().addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
+            toolCard[i].getCard().addActionListener(actionListener -> {
                     toolCardChosen = toolCardChosen + toolCards.get(finalI).getIdToolCard();
-                }
             });
         }
 
@@ -145,14 +138,11 @@ public class ViewClientGUIGame extends SwingPhase {
                 for (int n=0; n<20; n++) {
                     int finalN = n;
                     SwingDie die = mine.getPc().get(n);
-                    die.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
+                    die.addActionListener(actionListener -> {
                             if (!idDieChosen.equals("")) {
                                 riga = finalN / 5;
                                 colonna = finalN % 5;
                             }
-                        }
                     });
                 }
             }
@@ -169,13 +159,10 @@ public class ViewClientGUIGame extends SwingPhase {
         SwingDiceArena arena = new SwingDiceArena(diceArena);
         for (int i=0; i<arena.getButtons().size(); i++){
             SwingDie b = arena.getButtons().get(i);
-            b.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
+            b.addActionListener(actionListener -> {
                     if (idDieChosen.equals("")) {
                         idDieChosen = idDieChosen + b.getId();
                     }
-                }
             });
         }
 
@@ -184,9 +171,7 @@ public class ViewClientGUIGame extends SwingPhase {
 
         //BOTTONI
         JButton conferma = new JButton("CONFIRM MOVE");
-        conferma.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        conferma.addActionListener(actionListener -> {
                 if (isMyTurn) {
                     if (!idDieChosen.equals("")) {
                         ConfirmationFrame f = new ConfirmationFrame(idDieChosen, colonna, riga, toolCardChosen);
@@ -237,13 +222,10 @@ public class ViewClientGUIGame extends SwingPhase {
                     toolCardChosen = "";
                     idDieChosen = "";
                 }
-            }
         });
 
         JButton endTurn = new JButton("END TURN");
-        endTurn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        endTurn.addActionListener(actionListener -> {
                 if (isMyTurn) {
                     try {
                         serverInterface.notify(new PlayerMessageEndTurn(idClient));
@@ -252,7 +234,6 @@ public class ViewClientGUIGame extends SwingPhase {
                     }
                 }
                 else new NotYourTurnFrame();
-            }
         });
 
         //ROUNDTRANCK
