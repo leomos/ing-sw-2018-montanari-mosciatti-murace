@@ -48,11 +48,11 @@ public class Table {
         for(Integer key : HM.keySet()) {
             this.players.add(new Player(key, HM.get(key)));
         }
+        this.database = new Database(diceContainer);
         this.diceContainer = new DiceContainer();
         this.toolCardContainer = new ToolCardContainer(diceContainer, database);
         this.diceArena = new DiceArena(players.size() * 2 + 1, diceContainer);
         this.roundTrack = new RoundTrack(players, diceContainer);
-        this.database = new Database(diceContainer);
 
         this.patternCards = database.loadPatternCard();
         this.privateObjectives = database.loadPrivateObjective();
@@ -184,7 +184,7 @@ public class Table {
      */
     private void setPatternCardsToPlayer(){
         ArrayList<Integer> patternCardsList = new ArrayList<>();
-        for (Integer i = 0; i < patternCards.size(); i++)
+        for (Integer i = 0; i < 12; i++)
             patternCardsList.add(i);
 
         Collections.shuffle(patternCardsList);
@@ -193,10 +193,10 @@ public class Table {
             ArrayList<PatternCard> patternCardsToPlayer = new ArrayList<>();
             int val = patternCardsList.get(j);
             patternCardsToPlayer.add(patternCards.get(val));
-            patternCardsToPlayer.add(patternCards.get(val + patternCards.size()/2));
+            patternCardsToPlayer.add(patternCards.get(val + 12));
             val = patternCardsList.get(11 - j);
             patternCardsToPlayer.add(patternCards.get(val));
-            patternCardsToPlayer.add(patternCards.get(val + patternCardsList.size()/2));
+            patternCardsToPlayer.add(patternCards.get(val + 12));
             players.get(j).setPatternCards(patternCardsToPlayer);
         }
     }
