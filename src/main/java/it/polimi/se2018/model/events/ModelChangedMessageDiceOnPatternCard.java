@@ -10,6 +10,12 @@ public class ModelChangedMessageDiceOnPatternCard extends ModelChangedMessage im
 
     private String representation;
 
+    /**
+     * Message created by the model and put in a notify when the dice on top of a pattern card get changed
+     * @param idPlayer player id that owns the pattern card
+     * @param idPatternCard pattern card id
+     * @param representation dice on pattern card representation
+     */
     public ModelChangedMessageDiceOnPatternCard(String idPlayer, String idPatternCard, String representation) {
         this.idPlayer = idPlayer;
         this.idPatternCard = idPatternCard;

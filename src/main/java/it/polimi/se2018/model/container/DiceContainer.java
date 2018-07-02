@@ -1,7 +1,6 @@
 package it.polimi.se2018.model.container;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class DiceContainer {
 

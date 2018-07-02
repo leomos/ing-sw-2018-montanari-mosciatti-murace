@@ -37,6 +37,14 @@ public class PatternCardCell {
     }
 
 
+    /**
+     * Checks if the value and the color respect the constraint of this cell
+     * @param dieValue die's value that the player wants to set in this cell
+     * @param dieColor die's color that the player wants to set in this cell
+     * @param ignoreValueConstraint boolean whether you can't ignore the value constraint when placing a die in this cell
+     * @param ignoreColorConstraint boolean whether you can't ignore the color constraint when placing a die in this cell
+     * @return true if the die respects the cell constraints, false otherwise
+     */
     public boolean checkDieValidity(int dieValue, DieColor dieColor, boolean ignoreValueConstraint, boolean ignoreColorConstraint) {
 
         if(this.valueConstraint != 0)

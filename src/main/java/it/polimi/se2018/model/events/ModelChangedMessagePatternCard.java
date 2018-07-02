@@ -14,6 +14,14 @@ public class ModelChangedMessagePatternCard extends ModelChangedMessage implemen
 
     private String representation;
 
+    /**
+     * Message created by the model and put in a notify when the game sends the players the pattern cards
+     * @param idPlayer player id receiving the pattern card
+     * @param idPatternCard pattern card id
+     * @param name pattern card name
+     * @param difficulty pattern card difficulty
+     * @param representation pattern card representation
+     */
     public ModelChangedMessagePatternCard(String idPlayer, String idPatternCard, String name, String difficulty, String representation){
         this.idPlayer = idPlayer;
         this.idPatternCard = idPatternCard;

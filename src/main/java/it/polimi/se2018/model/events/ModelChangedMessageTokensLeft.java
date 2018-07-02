@@ -8,6 +8,11 @@ public class ModelChangedMessageTokensLeft extends ModelChangedMessage implement
 
     private String tokensLeft;
 
+    /**
+     * Message created by the model and put in a notify when the game sends the players how many tokens he has left
+     * @param idPlayer player id
+     * @param tokensLeft tokens left to the player
+     */
     public ModelChangedMessageTokensLeft(String idPlayer, String tokensLeft){
         this.idPlayer = idPlayer;
         this.tokensLeft = tokensLeft;

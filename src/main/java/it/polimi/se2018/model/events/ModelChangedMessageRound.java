@@ -8,6 +8,11 @@ public class ModelChangedMessageRound extends ModelChangedMessage implements Mes
 
     private String representation;
 
+    /**
+     * Message created by the model and put in a notify when a new round starts containing the dice left in the id round
+     * @param idRound round id
+     * @param representation representation of the dice left on the round
+     */
     public ModelChangedMessageRound (String idRound, String representation){
         this.idRound = idRound;
         this.representation = representation;

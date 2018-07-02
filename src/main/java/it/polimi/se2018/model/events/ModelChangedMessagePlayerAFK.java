@@ -9,9 +9,15 @@ public class ModelChangedMessagePlayerAFK  extends ModelChangedMessage{
 
     private String message;
 
-    public ModelChangedMessagePlayerAFK(String player, String errorMessage){
+    /**
+     * Message created by the model and put in a notify when a player disconnects or get suspended for not finishing
+     * the round before the timer ends
+     * @param player player that disconnected
+     * @param message message sent to the player
+     */
+    public ModelChangedMessagePlayerAFK(String player, String message){
         this.player = player;
-        this.message = errorMessage;
+        this.message = message;
     }
 
     public String getPlayer() {

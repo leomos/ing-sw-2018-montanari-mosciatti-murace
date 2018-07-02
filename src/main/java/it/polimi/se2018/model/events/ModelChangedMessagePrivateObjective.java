@@ -12,6 +12,13 @@ public class ModelChangedMessagePrivateObjective extends ModelChangedMessage imp
 
     private String description;
 
+    /**
+     * Message created by the model and put in a notify when the game sends the players their own private objective
+     * @param idPlayer player id receiving the objective
+     * @param idPrivateObjective private objective id
+     * @param name private objective name
+     * @param description private objective description
+     */
     public ModelChangedMessagePrivateObjective (String idPlayer, String idPrivateObjective, String name, String description){
         this.idPlayer = idPlayer;
         this.idPrivateObjective = idPrivateObjective;

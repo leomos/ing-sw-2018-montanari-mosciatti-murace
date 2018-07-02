@@ -12,6 +12,14 @@ public class ModelChangedMessageToolCard extends ModelChangedMessage implements 
 
     private String cost;
 
+    /**
+     * Message created by the model and put in a notify when the game sends the tool cards in play or when the
+     * cost of a tool card changes from 1 to 2
+     * @param idToolCard tool card id
+     * @param name tool card name
+     * @param description tool card description
+     * @param cost tool card cost
+     */
     public ModelChangedMessageToolCard (String idToolCard, String name, String description, String cost){
         this.idToolCard = idToolCard;
         this.name = name;

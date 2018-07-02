@@ -67,6 +67,9 @@ public class Die {
         this.rolled = true;
     }
 
+    /**
+     * Turns around the die, changing it's rolled value
+     */
     public void turnAround()  {
         if(this.rolled){
             switch (this.rolledValue){
@@ -78,16 +81,20 @@ public class Die {
                 case 6: this.rolledValue = 1; break;
                 default: this.rolledValue = 0; break;
             }
-        } else {
-            //TODO: devo throware qualcosa? non so
         }
     }
 
+    /**
+     * Set the die back to the primary state, with rolled set to false and rolled value set to 0
+     */
     public void unroll() {
         this.rolled = false;
         this.rolledValue = 0;
     }
 
+    /**
+     * @return the char corresponding to the die color
+     */
     public String getColorChar(){
         if(color == RED)
             return "r";

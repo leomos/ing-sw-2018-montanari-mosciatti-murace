@@ -29,6 +29,15 @@ public class PatternCard {
 
     private String diceRepresentation = "********************************************************************************";
 
+    /**
+     * Depending on the patternCardRepresentation, it creates 20 cells. For each char of patternCardRepresentation, it creates
+     * a cell with a precise constraint. A cell can't have both a value and a color constraint.
+     * @param diceContainer dice container
+     * @param id pattern card id
+     * @param name pattern card name
+     * @param difficulty pattern card difficulty
+     * @param patternCardRepresentation pattern card representation, composed of 20 chars where every char corresponds to a cell
+     */
     public PatternCard(DiceContainer diceContainer, int id, String name, int difficulty, String patternCardRepresentation) {
         this.diceContainer = diceContainer;
         this.id = id;
@@ -123,10 +132,9 @@ public class PatternCard {
     }
 
     /**
-     *
      * @param x cell's abscissa
      * @param y cell's ordinate
-     * @return proximityCellList list of available positions above, under or next to the cell defined by x and y
+     * @return proximityCellList list of available positions above, under or on the side to the cell defined by x and y
      * @throws
      */
     private ArrayList<Integer[]> checkProximityCells(int x, int y){
@@ -162,7 +170,6 @@ public class PatternCard {
     }
 
     /**
-     *
      * @param x cell's abscissa
      * @param y cell's ordinate
      * @return proximityCellList list of available positions diagonals to the cell defined by x and y
@@ -200,10 +207,11 @@ public class PatternCard {
     }
 
     /**
+     * checks whether the die's color or the die's value are present in the cells orthogonal to the one defined by x and y
      * @param rolledDieId die's Id
      * @param x cell's abscissa
      * @param y cell's ordinate
-     * @return proximityCellList list of available positions around the cell defined by x and y
+     * @return true if there are no dice with the same color or the same value of the die orthogonal to the cell
      * @throws DiceContainerUnsupportedIdException
      */
     public boolean checkProximityCellsValidity(int rolledDieId, int x, int y)throws DiceContainerUnsupportedIdException {
@@ -224,8 +232,8 @@ public class PatternCard {
      * returns whether there is a die in one of the adjacent position to the cell defined by x and y
      * @param x cell's abscissa
      * @param y cell's ordinate
-     * @return
-     * @throws DiceContainerUnsupportedIdException
+     * @return true if there is a die
+     * @throws DiceContainerUnsupportedIdException if there is a die id not accepted
      */
     public boolean checkDieInAdjacentCells(int x, int y) throws DiceContainerUnsupportedIdException {
 
@@ -286,6 +294,12 @@ public class PatternCard {
         return x == 0 || x == 4 || y == 0 || y == 3;
     }
 
+    /**
+     * create a list of all the available positions for a die inside this pattern card
+     * @param idDie die id that the player wants to set
+     * @return array list containing all the positions (in group of two)
+     * @throws DiceContainerUnsupportedIdException if there is a die id not accepted
+     */
     public ArrayList<Integer> getAvailablePositions(int idDie) throws DiceContainerUnsupportedIdException {
 
         Die d = null;
@@ -313,6 +327,9 @@ public class PatternCard {
         return list;
     }
 
+    /**
+     * @return number of dice present in the pattern card
+     */
     public int getNumberOfDiceInThePatternCard(){
         int count = 0;
         for(int i = 0; i < 5; i++)
@@ -322,6 +339,11 @@ public class PatternCard {
         return count;
     }
 
+    /**
+     * Creates a single string representing the dice on this pattern card. For each die, it adds to the
+     * string the id, followed by char representing the color, followed by the rolled value.
+     * If the die in one cell is not present, it instead puts in the string ****
+     */
     private void updateDiceRepresentation() {
         diceRepresentation = "";
         for(int i = 0; i < 4; i++)
