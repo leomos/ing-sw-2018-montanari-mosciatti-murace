@@ -28,8 +28,11 @@ public class SwingRoundTrack extends JPanel {
                         JFrame jFrame = new JFrame("ROUND " + b.getText());
                         ModelChangedMessageDiceArena messageDiceArena = new ModelChangedMessageDiceArena(roundtrack.get(Integer.parseInt(b.getText())-1).getRepresentation());
                         SwingDiceArena round = new SwingDiceArena(messageDiceArena);
+                        for (int i=0; i<round.getButtons().size(); i++)
+                            round.getButtons().get(i).setToolTipText("ROUND " + b.getText());
                         jFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
                         jFrame.add(round);
+                        jFrame.setResizable(false);
                         jFrame.pack();
                         jFrame.setVisible(true);
                     }

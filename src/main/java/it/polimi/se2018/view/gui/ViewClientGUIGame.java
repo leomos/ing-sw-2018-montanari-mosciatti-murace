@@ -28,17 +28,15 @@ public class ViewClientGUIGame extends SwingPhase {
 
     private boolean isMyTurn;
 
-    private boolean move = false;
+    private ArrayList<String> idPlayers = new ArrayList<>();
 
-    private ArrayList<String> idPlayers = new ArrayList<String>();
+    private ArrayList<ModelChangedMessagePatternCard> patternCards = new ArrayList<>();
 
-    private ArrayList<ModelChangedMessagePatternCard> patternCards = new ArrayList<ModelChangedMessagePatternCard>();
+    private ArrayList<ModelChangedMessageDiceOnPatternCard> diceOnPatternCards = new ArrayList<>();
 
-    private ArrayList<ModelChangedMessageDiceOnPatternCard> diceOnPatternCards = new ArrayList<ModelChangedMessageDiceOnPatternCard>();
+    private ArrayList<ModelChangedMessagePublicObjective> publicObjectives = new ArrayList<>();
 
-    private ArrayList<ModelChangedMessagePublicObjective> publicObjectives = new ArrayList<ModelChangedMessagePublicObjective>();
-
-    private ArrayList<ModelChangedMessageToolCard> toolCards = new ArrayList<ModelChangedMessageToolCard>();
+    private ArrayList<ModelChangedMessageToolCard> toolCards = new ArrayList<>();
 
     private ModelChangedMessageDiceArena diceArena;
 
@@ -46,7 +44,7 @@ public class ViewClientGUIGame extends SwingPhase {
 
     private ModelChangedMessageTokensLeft tokensLeft;
 
-    private ArrayList<ModelChangedMessageRound> roundTrack = new ArrayList<ModelChangedMessageRound>();
+    private ArrayList<ModelChangedMessageRound> roundTrack = new ArrayList<>();
 
     public ViewClientGUIGame (int idClient) {
         this.idClient = idClient;
@@ -99,12 +97,21 @@ public class ViewClientGUIGame extends SwingPhase {
         }
         else if(message instanceof ModelChangedMessageRefresh) {
             isMyTurn = Integer.parseInt(((ModelChangedMessageRefresh) message).getIdPlayerPlaying()) == idClient;
-            if (isMyTurn)
-                new TurnFrame();
         }
     }
 
     public void print(){
+        jFrame.getContentPane().removeAll();
+        jFrame.repaint();
+
+        jFrame.setLayout(new GridBagLayout());
+        jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        jFrame.setTitle("TABLE");
+        Color c = new Color(34, 139, 34);
+        jFrame.getContentPane().setBackground(c);
+        jFrame.setResizable(false);
+
+        //TOOLCARD
         SwingToolCards[] toolCard = new SwingToolCards[3];
         for (int i=0; i<3; i++) {
             int finalI = i;
@@ -117,11 +124,13 @@ public class ViewClientGUIGame extends SwingPhase {
             });
         }
 
+        //PUBLIC OBJECTIVE
         SwingPublicObjective[] publicObjective = new SwingPublicObjective[3];
         for (int i=0; i<3; i++) {
             publicObjective[i] = new SwingPublicObjective(publicObjectives.get(i));
         }
 
+        //PATTERNCARD
         SwingPatternCard myPatternCard;
         SwingDiceOnPatternCard mine = null;
         SwingDiceOnPatternCard[] patternCard = new SwingDiceOnPatternCard[3];
@@ -131,7 +140,7 @@ public class ViewClientGUIGame extends SwingPhase {
 
                 for (int m=0; m<diceOnPatternCards.size(); m++) {
                     if (diceOnPatternCards.get(m).getIdPlayer().equals(Integer.toString(idClient)))
-                        mine = new SwingDiceOnPatternCard(diceOnPatternCards.get(m), patternCards.get(i), myPatternCard.getPatternCard());
+                        mine = new SwingDiceOnPatternCard(diceOnPatternCards.get(m), patternCards.get(i), myPatternCard.getPatternCard(), false);
                 }
                 for (int n=0; n<20; n++) {
                     int finalN = n;
@@ -151,11 +160,12 @@ public class ViewClientGUIGame extends SwingPhase {
                 SwingPatternCard card = new SwingPatternCard(patternCards.get(i), true);
                 for (int m=0; m<diceOnPatternCards.size(); m++) {
                     if (diceOnPatternCards.get(m).getIdPatternCard().equals(card.getId()))
-                        patternCard[m] = new SwingDiceOnPatternCard(diceOnPatternCards.get(m), patternCards.get(i), card.getPatternCard());
+                        patternCard[m] = new SwingDiceOnPatternCard(diceOnPatternCards.get(m), patternCards.get(i), card.getPatternCard(), true);
                 }
             }
         }
 
+        //DICEARENA
         SwingDiceArena arena = new SwingDiceArena(diceArena);
         for (int i=0; i<arena.getButtons().size(); i++){
             SwingDie b = arena.getButtons().get(i);
@@ -169,9 +179,11 @@ public class ViewClientGUIGame extends SwingPhase {
             });
         }
 
+        //PLAYER
         SwingPlayer player = new SwingPlayer(mine, new SwingPrivateObjective(privateObjective), tokensLeft.getTokensLeft());
 
-        JButton conferma = new JButton("CONFERMA MOSSA");
+        //BOTTONI
+        JButton conferma = new JButton("CONFIRM MOVE");
         conferma.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -232,19 +244,21 @@ public class ViewClientGUIGame extends SwingPhase {
         endTurn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                end = true;
+                if (isMyTurn) {
+                    try {
+                        serverInterface.notify(new PlayerMessageEndTurn(idClient));
+                    } catch (RemoteException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+                else new NotYourTurnFrame();
             }
         });
 
+        //ROUNDTRANCK
         SwingRoundTrack rt = new SwingRoundTrack(roundTrack);
 
         GridBagConstraints constraints = new GridBagConstraints();
-        jFrame.setLayout(new GridBagLayout());
-        jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        jFrame.setTitle("TABLE");
-        Color c = new Color(34, 139, 34);
-        jFrame.getContentPane().setBackground(c);
-
         constraints.insets = new Insets(0, 20, 0, 0);
         constraints.gridx = 0;
         constraints.gridy = 1;
@@ -333,6 +347,8 @@ public class ViewClientGUIGame extends SwingPhase {
 
         jFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         jFrame.setVisible(true);
+
+        jFrame.validate();
     }
 
     @Override
@@ -350,12 +366,7 @@ public class ViewClientGUIGame extends SwingPhase {
         if (idDieChosen.equals("") && !toolCardChosen.equals("")) {
             return new PlayerMessageToolCard(idClient, Integer.parseInt(toolCardChosen));
         }
-        if (end) {
-            return new PlayerMessageEndTurn(idClient);
-        }
-
         return null;
 
     }
-
 }

@@ -1,14 +1,12 @@
 package it.polimi.se2018.view.gui;
 
-import it.polimi.se2018.model.events.ModelChangedMessage;
-import it.polimi.se2018.model.events.ModelChangedMessagePatternCard;
-import it.polimi.se2018.model.events.ModelChangedMessagePrivateObjective;
-import it.polimi.se2018.model.events.PlayerMessage;
+import it.polimi.se2018.model.events.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -18,7 +16,7 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
 
     private int idClient;
 
-    private ArrayList<ModelChangedMessagePatternCard> patternCards = new ArrayList<ModelChangedMessagePatternCard>();
+    private ArrayList<ModelChangedMessagePatternCard> patternCards = new ArrayList<>();
 
     private ModelChangedMessagePrivateObjective privateObjective;
 
@@ -30,7 +28,7 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
         this.idClient = idClient;
     }
 
-    public void update(ModelChangedMessage message){
+    public void update(ModelChangedMessage message) {
         if(message instanceof ModelChangedMessagePatternCard) {
             if (((ModelChangedMessagePatternCard) message).getIdPlayer().equals(Integer.toString(idClient)))
                 patternCards.add((ModelChangedMessagePatternCard) message);
@@ -40,7 +38,7 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
                 privateObjective = ((ModelChangedMessagePrivateObjective) message);
     }
 
-    public void print(){
+    public void print() {
         SwingPatternCard p1 = new SwingPatternCard(patternCards.get(0), true);
         SwingPatternCard p2 = new SwingPatternCard(patternCards.get(1), true);
         SwingPatternCard p3 = new SwingPatternCard(patternCards.get(2), true);
@@ -60,7 +58,8 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
         });
 
         jFrame.setResizable(false);
-        jFrame.setTitle("SCELTA PATTERNCARD");
+        jFrame.setTitle("PATTERNCARD CHOICE");
+        jFrame.setLocationRelativeTo(null);
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         jFrame.setSize(550, 700);
         jFrame.setLayout(new BorderLayout());
@@ -164,7 +163,12 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         idPatternCardChosen = idPatternCardChosen + group.getSelection().getActionCommand();
-        jFrame.setVisible(false);
+        try {
+            serverInterface.notify(new PlayerMessageSetup(idClient, Integer.parseInt(idPatternCardChosen)));
+        } catch (RemoteException e1) {
+            e1.printStackTrace();
+        }
+        jFrame.dispose();
     }
 
     public Integer askForPatternCard() {

@@ -4,9 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MoveFailedFrame extends Frame {
-    public MoveFailedFrame() {
+    public MoveFailedFrame(String s) {
         super();
-        label = new JLabel("Move failed... Try again", SwingConstants.CENTER);
+        setTitle("MOVE FAILED");
+        label = new JLabel(s, SwingConstants.CENTER);
         add(label, BorderLayout.CENTER);
     }
 }
