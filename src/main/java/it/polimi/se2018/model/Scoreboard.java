@@ -1,7 +1,6 @@
 package it.polimi.se2018.model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 public class Scoreboard {
 
@@ -13,55 +12,45 @@ public class Scoreboard {
 
     private String representation;
 
-    private HashMap<Integer, Integer> score = new HashMap<>();
+    private HashMap<Integer, Integer[]> board = new HashMap<>();
 
-    private HashMap<Integer, Integer> orderedScore = new HashMap<>();
 
     public Scoreboard(int lastId){
         this.lastId = lastId;
     }
 
     public String getRepresentation() {
-        this.updateRepresentation();
-        return representation;
-    }
-
-    public HashMap<Integer, Integer> getScore() {
-        return score;
-    }
-
-    public HashMap<Integer, Integer> getTokens() {
-        return tokens;
-    }
-
-    public void setScore(int idPlayer, int score, int tokensLeft) {
-        this.player.add(idPlayer);
-        this.score.put(idPlayer, score);
-        this.tokens.put(idPlayer, tokensLeft);
-    }
-
-    private void updateRepresentation(){
         representation = "";
-
-        for(Integer key : player){
-
-            representation += key;
-
-            if(score.get(key) < 100)
-                representation += "0";
-            if(score.get(key) < 10)
-                representation += "0";
-            if(score.get(key) < 0 )
-                representation += "0";
-            else
-                representation += "" + score.get(key);
-
-            representation += tokens.get(key);
-
+        for(Integer[] score : boardOrderedByScore()) {
+            representation += score[0] + ";" + score[1] + ";" + score[2] + "/";
         }
 
         representation += lastId;
 
+        return representation;
+    }
+
+    public void setScore(int idPlayer, int score, int tokensLeft) {
+        Integer[] values = new Integer[2];
+        values[0] = score;
+        values[1] = tokensLeft;
+        board.put(idPlayer, values);
+    }
+
+    private List<Integer[]> boardOrderedByScore() {
+        List<Integer[]> orderedBoard = new ArrayList();
+        Comparator<Integer[]> byScoreValue = new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] o1, Integer[] o2) {
+                return o2[1] - o1[1];
+            }
+        };
+        board.forEach((key, value) -> {
+            Integer[] score = {key, value[0], value[1]};
+            orderedBoard.add(score);
+        });
+        Collections.sort(orderedBoard, byScoreValue);
+        return orderedBoard;
     }
 
 }

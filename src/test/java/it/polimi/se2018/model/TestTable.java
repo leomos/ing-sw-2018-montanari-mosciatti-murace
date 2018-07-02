@@ -110,6 +110,10 @@ public class TestTable {
         diceContainer = new DiceContainer();
         patternCard = new PatternCard(diceContainer, 13,"FractalDrop",3,"040y6r020000rp1by000");
 
+        for (int i = 0; i < 3; i++) {
+            table.getPlayers(i).setTokens(0);
+        }
+
         //RED
         diceContainer.getDie(0).setRolledValue(2);
         diceContainer.getDie(1).setRolledValue(3);
@@ -170,14 +174,7 @@ public class TestTable {
         table.forcePublicObjectiveIntoPlay(listOfPublicObjectiveToForce, diceContainer);
 
         table.calculateScores();
-
-        ArrayList<Integer> results = new ArrayList<>(table.getScoreboard().getScore().values());
-        ArrayList<Integer> expectedValue = new ArrayList<>();
-        expectedValue.add(40);
-        expectedValue.add(30);
-        expectedValue.add(42);
-
-        assertEquals(expectedValue, results);
+        assertEquals("2;42;0/0;40;0/1;30;0/1", table.getScoreboard().getRepresentation());
 
     }
 
