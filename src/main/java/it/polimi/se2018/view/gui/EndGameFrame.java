@@ -18,19 +18,19 @@ public class EndGameFrame extends ViewClient {
     public EndGameFrame() {
         jFrame.setTitle("SAGRADA");
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        jFrame.getContentPane().setLayout(new BorderLayout());
-
 
         Image image = java.awt.Toolkit.getDefaultToolkit().getImage("../ing-sw-2018-montanari-mosciatti-murace\\src\\images\\Sagrada.jpg");
         image = image.getScaledInstance(500, 670, Image.SCALE_SMOOTH);
         it.polimi.se2018.view.gui.Panel p = new it.polimi.se2018.view.gui.Panel(image);
         jFrame.setContentPane(p);
+        jFrame.setLayout(new GridBagLayout());
 
-        JLabel title = new JLabel("CLASSIFICA FINALE", SwingConstants.CENTER);
-        title.setBackground(Color.WHITE);
+        JPanel title = new JPanel();
+        title.add(new JLabel("CLASSIFICA FINALE", SwingConstants.CENTER));
 
         JPanel classifica = new JPanel();
         classifica.setLayout(new GridLayout(4, 3));
+        classifica.setPreferredSize(new Dimension(200, 200));
 
         for (int i=0; i<4; i++) {
             JLabel label = new JLabel(Integer.toString(i), SwingConstants.CENTER);
@@ -40,12 +40,34 @@ public class EndGameFrame extends ViewClient {
             classifica.add(player);
         }
 
-        JLabel thanks = new JLabel("Thanks for playing!!", SwingConstants.CENTER);
-        thanks.setBackground(Color.WHITE);
+        JPanel thanks = new JPanel();
+        thanks.add(new JLabel("Thanks for playing!!", SwingConstants.CENTER));
 
-        jFrame.getContentPane().add(title, BorderLayout.NORTH);
-        jFrame.getContentPane().add(classifica, BorderLayout.CENTER);
-        jFrame.getContentPane().add(thanks, BorderLayout.SOUTH);
+        GridBagConstraints constraints = new GridBagConstraints();
+
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.insets.top = 50;
+        constraints.anchor = GridBagConstraints.NORTH;
+        jFrame.add(title, constraints);
+
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.insets.top = 200;
+        constraints.anchor = GridBagConstraints.CENTER;
+        jFrame.add(classifica, constraints);
+
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        constraints.insets.bottom = 100;
+        constraints.anchor = GridBagConstraints.CENTER;
+        jFrame.add(thanks, constraints);
 
         jFrame.setSize(500, 700);
         jFrame.setResizable(false);

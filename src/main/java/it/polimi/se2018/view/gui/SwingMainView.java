@@ -35,8 +35,9 @@ public class SwingMainView extends ViewClient {
     public void update(ModelChangedMessage message){
         if(message instanceof ModelChangedMessageMoveFailed){
             if(((ModelChangedMessageMoveFailed) message).getPlayer().equals(Integer.toString(idClient))) {
-                System.out.println("ERROR: " + ((ModelChangedMessageMoveFailed) message).getErrorMessage());
-                System.out.println("\n\nTry again");
+                new MoveFailedFrame();
+                //System.out.println("ERROR: " + ((ModelChangedMessageMoveFailed) message).getErrorMessage());
+                //System.out.println("\n\nTry again");
             }
         } else if(message instanceof ModelChangedMessageNewEvent){
             if(((ModelChangedMessageNewEvent) message).getPlayer().equals(Integer.toString(idClient))){
