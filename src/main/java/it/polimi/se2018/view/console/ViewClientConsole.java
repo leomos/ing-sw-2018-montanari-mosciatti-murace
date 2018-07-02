@@ -3,7 +3,6 @@ package it.polimi.se2018.view.console;
 import it.polimi.se2018.model.GamePhase;
 import it.polimi.se2018.model.events.*;
 import it.polimi.se2018.view.ViewClient;
-import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -96,12 +95,11 @@ public class ViewClientConsole extends ViewClient implements Runnable {
             Scanner input = new Scanner(System.in);
             String app = input.nextLine();
 
-            if (gamePhase == SETUPPHASE) {
+            if (this.gamePhase.equals(SETUPPHASE)) {
 
                 if (!clientSuspended) {
-
                     int chosenPatternCard = viewClientConsolePrint.askForPatternCard(app);
-                    if(chosenPatternCard != -1) {
+                    if (chosenPatternCard != -1) {
 
                         try {
                             serverInterface.notify(new PlayerMessageSetup(idClient, chosenPatternCard));
@@ -111,21 +109,14 @@ public class ViewClientConsole extends ViewClient implements Runnable {
                             e.printStackTrace();
                         }
                     }
-
                 } else {
-                    System.out.println("You are not suspended anymore!");
-                    clientSuspended = false;
-                    try {
-                        serverInterface.notify(new PlayerMessageNotAFK(idClient));
-                    } catch (RemoteException e) {
-                        handleDisconnection();
-                    }
+                    unSuspend();
                 }
             } else {
-                System.out.println("Wait for game to start");
+                System.out.println("Wait for game to start and game phasz = " + gamePhase);
             }
         }
-        while(gamePhase != SETUPPHASE || !hasChoosePatternCard);
+        while(gamePhase != SETUPPHASE && !hasChoosePatternCard);
 
 
 
@@ -164,13 +155,7 @@ public class ViewClientConsole extends ViewClient implements Runnable {
                                 System.out.println("It's player  " + idPlayerPlaying + " turn, not yours!");
                             }
                         } else {
-                            System.out.println("You are not suspended anymore!");
-                            clientSuspended = false;
-                            try {
-                                serverInterface.notify(new PlayerMessageNotAFK(idClient));
-                            } catch (RemoteException e) {
-                                handleDisconnection();
-                            }
+                            unSuspend();
                         }
                     } else
                         System.out.println("Wait for other players to choose their pattern cards!");

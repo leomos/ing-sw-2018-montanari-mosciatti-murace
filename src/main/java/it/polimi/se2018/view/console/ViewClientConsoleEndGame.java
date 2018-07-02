@@ -33,6 +33,11 @@ public class ViewClientConsoleEndGame extends ViewClientConsolePrint {
 
         String scoreboard = scoreboardMessage.getScoreboard();
 
+        System.out.println("\n\n/°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°/");
+        System.out.println("/°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°/");
+        System.out.println("/°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°/");
+
+
         for(int i = 0; i < scoreboard.length() - 1; i+=5)
             System.out.println(((i/5)+1) + "° place ->" + scoreboard.charAt(i) + " with " + scoreboard.substring(i+1, i+4) + "\tTokens Left: " + scoreboard.charAt(i+4));
 

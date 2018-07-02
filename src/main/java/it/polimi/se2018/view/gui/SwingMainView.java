@@ -6,8 +6,7 @@ import it.polimi.se2018.view.ViewClient;
 
 import java.rmi.RemoteException;
 
-import static it.polimi.se2018.model.GamePhase.ENDGAMEPHASE;
-import static it.polimi.se2018.model.GamePhase.GAMEPHASE;
+import static it.polimi.se2018.model.GamePhase.*;
 
 public class SwingMainView extends ViewClient {
 
@@ -19,7 +18,7 @@ public class SwingMainView extends ViewClient {
 
     private boolean canIPlay = true;
 
-    private GamePhase gamePhase = GamePhase.SETUPPHASE;
+    private GamePhase gamePhase;
 
     private boolean clientSuspended = false;
 
@@ -28,11 +27,10 @@ public class SwingMainView extends ViewClient {
 
     public void setIdClient(int idClient){
         this.idClient = idClient;
-        swingPhase = new PatternCardsFrame(idClient);
     }
 
     @Override
-    public void update(ModelChangedMessage message){
+    public synchronized void update(ModelChangedMessage message){
         if(message instanceof ModelChangedMessageMoveFailed){
             if(((ModelChangedMessageMoveFailed) message).getPlayer().equals(Integer.toString(idClient))) {
                 new MoveFailedFrame();
@@ -44,27 +42,32 @@ public class SwingMainView extends ViewClient {
                 System.out.println("NEW EVENT: " + ((ModelChangedMessageNewEvent) message).getMessage());
             }
         }
-        else if(message instanceof ModelChangedMessageRefresh) {
-            if (((ModelChangedMessageRefresh) message).getGamePhase() != gamePhase) {
-                gamePhase = ((ModelChangedMessageRefresh) message).getGamePhase();
-                if(gamePhase == GAMEPHASE)
-                    swingPhase = new ViewClientGUIGame(this.idClient);
-                if(gamePhase == ENDGAMEPHASE);
-            }else {
-                swingPhase.print();
-                if(((ModelChangedMessageRefresh) message).getIdPlayerPlaying() != null) {
-                    swingPhase.update(message);
-                    idPlayerPlaying = Integer.parseInt(((ModelChangedMessageRefresh) message).getIdPlayerPlaying());
-                    if(idPlayerPlaying == idClient && canIPlay) {
-                        try {
-                            serverInterface.notify(swingPhase.getMainMove());
-                        } catch (RemoteException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                }
+        else if(message instanceof ModelChangedMessageChangeGamePhase) {
+            gamePhase = ((ModelChangedMessageChangeGamePhase) message).getGamePhase();
+            if (gamePhase == SETUPPHASE) {
+                swingPhase = new PatternCardsFrame(this.idClient);
             }
+            if (gamePhase == GAMEPHASE) {
+                swingPhase = new ViewClientGUIGame(this.idClient);
+            }
+            if (gamePhase == ENDGAMEPHASE) ;
+
+        }
+        else if(message instanceof ModelChangedMessageRefresh){
+            swingPhase.print();
+            if(((ModelChangedMessageRefresh) message).getIdPlayerPlaying() != null) {
+                swingPhase.update(message);
+                idPlayerPlaying = Integer.parseInt(((ModelChangedMessageRefresh) message).getIdPlayerPlaying());
+                if(idPlayerPlaying == idClient && canIPlay) {
+                    try {
+                        serverInterface.notify(swingPhase.getMainMove());
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            } else
+                this.askForPatternCard();
 
         } else if(message instanceof ModelChangedMessagePlayerAFK){
             if(((ModelChangedMessagePlayerAFK) message).getPlayer().equals(Integer.toString(idClient))) {
@@ -82,7 +85,13 @@ public class SwingMainView extends ViewClient {
 
     @Override
     public Integer askForPatternCard()  {
-        return swingPhase.askForPatternCard();
+        try {
+            serverInterface.notify(new PlayerMessageSetup(idClient, swingPhase.askForPatternCard()));
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
 }
