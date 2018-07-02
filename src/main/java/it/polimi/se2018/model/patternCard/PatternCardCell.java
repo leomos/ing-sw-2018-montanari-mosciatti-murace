@@ -10,12 +10,9 @@ public class PatternCardCell {
 
     private int rolledDieId = -1;
 
-    private DiceContainer diceContainer;
-
-    public PatternCardCell(DiceContainer diceContainer, DieColor colorConstraint, int valueConstraint) {
+    public PatternCardCell(DieColor colorConstraint, int valueConstraint) {
         this.colorConstraint = colorConstraint;
         this.valueConstraint = valueConstraint;
-        this.diceContainer = diceContainer;
     }
 
     public boolean isEmpty(){
@@ -39,7 +36,7 @@ public class PatternCardCell {
 
     }
 
-    /* TODO: tests, docs and refactor with minimization. */
+
     public boolean checkDieValidity(int dieValue, DieColor dieColor, boolean ignoreValueConstraint, boolean ignoreColorConstraint) {
 
         if(this.valueConstraint != 0)

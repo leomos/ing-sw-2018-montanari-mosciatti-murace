@@ -6,6 +6,7 @@ import it.polimi.se2018.model.patternCard.PatternCard;
 import it.polimi.se2018.model.player.OnlyOnePlayerLeftException;
 import it.polimi.se2018.model.player.Player;
 import it.polimi.se2018.model.player.PlayersHaveAllChosenAPatternCard;
+import it.polimi.se2018.model.rounds.RoundFinishedException;
 import it.polimi.se2018.model.rounds.RoundTrack;
 import it.polimi.se2018.model.rounds.RoundTrackNoMoreRoundsException;
 import it.polimi.se2018.model.toolcards.ToolCardContainer;
@@ -37,12 +38,18 @@ public class Table {
 
     private Scoreboard scoreboard;
 
+    /**
+     * When the class table is constructed, it sets 4 random pattern cards and a private objective to all
+     * the player in the room. It also pics 3 random tool cards and 3 random public objective and it rolls
+     * n dice into the draft pool where n is the number of player multiplied by 2 and added by one
+     * @param HM hash map containing the player id as a key and the name of the players as the value
+     */
     public Table(HashMap<Integer, String> HM) {
         for(Integer key : HM.keySet()) {
             this.players.add(new Player(key, HM.get(key)));
         }
         this.diceContainer = new DiceContainer();
-        this.toolCardContainer = new ToolCardContainer(diceContainer);
+        this.toolCardContainer = new ToolCardContainer(diceContainer, database);
         this.diceArena = new DiceArena(players.size() * 2 + 1, diceContainer);
         this.roundTrack = new RoundTrack(players, diceContainer);
         this.database = new Database(diceContainer);
@@ -102,6 +109,11 @@ public class Table {
         return diceContainer;
     }
 
+
+    /**
+     * To set 3 public objective, this method creates a array list containing 10 elements, it shuffles it and then it
+     * picks the first three number of the list and creates the public objectives on the table depending on those numbers
+     */
     private void setPublicObjective(){
         ArrayList<Integer> publicObjectiveList = new ArrayList<>();
         for (Integer i = 0; i < 10; i++)
@@ -125,6 +137,10 @@ public class Table {
             }
     }
 
+    /**
+     * To set 3 tool cards, this method creates a array list containing 12 elements, it shuffles it and then it
+     * picks the first three number of the list and creates the tool cards on the table depending on those numbers
+     */
     private void setToolCards(){
         ArrayList<Integer> toolCardsList = new ArrayList<>();
         for (Integer i = 0; i < 12; i++)
@@ -143,6 +159,9 @@ public class Table {
             toolCardContainer.setToolCardInPlay(toolCardsList.get(j));
     }
 
+    /**
+     * This method picks 1 random private objective for each player in the room
+     */
     private void setPrivateObjectiveToPlayers(){
         ArrayList<Integer> privateObjectiveList = new ArrayList<>();
         for (Integer i = 0; i < 5; i++)
@@ -154,9 +173,18 @@ public class Table {
             players.get(j).setPrivateObjective(privateObjectives.get(privateObjectiveList.get(j)));
     }
 
+    /**
+     * This method sets 4 random pattern cards for each player to choose. It creates and array list long as half as
+     * the total number of pattern cards (the number of pattern cards must always be pair because each pattern card
+     * has a pattern card in the back). It then shuffles the array list and picks two number: if the number picked for
+     * player 1 were 3 and 7 and in total there are 24 pattern cards, the player 1 is gonna have to choose his pattern
+     * card between the pattern cards represented by the id 3, 15, 7 and 19.
+     * 15 = 3 + (24/2) and 17 = 7 +(24/2)
+     *
+     */
     private void setPatternCardsToPlayer(){
         ArrayList<Integer> patternCardsList = new ArrayList<>();
-        for (Integer i = 0; i < 12; i++)
+        for (Integer i = 0; i < patternCards.size(); i++)
             patternCardsList.add(i);
 
         Collections.shuffle(patternCardsList);
@@ -165,10 +193,10 @@ public class Table {
             ArrayList<PatternCard> patternCardsToPlayer = new ArrayList<>();
             int val = patternCardsList.get(j);
             patternCardsToPlayer.add(patternCards.get(val));
-            patternCardsToPlayer.add(patternCards.get(val + 12));
+            patternCardsToPlayer.add(patternCards.get(val + patternCards.size()/2));
             val = patternCardsList.get(11 - j);
             patternCardsToPlayer.add(patternCards.get(val));
-            patternCardsToPlayer.add(patternCards.get(val + 12));
+            patternCardsToPlayer.add(patternCards.get(val + patternCardsList.size()/2));
             players.get(j).setPatternCards(patternCardsToPlayer);
         }
     }
@@ -200,10 +228,15 @@ public class Table {
 
     }
 
+    /**
+     * This method is invoked when a player is set suspended. It checks if there are at least still 2 people playing the
+     * game. In case there is only one person, it throw the exception OnlyOnePlayerLeftException so that the game
+     * can end
+     * @throws OnlyOnePlayerLeftException when only one player is left in the room
+     */
     public void checkActivePlayers() throws OnlyOnePlayerLeftException {
 
         int count = players.size();
-
         for(int i = 0; i < players.size(); i++) {
             if (players.get(i).isSuspended())
                 count--;
@@ -213,17 +246,32 @@ public class Table {
             throw new OnlyOnePlayerLeftException();
     }
 
+    /**
+     * This method check if the player who is gonna start the game has disconnected himself from the game or has not
+     * picked a pattern card and is the first player to play the first round. In that case, it calls the method end
+     * turn so that the other players don't have to wait for another timer because the first player is afk or disconnected
+     */
     public void checkPlayerDidNotDisconnectDuringPatternCardSelection(){
-        /*
-        if(this.players.get(this.roundTrack.getCurrentRound().getIdPlayerPlaying() - 1).isSuspended()) {
-            try {
-                roundTrack.getCurrentRound().setNextPlayer(this);
-            } catch (RoundFinishedException e) {
-                e.printStackTrace();
-            }
-        } */
+
+        for(Player player : players){
+            if(player.getId() == roundTrack.getCurrentRound().getIdPlayerPlaying())
+                if(player.isSuspended()) {
+                    try {
+                        roundTrack.getCurrentRound().setNextPlayer(this);
+                    } catch (RoundFinishedException e) {
+                        e.printStackTrace();
+                    }
+                }
+        }
     }
 
+    /**
+     * This method checks whether all players have chosen the pattern card at the beginning of the game. If one or more
+     * player have not done that, the game is not ready to start. This method is invoked every time a pattern card is
+     * chosen by a player. When the last player has chosen a pattern card, the method throws the exception
+     * PlayersHaveAllChosenAPatternCard and the game is ready to start the main phase
+     * @throws PlayersHaveAllChosenAPatternCard when all players have chosen a pattern card
+     */
     public void checkAllPlayerHasChosenAPatternCard() throws PlayersHaveAllChosenAPatternCard {
 
         for(Player player : this.players)
@@ -234,6 +282,13 @@ public class Table {
 
     }
 
+    /**
+     * This method calculates the score of each player by following the game rules which are:
+     * + points from public objective
+     * + points from private objective
+     * + 1 point for tokens left
+     * - 1 point for each empty cell in the player's pattern card
+     */
     public void calculateScores() {
         this.scoreboard = new Scoreboard(roundTrack.getCurrentRound().getIdPlayerPlaying());
         ArrayList<Integer>  orderedScores = new ArrayList<>();

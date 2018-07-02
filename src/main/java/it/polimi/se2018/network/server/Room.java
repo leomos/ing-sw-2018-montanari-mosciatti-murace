@@ -109,8 +109,6 @@ public class Room extends Thread {
             players.forEach((player) -> {
                 if (((PlayerMessageNotAFK) playerMessage).getPlayer() == player.getId()) {
                     player.setInactive(false);
-
-                    model.updatePlayerThatCameBackIntoTheGame(player.getId());
                 }
             });
         }

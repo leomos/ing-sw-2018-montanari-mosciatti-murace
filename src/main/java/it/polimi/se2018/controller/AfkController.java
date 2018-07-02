@@ -12,7 +12,6 @@ public class AfkController {
     }
 
     public void execute(PlayerMessageNotAFK playerMessageNotAFK){
-        System.out.println("passo di qui?");
         this.model.setPlayerSuspended(playerMessageNotAFK.getPlayer(), false);
     }
 }

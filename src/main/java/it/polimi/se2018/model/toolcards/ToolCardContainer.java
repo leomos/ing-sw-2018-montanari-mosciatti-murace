@@ -15,8 +15,12 @@ public class ToolCardContainer {
 
     private ArrayList<Integer> toolCardsInPlay = new ArrayList<>();
 
-    public ToolCardContainer(DiceContainer diceContainer) {
-        Database database = new Database(diceContainer);
+    /**
+     * The tool cards container creates the array list containing the tool cards from the database
+     * @param diceContainer dice container needed for the database
+     * @param database database where the tool cards name and descriptions are stored
+     */
+    public ToolCardContainer(DiceContainer diceContainer, Database database) {
         this.toolCards = database.loadToolCards();
     }
 
@@ -28,6 +32,9 @@ public class ToolCardContainer {
         this.getToolCard(toolCardId).setInGame(true);
     }
 
+    /**
+     * @return the array list containing all the tool cards that are on the table this game
+     */
     public ArrayList<ToolCard> getToolCardInPlay() {
         ArrayList<ToolCard> toolCardsInGame= new ArrayList<ToolCard>();
         for( int i = 0; i < 12; i++)
@@ -37,12 +44,4 @@ public class ToolCardContainer {
         return toolCardsInGame;
     }
 
-    public ToolCard getToolCardInPlay(int id)
-    {
-        if(toolCardsInPlay.contains(id)) {
-            return toolCards.get(id);
-
-        }
-        return null;
-    }
 }

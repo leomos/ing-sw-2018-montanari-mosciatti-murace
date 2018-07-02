@@ -4,19 +4,19 @@ import it.polimi.se2018.network.visitor.MessageVisitorInterface;
 
 public class PlayerMessageToolCard extends PlayerMessage implements Message {
 
-    private int toolcard;
+    private int toolCard;
 
     public PlayerMessageToolCard(int player, int toolCard){
         this.player = player;
-        this.toolcard = toolCard;
+        this.toolCard = toolCard;
     }
 
     public int getPlayer() {
         return player;
     }
 
-    public int getToolcard() {
-        return toolcard;
+    public int getToolCard() {
+        return toolCard;
     }
 
     @Override

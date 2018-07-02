@@ -23,7 +23,7 @@ public class Model extends Observable<ModelChangedMessage> {
 
     private Table table;
 
-    private HashMap<Integer, String> players;
+        private HashMap<Integer, String> players;
 
     private Timer timer;
 
@@ -33,9 +33,7 @@ public class Model extends Observable<ModelChangedMessage> {
         this.timer = new Timer(turnCountdownLength);
     }
 
-    public Table getTable() {
-        return table;
-    }
+
 
     /**
      * This method is called at the start of the game. It's purpose is to initialize 4 different patternCards and
@@ -420,7 +418,7 @@ public class Model extends Observable<ModelChangedMessage> {
 
     /**
      * This method is needed when you need to make two dice movements inside a pattern card. The way it works is really
-     * simple: it performs the first movement: if there is a problem, the movement doesn't go trough and the method
+     * simple: it performs the first movement: if there is a problem, the movement doesn't go trough and the me thod
      * ends; if it does go through, it performs the second movement: if the is no problem, it updates the tool card cost
      * and the player's tokens. If the second movements doesn't go trough, the first movement is reversed and to make
      * sure it goes trough, both ignoreValueConstraint and ignoreColorConstraint are set to true
@@ -915,7 +913,8 @@ public class Model extends Observable<ModelChangedMessage> {
                 if(gamePhase == GamePhase.GAMEPHASE)
                     endTurn(new PlayerMessageEndTurn(idPlayer));
                 notify(new ModelChangedMessagePlayerAFK(Integer.toString(idPlayer), "\nYou run out of time. You are now suspended. Type anything to get back into the game\n"));
-            }
+            } else
+                this.updatePlayerThatCameBackIntoTheGame(idPlayer);
         } catch (OnlyOnePlayerLeftException e) {
 
             notify(new ModelChangedMessagePlayerAFK(Integer.toString(idPlayer), "\nYou run out of time. You are now suspended. Type anything to get back into the game\n"));

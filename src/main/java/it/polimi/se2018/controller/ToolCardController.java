@@ -22,7 +22,7 @@ public class ToolCardController implements Runnable{
 
     public void execute(PlayerMessageToolCard playerMessageToolCard, VirtualView view){
         this.idPlayer = playerMessageToolCard.getPlayer();
-        this.idToolCard = playerMessageToolCard.getToolcard();
+        this.idToolCard = playerMessageToolCard.getToolCard();
         this.view = view;
 
         if(model.checkToolCard(idPlayer, idToolCard)) {

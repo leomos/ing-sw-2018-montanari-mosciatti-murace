@@ -41,42 +41,42 @@ public class PatternCard {
         for(char c : patternCardRepresentation.toCharArray()) {
 
             if(c == '1') {
-                this.cells[j][i] = new PatternCardCell(diceContainer, null, 1);
+                this.cells[j][i] = new PatternCardCell(null, 1);
             }
             if(c == '2') {
-                this.cells[j][i] = new PatternCardCell(diceContainer, null, 2);
+                this.cells[j][i] = new PatternCardCell(null, 2);
             }
             if(c == '3') {
-                this.cells[j][i] = new PatternCardCell(diceContainer, null, 3);
+                this.cells[j][i] = new PatternCardCell(null, 3);
             }
             if(c == '4') {
-                this.cells[j][i] = new PatternCardCell(diceContainer, null, 4);
+                this.cells[j][i] = new PatternCardCell(null, 4);
             }
             if(c == '5') {
-                this.cells[j][i] = new PatternCardCell(diceContainer, null, 5);
+                this.cells[j][i] = new PatternCardCell(null, 5);
             }
             if(c == '6') {
-                this.cells[j][i] = new PatternCardCell(diceContainer, null, 6);
+                this.cells[j][i] = new PatternCardCell(null, 6);
             }
 
             if(c == 'g') {
-                this.cells[j][i] = new PatternCardCell(diceContainer, GREEN, 0);
+                this.cells[j][i] = new PatternCardCell(GREEN, 0);
             }
             if(c == 'y') {
-                this.cells[j][i] = new PatternCardCell(diceContainer, YELLOW, 0);
+                this.cells[j][i] = new PatternCardCell(YELLOW, 0);
             }
             if(c == 'b') {
-                this.cells[j][i] = new PatternCardCell(diceContainer, BLUE, 0);
+                this.cells[j][i] = new PatternCardCell(BLUE, 0);
             }
             if(c == 'r') {
-                this.cells[j][i] = new PatternCardCell(diceContainer, RED, 0);
+                this.cells[j][i] = new PatternCardCell(RED, 0);
             }
             if(c == 'p') {
-                this.cells[j][i] = new PatternCardCell(diceContainer, PURPLE, 0);
+                this.cells[j][i] = new PatternCardCell(PURPLE, 0);
             }
 
             if(c == '0') {
-                this.cells[j][i] = new PatternCardCell(diceContainer, null, 0);
+                this.cells[j][i] = new PatternCardCell(null, 0);
             }
 
             if(j == 4){
@@ -206,7 +206,6 @@ public class PatternCard {
      * @return proximityCellList list of available positions around the cell defined by x and y
      * @throws DiceContainerUnsupportedIdException
      */
-    /*TODO: test + change Proximity to Ortogonal */
     public boolean checkProximityCellsValidity(int rolledDieId, int x, int y)throws DiceContainerUnsupportedIdException {
         Die d = diceContainer.getDie(rolledDieId);
         Die app;
@@ -282,8 +281,6 @@ public class PatternCard {
             e.printStackTrace();
         }
     }
-
-
 
     public boolean checkFirstMove(int x, int y){
         return x == 0 || x == 4 || y == 0 || y == 3;

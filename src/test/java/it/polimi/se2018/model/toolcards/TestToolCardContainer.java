@@ -15,7 +15,7 @@ public class TestToolCardContainer {
     public void setUp() {
         diceContainer = new DiceContainer();
         database = new Database(diceContainer);
-        toolCardContainer = new ToolCardContainer(diceContainer);
+        toolCardContainer = new ToolCardContainer(diceContainer, database);
     }
 
     @After
@@ -38,9 +38,4 @@ public class TestToolCardContainer {
 
     }
 
-    @Test (expected = java.lang.Exception.class)
-    public void setToolCardInPlay_ExceptionThrown() throws ToolCardNotInPlayException {
-        toolCardContainer.setToolCardInPlay(0);
-        toolCardContainer.getToolCardInPlay(2).getDescription();
-    }
 }

@@ -30,6 +30,8 @@ public class PlayerMessageDie extends PlayerMessage implements Message {
         return y_position;
     }
 
+    public int getPlayer(){ return  this.player;}
+
     @Override
     public void accept(MessageVisitorInterface messageVisitorInterface) {
         messageVisitorInterface.visitPlayerMessageDie(this);
