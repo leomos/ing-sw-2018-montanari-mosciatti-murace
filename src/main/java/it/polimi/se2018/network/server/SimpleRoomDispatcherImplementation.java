@@ -4,7 +4,6 @@ import it.polimi.se2018.model.events.HeartbeatMessage;
 import it.polimi.se2018.network.ClientInterface;
 import it.polimi.se2018.network.ConnectedClient;
 import it.polimi.se2018.network.RoomDispatcherInterface;
-import it.polimi.se2018.network.client.Client;
 
 import java.util.*;
 import java.util.concurrent.*;
@@ -22,9 +21,11 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
 
     private int id = 0;
 
-    private int countdownLength;
+    private int roomCountdownLength;
 
     private int refreshRate;
+
+    private int turnCountDownLength;
 
     private boolean roomDispatcherRunning;
 
@@ -33,9 +34,11 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
     private Map<Integer, Room> clientRoomMap;
 
 
-    public SimpleRoomDispatcherImplementation(int countdownLength, int refreshRate) {
-        this.countdownLength = countdownLength;
+
+    public SimpleRoomDispatcherImplementation(int roomCountdownLength, int refreshRate, int turnCountdownLength) {
+        this.roomCountdownLength = roomCountdownLength;
         this.refreshRate = refreshRate;
+        this.turnCountDownLength = turnCountdownLength;
         this.roomDispatcherRunning = true;
         this.currentClientsWaiting = new ConcurrentLinkedQueue<>();
         this.connectedClients = new HashSet<>();
@@ -59,7 +62,7 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
             LOGGER.info("Two clients or more are waiting.");
             LOGGER.info("Starting the countdown.");
             try {
-                TimeUnit.SECONDS.sleep(countdownLength);
+                TimeUnit.SECONDS.sleep(roomCountdownLength);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -79,7 +82,7 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
     }
 
     private synchronized void startNewRoom(Set<ConnectedClient> clients) {
-        Room room = new Room();
+        Room room = new Room(this.turnCountDownLength);
 
         room.addPlayers(clients);
 

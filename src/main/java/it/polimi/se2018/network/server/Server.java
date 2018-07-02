@@ -2,8 +2,11 @@ package it.polimi.se2018.network.server;
 
 import it.polimi.se2018.network.ClientGathererInterface;
 import it.polimi.se2018.network.RoomDispatcherInterface;
+import joptsimple.OptionParser;
+import joptsimple.OptionSet;
 
 import java.rmi.RemoteException;
+import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -12,7 +15,40 @@ public class Server {
     private ExecutorService executorService;
 
     public static void main(String[] args) {
-        RoomDispatcherInterface roomDispatcher = new SimpleRoomDispatcherImplementation(5, 1);
+
+        final OptionParser optionParser = new OptionParser();
+
+
+        final String[] roomTimerOptions = {
+                "r",
+                "roomTimer"
+        };
+
+        optionParser.acceptsAll(Arrays.asList(roomTimerOptions), "Room starting countdown value.")
+                .withRequiredArg()
+                .ofType(Integer.class)
+                .defaultsTo(10);
+
+
+        final String[] turnTimerOptions = {
+                "t",
+                "turnTimer"
+        };
+
+        optionParser.acceptsAll(Arrays.asList(turnTimerOptions), "Turn timer countdown value.")
+                .withRequiredArg()
+                .ofType(Integer.class)
+                .defaultsTo(90);
+
+        final OptionSet optionSet = optionParser.parse(args);
+
+        System.out.println(optionSet.asMap());
+
+
+        RoomDispatcherInterface roomDispatcher = new SimpleRoomDispatcherImplementation(
+                (Integer) optionSet.valueOf("roomTimer"),
+                1,
+                (Integer) optionSet.valueOf("turnTimer"));
 
         ClientGathererInterface clientGathererSocket = new ClientGathererImplementationSocket(1111);
         ClientGathererInterface clientGathererRMI = null;

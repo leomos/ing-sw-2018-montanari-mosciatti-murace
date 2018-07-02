@@ -29,13 +29,17 @@ public class Timer implements Runnable {
 
     private Thread thread;
 
-    public static final int timer = 20;
+    private int timer;
 
     private boolean stopTimer = false;
 
     private Model model;
 
     private int i;
+
+    public Timer(int timer) {
+        this.timer = timer;
+    }
 
     @Override
     public void run(){

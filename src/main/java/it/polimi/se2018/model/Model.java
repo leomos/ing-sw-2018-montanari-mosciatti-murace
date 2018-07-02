@@ -28,9 +28,9 @@ public class Model extends Observable<ModelChangedMessage> {
     private Timer timer;
 
 
-    public Model(HashMap<Integer, String> players){
+    public Model(HashMap<Integer, String> players, int turnCountdownLength){
         this.players = players;
-        this.timer = new Timer();
+        this.timer = new Timer(turnCountdownLength);
     }
 
     public Table getTable() {

@@ -27,6 +27,8 @@ public class Room extends Thread {
 
     private MessageVisitorInterface messageVisitorUpdate;
 
+    private int turnCountdownLength;
+
 
     private Stream<ConnectedClient> activePlayers() {
         return players.stream()
@@ -53,12 +55,16 @@ public class Room extends Thread {
         return clientsMap;
     }
 
+    public Room(int turnCountdownLength) {
+        this.turnCountdownLength = turnCountdownLength;
+    }
+
     @Override
     public void run() {
         //while(gamePlaying) {
             HashMap<Integer, String> clientsMap = createClientsMap();
             messageVisitorUpdate = new MessageVisitorImplementationUpdate(this);
-            model = new Model(clientsMap);
+            model = new Model(clientsMap, turnCountdownLength);
             controller = new Controller(model);
             view = new VirtualView();
             model.register(view);
