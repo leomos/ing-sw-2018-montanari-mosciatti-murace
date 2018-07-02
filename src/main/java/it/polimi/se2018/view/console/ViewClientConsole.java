@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 import static it.polimi.se2018.model.GamePhase.*;
 
-public class ViewClientConsole extends ViewClient implements Runnable {
+public class ViewClientConsole extends ViewClient  {
 
     private int idClient;
 

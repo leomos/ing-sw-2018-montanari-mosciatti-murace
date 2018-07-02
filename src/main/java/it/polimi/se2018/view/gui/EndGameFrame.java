@@ -1,18 +1,12 @@
 package it.polimi.se2018.view.gui;
 
-import it.polimi.se2018.view.ViewClient;
+import it.polimi.se2018.model.events.ModelChangedMessage;
+import it.polimi.se2018.model.events.PlayerMessage;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.Panel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 
-public class EndGameFrame extends ViewClient {
+public class EndGameFrame extends SwingPhase {
     private JFrame jFrame = new JFrame();
 
     public EndGameFrame() {
@@ -74,11 +68,27 @@ public class EndGameFrame extends ViewClient {
         jFrame.setVisible(true);
     }
 
-    @Override
-    public void setIdClient(int idClient) {
-    }
-
     public static void main(String args[]) {
         new EndGameFrame();
+    }
+
+    @Override
+    public void update(ModelChangedMessage modelChangedMessage) {
+
+    }
+
+    @Override
+    public void print() {
+
+    }
+
+    @Override
+    public Integer askForPatternCard() {
+        return null;
+    }
+
+    @Override
+    public PlayerMessage getMainMove() {
+        return null;
     }
 }

@@ -59,12 +59,7 @@ public class SwingMainView extends ViewClient {
                 swingPhase.update(message);
                 idPlayerPlaying = Integer.parseInt(((ModelChangedMessageRefresh) message).getIdPlayerPlaying());
                 if(idPlayerPlaying == idClient && canIPlay) {
-                    try {
-                        serverInterface.notify(swingPhase.getMainMove());
-                    } catch (RemoteException e) {
-                        e.printStackTrace();
-                    }
-
+                    ;
                 }
             } else
                 this.askForPatternCard();
@@ -81,6 +76,24 @@ public class SwingMainView extends ViewClient {
         else {
             swingPhase.update(message);
         }
+    }
+
+
+    public void run(){
+
+        boolean c = true;
+
+        do {
+            if(idPlayerPlaying == idClient) {
+                try {
+                    serverInterface.notify(swingPhase.getMainMove());
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        while(c);
+
     }
 
     @Override

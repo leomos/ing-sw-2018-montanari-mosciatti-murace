@@ -82,7 +82,8 @@ public class Client {
         viewClient.startHeartbeating(id);
         System.out.println(id);
         viewClient.setIdClient(id);
-        if(typeView.equals("0"))
-            ((ViewClientConsole)viewClient).run();
+
+        viewClient.run();
+
     }
 }
