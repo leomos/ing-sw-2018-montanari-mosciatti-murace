@@ -25,4 +25,6 @@ public abstract class SwingPhase {
     public abstract ArrayList<Integer> getPositionInPatternCard();
 
     public abstract Integer getDieFromDiceArena();
+
+    public abstract ArrayList<Integer> getIncrementedValue();
 }

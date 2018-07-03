@@ -125,4 +125,9 @@ public class EndGameFrame extends SwingPhase {
         return 0;
     }
 
+    @Override
+    public ArrayList<Integer> getIncrementedValue() {
+        return null;
+    }
+
 }

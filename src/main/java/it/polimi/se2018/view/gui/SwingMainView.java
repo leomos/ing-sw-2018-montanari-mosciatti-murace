@@ -102,4 +102,16 @@ public class SwingMainView extends ViewClient {
         }
         return null;
     }
+
+    @Override
+    public ArrayList<Integer> getIncrementedValue() {
+        if (idPlayerPlaying == idClient) {
+
+            ArrayList<Integer> returnValues = swingPhase.getIncrementedValue();
+
+            return returnValues;
+
+        }
+        return null;
+    }
 }
