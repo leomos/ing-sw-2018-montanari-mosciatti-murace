@@ -13,7 +13,7 @@ public class Frame extends JFrame {
         ok.addActionListener(actionListener -> {
                 dispose();
         });
-        setSize(200, 100);
+        setSize(400, 200);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setResizable(false);
         setLayout(new BorderLayout());

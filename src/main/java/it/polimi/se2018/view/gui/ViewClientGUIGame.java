@@ -4,10 +4,13 @@ import it.polimi.se2018.model.events.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class ViewClientGUIGame extends SwingPhase {
     private JFrame jFrame = new JFrame();
@@ -16,9 +19,9 @@ public class ViewClientGUIGame extends SwingPhase {
 
     private String toolCardChosen = "";
 
-    private int riga;
+    private int riga = -1;
 
-    private int colonna;
+    private int colonna = -1;
 
     private int idClient;
 
@@ -112,8 +115,11 @@ public class ViewClientGUIGame extends SwingPhase {
         for (int i=0; i<3; i++) {
             int finalI = i;
             toolCard[i] = new SwingToolCards(toolCards.get(i));
-            toolCard[i].getCard().addActionListener(actionListener -> {
-                    toolCardChosen = toolCardChosen + toolCards.get(finalI).getIdToolCard();
+            toolCard[i].getCard().addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    toolCardChosen = "" + toolCards.get(finalI).getIdToolCard();
+                }
             });
         }
 
@@ -160,9 +166,8 @@ public class ViewClientGUIGame extends SwingPhase {
         for (int i=0; i<arena.getButtons().size(); i++){
             SwingDie b = arena.getButtons().get(i);
             b.addActionListener(actionListener -> {
-                    if (idDieChosen.equals("")) {
-                        idDieChosen = idDieChosen + b.getId();
-                    }
+                    if (idDieChosen.equals(""))
+                        idDieChosen = "" + b.getId();
             });
         }
 
@@ -173,7 +178,7 @@ public class ViewClientGUIGame extends SwingPhase {
         JButton conferma = new JButton("CONFIRM MOVE");
         conferma.addActionListener(actionListener -> {
                 if (isMyTurn) {
-                    if (!idDieChosen.equals("")) {
+                    if (!idDieChosen.equals("") || !toolCardChosen.equals("")) {
                         ConfirmationFrame f = new ConfirmationFrame(idDieChosen, colonna, riga, toolCardChosen);
                         f.addWindowListener(new WindowListener() {
                             @Override
@@ -192,10 +197,6 @@ public class ViewClientGUIGame extends SwingPhase {
                                     } catch (RemoteException e1) {
                                         e1.printStackTrace();
                                     }
-                                }
-                                if (f.isOk() == 2) {
-                                    toolCardChosen = "";
-                                    idDieChosen = "";
                                 }
                             }
 
@@ -217,11 +218,8 @@ public class ViewClientGUIGame extends SwingPhase {
                         });
                     }
                 }
-                else {
+                else
                     new NotYourTurnFrame();
-                    toolCardChosen = "";
-                    idDieChosen = "";
-                }
         });
 
         JButton endTurn = new JButton("END TURN");
@@ -337,6 +335,71 @@ public class ViewClientGUIGame extends SwingPhase {
         return null;
     }
 
+    @Override
+    public ArrayList<Integer> getPositionInPatternCard() {
+        ArrayList<Integer> values = new ArrayList<>();
+        int pc = 0, dop = 0;
+
+        for (int i=0; i<patternCards.size(); i++) {
+            if (patternCards.get(i).getIdPlayer().equals(Integer.toString(idClient))) {
+                pc = i;
+
+                for (int m = 0; m < diceOnPatternCards.size(); m++)
+                    if (diceOnPatternCards.get(m).getIdPlayer().equals(Integer.toString(idClient))) {
+                        dop = m;
+                }
+            }
+        }
+
+        ConfirmPositionFrame frame = new ConfirmPositionFrame(diceOnPatternCards.get(dop), patternCards.get(pc));
+        return frame.getvalues();
+
+                /*.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+                values.addAll(frame.getvalues());
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+
+            }
+        });
+        while(values.isEmpty()) {
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        return values;
+*/
+    }
+
     public PlayerMessage getMainMove() {
 
         if (!idDieChosen.equals("") && toolCardChosen.length() == 0) {
@@ -345,7 +408,9 @@ public class ViewClientGUIGame extends SwingPhase {
             return  new PlayerMessageDie(idClient, s, colonna, riga);
         }
         if (idDieChosen.equals("") && !toolCardChosen.equals("")) {
-            return new PlayerMessageToolCard(idClient, Integer.parseInt(toolCardChosen));
+            int t = Integer.parseInt(toolCardChosen);
+            toolCardChosen = "";
+            return new PlayerMessageToolCard(idClient, t);
         }
         return null;
 

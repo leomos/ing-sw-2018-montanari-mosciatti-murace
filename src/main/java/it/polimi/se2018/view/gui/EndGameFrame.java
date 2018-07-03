@@ -6,6 +6,7 @@ import it.polimi.se2018.model.events.PlayerMessage;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class EndGameFrame extends SwingPhase {
     private JFrame jFrame = new JFrame();
@@ -111,6 +112,11 @@ public class EndGameFrame extends SwingPhase {
 
     @Override
     public PlayerMessage getMainMove() {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Integer> getPositionInPatternCard() {
         return null;
     }
 }

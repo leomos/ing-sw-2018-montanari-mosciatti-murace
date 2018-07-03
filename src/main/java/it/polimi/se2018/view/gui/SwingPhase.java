@@ -4,6 +4,8 @@ import it.polimi.se2018.model.events.ModelChangedMessage;
 import it.polimi.se2018.model.events.PlayerMessage;
 import it.polimi.se2018.network.ServerInterface;
 
+import java.util.ArrayList;
+
 public abstract class SwingPhase {
 
     protected ServerInterface serverInterface;
@@ -19,4 +21,6 @@ public abstract class SwingPhase {
     public abstract Integer askForPatternCard();
 
     public abstract PlayerMessage getMainMove();
+
+    public abstract ArrayList<Integer> getPositionInPatternCard();
 }

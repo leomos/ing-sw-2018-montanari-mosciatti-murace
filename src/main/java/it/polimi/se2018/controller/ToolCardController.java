@@ -55,6 +55,7 @@ public class ToolCardController implements Runnable{
             case 3:
                 if(model.checkMovementPossibility(idPlayer)) {
                     ArrayList<Integer> positions = view.getPositionInPatternCard(idPlayer);
+                    System.out.println(positions);
                     if(positions.size() != 0)
                         model.moveDieInsidePatternCard(idPlayer, positions, true, false, 3);
                 }

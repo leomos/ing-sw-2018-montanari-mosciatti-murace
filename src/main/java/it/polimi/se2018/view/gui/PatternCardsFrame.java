@@ -170,4 +170,9 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
     public PlayerMessage getMainMove() {
         return null;
     }
+
+    @Override
+    public ArrayList<Integer> getPositionInPatternCard() {
+        return null;
+    }
 }

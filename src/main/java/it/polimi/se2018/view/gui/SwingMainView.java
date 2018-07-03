@@ -5,6 +5,7 @@ import it.polimi.se2018.model.events.*;
 import it.polimi.se2018.view.ViewClient;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 import static it.polimi.se2018.model.GamePhase.*;
 
@@ -62,16 +63,13 @@ public class SwingMainView extends ViewClient {
                     new TurnFrame();
                 }
             }
-
         } else if(message instanceof ModelChangedMessagePlayerAFK){
             if(((ModelChangedMessagePlayerAFK) message).getPlayer().equals(Integer.toString(idClient))) {
                 System.out.println(((ModelChangedMessagePlayerAFK) message).getMessage());
 
                 clientSuspended = true;
-
             }
         }
-
         else {
             swingPhase.update(message);
         }
@@ -84,8 +82,15 @@ public class SwingMainView extends ViewClient {
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 
+    @Override
+    public ArrayList<Integer> getPositionInPatternCard(){
+        if(idPlayerPlaying == idClient){
+            ArrayList<Integer> returnValues = swingPhase.getPositionInPatternCard();
+            return returnValues;
+        }
+        return null;
+    }
 }

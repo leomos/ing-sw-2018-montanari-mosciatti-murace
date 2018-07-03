@@ -48,8 +48,8 @@ public class Table {
         for(Integer key : HM.keySet()) {
             this.players.add(new Player(key, HM.get(key)));
         }
-        this.database = new Database(diceContainer);
         this.diceContainer = new DiceContainer();
+        this.database = new Database(diceContainer);
         this.toolCardContainer = new ToolCardContainer(diceContainer, database);
         this.diceArena = new DiceArena(players.size() * 2 + 1, diceContainer);
         this.roundTrack = new RoundTrack(players, diceContainer);
@@ -149,11 +149,11 @@ public class Table {
         Collections.shuffle(toolCardsList);
 
         //TO FORCE 3 PATTERNCARDS FOR TESTS
-        /*
-        toolCardsList.add(0,0);
-        toolCardsList.add(1,1);
-        toolCardsList.add(2,2);
-        */
+
+        toolCardsList.add(0,1);
+        toolCardsList.add(1,2);
+        toolCardsList.add(2,3);
+
 
         for(int j = 0; j < 3; j++)
             toolCardContainer.setToolCardInPlay(toolCardsList.get(j));
