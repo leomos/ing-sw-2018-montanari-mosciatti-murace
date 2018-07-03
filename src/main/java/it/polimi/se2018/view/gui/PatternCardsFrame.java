@@ -185,4 +185,14 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
     public ArrayList<Integer> getIncrementedValue() {
         return null;
     }
+
+    @Override
+    public ArrayList<Integer> getSinglePositionInPatternCard(ArrayList<Integer> listOfAvailablePosition) {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Integer> getDoublePositionInPatternCard() {
+        return null;
+    }
 }

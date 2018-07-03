@@ -130,4 +130,14 @@ public class EndGameFrame extends SwingPhase {
         return null;
     }
 
+    @Override
+    public ArrayList<Integer> getSinglePositionInPatternCard(ArrayList<Integer> listOfAvailablePosition) {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Integer> getDoublePositionInPatternCard() {
+        return null;
+    }
+
 }

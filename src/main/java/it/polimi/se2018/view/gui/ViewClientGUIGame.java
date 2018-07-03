@@ -336,22 +336,16 @@ public class ViewClientGUIGame extends SwingPhase {
 
     @Override
     public ArrayList<Integer> getPositionInPatternCard() {
-        ArrayList<Integer> values = new ArrayList<>();
-        int pc = 0, dop = 0;
+        int myId = -1;
 
-        for (int i=0; i<patternCards.size(); i++) {
-            if (patternCards.get(i).getIdPlayer() == idClient) {
-                pc = i;
+        for (int i=0; i<patternCards.size(); i++)
+            if (patternCards.get(i).getIdPlayer() == idClient)
+                myId = i;
 
-                for (int m = 0; m < diceOnPatternCards.size(); m++)
-                    if (diceOnPatternCards.get(m).getIdPlayer() == idClient) {
-                        dop = m;
-                }
-            }
-        }
 
-        ConfirmPositionFrame frame = new ConfirmPositionFrame(diceOnPatternCards.get(dop), patternCards.get(pc));
-        return frame.getvalues();
+        ConfirmPositionFrame frame = new ConfirmPositionFrame(diceOnPatternCards.get(myId), patternCards.get(myId));
+        ArrayList<Integer> returnValues = frame.getvalues();
+        return returnValues;
     }
 
     @Override
@@ -364,6 +358,41 @@ public class ViewClientGUIGame extends SwingPhase {
         IncrementedValueFrame frame = new IncrementedValueFrame(diceArena);
         ArrayList<Integer> returnValues = frame.getValues();
 
+        return returnValues;
+    }
+
+    @Override
+    public ArrayList<Integer> getSinglePositionInPatternCard(ArrayList<Integer> listOfAvailablePosition) {
+        int myId = -1;
+
+        for (int i=0; i<patternCards.size(); i++)
+            if (patternCards.get(i).getIdPlayer() == idClient)
+                myId = i;
+
+        OnePositionFrame frame = new OnePositionFrame(diceOnPatternCards.get(myId), patternCards.get(myId), listOfAvailablePosition);
+        ArrayList<Integer> returnValues = frame.getValues();
+
+        return returnValues;
+    }
+
+    @Override
+    public ArrayList<Integer> getDoublePositionInPatternCard() {
+        int myId = -1;
+
+        for (int i=0; i<patternCards.size(); i++)
+            if (patternCards.get(i).getIdPlayer() == idClient)
+                myId = i;
+
+        NumberOfMovementsFrame numberOfMovementsFrame = new NumberOfMovementsFrame();
+        int momevemnts = numberOfMovementsFrame.getNumber();
+
+        ConfirmPositionFrame frame = new ConfirmPositionFrame(diceOnPatternCards.get(myId), patternCards.get(myId));
+        ArrayList<Integer> returnValues = frame.getvalues();
+
+        if(momevemnts == 2) {
+            frame = new ConfirmPositionFrame(diceOnPatternCards.get(myId), patternCards.get(myId));
+            returnValues.addAll(frame.getvalues());
+        }
         return returnValues;
     }
 

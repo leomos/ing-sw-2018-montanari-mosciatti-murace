@@ -152,7 +152,7 @@ public class Table {
 
         toolCardsList.add(0,11);
         toolCardsList.add(1,0);
-        toolCardsList.add(2,9);
+        toolCardsList.add(2,8);
 
 
         for(int j = 0; j < 3; j++)

@@ -27,4 +27,8 @@ public abstract class SwingPhase {
     public abstract Integer getDieFromDiceArena();
 
     public abstract ArrayList<Integer> getIncrementedValue();
+
+    public abstract ArrayList<Integer> getSinglePositionInPatternCard(ArrayList<Integer> listOfAvailablePosition);
+
+    public abstract ArrayList<Integer> getDoublePositionInPatternCard();
 }

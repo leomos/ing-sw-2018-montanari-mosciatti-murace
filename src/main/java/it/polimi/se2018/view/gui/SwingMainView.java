@@ -108,10 +108,32 @@ public class SwingMainView extends ViewClient {
         if (idPlayerPlaying == idClient) {
 
             ArrayList<Integer> returnValues = swingPhase.getIncrementedValue();
-
             return returnValues;
 
         }
         return null;
     }
+
+    @Override
+    public ArrayList<Integer> getSinglePositionInPatternCard(ArrayList<Integer> listOfAvailablePositions){
+        if(idPlayerPlaying == idClient) {
+
+            ArrayList<Integer> returnValues = swingPhase.getSinglePositionInPatternCard(listOfAvailablePositions);
+            return returnValues;
+
+        }
+        return null;
+    }
+
+    @Override
+    public ArrayList<Integer> getDoublePositionInPatternCard(){
+        if(idPlayerPlaying == idClient) {
+
+            ArrayList<Integer> returnValues = swingPhase.getDoublePositionInPatternCard();
+            return returnValues;
+
+        }
+        return null;
+    }
+
 }

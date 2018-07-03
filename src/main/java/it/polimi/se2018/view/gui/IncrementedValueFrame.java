@@ -66,12 +66,13 @@ public class IncrementedValueFrame {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(!values.isEmpty())
-                    if(incrementButton.isSelected())
+                if(!values.isEmpty()) {
+                    if (incrementButton.isSelected())
                         values.add(1, 1);
-                    if(decrementButton.isSelected())
+                    if (decrementButton.isSelected())
                         values.add(1, 0);
                     dialog.dispose();
+                }
             }
         });
 

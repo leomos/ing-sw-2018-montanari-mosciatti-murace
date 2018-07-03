@@ -16,7 +16,7 @@ public class OnePositionFrame {
 
     int col = -1;
 
-    public OnePositionFrame(ModelChangedMessageDiceOnPatternCard messageDiceOnPatternCard, ModelChangedMessagePatternCard messagePatternCard) {
+    public OnePositionFrame(ModelChangedMessageDiceOnPatternCard messageDiceOnPatternCard, ModelChangedMessagePatternCard messagePatternCard, ArrayList<Integer> listOfAvaiblePositions) {
         SwingPatternCard patternCard = new SwingPatternCard(messagePatternCard, false);
         SwingDiceOnPatternCard diceOnPatternCard = new SwingDiceOnPatternCard(messageDiceOnPatternCard, messagePatternCard, patternCard.getPatternCard(), false);
 
@@ -66,8 +66,8 @@ public class OnePositionFrame {
 
     public ArrayList<Integer> getValues() {
         ArrayList<Integer> v = new ArrayList<>();
-        v.add(col);
         v.add(row);
+        v.add(col);
         return v;
     }
 }
