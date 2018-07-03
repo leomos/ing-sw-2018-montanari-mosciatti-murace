@@ -19,6 +19,13 @@ public class Scoreboard {
         this.lastId = lastId;
     }
 
+    /**
+     * Creates a single string that represents the final score.
+     * The string is structured like:
+     * 1° playerId; 1° score; 1° left tokens / 2° playerId; 2° score; 2° left tokens / last playerId playing
+     * Obviously there can be up to 4 players in the string
+     * @return string representation of final scores
+     */
     public String getRepresentation() {
         representation = "";
         for(Integer[] score : boardOrderedByScore()) {
@@ -30,6 +37,12 @@ public class Scoreboard {
         return representation;
     }
 
+    /**
+     * Set the score of a single player in the score board
+     * @param idPlayer player id
+     * @param score player final score
+     * @param tokensLeft player tokens left
+     */
     public void setScore(int idPlayer, int score, int tokensLeft) {
         Integer[] values = new Integer[2];
         values[0] = score;
@@ -37,6 +50,7 @@ public class Scoreboard {
         board.put(idPlayer, values);
     }
 
+    //todo: javadoc
     private List<Integer[]> boardOrderedByScore() {
         List<Integer[]> orderedBoard = new ArrayList();
         Comparator<Integer[]> byScoreValue = new Comparator<Integer[]>() {

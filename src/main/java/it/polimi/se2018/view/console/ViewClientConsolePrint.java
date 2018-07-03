@@ -102,7 +102,7 @@ public abstract class ViewClientConsolePrint {
 
     protected void printRoundTrack(ModelChangedMessageRound message) {
 
-        int app = Integer.parseInt(message.getIdRound()) + 1;
+        int app = message.getIdRound() + 1;
         System.out.print("\nROUND " + app  + ":\t");
         if(message.getRepresentation().length() == 0)
             System.out.println("\tCURRENT ROUND\t");
@@ -184,7 +184,16 @@ public abstract class ViewClientConsolePrint {
         System.out.println(s);
     }
 
-    public abstract void update(ModelChangedMessage message);
+    public abstract void update(ModelChangedMessagePatternCard message);
+    public abstract void update(ModelChangedMessagePrivateObjective message);
+    public abstract void update(ModelChangedMessageDiceOnPatternCard message);
+    public abstract void update(ModelChangedMessagePublicObjective message);
+    public abstract void update(ModelChangedMessageDiceArena message);
+    public abstract void update(ModelChangedMessageRound message);
+    public abstract void update(ModelChangedMessageTokensLeft message);
+    public abstract void update(ModelChangedMessageEndGame message);
+    public abstract void update(ModelChangedMessageToolCard message);
+
 
     public abstract void print();
 

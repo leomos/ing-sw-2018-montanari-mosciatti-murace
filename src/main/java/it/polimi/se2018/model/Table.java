@@ -48,8 +48,8 @@ public class Table {
         for(Integer key : HM.keySet()) {
             this.players.add(new Player(key, HM.get(key)));
         }
-        this.database = new Database(diceContainer);
         this.diceContainer = new DiceContainer();
+        this.database = new Database(diceContainer);
         this.toolCardContainer = new ToolCardContainer(diceContainer, database);
         this.diceArena = new DiceArena(players.size() * 2 + 1, diceContainer);
         this.roundTrack = new RoundTrack(players, diceContainer);

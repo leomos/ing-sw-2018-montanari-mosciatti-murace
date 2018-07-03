@@ -4,13 +4,13 @@ import it.polimi.se2018.network.visitor.MessageVisitorInterface;
 
 public class ModelChangedMessagePatternCard extends ModelChangedMessage implements Message {
 
-    private String idPlayer;
+    private int idPlayer;
 
-    private String idPatternCard;
+    private int idPatternCard;
 
     private String name;
 
-    private String difficulty;
+    private int difficulty;
 
     private String representation;
 
@@ -22,7 +22,7 @@ public class ModelChangedMessagePatternCard extends ModelChangedMessage implemen
      * @param difficulty pattern card difficulty
      * @param representation pattern card representation
      */
-    public ModelChangedMessagePatternCard(String idPlayer, String idPatternCard, String name, String difficulty, String representation){
+    public ModelChangedMessagePatternCard(int idPlayer, int idPatternCard, String name, int difficulty, String representation){
         this.idPlayer = idPlayer;
         this.idPatternCard = idPatternCard;
         this.name = name;
@@ -34,15 +34,15 @@ public class ModelChangedMessagePatternCard extends ModelChangedMessage implemen
         return name;
     }
 
-    public String getIdPlayer() {
+    public int getIdPlayer() {
         return idPlayer;
     }
 
-    public String getIdPatternCard() {
+    public int getIdPatternCard() {
         return idPatternCard;
     }
 
-    public String getDifficulty() {
+    public int getDifficulty() {
         return difficulty;
     }
 

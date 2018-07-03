@@ -6,13 +6,13 @@ public class ModelChangedMessageRefresh extends ModelChangedMessage implements M
 
     private static final long serialVersionUID = 2000L;
 
-    String idPlayerPlaying;
+    private Integer idPlayerPlaying;
 
     /**
      * When the view receive this message, they refresh the view of the game
      * @param idPlayerPlaying player id that is gonna play this turn
      */
-    public ModelChangedMessageRefresh(String idPlayerPlaying){
+    public ModelChangedMessageRefresh(Integer idPlayerPlaying){
         this.idPlayerPlaying = idPlayerPlaying;
     }
 
@@ -20,7 +20,7 @@ public class ModelChangedMessageRefresh extends ModelChangedMessage implements M
     public void accept(MessageVisitorInterface messageVisitorInterface) {
         messageVisitorInterface.visitModelChangedMessageRefresh(this);
     }
-    public String getIdPlayerPlaying() {
+    public Integer getIdPlayerPlaying() {
         return idPlayerPlaying;
     }
 }

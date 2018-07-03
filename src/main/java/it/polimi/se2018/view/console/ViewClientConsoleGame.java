@@ -13,7 +13,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
     private Scanner input;
 
-    private ArrayList<String> idPlayers = new ArrayList<String>();
+    private ArrayList<Integer> idPlayers = new ArrayList<Integer>();
 
     private ArrayList<ModelChangedMessagePatternCard> patternCards = new ArrayList<ModelChangedMessagePatternCard>();
 
@@ -37,50 +37,67 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
 
     @Override
-    public void update(ModelChangedMessage message) {
+    public void update(ModelChangedMessagePatternCard modelChangedMessagePatternCard){
+        idPlayers.add(modelChangedMessagePatternCard.getIdPlayer());
+        patternCards.add(modelChangedMessagePatternCard);
+        diceOnPatternCards.add(null);
+    }
 
-        if (message instanceof ModelChangedMessagePatternCard){
-                idPlayers.add(((ModelChangedMessagePatternCard) message).getIdPlayer());
-                patternCards.add((ModelChangedMessagePatternCard) message);
-                diceOnPatternCards.add(null);
+    public void update(ModelChangedMessageDiceOnPatternCard modelChangedMessageDiceOnPatternCard){
+        int i = idPlayers.indexOf(modelChangedMessageDiceOnPatternCard.getIdPlayer());
+        diceOnPatternCards.remove(i);
+        diceOnPatternCards.add(i, modelChangedMessageDiceOnPatternCard);
+    }
+
+    public void update(ModelChangedMessagePrivateObjective modelChangedMessagePrivateObjective){
+        if (modelChangedMessagePrivateObjective.getIdPlayer() == idClient)
+            privateObjective = modelChangedMessagePrivateObjective;
+    }
+
+    public void update(ModelChangedMessagePublicObjective modelChangedMessagePublicObjective){
+        publicObjectives.add(modelChangedMessagePublicObjective);
+    }
+
+    @Override
+    public void update(ModelChangedMessageDiceArena modelChangedMessageDiceArena) {
+        diceArena = modelChangedMessageDiceArena;
+    }
+
+    @Override
+    public void update(ModelChangedMessageRound modelChangedMessageRound) {
+        int i = modelChangedMessageRound.getIdRound();
+        if(i >= roundTrack.size())
+            roundTrack.add(modelChangedMessageRound);
+        else {
+            roundTrack.remove(i);
+            roundTrack.add(i,modelChangedMessageRound);
         }
-        else if (message instanceof ModelChangedMessageDiceOnPatternCard){
-            int i = idPlayers.indexOf(((ModelChangedMessageDiceOnPatternCard) message).getIdPlayer());
-            diceOnPatternCards.remove(i);
-            diceOnPatternCards.add(i, (ModelChangedMessageDiceOnPatternCard) message);
+    }
+
+    @Override
+    public void update(ModelChangedMessageTokensLeft modelChangedMessageTokensLeft) {
+        if (modelChangedMessageTokensLeft.getIdPlayer() == idClient)
+            tokensLeft = modelChangedMessageTokensLeft;
+    }
+
+
+
+    @Override
+    public void update(ModelChangedMessageToolCard modelChangedMessageToolCard) {
+        if(toolCards.size() == 3) {
+            for(int i = 0; i < 3; i++)
+                if(toolCards.get(i).getIdToolCard() == (modelChangedMessageToolCard.getIdToolCard())) {
+                    toolCards.remove(i);
+                    toolCards.add(i,modelChangedMessageToolCard);
+                }
+        } else {
+            toolCards.add(modelChangedMessageToolCard);
         }
-        else if(message instanceof ModelChangedMessagePrivateObjective) {
-            if (((ModelChangedMessagePrivateObjective) message).getIdPlayer().equals(Integer.toString(idClient)))
-                privateObjective = ((ModelChangedMessagePrivateObjective) message);
-        }
-        else if(message instanceof ModelChangedMessagePublicObjective)
-            publicObjectives.add((ModelChangedMessagePublicObjective)message);
-        else if(message instanceof ModelChangedMessageToolCard) {
-            if(toolCards.size() == 3) {
-                for(int i = 0; i < 3; i++)
-                    if(toolCards.get(i).getIdToolCard().equals(((ModelChangedMessageToolCard) message).getIdToolCard())) {
-                        toolCards.remove(i);
-                        toolCards.add(i, (ModelChangedMessageToolCard) message);
-                    }
-            } else {
-                toolCards.add((ModelChangedMessageToolCard) message);
-            }
-        }
-        else if(message instanceof ModelChangedMessageDiceArena)
-            diceArena = ((ModelChangedMessageDiceArena)message);
-        else if(message instanceof ModelChangedMessageRound) {
-            int i = Integer.parseInt(((ModelChangedMessageRound) message).getIdRound());
-            if(i >= roundTrack.size())
-                roundTrack.add((ModelChangedMessageRound) message);
-            else {
-                roundTrack.remove(i);
-                roundTrack.add(i, (ModelChangedMessageRound) message);
-            }
-        }
-        else if(message instanceof ModelChangedMessageTokensLeft) {
-            if (((ModelChangedMessageTokensLeft) message).getIdPlayer().equals(Integer.toString(idClient)))
-                tokensLeft = (ModelChangedMessageTokensLeft) message;
-        }
+    }
+
+    @Override
+    public void update(ModelChangedMessageEndGame modelChangedMessageEndGame) {
+
     }
 
     public void setSuspended(boolean suspended) {
@@ -96,8 +113,8 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
         int myPatternCardId = -1;
         for (int i = 0; i < patternCards.size(); i++)
-            if(!(Integer.toString(idClient).equals(idPlayers.get(i))))
-                printPatternCard(idPlayers.get(i), patternCards.get(i), diceOnPatternCards.get(i));
+            if(idClient != idPlayers.get(i))
+                printPatternCard(Integer.toString(idPlayers.get(i)), patternCards.get(i), diceOnPatternCards.get(i));
             else
                 myPatternCardId = i;
 
@@ -115,7 +132,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
             printToolCards(toolCards.get(i));
 
         System.out.println("\n\n\nYour PatternCard");
-        printPatternCard(idPlayers.get(myPatternCardId), patternCards.get(myPatternCardId), diceOnPatternCards.get(myPatternCardId));
+        printPatternCard(Integer.toString(idPlayers.get(myPatternCardId)), patternCards.get(myPatternCardId), diceOnPatternCards.get(myPatternCardId));
 
         printPrivateObjective(privateObjective);
 

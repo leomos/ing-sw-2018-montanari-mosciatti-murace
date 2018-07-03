@@ -30,11 +30,11 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
 
     public void update(ModelChangedMessage message) {
         if(message instanceof ModelChangedMessagePatternCard) {
-            if (((ModelChangedMessagePatternCard) message).getIdPlayer().equals(Integer.toString(idClient)))
+            if (((ModelChangedMessagePatternCard) message).getIdPlayer() == idClient)
                 patternCards.add((ModelChangedMessagePatternCard) message);
         }
         else if(message instanceof ModelChangedMessagePrivateObjective)
-            if (((ModelChangedMessagePrivateObjective) message).getIdPlayer().equals(Integer.toString(idClient)))
+            if (((ModelChangedMessagePrivateObjective) message).getIdPlayer() == idClient)
                 privateObjective = ((ModelChangedMessagePrivateObjective) message);
     }
 
@@ -70,22 +70,22 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
         b.addActionListener(this);
 
         JRadioButton rb1 = new JRadioButton("PATTERNCARD 1");
-        rb1.setActionCommand(patternCards.get(0).getIdPatternCard());
+        rb1.setActionCommand(Integer.toString(patternCards.get(0).getIdPatternCard()));
         rb1.addActionListener(actionListener -> {
                 b.setEnabled(true);
         });
         JRadioButton rb2 = new JRadioButton("PATTERNCARD 2");
-        rb2.setActionCommand(patternCards.get(1).getIdPatternCard());
+        rb2.setActionCommand(Integer.toString(patternCards.get(1).getIdPatternCard()));
         rb2.addActionListener(actionListener -> {
                 b.setEnabled(true);
         });
         JRadioButton rb3 = new JRadioButton("PATTERNCARD 3");
-        rb3.setActionCommand(patternCards.get(2).getIdPatternCard());
+        rb3.setActionCommand(Integer.toString(patternCards.get(2).getIdPatternCard()));
         rb3.addActionListener(actionListener -> {
                 b.setEnabled(true);
         });
         JRadioButton rb4 = new JRadioButton("PATTERNCARD 4");
-        rb4.setActionCommand(patternCards.get(3).getIdPatternCard());
+        rb4.setActionCommand(Integer.toString(patternCards.get(3).getIdPatternCard()));
         rb4.addActionListener(actionListener -> {
                 b.setEnabled(true);
         });

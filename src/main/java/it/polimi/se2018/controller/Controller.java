@@ -2,6 +2,7 @@ package it.polimi.se2018.controller;
 
 import it.polimi.se2018.model.Model;
 import it.polimi.se2018.model.events.*;
+import it.polimi.se2018.network.visitor.MessageVisitorImplementationController;
 import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.view.VirtualView;
 
@@ -48,8 +49,6 @@ public class Controller implements Observer<PlayerMessage> {
     /* TODO: tests, finish update without instanceOf(). */
     @Override
     public synchronized void update(PlayerMessage playerMessage) {
-
-        System.out.println(playerMessage);
 
         playerMessage.accept(messageVisitorImplementationController);
     }

@@ -4,7 +4,7 @@ import it.polimi.se2018.network.visitor.MessageVisitorInterface;
 
 public class ModelChangedMessagePublicObjective extends ModelChangedMessage implements Message {
 
-    private String idPublicObjective;
+    private int idPublicObjective;
 
     private String name;
 
@@ -16,7 +16,7 @@ public class ModelChangedMessagePublicObjective extends ModelChangedMessage impl
      * @param name public objective name
      * @param description public objective description
      */
-    public ModelChangedMessagePublicObjective (String idPublicObjective, String name, String description){
+    public ModelChangedMessagePublicObjective (int idPublicObjective, String name, String description){
         this.idPublicObjective = idPublicObjective;
         this.name = name;
         this.description = description;
@@ -26,7 +26,7 @@ public class ModelChangedMessagePublicObjective extends ModelChangedMessage impl
         return name;
     }
 
-    public String getIdPublicObjective() {
+    public int getIdPublicObjective() {
         return idPublicObjective;
     }
 

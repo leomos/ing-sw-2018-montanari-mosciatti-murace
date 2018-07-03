@@ -4,9 +4,9 @@ import it.polimi.se2018.network.visitor.MessageVisitorInterface;
 
 public class ModelChangedMessageDiceOnPatternCard extends ModelChangedMessage implements Message {
 
-    private String idPlayer;
+    private int idPlayer;
 
-    private String idPatternCard;
+    private int idPatternCard;
 
     private String representation;
 
@@ -16,17 +16,17 @@ public class ModelChangedMessageDiceOnPatternCard extends ModelChangedMessage im
      * @param idPatternCard pattern card id
      * @param representation dice on pattern card representation
      */
-    public ModelChangedMessageDiceOnPatternCard(String idPlayer, String idPatternCard, String representation) {
+    public ModelChangedMessageDiceOnPatternCard(int idPlayer, int idPatternCard, String representation) {
         this.idPlayer = idPlayer;
         this.idPatternCard = idPatternCard;
         this.representation = representation;
     }
 
-    public String getIdPlayer() {
+    public int getIdPlayer() {
         return idPlayer;
     }
 
-    public String getIdPatternCard() {
+    public int getIdPatternCard() {
         return idPatternCard;
     }
 

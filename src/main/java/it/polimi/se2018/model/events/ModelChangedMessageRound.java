@@ -4,7 +4,7 @@ import it.polimi.se2018.network.visitor.MessageVisitorInterface;
 
 public class ModelChangedMessageRound extends ModelChangedMessage implements Message {
 
-    private String idRound;
+    private int idRound;
 
     private String representation;
 
@@ -13,12 +13,12 @@ public class ModelChangedMessageRound extends ModelChangedMessage implements Mes
      * @param idRound round id
      * @param representation representation of the dice left on the round
      */
-    public ModelChangedMessageRound (String idRound, String representation){
+    public ModelChangedMessageRound (int idRound, String representation){
         this.idRound = idRound;
         this.representation = representation;
     }
 
-    public String getIdRound() {
+    public int getIdRound() {
         return idRound;
     }
 

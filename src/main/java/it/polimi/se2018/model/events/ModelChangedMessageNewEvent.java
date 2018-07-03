@@ -5,7 +5,7 @@ import it.polimi.se2018.network.visitor.MessageVisitorInterface;
 public class ModelChangedMessageNewEvent extends ModelChangedMessage {
 
 
-    private String player;
+    private int player;
 
     private String message;
 
@@ -16,12 +16,12 @@ public class ModelChangedMessageNewEvent extends ModelChangedMessage {
      * @param player player id receiving the new event
      * @param message string containing the info about the new event
      */
-    public ModelChangedMessageNewEvent(String player, String message){
+    public ModelChangedMessageNewEvent(int player, String message){
         this.player = player;
         this.message = message;
     }
 
-    public String getPlayer() {
+    public int getPlayer() {
         return player;
     }
 

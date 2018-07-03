@@ -1,7 +1,7 @@
-package it.polimi.se2018.controller;
+package it.polimi.se2018.network.visitor;
 
+import it.polimi.se2018.controller.Controller;
 import it.polimi.se2018.model.events.*;
-import it.polimi.se2018.network.visitor.MessageVisitorInterface;
 
 public class MessageVisitorImplementationController implements MessageVisitorInterface {
 

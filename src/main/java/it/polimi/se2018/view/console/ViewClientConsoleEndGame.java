@@ -1,8 +1,6 @@
 package it.polimi.se2018.view.console;
 
-import it.polimi.se2018.model.events.ModelChangedMessage;
-import it.polimi.se2018.model.events.ModelChangedMessageEndGame;
-import it.polimi.se2018.model.events.PlayerMessage;
+import it.polimi.se2018.model.events.*;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -19,12 +17,48 @@ public class ViewClientConsoleEndGame extends ViewClientConsolePrint {
     }
 
     @Override
-    public void update(ModelChangedMessage message) {
+    public void update(ModelChangedMessageEndGame message) {
+        scoreboardMessage = message;
+        this.print();
+    }
 
-        if (message instanceof ModelChangedMessageEndGame){
-            scoreboardMessage = (ModelChangedMessageEndGame) message;
-            this.print();
-        }
+    @Override
+    public void update(ModelChangedMessagePatternCard message) {
+
+    }
+
+    @Override
+    public void update(ModelChangedMessagePrivateObjective message) {
+
+    }
+
+    @Override
+    public void update(ModelChangedMessageDiceOnPatternCard message) {
+
+    }
+
+    @Override
+    public void update(ModelChangedMessagePublicObjective message) {
+
+    }
+
+    @Override
+    public void update(ModelChangedMessageDiceArena message) {
+
+    }
+
+    @Override
+    public void update(ModelChangedMessageRound message) {
+
+    }
+
+    @Override
+    public void update(ModelChangedMessageTokensLeft message) {
+
+    }
+
+    @Override
+    public void update(ModelChangedMessageToolCard message) {
 
     }
 

@@ -2,6 +2,7 @@ package it.polimi.se2018.view.console;
 
 import it.polimi.se2018.model.GamePhase;
 import it.polimi.se2018.model.events.*;
+import it.polimi.se2018.network.visitor.MessageVisitorImplementationView;
 import it.polimi.se2018.view.ViewClient;
 
 import java.rmi.RemoteException;
@@ -27,64 +28,66 @@ public class ViewClientConsole extends ViewClient  {
 
     private ViewClientConsolePrint viewClientConsolePrint;
 
+    private MessageVisitorImplementationView messageVisitorImplementationView;
+
     public ViewClientConsole(){
+        this.messageVisitorImplementationView = new MessageVisitorImplementationView(this);
     }
 
     public void setIdClient(int idClient){
         this.idClient = idClient;
     }
 
+    public ViewClientConsolePrint getViewClientConsolePrint(){ return this.viewClientConsolePrint;}
+
     @Override
-    public synchronized void update(ModelChangedMessage message){
+    public synchronized void update(ModelChangedMessage message) {
+        message.accept(messageVisitorImplementationView);
+    }
 
-        if(message instanceof ModelChangedMessageMoveFailed){
-            if(((ModelChangedMessageMoveFailed) message).getPlayer().equals(Integer.toString(idClient))) {
-                System.out.println("ERROR: " + ((ModelChangedMessageMoveFailed) message).getErrorMessage());
-                System.out.println("\n\nTry again");
-            }
-        } else if(message instanceof ModelChangedMessageNewEvent){
-            if(((ModelChangedMessageNewEvent) message).getPlayer().equals(Integer.toString(idClient))){
-                System.out.println("NEW EVENT: " + ((ModelChangedMessageNewEvent) message).getMessage());
+    public void update(ModelChangedMessageMoveFailed messageMoveFailed) {
+        if(messageMoveFailed.getPlayer() == idClient) {
+            System.out.println("ERROR: " + messageMoveFailed.getErrorMessage());
+            System.out.println("\n\nTry again");
+        }
+    }
+
+    public void update(ModelChangedMessageNewEvent modelChangedMessageNewEvent){
+        if(modelChangedMessageNewEvent.getPlayer() == idClient){
+            System.out.println("NEW EVENT: " + modelChangedMessageNewEvent.getMessage());
+        }
+    }
+
+    public void update(ModelChangedMessageChangeGamePhase modelChangedMessageChangeGamePhase) {
+        gamePhase = modelChangedMessageChangeGamePhase.getGamePhase();
+        if(gamePhase == SETUPPHASE)
+            viewClientConsolePrint = new ViewClientConsoleSetup(this.idClient);
+        if (gamePhase == GAMEPHASE) {
+            hasChoosePatternCard = true;
+            viewClientConsolePrint = new ViewClientConsoleGame(this.idClient);
+        }
+        if (gamePhase == ENDGAMEPHASE)
+            viewClientConsolePrint = new ViewClientConsoleEndGame(this.idClient);
+    }
+
+    public void update(ModelChangedMessageRefresh modelChangedMessageRefresh) {
+        viewClientConsolePrint.print();
+        if (modelChangedMessageRefresh.getIdPlayerPlaying() != null) {
+            idPlayerPlaying = modelChangedMessageRefresh.getIdPlayerPlaying();
+            if (idPlayerPlaying == idClient && canIPlay) {
+                System.out.println("It's your turn");
+                System.out.println("/help: get List of moves");
             }
         }
-        else if(message instanceof ModelChangedMessageChangeGamePhase) {
-            gamePhase = ((ModelChangedMessageChangeGamePhase) message).getGamePhase();
-            if(gamePhase == SETUPPHASE)
-                viewClientConsolePrint = new ViewClientConsoleSetup(this.idClient);
-            if (gamePhase == GAMEPHASE) {
-                hasChoosePatternCard = true;
-                viewClientConsolePrint = new ViewClientConsoleGame(this.idClient);
-            }
-            if (gamePhase == ENDGAMEPHASE)
-                viewClientConsolePrint = new ViewClientConsoleEndGame(this.idClient);
+    }
 
-        }
-        else if (message instanceof ModelChangedMessageRefresh){
-            viewClientConsolePrint.print();
-            if(gamePhase == SETUPPHASE) {
-
-                ;
-
-            }
-            if(((ModelChangedMessageRefresh) message).getIdPlayerPlaying() != null) {
-                idPlayerPlaying = Integer.parseInt(((ModelChangedMessageRefresh) message).getIdPlayerPlaying());
-                if(idPlayerPlaying == idClient && canIPlay) {
-                    System.out.println("It's your turn");
-                    System.out.println("/help: get List of moves");
-                }
-            }
-
-        } else if(message instanceof ModelChangedMessagePlayerAFK){
-            if(((ModelChangedMessagePlayerAFK) message).getPlayer().equals(Integer.toString(idClient))) {
-                System.out.println(((ModelChangedMessagePlayerAFK) message).getMessage());
-                clientSuspended = true;
-                viewClientConsolePrint.setSuspended(true);
-            } else {
-                System.out.println("\nPlayer " + ((ModelChangedMessagePlayerAFK) message).getPlayer() + " is now suspended");
-            }
-        }
-        else {
-            viewClientConsolePrint.update(message);
+    public void update(ModelChangedMessagePlayerAFK modelChangedMessagePlayerAFK) {
+        if(modelChangedMessagePlayerAFK.getPlayer() == idClient) {
+            System.out.println(modelChangedMessagePlayerAFK.getMessage());
+            clientSuspended = true;
+            viewClientConsolePrint.setSuspended(true);
+        } else {
+            System.out.println("\nPlayer " + modelChangedMessagePlayerAFK.getPlayer() + " is now suspended");
         }
     }
 
