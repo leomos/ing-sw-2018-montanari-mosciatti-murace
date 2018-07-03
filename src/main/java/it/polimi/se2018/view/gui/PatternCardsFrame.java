@@ -143,11 +143,16 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
         jFrame.add(b, BorderLayout.SOUTH);
 
         jFrame.setVisible(true);
+
+        Dimension screenSize = Toolkit.getDefaultToolkit ().getScreenSize();
+        Dimension frameSize = jFrame.getSize();
+        jFrame.setLocation ((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
     }
 
     public void actionPerformed(ActionEvent e) {
         idPatternCardChosen = idPatternCardChosen + group.getSelection().getActionCommand();
         try {
+            //waiting();
             serverInterface.notify(new PlayerMessageSetup(idClient, Integer.parseInt(idPatternCardChosen)));
         } catch (RemoteException e1) {
             e1.printStackTrace();
@@ -199,5 +204,47 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
     @Override
     public ArrayList<Integer> getDieFromRoundTrack() {
         return null;
+    }
+
+    @Override
+    public Integer getValueForDie(){
+        return null;
+    }
+
+    public void waiting() {
+        jFrame.getContentPane().removeAll();
+        jFrame.repaint();
+
+        String s = "********************************************************************************";
+        jFrame.getContentPane().setBackground(new Color(34, 139, 34));
+        jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        jFrame.setResizable(false);
+
+        int tokens = 0;
+        SwingDiceOnPatternCard diceOnPatternCard = null;
+        SwingPatternCard patternCard;
+        for (int i=0; i<patternCards.size(); i++) {
+            if (patternCards.get(i).getIdPlayer()==idClient) {
+                patternCard = new SwingPatternCard(patternCards.get(i), true);
+                ModelChangedMessageDiceOnPatternCard message = new ModelChangedMessageDiceOnPatternCard(idClient, patternCards.get(i).getIdPatternCard(), s);
+                diceOnPatternCard = new SwingDiceOnPatternCard(message, patternCards.get(i), patternCard.getPatternCard(), true);
+                tokens = patternCards.get(i).getDifficulty();
+            }
+        }
+
+        SwingPrivateObjective privateObjective1 = new SwingPrivateObjective(this.privateObjective);
+
+        JLabel label = new JLabel("Waiting for other players...", SwingConstants.CENTER);
+        label.setFont(new Font("Imprint MT Shadow", Font.PLAIN, 24));
+
+        SwingPlayer player = new SwingPlayer(diceOnPatternCard, privateObjective1, tokens);
+
+        jFrame.add(label, BorderLayout.NORTH);
+        jFrame.add(player, BorderLayout.CENTER);
+
+        jFrame.pack();
+        jFrame.setVisible(true);
+
+        jFrame.validate();
     }
 }

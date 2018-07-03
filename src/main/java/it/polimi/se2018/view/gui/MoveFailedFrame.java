@@ -9,5 +9,8 @@ public class MoveFailedFrame extends Frame {
         setTitle("MOVE FAILED");
         label = new JLabel(s, SwingConstants.CENTER);
         add(label, BorderLayout.CENTER);
+        setSize(300, 100);
+        Dimension frameSize = getSize ();
+        setLocation ((screenSize.width-frameSize.width)/2, (screenSize.height-frameSize.height)/2);
     }
 }

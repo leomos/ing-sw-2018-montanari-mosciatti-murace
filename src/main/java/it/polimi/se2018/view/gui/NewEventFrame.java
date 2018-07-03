@@ -16,11 +16,8 @@ public class NewEventFrame {
         JLabel label = new JLabel(s);
 
         JButton button = new JButton("OK");
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        button.addActionListener(actionListener -> {
                 dialog.dispose();
-            }
         });
 
         dialog.setLayout(new BorderLayout());

@@ -8,12 +8,13 @@ public class Frame extends JFrame {
 
     protected JButton ok;
 
+    protected  Dimension screenSize = Toolkit.getDefaultToolkit ().getScreenSize ();
+
     public Frame() {
         JButton ok = new JButton("OK");
         ok.addActionListener(actionListener -> {
                 dispose();
         });
-        setSize(400, 200);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setResizable(false);
         setLayout(new BorderLayout());

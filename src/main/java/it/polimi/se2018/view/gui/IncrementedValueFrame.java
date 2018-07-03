@@ -4,8 +4,6 @@ import it.polimi.se2018.model.events.ModelChangedMessageDiceArena;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class IncrementedValueFrame {
@@ -30,12 +28,9 @@ public class IncrementedValueFrame {
         p.setLayout(new FlowLayout());
         for (int i=0; i<diceArena.getButtons().size(); i++) {
             int finalI = i;
-            diceArena.getButtons().get(i).addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
+            diceArena.getButtons().get(i).addActionListener(actionListener -> {
                     values.add(0, finalI);
                     die.setText(s + values.get(0));
-                }
             });
             p.add(diceArena.getButtons().get(i));
         }
@@ -63,9 +58,7 @@ public class IncrementedValueFrame {
 
 
         JButton button = new JButton("CONTINUE");
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        button.addActionListener(actionListener -> {
                 if(!values.isEmpty()) {
                     if (incrementButton.isSelected())
                         values.add(1, 1);
@@ -73,7 +66,6 @@ public class IncrementedValueFrame {
                         values.add(1, 0);
                     dialog.dispose();
                 }
-            }
         });
 
         dialog.add(label, BorderLayout.NORTH);
@@ -87,7 +79,6 @@ public class IncrementedValueFrame {
 
     public ArrayList<Integer> getValues(){
         while(values.size() != 2);
-        System.out.println("VALUES");
         return values;
     }
 }

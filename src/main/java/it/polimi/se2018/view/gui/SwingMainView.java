@@ -138,4 +138,13 @@ public class SwingMainView extends ViewClient {
         }
         return null;
     }
+
+    @Override
+    public Integer getValueForDie() {
+        if(idPlayerPlaying == idClient) {
+            int returnValues = swingPhase.getValueForDie();
+            return returnValues;
+        }
+        return null;
+    }
 }

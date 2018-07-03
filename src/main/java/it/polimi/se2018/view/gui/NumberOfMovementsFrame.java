@@ -2,8 +2,6 @@ package it.polimi.se2018.view.gui;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class NumberOfMovementsFrame {
 
@@ -33,15 +31,12 @@ public class NumberOfMovementsFrame {
         oneMovementButton.setSelected(true);
 
         JButton button = new JButton("CONTINUE");
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        button.addActionListener(actionListener -> {
                 if (oneMovementButton.isSelected())
                     i = 1;
                 if (twoMovementsButton.isSelected())
                     i = 2;
                 dialog.dispose();
-            }
         });
 
         dialog.add(label, BorderLayout.NORTH);
@@ -51,13 +46,10 @@ public class NumberOfMovementsFrame {
         dialog.setSize(300, 200);
         dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         dialog.setVisible(true);
-
-
     }
 
     public int getNumber(){
         while(i == -1) {}
         return i;
-
     }
 }

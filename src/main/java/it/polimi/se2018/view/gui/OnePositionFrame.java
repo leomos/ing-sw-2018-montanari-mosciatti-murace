@@ -5,8 +5,6 @@ import it.polimi.se2018.model.events.ModelChangedMessagePatternCard;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class OnePositionFrame {
@@ -30,13 +28,10 @@ public class OnePositionFrame {
 
         for (int i=0; i<20; i++) {
             int finalN = i;
-            diceOnPatternCard.getPc().get(i).addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
+            diceOnPatternCard.getPc().get(i).addActionListener(actionListener -> {
                     row = finalN % 5;
                     col = finalN / 5;
                     label1.setText(s + col + " " + row);
-                }
             });
         }
 
@@ -46,14 +41,11 @@ public class OnePositionFrame {
         panel.add(diceOnPatternCard, BorderLayout.CENTER);
 
         JButton button = new JButton("CONFIRM");
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        button.addActionListener(actionListener -> {
                 if (row!=-1 && col!=-1 && checkPositionsAreInArrayList(col, row, listOfAvailablePositions))
                     dialog.dispose();
                 else
-                    ;  //todo: generates messsage error bloccante
-            }
+                    ;  //todo: generates message error bloccante
         });
 
         dialog.setLayout(new BorderLayout());
@@ -67,11 +59,11 @@ public class OnePositionFrame {
     }
 
     private boolean checkPositionsAreInArrayList(int x, int y, ArrayList<Integer> list){
-
-        if(!list.isEmpty())
-            for(int i = 0; i < list.size(); i+= 2)
-                if(x == list.get(i) && y == list.get(i+1))
+        if(!list.isEmpty()) {
+            for (int i = 0; i < list.size(); i += 2)
+                if (x == list.get(i) && y == list.get(i + 1))
                     return true;
+        }
         else
             return true;
         return false;

@@ -5,27 +5,25 @@ import it.polimi.se2018.model.events.ModelChangedMessagePatternCard;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
 public class ConfirmPositionFrame {
 
-    int row1 = -1;
+    private int row1 = -1;
 
-    int col1 = -1;
+    private int col1 = -1;
 
-    int row2 = -1;
+    private int row2 = -1;
 
-    int col2 = -1;
+    private int col2 = -1;
 
-    JDialog jDialog;
+    private JDialog jDialog;
 
-    JDialog d;
+    private JDialog d;
 
-    ArrayList<Integer> v = new ArrayList<>();
+    private ArrayList<Integer> v = new ArrayList<>();
 
     public ConfirmPositionFrame(ModelChangedMessageDiceOnPatternCard messageDiceOnPatternCard, ModelChangedMessagePatternCard messagePatternCard) {
         SwingPatternCard patternCard = new SwingPatternCard(messagePatternCard, false);
@@ -35,9 +33,7 @@ public class ConfirmPositionFrame {
 
         for (int i=0; i<20; i++) {
             int finalN = i;
-            diceOnPatternCard.getPc().get(i).addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
+            diceOnPatternCard.getPc().get(i).addActionListener(actionListener -> {
                     if (row1==-1 && col1==-1) {
                         row1 = finalN % 5;
                         col1 = finalN / 5;
@@ -46,7 +42,6 @@ public class ConfirmPositionFrame {
                         row2 = finalN % 5;
                         col2 = finalN / 5;
                     }
-                }
             });
         }
 
@@ -55,9 +50,7 @@ public class ConfirmPositionFrame {
         jDialog.setLayout(new BorderLayout());
 
         JButton button = new JButton("CONTINUE");
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        button.addActionListener(actionListener -> {
                 if (row1 != -1 && col1 != -1 && row2 != -1 && col2 != -1) {
                     JFrame f = new JFrame();
                     d = new JDialog(f, "", Dialog.ModalityType.APPLICATION_MODAL);
@@ -109,15 +102,12 @@ public class ConfirmPositionFrame {
                     panel.add(label1);
                     panel.add(label2);
                     JButton b = new JButton("CONFIRM");
-                    b.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
+                    b.addActionListener(actionlistener -> {
                             v.add(row1);
                             v.add(col1);
                             v.add(row2);
                             v.add(col2);
                             d.dispose();
-                        }
                     });
                     d.setLayout(new BorderLayout());
                     d.add(l, BorderLayout.NORTH);
@@ -128,7 +118,6 @@ public class ConfirmPositionFrame {
                 } else {
                     new MoveFailedFrame("Select two dice");
                 }
-            }
         });
 
         jDialog.add(label, BorderLayout.NORTH);

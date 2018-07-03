@@ -8,5 +8,8 @@ public class NotYourTurnFrame extends Frame {
         super();
         label = new JLabel("It's not your turn!!", SwingConstants.CENTER);
         add(label, BorderLayout.CENTER);
+        setSize(200, 100);
+        Dimension frameSize = getSize ();
+        setLocation ((screenSize.width-frameSize.width)/2, (screenSize.height-frameSize.height)/2);
     }
 }

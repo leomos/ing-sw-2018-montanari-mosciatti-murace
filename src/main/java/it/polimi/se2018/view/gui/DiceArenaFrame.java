@@ -4,8 +4,6 @@ import it.polimi.se2018.model.events.ModelChangedMessageDiceArena;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class DiceArenaFrame {
     private JDialog dialog;
@@ -28,12 +26,9 @@ public class DiceArenaFrame {
         p.setLayout(new FlowLayout());
         for (int i=0; i<diceArena.getButtons().size(); i++) {
             int finalI = i;
-            diceArena.getButtons().get(i).addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
+            diceArena.getButtons().get(i).addActionListener(actionListener -> {
                     id = finalI;
                     die.setText(s + id);
-                }
             });
             p.add(diceArena.getButtons().get(i));
         }
@@ -44,12 +39,9 @@ public class DiceArenaFrame {
         panel.add(die, BorderLayout.SOUTH);
 
         JButton button = new JButton("CONTINUE");
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        button.addActionListener(actionListener -> {
                 if (id!=-1)
                     dialog.dispose();
-            }
         });
 
         dialog.add(label, BorderLayout.NORTH);

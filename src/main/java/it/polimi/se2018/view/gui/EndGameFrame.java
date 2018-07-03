@@ -94,6 +94,10 @@ public class EndGameFrame extends SwingPhase {
             new WinFrame();
         else
             new DefeatFrame();
+
+        Dimension screenSize = Toolkit.getDefaultToolkit ().getScreenSize();
+        Dimension frameSize = jFrame.getSize();
+        jFrame.setLocation ((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
     }
 
     public void set() {
@@ -144,4 +148,10 @@ public class EndGameFrame extends SwingPhase {
     public ArrayList<Integer> getDieFromRoundTrack() {
         return null;
     }
+
+    @Override
+    public Integer getValueForDie(){
+        return null;
+    }
+
 }

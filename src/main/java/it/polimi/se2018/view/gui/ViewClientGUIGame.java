@@ -114,11 +114,8 @@ public class ViewClientGUIGame extends SwingPhase {
         for (int i=0; i<3; i++) {
             int finalI = i;
             toolCard[i] = new SwingToolCards(toolCards.get(i));
-            toolCard[i].getCard().addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
+            toolCard[i].getCard().addActionListener(actionListener -> {
                     toolCardChosen = "" + toolCards.get(finalI).getIdToolCard();
-                }
             });
         }
 
@@ -170,7 +167,7 @@ public class ViewClientGUIGame extends SwingPhase {
         }
 
         //PLAYER
-        SwingPlayer player = new SwingPlayer(mine, new SwingPrivateObjective(privateObjective), Integer.toString(tokensLeft.getTokensLeft()));
+        SwingPlayer player = new SwingPlayer(mine, new SwingPrivateObjective(privateObjective), tokensLeft.getTokensLeft());
 
         //BOTTONI
         JButton conferma = new JButton("CONFIRM MOVE");
@@ -195,6 +192,10 @@ public class ViewClientGUIGame extends SwingPhase {
                                     } catch (RemoteException e1) {
                                         e1.printStackTrace();
                                     }
+                                }
+                                else {
+                                    idDieChosen = "";
+                                    toolCardChosen = "";
                                 }
                             }
 
@@ -322,9 +323,12 @@ public class ViewClientGUIGame extends SwingPhase {
         constraints.anchor = GridBagConstraints.SOUTHWEST;
         jFrame.add(rt, constraints);
 
-        //jFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         jFrame.pack();
         jFrame.setVisible(true);
+
+        Dimension screenSize = Toolkit.getDefaultToolkit ().getScreenSize();
+        Dimension frameSize = jFrame.getSize();
+        jFrame.setLocation ((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
 
         jFrame.validate();
     }
@@ -403,6 +407,15 @@ public class ViewClientGUIGame extends SwingPhase {
         ArrayList<Integer> returnValues = roundTrackFrame.getValues();
 
         return returnValues;
+    }
+
+    @Override
+    public Integer getValueForDie() {
+        Integer value;
+        DieValueFrame frame = new DieValueFrame();
+
+        value = frame.getValue();
+        return value;
     }
 
     @Override

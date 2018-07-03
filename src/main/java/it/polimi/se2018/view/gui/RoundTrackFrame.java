@@ -5,8 +5,6 @@ import it.polimi.se2018.model.events.ModelChangedMessageRound;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class RoundTrackFrame {
@@ -21,8 +19,8 @@ public class RoundTrackFrame {
 
         for (int i=0; i<roundTrack.size(); i++) {
             ModelChangedMessageDiceArena messageDiceArena = new ModelChangedMessageDiceArena(roundTrack.get(i).getRepresentation());
-            SwingDiceArena round = new SwingDiceArena(messageDiceArena);
-            arena.add(round);
+            SwingDiceArena round1 = new SwingDiceArena(messageDiceArena);
+            arena.add(round1);
         }
 
         JFrame frame = new JFrame();
@@ -41,13 +39,10 @@ public class RoundTrackFrame {
             for (int n=0; n<arena.get(i).getButtons().size(); n++) {
                 int finalI = i;
                 int finalN = n;
-                arena.get(i).getButtons().get(n).addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        round = finalI;
-                        die = finalN;
-                        label1.setText(s + round + "-" + die);
-                    }
+                arena.get(i).getButtons().get(n).addActionListener(actionListener -> {
+                    round = finalI;
+                    die = finalN;
+                    label1.setText(s + round + "-" + die);
                 });
             }
         }
@@ -58,12 +53,9 @@ public class RoundTrackFrame {
         panel.add(jPanel, BorderLayout.CENTER);
 
         JButton button = new JButton("CONFIRM");
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (round!=-1 && die!=-1)
-                    dialog.dispose();
-            }
+        button.addActionListener(actionListener -> {
+            if (round!=-1 && die!=-1)
+            dialog.dispose();
         });
 
         dialog.setLayout(new BorderLayout());

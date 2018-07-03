@@ -33,4 +33,6 @@ public abstract class SwingPhase {
     public abstract ArrayList<Integer> getDoublePositionInPatternCard();
 
     public abstract ArrayList<Integer> getDieFromRoundTrack();
+
+    public abstract Integer getValueForDie();
 }
