@@ -2,6 +2,7 @@ package it.polimi.se2018.model.rounds;
 
 
 import it.polimi.se2018.model.Table;
+import it.polimi.se2018.model.container.DieColor;
 import it.polimi.se2018.model.player.Player;
 import it.polimi.se2018.model.player.PlayerHasNotSetDieThisTurnException;
 import it.polimi.se2018.model.container.DiceContainer;
@@ -194,13 +195,32 @@ public class Round {
         if(turnsPlayedByPlayer(playerId) != 1) {
             throw new RoundPlayerAlreadyPlayedSecondTurnException();
         }
-
-        /* remove the player from turns array.
-         * Its id value should be contained
-         * in the array only once.
-         */
         turns.remove(turns.indexOf(playerId));
 
         player.setHasSetDieThisTurn(false);
+    }
+
+    /**
+     * This method checks whether or not there is a die of the same color as the param color
+     * in the dice left behind when this turn was over
+     * @param color die color
+     * @return true if there is a die with the correct color, false otherwise
+     */
+    public boolean checkColorIsPresentInDiceLeft(DieColor color){
+
+        for(int i = 0; i < rolledDiceLeft.size(); i++) {
+            try {
+                Die d = diceContainer.getDie(rolledDiceLeft.get(i));
+                if(color == d.getColor())
+                    return true;
+            } catch (DiceContainerUnsupportedIdException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return false;
+
+
+
     }
 }

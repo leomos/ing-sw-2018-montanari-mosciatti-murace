@@ -768,30 +768,46 @@ public class Model extends Observable<ModelChangedMessage> {
      * @return boolean representing whether or not the two dice had the same color
      */
     public boolean checkDiceColor(int idPlayer, ArrayList<Integer> positions1, ArrayList<Integer> positions2){
-
-        PatternCard patternCard = table.getPlayers(idPlayer).getChosenPatternCard();
-        Die d1;
-        Die d2;
-
-        if(!patternCard.getPatternCardCell(positions1.get(0), positions1.get(1)).isEmpty() && !patternCard.getPatternCardCell(positions1.get(0), positions1.get(1)).isEmpty())
+        PatternCard patternCard = table.getPlayers(idPlayer).getChosenPatternCard();;
         try {
+            Die d1;
             d1 = table.getDiceContainer().getDie(patternCard.getPatternCardCell(positions1.get(0), positions1.get(1)).getRolledDieId());
-            d2 = table.getDiceContainer().getDie(patternCard.getPatternCardCell(positions2.get(0), positions2.get(1)).getRolledDieId());
 
-            if( d1.getColor() == d2.getColor() )
-                return true;
-            else {
-                notify(new ModelChangedMessageMoveFailed(idPlayer, "The Dice have different colors"));
+                table.getRoundTrack().checkColorIsPresentInRoundTrack(d1.getColor());
+
+
+            if(!positions2.isEmpty()) {
+
+
+                Die d2;
+
+                if (!patternCard.getPatternCardCell(positions1.get(0), positions1.get(1)).isEmpty() && !patternCard.getPatternCardCell(positions1.get(0), positions1.get(1)).isEmpty())
+                    try {
+                        d2 = table.getDiceContainer().getDie(patternCard.getPatternCardCell(positions2.get(0), positions2.get(1)).getRolledDieId());
+
+                        if (d1.getColor() == d2.getColor())
+                            return true;
+                        else {
+                            notify(new ModelChangedMessageMoveFailed(idPlayer, "The Dice have different colors"));
+                            return false;
+                        }
+
+                    } catch (DiceContainerUnsupportedIdException e) {
+                        e.printStackTrace();
+                    }
+
                 return false;
-            }
 
+            }
+        } catch (DieNotPresentException e) {
+            notify(new ModelChangedMessageMoveFailed(idPlayer, "There is not a die in the round track with the color of the dice you want to move"));
+            return false;
         } catch (DiceContainerUnsupportedIdException e) {
             e.printStackTrace();
         }
 
-        return false;
 
-
+        return true;
 
     }
 

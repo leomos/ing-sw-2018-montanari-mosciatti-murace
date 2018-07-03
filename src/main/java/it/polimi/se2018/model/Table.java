@@ -150,7 +150,7 @@ public class Table {
 
         //TO FORCE 3 PATTERNCARDS FOR TESTS
 
-        toolCardsList.add(0,1);
+        toolCardsList.add(0,11);
         toolCardsList.add(1,2);
         toolCardsList.add(2,9);
 
