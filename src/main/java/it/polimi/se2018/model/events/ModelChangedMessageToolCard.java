@@ -4,13 +4,13 @@ import it.polimi.se2018.network.visitor.MessageVisitorInterface;
 
 public class ModelChangedMessageToolCard extends ModelChangedMessage implements Message {
 
-    private String idToolCard;
+    private int idToolCard;
 
     private String name;
 
     private String description;
 
-    private String cost;
+    private int cost;
 
     /**
      * Message created by the model and put in a notify when the game sends the tool cards in play or when the
@@ -20,7 +20,7 @@ public class ModelChangedMessageToolCard extends ModelChangedMessage implements 
      * @param description tool card description
      * @param cost tool card cost
      */
-    public ModelChangedMessageToolCard (String idToolCard, String name, String description, String cost){
+    public ModelChangedMessageToolCard (int idToolCard, String name, String description, int cost){
         this.idToolCard = idToolCard;
         this.name = name;
         this.description = description;
@@ -31,7 +31,7 @@ public class ModelChangedMessageToolCard extends ModelChangedMessage implements 
         return name;
     }
 
-    public String getIdToolCard() {
+    public int getIdToolCard() {
         return idToolCard;
     }
 
@@ -39,7 +39,7 @@ public class ModelChangedMessageToolCard extends ModelChangedMessage implements 
         return description;
     }
 
-    public String getCost() {
+    public int getCost() {
         return cost;
     }
 

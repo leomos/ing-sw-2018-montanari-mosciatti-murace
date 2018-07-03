@@ -33,11 +33,11 @@ public class SwingMainView extends ViewClient {
     @Override
     public synchronized void update(ModelChangedMessage message){
         if(message instanceof ModelChangedMessageMoveFailed){
-            if(((ModelChangedMessageMoveFailed) message).getPlayer().equals(Integer.toString(idClient))) {
+            if(((ModelChangedMessageMoveFailed) message).getPlayer() == (idClient)) {
                 new MoveFailedFrame(((ModelChangedMessageMoveFailed) message).getErrorMessage());
             }
         } else if(message instanceof ModelChangedMessageNewEvent){
-            if(((ModelChangedMessageNewEvent) message).getPlayer().equals(Integer.toString(idClient))){
+            if(((ModelChangedMessageNewEvent) message).getPlayer() == (idClient)){
                 System.out.println("NEW EVENT: " + ((ModelChangedMessageNewEvent) message).getMessage());
             }
         }
@@ -58,13 +58,13 @@ public class SwingMainView extends ViewClient {
             swingPhase.print();
             if(((ModelChangedMessageRefresh) message).getIdPlayerPlaying() != null) {
                 swingPhase.update(message);
-                idPlayerPlaying = Integer.parseInt(((ModelChangedMessageRefresh) message).getIdPlayerPlaying());
+                idPlayerPlaying = ((ModelChangedMessageRefresh) message).getIdPlayerPlaying();
                 if(idPlayerPlaying == idClient && canIPlay) {
                     new TurnFrame();
                 }
             }
         } else if(message instanceof ModelChangedMessagePlayerAFK){
-            if(((ModelChangedMessagePlayerAFK) message).getPlayer().equals(Integer.toString(idClient))) {
+            if(((ModelChangedMessagePlayerAFK) message).getPlayer() == idClient) {
                 System.out.println(((ModelChangedMessagePlayerAFK) message).getMessage());
 
                 clientSuspended = true;

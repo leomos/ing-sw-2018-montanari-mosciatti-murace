@@ -53,7 +53,7 @@ public class ViewClientGUIGame extends SwingPhase {
     public void update(ModelChangedMessage message) {
 
         if (message instanceof ModelChangedMessagePatternCard){
-            idPlayers.add(((ModelChangedMessagePatternCard) message).getIdPlayer());
+            idPlayers.add(Integer.toString(((ModelChangedMessagePatternCard) message).getIdPlayer()));
             patternCards.add((ModelChangedMessagePatternCard) message);
             diceOnPatternCards.add(null);
         }
@@ -63,7 +63,7 @@ public class ViewClientGUIGame extends SwingPhase {
             diceOnPatternCards.add(i, (ModelChangedMessageDiceOnPatternCard) message);
         }
         else if(message instanceof ModelChangedMessagePrivateObjective) {
-            if (((ModelChangedMessagePrivateObjective) message).getIdPlayer().equals(Integer.toString(idClient)))
+            if (((ModelChangedMessagePrivateObjective) message).getIdPlayer() == idClient)
                 privateObjective = ((ModelChangedMessagePrivateObjective) message);
         }
         else if(message instanceof ModelChangedMessagePublicObjective)
@@ -71,7 +71,7 @@ public class ViewClientGUIGame extends SwingPhase {
         else if(message instanceof ModelChangedMessageToolCard) {
             if(toolCards.size() == 3) {
                 for(int i = 0; i < 3; i++)
-                    if(toolCards.get(i).getIdToolCard().equals(((ModelChangedMessageToolCard) message).getIdToolCard())) {
+                    if(toolCards.get(i).getIdToolCard() == ((ModelChangedMessageToolCard) message).getIdToolCard()) {
                         toolCards.remove(i);
                         toolCards.add(i, (ModelChangedMessageToolCard) message);
                     }
@@ -82,7 +82,7 @@ public class ViewClientGUIGame extends SwingPhase {
         else if(message instanceof ModelChangedMessageDiceArena)
             diceArena = ((ModelChangedMessageDiceArena)message);
         else if(message instanceof ModelChangedMessageRound) {
-            int i = Integer.parseInt(((ModelChangedMessageRound) message).getIdRound());
+            int i = ((ModelChangedMessageRound) message).getIdRound();
             if(i >= roundTrack.size())
                 roundTrack.add((ModelChangedMessageRound) message);
             else {
@@ -91,11 +91,11 @@ public class ViewClientGUIGame extends SwingPhase {
             }
         }
         else if(message instanceof ModelChangedMessageTokensLeft) {
-            if (((ModelChangedMessageTokensLeft) message).getIdPlayer().equals(Integer.toString(idClient)))
+            if (((ModelChangedMessageTokensLeft) message).getIdPlayer() == idClient)
                 tokensLeft = (ModelChangedMessageTokensLeft) message;
         }
         else if(message instanceof ModelChangedMessageRefresh) {
-            isMyTurn = Integer.parseInt(((ModelChangedMessageRefresh) message).getIdPlayerPlaying()) == idClient;
+            isMyTurn = ((ModelChangedMessageRefresh) message).getIdPlayerPlaying() == idClient;
         }
     }
 
@@ -134,11 +134,11 @@ public class ViewClientGUIGame extends SwingPhase {
         SwingDiceOnPatternCard mine = null;
         SwingDiceOnPatternCard[] patternCard = new SwingDiceOnPatternCard[3];
         for (int i=0; i<patternCards.size(); i++) {
-            if (patternCards.get(i).getIdPlayer().equals(Integer.toString(idClient))) {
+            if (patternCards.get(i).getIdPlayer() == (idClient)) {
                 myPatternCard = new SwingPatternCard(patternCards.get(i), false);
 
                 for (int m=0; m<diceOnPatternCards.size(); m++) {
-                    if (diceOnPatternCards.get(m).getIdPlayer().equals(Integer.toString(idClient)))
+                    if (diceOnPatternCards.get(m).getIdPlayer() == idClient)
                         mine = new SwingDiceOnPatternCard(diceOnPatternCards.get(m), patternCards.get(i), myPatternCard.getPatternCard(), false);
                 }
                 for (int n=0; n<20; n++) {
@@ -155,7 +155,7 @@ public class ViewClientGUIGame extends SwingPhase {
             else {
                 SwingPatternCard card = new SwingPatternCard(patternCards.get(i), true);
                 for (int m=0; m<diceOnPatternCards.size(); m++) {
-                    if (diceOnPatternCards.get(m).getIdPatternCard().equals(card.getId()))
+                    if (Integer.toString(diceOnPatternCards.get(m).getIdPatternCard()).equals(card.getId()))
                         patternCard[m] = new SwingDiceOnPatternCard(diceOnPatternCards.get(m), patternCards.get(i), card.getPatternCard(), true);
                 }
             }
@@ -172,7 +172,7 @@ public class ViewClientGUIGame extends SwingPhase {
         }
 
         //PLAYER
-        SwingPlayer player = new SwingPlayer(mine, new SwingPrivateObjective(privateObjective), tokensLeft.getTokensLeft());
+        SwingPlayer player = new SwingPlayer(mine, new SwingPrivateObjective(privateObjective), Integer.toString(tokensLeft.getTokensLeft()));
 
         //BOTTONI
         JButton conferma = new JButton("CONFIRM MOVE");
@@ -252,7 +252,7 @@ public class ViewClientGUIGame extends SwingPhase {
         int n = patternCards.size();
         pc.setLayout(new FlowLayout());
         for (int i=0; i<n; i++) {
-            if (!patternCards.get(i).getIdPlayer().equals(Integer.toString(idClient)))
+            if (!(patternCards.get(i).getIdPlayer() == idClient))
                 pc.add(patternCard[i]);
         }
 

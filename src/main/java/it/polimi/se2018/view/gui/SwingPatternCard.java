@@ -12,7 +12,7 @@ public class SwingPatternCard extends JPanel {
     private String id;
 
     public SwingPatternCard(ModelChangedMessagePatternCard modelChangedMessagePatternCard, boolean enable) {
-        id = modelChangedMessagePatternCard.getIdPatternCard();
+        id = Integer.toString(modelChangedMessagePatternCard.getIdPatternCard());
         JPanel p = new JPanel();
         p.setLayout(new GridLayout(4, 5));
         p.setPreferredSize(new Dimension(250, 200));

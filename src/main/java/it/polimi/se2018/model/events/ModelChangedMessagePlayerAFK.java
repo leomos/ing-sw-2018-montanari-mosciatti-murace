@@ -5,7 +5,7 @@ import it.polimi.se2018.network.visitor.MessageVisitorInterface;
 public class ModelChangedMessagePlayerAFK  extends ModelChangedMessage{
 
 
-    private String player;
+    private int player;
 
     private String message;
 
@@ -15,12 +15,12 @@ public class ModelChangedMessagePlayerAFK  extends ModelChangedMessage{
      * @param player player that disconnected
      * @param message message sent to the player
      */
-    public ModelChangedMessagePlayerAFK(String player, String message){
+    public ModelChangedMessagePlayerAFK(int player, String message){
         this.player = player;
         this.message = message;
     }
 
-    public String getPlayer() {
+    public int getPlayer() {
         return player;
     }
 

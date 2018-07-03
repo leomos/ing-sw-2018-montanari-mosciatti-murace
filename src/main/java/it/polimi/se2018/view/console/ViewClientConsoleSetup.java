@@ -1,9 +1,6 @@
 package it.polimi.se2018.view.console;
 
-import it.polimi.se2018.model.events.ModelChangedMessage;
-import it.polimi.se2018.model.events.ModelChangedMessagePatternCard;
-import it.polimi.se2018.model.events.ModelChangedMessagePrivateObjective;
-import it.polimi.se2018.model.events.PlayerMessage;
+import it.polimi.se2018.model.events.*;
 
 import java.util.ArrayList;
 
@@ -20,14 +17,49 @@ public class ViewClientConsoleSetup extends ViewClientConsolePrint {
     }
 
     @Override
-    public void update(ModelChangedMessage message){
-        if(message instanceof ModelChangedMessagePatternCard) {
-            if (((ModelChangedMessagePatternCard) message).getIdPlayer().equals(Integer.toString(idClient)))
-                patternCards.add((ModelChangedMessagePatternCard) message);
-        }
-        else if(message instanceof ModelChangedMessagePrivateObjective)
-            if (((ModelChangedMessagePrivateObjective) message).getIdPlayer().equals(Integer.toString(idClient)))
-                privateObjective = ((ModelChangedMessagePrivateObjective) message);
+    public void update(ModelChangedMessagePatternCard message) {
+        if (message.getIdPlayer() == idClient)
+            patternCards.add(message);
+    }
+
+    @Override
+    public void update(ModelChangedMessagePrivateObjective message) {
+        if (message.getIdPlayer() == idClient)
+            privateObjective = message;
+    }
+
+    @Override
+    public void update(ModelChangedMessageDiceOnPatternCard message) {
+
+    }
+
+    @Override
+    public void update(ModelChangedMessagePublicObjective message) {
+
+    }
+
+    @Override
+    public void update(ModelChangedMessageDiceArena message) {
+
+    }
+
+    @Override
+    public void update(ModelChangedMessageRound message) {
+
+    }
+
+    @Override
+    public void update(ModelChangedMessageTokensLeft message) {
+
+    }
+
+    @Override
+    public void update(ModelChangedMessageEndGame message) {
+
+    }
+
+    @Override
+    public void update(ModelChangedMessageToolCard message) {
 
     }
 
@@ -46,7 +78,7 @@ public class ViewClientConsoleSetup extends ViewClientConsolePrint {
     public Integer askForPatternCard(String s)  {
 
         for(int i = 0; i < patternCards.size(); i++){
-            if(patternCards.get(i).getIdPatternCard().equals(s)) {
+            if(Integer.toString(patternCards.get(i).getIdPatternCard()).equals(s)) {
                 return Integer.parseInt(s);
             }
         }

@@ -309,17 +309,10 @@ public class Table {
             orderedScores.add(result);
             player.setFinalScore(result);
 
-            //todo da togliere questo
+            //todo da togliere
             scoreboard.setScore(player.getId(), result, player.getTokens());
+
         }
-
-
-        //todo: fare l'ordinamento guardando tokens left e last player playing
-        Collections.sort(orderedScores);
-        Collections.reverse(orderedScores);
-
-
-
 
 
 

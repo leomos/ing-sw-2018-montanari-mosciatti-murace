@@ -1,8 +1,6 @@
 package it.polimi.se2018.view.console;
 
-import it.polimi.se2018.model.events.ModelChangedMessage;
-import it.polimi.se2018.model.events.ModelChangedMessageEndGame;
-import it.polimi.se2018.model.events.PlayerMessage;
+import it.polimi.se2018.model.events.*;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -19,12 +17,48 @@ public class ViewClientConsoleEndGame extends ViewClientConsolePrint {
     }
 
     @Override
-    public void update(ModelChangedMessage message) {
+    public void update(ModelChangedMessageEndGame message) {
+        scoreboardMessage = message;
+        this.print();
+    }
 
-        if (message instanceof ModelChangedMessageEndGame){
-            scoreboardMessage = (ModelChangedMessageEndGame) message;
-            this.print();
-        }
+    @Override
+    public void update(ModelChangedMessagePatternCard message) {
+
+    }
+
+    @Override
+    public void update(ModelChangedMessagePrivateObjective message) {
+
+    }
+
+    @Override
+    public void update(ModelChangedMessageDiceOnPatternCard message) {
+
+    }
+
+    @Override
+    public void update(ModelChangedMessagePublicObjective message) {
+
+    }
+
+    @Override
+    public void update(ModelChangedMessageDiceArena message) {
+
+    }
+
+    @Override
+    public void update(ModelChangedMessageRound message) {
+
+    }
+
+    @Override
+    public void update(ModelChangedMessageTokensLeft message) {
+
+    }
+
+    @Override
+    public void update(ModelChangedMessageToolCard message) {
 
     }
 
@@ -37,18 +71,10 @@ public class ViewClientConsoleEndGame extends ViewClientConsolePrint {
         System.out.println("/°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°/");
         System.out.println("/°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°/");
 
-        if(scoreboard != null) {
-
-            for (int i = 0; i < scoreboard.length() - 1; i += 5)
-                System.out.println(((i / 5) + 1) + "° place ->" + scoreboard.charAt(i) + " with " + scoreboard.substring(i + 1, i + 4) + "\tTokens Left: " + scoreboard.charAt(i + 4));
-
-            System.out.println("The last player to play was " + scoreboard.charAt(scoreboard.length() - 1));
-
-            if (scoreboard.charAt(0) == idClient + '0')
-                System.out.println("CONGRATS, YOU WON");
-            else
-                System.out.println("CONGRATS, YOU LOSE");
-
+        for (String s : scoreboard.split("/")) {
+            String[] score = s.split(";");
+            if(score.length == 3)
+                System.out.println("ID: " + score[0] + " | " + "SCORE: " + score[1] + " | " + "TOKENS LEFT: " + score[2]);
         }
 
         try {

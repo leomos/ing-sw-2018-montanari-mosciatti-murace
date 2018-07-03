@@ -56,7 +56,7 @@ public class MessageVisitorImplementationUpdate implements MessageVisitorInterfa
     @Override
     public void visitModelChangedMessagePlayerAFK(ModelChangedMessagePlayerAFK modelChangedMessagePlayerAFK) {
         update(modelChangedMessagePlayerAFK);
-        if(modelChangedMessagePlayerAFK.getPlayer().equals(Integer.toString(player.getId())))
+        if(modelChangedMessagePlayerAFK.getPlayer() == player.getId())
             player.setInactive(true);
     }
 

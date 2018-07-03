@@ -4,7 +4,7 @@ import it.polimi.se2018.network.visitor.MessageVisitorInterface;
 
 public class ModelChangedMessageMoveFailed extends ModelChangedMessage implements Message {
 
-    private String player;
+    private int player;
 
     private String errorMessage;
 
@@ -13,12 +13,12 @@ public class ModelChangedMessageMoveFailed extends ModelChangedMessage implement
      * @param player player id that performed the move
      * @param errorMessage string containing the reason the move was rejected
      */
-    public ModelChangedMessageMoveFailed(String player, String errorMessage){
+    public ModelChangedMessageMoveFailed(int player, String errorMessage){
         this.player = player;
         this.errorMessage = errorMessage;
     }
 
-    public String getPlayer() {
+    public int getPlayer() {
         return player;
     }
 
