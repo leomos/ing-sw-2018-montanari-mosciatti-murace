@@ -10,7 +10,6 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 public class ViewClientGUIGame extends SwingPhase {
     private JFrame jFrame = new JFrame();
@@ -27,7 +26,7 @@ public class ViewClientGUIGame extends SwingPhase {
 
     private boolean isMyTurn;
 
-    private ArrayList<String> idPlayers = new ArrayList<>();
+    private ArrayList<Integer> idPlayers = new ArrayList<>();
 
     private ArrayList<ModelChangedMessagePatternCard> patternCards = new ArrayList<>();
 
@@ -53,7 +52,7 @@ public class ViewClientGUIGame extends SwingPhase {
     public void update(ModelChangedMessage message) {
 
         if (message instanceof ModelChangedMessagePatternCard){
-            idPlayers.add(Integer.toString(((ModelChangedMessagePatternCard) message).getIdPlayer()));
+            idPlayers.add(((ModelChangedMessagePatternCard) message).getIdPlayer());
             patternCards.add((ModelChangedMessagePatternCard) message);
             diceOnPatternCards.add(null);
         }
@@ -324,7 +323,8 @@ public class ViewClientGUIGame extends SwingPhase {
         constraints.anchor = GridBagConstraints.SOUTHWEST;
         jFrame.add(rt, constraints);
 
-        jFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        //jFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        jFrame.pack();
         jFrame.setVisible(true);
 
         jFrame.validate();
@@ -341,11 +341,11 @@ public class ViewClientGUIGame extends SwingPhase {
         int pc = 0, dop = 0;
 
         for (int i=0; i<patternCards.size(); i++) {
-            if (patternCards.get(i).getIdPlayer().equals(Integer.toString(idClient))) {
+            if (patternCards.get(i).getIdPlayer() == idClient) {
                 pc = i;
 
                 for (int m = 0; m < diceOnPatternCards.size(); m++)
-                    if (diceOnPatternCards.get(m).getIdPlayer().equals(Integer.toString(idClient))) {
+                    if (diceOnPatternCards.get(m).getIdPlayer() == idClient) {
                         dop = m;
                 }
             }

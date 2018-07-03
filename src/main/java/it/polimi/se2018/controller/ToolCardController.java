@@ -156,16 +156,16 @@ public class ToolCardController implements Runnable{
                         ArrayList<Integer> positions2 = new ArrayList<Integer>();
                         for (int i = 0; i < 4; i++)
                             positions1.add(positions.get(i));
-
-                        if (positions.size() == 4)
-                            model.moveDieInsidePatternCard(idPlayer, positions1, false, false, idToolCard);
-                        else {
-                            for (int i = 4; i < 8; i++)
+                        if(positions.size() != 4)
+                           for (int i = 4; i < 8; i++)
                                 positions2.add(positions.get(i));
 
-                            if (model.checkDiceColor(idPlayer, positions1, positions2)) {
+                        if (model.checkDiceColor(idPlayer, positions1, positions2)){
+                            if (positions.size() == 4)
+                                model.moveDieInsidePatternCard(idPlayer, positions1, false, false, idToolCard);
+                            else
                                 model.moveTwoDiceInsidePatternCard(idPlayer, positions1, positions2, 4);
-                            }
+
                         }
                     }
                 }

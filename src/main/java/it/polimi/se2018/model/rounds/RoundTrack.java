@@ -1,8 +1,9 @@
 package it.polimi.se2018.model.rounds;
 
 import it.polimi.se2018.model.Table;
-import it.polimi.se2018.model.player.Player;
 import it.polimi.se2018.model.container.DiceContainer;
+import it.polimi.se2018.model.container.DieColor;
+import it.polimi.se2018.model.player.Player;
 
 import java.util.ArrayList;
 
@@ -119,5 +120,23 @@ public class RoundTrack {
         else
             throw new RoundHasNotBeenInitializedYetException();
 
+    }
+
+    /**
+     * this method checks every round passed to see there is a die left behind with the color
+     * as the param color. If it finds one, it returns immediately. If it doesn't found one,
+     * it throw the DieNotPresentException
+     * @param color die color that needs to be in the round track
+     * @throws DieNotPresentException if the color is not present in any of the dice left of any rounds
+     */
+    public void checkColorIsPresentInRoundTrack(DieColor color) throws DieNotPresentException {
+
+        for(int i = 0; i < currentRoundId; i++) {
+            Round round = rounds[i];
+            if(round.checkColorIsPresentInDiceLeft(color))
+                return;
+        }
+
+        throw new DieNotPresentException();
     }
 }
