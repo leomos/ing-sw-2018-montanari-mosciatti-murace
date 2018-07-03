@@ -175,4 +175,9 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
     public ArrayList<Integer> getPositionInPatternCard() {
         return null;
     }
+
+    @Override
+    public Integer getDieFromDiceArena() {
+        return 0;
+    }
 }

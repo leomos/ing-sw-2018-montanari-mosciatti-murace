@@ -23,4 +23,6 @@ public abstract class SwingPhase {
     public abstract PlayerMessage getMainMove();
 
     public abstract ArrayList<Integer> getPositionInPatternCard();
+
+    public abstract Integer getDieFromDiceArena();
 }
