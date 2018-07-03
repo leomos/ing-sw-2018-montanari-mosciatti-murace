@@ -10,6 +10,8 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class SwingRoundTrack extends JPanel {
+    private ArrayList<SwingDiceArena> arena = new ArrayList<>();
+
     public SwingRoundTrack(ArrayList<ModelChangedMessageRound> roundtrack) {
         setLayout(new FlowLayout());
         setPreferredSize(new Dimension(500, 60));
@@ -29,6 +31,7 @@ public class SwingRoundTrack extends JPanel {
                         JFrame jFrame = new JFrame("ROUND " + b.getText());
                         ModelChangedMessageDiceArena messageDiceArena = new ModelChangedMessageDiceArena(roundtrack.get(Integer.parseInt(b.getText())-1).getRepresentation());
                         SwingDiceArena round = new SwingDiceArena(messageDiceArena);
+                        arena.add(round);
                         for (int i=0; i<round.getButtons().size(); i++)
                             round.getButtons().get(i).setToolTipText("ROUND " + b.getText());
                         jFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
@@ -42,5 +45,9 @@ public class SwingRoundTrack extends JPanel {
                 b.setEnabled(false);
             add(b);
         }
+    }
+
+    public ArrayList<SwingDiceArena> getArena() {
+        return arena;
     }
 }

@@ -14,7 +14,7 @@ public abstract class SwingPhase {
 
     public abstract void print();
 
-    public void setServerInterface(ServerInterface serverInterface){
+    public void setServerInterface(ServerInterface serverInterface) {
         this.serverInterface = serverInterface;
     }
 
@@ -31,4 +31,6 @@ public abstract class SwingPhase {
     public abstract ArrayList<Integer> getSinglePositionInPatternCard(ArrayList<Integer> listOfAvailablePosition);
 
     public abstract ArrayList<Integer> getDoublePositionInPatternCard();
+
+    public abstract ArrayList<Integer> getDieFromRoundTrack();
 }
