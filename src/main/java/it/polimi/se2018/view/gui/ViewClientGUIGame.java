@@ -354,6 +354,12 @@ public class ViewClientGUIGame extends SwingPhase {
         return frame.getvalues();
     }
 
+    @Override
+    public Integer getDieFromDiceArena() {
+        DiceArenaFrame frame = new DiceArenaFrame(diceArena);
+        return frame.getid();
+    }
+
     public PlayerMessage getMainMove() {
 
         if (!idDieChosen.equals("") && toolCardChosen.length() == 0) {
