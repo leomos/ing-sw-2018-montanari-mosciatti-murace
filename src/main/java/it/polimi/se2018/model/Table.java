@@ -309,7 +309,6 @@ public class Table {
             orderedScores.add(result);
             player.setFinalScore(result);
 
-            //todo da togliere
             scoreboard.setScore(player.getId(), result, player.getTokens());
 
         }

@@ -18,9 +18,9 @@ public class ViewClientGUIGame extends SwingPhase {
 
     private String toolCardChosen = "";
 
-    private int riga = -1;
+    private int row = -1;
 
-    private int colonna = -1;
+    private int column = -1;
 
     private int idClient;
 
@@ -145,8 +145,8 @@ public class ViewClientGUIGame extends SwingPhase {
                     SwingDie die = mine.getPc().get(n);
                     die.addActionListener(actionListener -> {
                             if (!idDieChosen.equals("")) {
-                                riga = finalN / 5;
-                                colonna = finalN % 5;
+                                row = finalN / 5;
+                                column = finalN % 5;
                             }
                     });
                 }
@@ -165,8 +165,7 @@ public class ViewClientGUIGame extends SwingPhase {
         for (int i=0; i<arena.getButtons().size(); i++){
             SwingDie b = arena.getButtons().get(i);
             b.addActionListener(actionListener -> {
-                    if (idDieChosen.equals(""))
-                        idDieChosen = "" + b.getId();
+                idDieChosen = "" + b.getId();
             });
         }
 
@@ -178,7 +177,7 @@ public class ViewClientGUIGame extends SwingPhase {
         conferma.addActionListener(actionListener -> {
                 if (isMyTurn) {
                     if (!idDieChosen.equals("") || !toolCardChosen.equals("")) {
-                        ConfirmationFrame f = new ConfirmationFrame(idDieChosen, colonna, riga, toolCardChosen);
+                        ConfirmationFrame f = new ConfirmationFrame(idDieChosen, column, row, toolCardChosen);
                         f.addWindowListener(new WindowListener() {
                             @Override
                             public void windowOpened(WindowEvent e) {
@@ -251,7 +250,7 @@ public class ViewClientGUIGame extends SwingPhase {
         int n = patternCards.size();
         pc.setLayout(new FlowLayout());
         for (int i=0; i<n; i++) {
-            if (!(patternCards.get(i).getIdPlayer() == idClient))
+            if (patternCards.get(i).getIdPlayer() != idClient)
                 pc.add(patternCard[i]);
         }
 
@@ -353,51 +352,6 @@ public class ViewClientGUIGame extends SwingPhase {
 
         ConfirmPositionFrame frame = new ConfirmPositionFrame(diceOnPatternCards.get(dop), patternCards.get(pc));
         return frame.getvalues();
-
-                /*.addWindowListener(new WindowListener() {
-            @Override
-            public void windowOpened(WindowEvent e) {
-
-            }
-
-            @Override
-            public void windowClosing(WindowEvent e) {
-            }
-
-            @Override
-            public void windowClosed(WindowEvent e) {
-                values.addAll(frame.getvalues());
-            }
-
-            @Override
-            public void windowIconified(WindowEvent e) {
-
-            }
-
-            @Override
-            public void windowDeiconified(WindowEvent e) {
-
-            }
-
-            @Override
-            public void windowActivated(WindowEvent e) {
-
-            }
-
-            @Override
-            public void windowDeactivated(WindowEvent e) {
-
-            }
-        });
-        while(values.isEmpty()) {
-            try {
-                TimeUnit.SECONDS.sleep(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        return values;
-*/
     }
 
     public PlayerMessage getMainMove() {
@@ -405,7 +359,7 @@ public class ViewClientGUIGame extends SwingPhase {
         if (!idDieChosen.equals("") && toolCardChosen.length() == 0) {
             int s = Integer.parseInt(idDieChosen);
             idDieChosen = "";
-            return  new PlayerMessageDie(idClient, s, colonna, riga);
+            return  new PlayerMessageDie(idClient, s, column, row);
         }
         if (idDieChosen.equals("") && !toolCardChosen.equals("")) {
             int t = Integer.parseInt(toolCardChosen);
