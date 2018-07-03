@@ -118,8 +118,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
             else
                 myPatternCardId = i;
 
-        for (int i = 0; i < roundTrack.size(); i++)
-            printRoundTrack(roundTrack.get(i));
+        for (ModelChangedMessageRound round : roundTrack) printRoundTrack(round);
         int app = roundTrack.size() + 1;
         System.out.println("\n\nCURRENT ROUND IS:\t" + app );
 
@@ -186,7 +185,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
     @Override
     public ArrayList<Integer> getPositionInPatternCard(){
-        ArrayList<Integer> position = new ArrayList<Integer>();
+        ArrayList<Integer> position = new ArrayList<>();
         boolean moveOk1, moveOk2;
 
         do {
@@ -225,9 +224,8 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
                 }
             }
 
-            if(!suspended)
-                if(moveOk1 || moveOk2)
-                    System.out.println("Try Again!");
+            if(!suspended && (moveOk1 || moveOk2))
+                System.out.println("Try Again!");
         }
         while((moveOk1 || moveOk2) && !suspended);
 
@@ -236,7 +234,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
     @Override
     public ArrayList<Integer> getDoublePositionInPatternCard(){
-        ArrayList<Integer> position = new ArrayList<Integer>();
+        ArrayList<Integer> position = new ArrayList<>();
         boolean moveNotOk1, moveNotOk2;
         int numberOfMovements = 0;
         input = new Scanner(System.in);
@@ -294,9 +292,8 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
                         }
                     }
 
-                    if(!suspended)
-                        if (moveNotOk1 || moveNotOk2)
-                            System.out.println("Try Again!");
+                    if(!suspended && (moveNotOk1 || moveNotOk2))
+                        System.out.println("Try Again!");
                 }
                 while ((moveNotOk1 || moveNotOk2) && !suspended);
             }
@@ -314,7 +311,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
 
             System.out.println("\nInsert x and y separated by space");
-            if(listOfAvailablePositions.size() != 0) {
+            if(!listOfAvailablePositions.isEmpty()) {
                 System.out.println("The position must be one of the following:");
                 for(int i = 0; i < listOfAvailablePositions.size(); i+=2)
                     System.out.println("[" + listOfAvailablePositions.get(i) + " " + listOfAvailablePositions.get(i+1) + "]");
@@ -334,11 +331,10 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
                 }
             }
 
-            if(!suspended)
-                if(listOfAvailablePositions.size() != 0) {
-                    for (int i = 0; i < listOfAvailablePositions.size(); i = i + 2)
-                        if (listOfAvailablePositions.get(i).equals(position.get(0)) && listOfAvailablePositions.get(i + 1).equals(position.get(1)))
-                            return position;
+            if(!suspended && !listOfAvailablePositions.isEmpty()){
+                for (int i = 0; i < listOfAvailablePositions.size(); i = i + 2)
+                    if (listOfAvailablePositions.get(i).equals(position.get(0)) && listOfAvailablePositions.get(i + 1).equals(position.get(1)))
+                        return position;
 
 
             }
@@ -346,14 +342,14 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
             if (moveNotOk && !suspended)
                 System.out.println("Try again!");
 
-        } while (moveNotOk  || listOfAvailablePositions.size() != 0);
+        } while (moveNotOk  || !listOfAvailablePositions.isEmpty());
 
         return position;
     }
 
     @Override
     public ArrayList<Integer> getIncrementedValue() {
-        ArrayList<Integer> dieAndDecision = new ArrayList<Integer>();
+        ArrayList<Integer> dieAndDecision = new ArrayList<>();
         boolean moveNotOk1, moveNotOk2;
         input = new Scanner(System.in);
 
@@ -377,7 +373,7 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
             if(!suspended){
                 if(moveNotOk1 || moveNotOk2){
-                    System.out.println("Try again bloop!");
+                    System.out.println("Try again!");
                 } else {
                     dieAndDecision.add(Integer.parseInt(parts[0]));
                     dieAndDecision.add(Integer.parseInt(parts[1]));
@@ -405,16 +401,15 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
             System.out.println("\nInsert idDie from DiceArena to use");
             String s = input.nextLine();
 
-            for(int i = 0; i < 90; i++){
+            for(int i = 0; i < 9; i++){
                 if(s.equals(Integer.toString(i))) {
                     moveNotOk = false;
                     idDie = Integer.parseInt(s);
                 }
             }
 
-            if(!suspended)
-                if(moveNotOk)
-                    System.out.println("Try Again!");
+            if(!suspended && moveNotOk)
+                System.out.println("Try Again!");
 
         } while(moveNotOk && !suspended);
 
@@ -448,9 +443,8 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
                 }
             }
 
-            if(!suspended)
-                if(moveNotOk)
-                    System.out.println("Try Again!");
+            if(!suspended && moveNotOk)
+                System.out.println("Try Again!");
 
         } while(moveNotOk && !suspended);
 
@@ -477,9 +471,8 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
                 }
             }
 
-            if(!suspended)
-                if(moveNotOk)
-                    System.out.println("Try Again!");
+            if(!suspended && moveNotOk)
+                System.out.println("Try Again!");
 
         } while(moveNotOk && !suspended);
 

@@ -42,13 +42,13 @@ public class ToolCardController implements Runnable{
 
             case 1:
                 ArrayList<Integer> dieToIncrement = view.getIncrementedValue(idPlayer);
-                if(dieToIncrement.size() != 0)
+                if(!dieToIncrement.isEmpty())
                     model.incrementOrDecrementDieValue(idPlayer, dieToIncrement.get(0), dieToIncrement.get(1), idToolCard);
                 break;
             case 2:
                 if(model.checkMovementPossibility(idPlayer)) {
                     ArrayList<Integer> positions = view.getPositionInPatternCard(idPlayer);
-                    if(positions.size() != 0)
+                    if(!positions.isEmpty())
                         model.moveDieInsidePatternCard(idPlayer, positions, false, true, 2);
                 }
                 break;
@@ -56,7 +56,7 @@ public class ToolCardController implements Runnable{
                 if(model.checkMovementPossibility(idPlayer)) {
                     ArrayList<Integer> positions = view.getPositionInPatternCard(idPlayer);
                     System.out.println(positions);
-                    if(positions.size() != 0)
+                    if(!positions.isEmpty())
                         model.moveDieInsidePatternCard(idPlayer, positions, true, false, 3);
                 }
                 break;
@@ -64,10 +64,10 @@ public class ToolCardController implements Runnable{
                 if(model.checkMovementPossibility(idPlayer)) {
                     ArrayList<Integer> positions1 = view.getPositionInPatternCard(idPlayer);
 
-                    if(positions1.size() != 0) {
+                    if(!positions1.isEmpty()) {
                         ArrayList<Integer> positions2 = view.getPositionInPatternCard(idPlayer);
 
-                        if (positions2.size() != 0)
+                        if (!positions2.isEmpty())
                             model.moveTwoDiceInsidePatternCard(idPlayer, positions1, positions2, 4);
                     }
                 }
@@ -81,7 +81,7 @@ public class ToolCardController implements Runnable{
 
                         ArrayList<Integer> idDieRoundTrack = view.getDieFromRoundTrack(idPlayer);
 
-                        if(idDieRoundTrack.size() != 0)
+                        if(!idDieRoundTrack.isEmpty())
                             model.swapDieAmongRoundTrackAndDiceArena(idPlayer, idDieRoundTrack.get(1), idDieRoundTrack.get(0), idDieDiceArena, idToolCard);
                     }
                 }
@@ -96,7 +96,7 @@ public class ToolCardController implements Runnable{
                         model.rollDieAgain(idPlayer, idDie, idToolCard);
                         ArrayList<Integer> list = model.checkAvailablePositions(idPlayer, idDie);
 
-                        if (list.size() != 0) {
+                        if (!list.isEmpty()) {
                             ArrayList<Integer> position = view.getSinglePositionInPatternCard(idPlayer, list);
 
                             model.setDieInPatternCardFromDiceArena(idPlayer, idDie, position.get(0), position.get(1), false, idToolCard);
@@ -116,7 +116,7 @@ public class ToolCardController implements Runnable{
                     if(idDie != -1) {
                         ArrayList<Integer> positions = view.getSinglePositionInPatternCard(idPlayer, new ArrayList<Integer>());
 
-                        if(positions.size() != 0)
+                        if(!positions.isEmpty())
                             model.setDieInPatternCardFromDiceArena(idPlayer, idDie, positions.get(0), positions.get(1), true, idToolCard);
                     }
                 }
@@ -138,7 +138,7 @@ public class ToolCardController implements Runnable{
                             model.giveValueToDie(idDie, newIdDie, value);
                             ArrayList<Integer> list = model.checkAvailablePositions(idPlayer, idDie);
 
-                            if (list.size() != 0) {
+                            if (!list.isEmpty()) {
                                 ArrayList<Integer> position = view.getSinglePositionInPatternCard(idPlayer, list);
                                 model.setDieInPatternCardFromDiceArena(idPlayer, idDie, position.get(0), position.get(1), false, idToolCard);
                             }
@@ -170,6 +170,7 @@ public class ToolCardController implements Runnable{
                     }
                 }
                 break;
+                default: break;
         }
 
         view.free(idPlayer);

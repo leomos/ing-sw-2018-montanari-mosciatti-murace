@@ -76,7 +76,7 @@ public class Model extends Observable<ModelChangedMessage> {
      * These info are sent and memorized in the ViewClientConsoleGame and
      * It also starts the timer of 90 seconds for the first player playing
      */
-    public void initGame() {
+    private void initGame() {
 
         table.checkPlayerDidNotDisconnectDuringPatternCardSelection();
 
@@ -706,16 +706,18 @@ public class Model extends Observable<ModelChangedMessage> {
             Collections.shuffle(diceToRoll);
 
 
-            Die d = null;
+
             int idNewDie = diceToRoll.get(0);
             try {
+                Die d;
                 d = table.getDiceContainer().getDie(idNewDie);
+                notify(new ModelChangedMessageNewEvent(idPlayer, "\nThe new die has the color " + d.getColor()));
+                return idNewDie;
+
             } catch (DiceContainerUnsupportedIdException e) {
                 e.printStackTrace();
             }
 
-            notify(new ModelChangedMessageNewEvent(idPlayer, "\nThe new die has the color " + d.getColor()));
-            return idNewDie;
         } else
             notify(new ModelChangedMessageMoveFailed(idPlayer, "Die Id was incorrect"));
 
@@ -750,7 +752,7 @@ public class Model extends Observable<ModelChangedMessage> {
             try {
                 return table.getPlayers(idPlayer).getChosenPatternCard().getAvailablePositions(table.getDiceArena().getArena().get(idDie));
             } catch (DiceContainerUnsupportedIdException e) {
-                //niente da fare qui
+
             }
         }
 
@@ -777,12 +779,9 @@ public class Model extends Observable<ModelChangedMessage> {
 
 
             if(!positions2.isEmpty()) {
-
-
-                Die d2;
-
-                if (!patternCard.getPatternCardCell(positions1.get(0), positions1.get(1)).isEmpty() && !patternCard.getPatternCardCell(positions1.get(0), positions1.get(1)).isEmpty())
+                if (!patternCard.getPatternCardCell(positions1.get(0), positions1.get(1)).isEmpty() && !patternCard.getPatternCardCell(positions2.get(0), positions2.get(1)).isEmpty())
                     try {
+                        Die d2;
                         d2 = table.getDiceContainer().getDie(patternCard.getPatternCardCell(positions2.get(0), positions2.get(1)).getRolledDieId());
 
                         if (d1.getColor() == d2.getColor())
