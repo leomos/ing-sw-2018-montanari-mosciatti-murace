@@ -357,7 +357,6 @@ public class ViewClientGUIGame extends SwingPhase {
     @Override
     public Integer getDieFromDiceArena() {
         DiceArenaFrame frame = new DiceArenaFrame(diceArena);
-        while(!frame.isOk());
         return frame.getid();
     }
 

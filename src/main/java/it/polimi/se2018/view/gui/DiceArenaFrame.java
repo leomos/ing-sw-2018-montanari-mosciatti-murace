@@ -10,9 +10,7 @@ import java.awt.event.ActionListener;
 public class DiceArenaFrame {
     private JDialog dialog;
 
-    private int id;
-
-    private boolean ok = false;
+    private int id = -1;
 
     public DiceArenaFrame(ModelChangedMessageDiceArena message) {
         SwingDiceArena diceArena = new SwingDiceArena(message);
@@ -57,17 +55,13 @@ public class DiceArenaFrame {
         dialog.add(panel, BorderLayout.CENTER);
         dialog.add(button, BorderLayout.SOUTH);
 
-        dialog.setSize(500, 500);
+        dialog.setSize(500, 300);
         dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         dialog.setVisible(true);
     }
 
     public Integer getid() {
+        while(id==-1);
         return id;
     }
-
-    public boolean isOk() {
-        return ok;
-    }
-
 }
