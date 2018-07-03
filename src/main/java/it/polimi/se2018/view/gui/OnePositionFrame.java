@@ -16,7 +16,7 @@ public class OnePositionFrame {
 
     private int col = -1;
 
-    public OnePositionFrame(ModelChangedMessageDiceOnPatternCard messageDiceOnPatternCard, ModelChangedMessagePatternCard messagePatternCard, ArrayList<Integer> listOfAvaiblePositions) {
+    public OnePositionFrame(ModelChangedMessageDiceOnPatternCard messageDiceOnPatternCard, ModelChangedMessagePatternCard messagePatternCard, ArrayList<Integer> listOfAvailablePositions) {
         SwingPatternCard patternCard = new SwingPatternCard(messagePatternCard, false);
         SwingDiceOnPatternCard diceOnPatternCard = new SwingDiceOnPatternCard(messageDiceOnPatternCard, messagePatternCard, patternCard.getPatternCard(), false);
 
@@ -49,8 +49,10 @@ public class OnePositionFrame {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (row!=-1 && col!=-1)
+                if (row!=-1 && col!=-1 && checkPositionsAreInArrayList(col, row, listOfAvailablePositions))
                     dialog.dispose();
+                else
+                    ;  //todo: generates messsage error bloccante
             }
         });
 
@@ -62,6 +64,15 @@ public class OnePositionFrame {
         dialog.add(button, BorderLayout.SOUTH);
         dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         dialog.setVisible(true);
+    }
+
+    private boolean checkPositionsAreInArrayList(int x, int y, ArrayList<Integer> list){
+
+        if(!list.isEmpty())
+            for(int i = 0; i < list.size(); i+= 2)
+                if(x == list.get(i) && y == list.get(i+1))
+                    return true;
+        return false;
     }
 
     public ArrayList<Integer> getValues() {
