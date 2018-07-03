@@ -55,7 +55,6 @@ public class ToolCardController implements Runnable{
             case 3:
                 if(model.checkMovementPossibility(idPlayer)) {
                     ArrayList<Integer> positions = view.getPositionInPatternCard(idPlayer);
-                    System.out.println(positions);
                     if(!positions.isEmpty())
                         model.moveDieInsidePatternCard(idPlayer, positions, true, false, 3);
                 }
@@ -114,7 +113,7 @@ public class ToolCardController implements Runnable{
                 if(model.checkPlayerCanPlaceDie(idPlayer)) {
                     Integer idDie = view.getDieFromDiceArena(idPlayer);
                     if(idDie != -1) {
-                        ArrayList<Integer> positions = view.getSinglePositionInPatternCard(idPlayer, new ArrayList<Integer>());
+                        ArrayList<Integer> positions = view.getSinglePositionInPatternCard(idPlayer, new ArrayList<>());
 
                         if(!positions.isEmpty())
                             model.setDieInPatternCardFromDiceArena(idPlayer, idDie, positions.get(0), positions.get(1), true, idToolCard);

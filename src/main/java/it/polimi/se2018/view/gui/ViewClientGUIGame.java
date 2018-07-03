@@ -360,6 +360,13 @@ public class ViewClientGUIGame extends SwingPhase {
         return frame.getid();
     }
 
+    public ArrayList<Integer> getIncrementedValue() {
+        IncrementedValueFrame frame = new IncrementedValueFrame(diceArena);
+        ArrayList<Integer> returnValues = frame.getValues();
+
+        return returnValues;
+    }
+
     public PlayerMessage getMainMove() {
 
         if (!idDieChosen.equals("") && toolCardChosen.length() == 0) {

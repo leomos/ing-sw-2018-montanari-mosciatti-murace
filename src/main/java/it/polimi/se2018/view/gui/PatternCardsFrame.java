@@ -180,4 +180,9 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
     public Integer getDieFromDiceArena() {
         return 0;
     }
+
+    @Override
+    public ArrayList<Integer> getIncrementedValue() {
+        return null;
+    }
 }
