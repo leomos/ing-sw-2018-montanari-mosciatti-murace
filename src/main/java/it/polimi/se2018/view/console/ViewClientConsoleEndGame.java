@@ -39,7 +39,8 @@ public class ViewClientConsoleEndGame extends ViewClientConsolePrint {
 
         for (String s : scoreboard.split("/")) {
             String[] score = s.split(";");
-            System.out.println("ID: " + score[0] + " | " + "SCORE: " + score[0] + " | " + "TOKENS LEFT: " + score[2]);
+            if(score.length == 3)
+                System.out.println("ID: " + score[0] + " | " + "SCORE: " + score[1] + " | " + "TOKENS LEFT: " + score[2]);
         }
 
         try {
