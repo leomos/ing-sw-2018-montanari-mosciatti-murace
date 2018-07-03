@@ -51,8 +51,6 @@ public class OnePositionFrame {
             public void actionPerformed(ActionEvent e) {
                 if (row!=-1 && col!=-1 && checkPositionsAreInArrayList(col, row, listOfAvailablePositions))
                     dialog.dispose();
-                else
-                    ;  //todo: generates messsage error bloccante
             }
         });
 
@@ -68,8 +66,8 @@ public class OnePositionFrame {
 
     private boolean checkPositionsAreInArrayList(int x, int y, ArrayList<Integer> list){
 
-        if(!list.isEmpty())
-            for(int i = 0; i < list.size(); i+= 2)
+        if(!(list.isEmpty()))
+            for(int i = 0; i < list.size(); i = i + 2)
                 if(x == list.get(i) && y == list.get(i+1))
                     return true;
         else
