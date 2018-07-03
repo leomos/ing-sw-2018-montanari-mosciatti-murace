@@ -72,6 +72,8 @@ public class OnePositionFrame {
             for(int i = 0; i < list.size(); i+= 2)
                 if(x == list.get(i) && y == list.get(i+1))
                     return true;
+        else
+            return true;
         return false;
     }
 
