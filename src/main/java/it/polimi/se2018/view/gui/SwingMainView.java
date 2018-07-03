@@ -12,7 +12,7 @@ public class SwingMainView extends ViewClient {
 
     private int idClient;
 
-    SwingPhase swingPhase;
+    private SwingPhase swingPhase;
 
     private int idPlayerPlaying;
 
@@ -33,9 +33,7 @@ public class SwingMainView extends ViewClient {
     public synchronized void update(ModelChangedMessage message){
         if(message instanceof ModelChangedMessageMoveFailed){
             if(((ModelChangedMessageMoveFailed) message).getPlayer().equals(Integer.toString(idClient))) {
-                new MoveFailedFrame();
-                //System.out.println("ERROR: " + ((ModelChangedMessageMoveFailed) message).getErrorMessage());
-                //System.out.println("\n\nTry again");
+                new MoveFailedFrame(((ModelChangedMessageMoveFailed) message).getErrorMessage());
             }
         } else if(message instanceof ModelChangedMessageNewEvent){
             if(((ModelChangedMessageNewEvent) message).getPlayer().equals(Integer.toString(idClient))){
@@ -46,12 +44,14 @@ public class SwingMainView extends ViewClient {
             gamePhase = ((ModelChangedMessageChangeGamePhase) message).getGamePhase();
             if (gamePhase == SETUPPHASE) {
                 swingPhase = new PatternCardsFrame(this.idClient);
+                swingPhase.setServerInterface(this.serverInterface);
             }
             if (gamePhase == GAMEPHASE) {
                 swingPhase = new ViewClientGUIGame(this.idClient);
+                swingPhase.setServerInterface(this.serverInterface);
             }
-            if (gamePhase == ENDGAMEPHASE) ;
-
+            if (gamePhase == ENDGAMEPHASE)
+                new EndGameFrame(this.idClient);
         }
         else if(message instanceof ModelChangedMessageRefresh){
             swingPhase.print();
@@ -59,10 +59,9 @@ public class SwingMainView extends ViewClient {
                 swingPhase.update(message);
                 idPlayerPlaying = Integer.parseInt(((ModelChangedMessageRefresh) message).getIdPlayerPlaying());
                 if(idPlayerPlaying == idClient && canIPlay) {
-                    ;
+                    new TurnFrame();
                 }
-            } else
-                this.askForPatternCard();
+            }
 
         } else if(message instanceof ModelChangedMessagePlayerAFK){
             if(((ModelChangedMessagePlayerAFK) message).getPlayer().equals(Integer.toString(idClient))) {
@@ -76,24 +75,6 @@ public class SwingMainView extends ViewClient {
         else {
             swingPhase.update(message);
         }
-    }
-
-
-    public void run(){
-
-        boolean c = true;
-
-        do {
-            if(idPlayerPlaying == idClient) {
-                try {
-                    serverInterface.notify(swingPhase.getMainMove());
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        while(c);
-
     }
 
     @Override

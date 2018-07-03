@@ -2,8 +2,6 @@ package it.polimi.se2018.view.gui;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class Frame extends JFrame {
     protected JLabel label;
@@ -12,13 +10,9 @@ public class Frame extends JFrame {
 
     public Frame() {
         JButton ok = new JButton("OK");
-        ok.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        ok.addActionListener(actionListener -> {
                 dispose();
-            }
         });
-
         setSize(200, 100);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setResizable(false);

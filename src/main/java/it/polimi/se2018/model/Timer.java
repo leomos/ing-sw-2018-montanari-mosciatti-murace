@@ -4,29 +4,6 @@ import java.util.concurrent.TimeUnit;
 
 public class Timer implements Runnable {
 
-    /* Singleton implementation */
-    /*
-    private static volatile Timer timerInstance;
-
-    private Timer() {
-        if(timerInstance != null) {
-            throw new RuntimeException("Use getInstance() method to get the single instance of this class.");
-        }
-    }
-
-    public static Timer getInstance() {
-        if(timerInstance == null) {
-            synchronized (Timer.class) {
-                if(timerInstance == null) {
-                    timerInstance = new Timer();
-                }
-            }
-        }
-        return timerInstance;
-    }
-    */
-    /*end Singleton implementation */
-
     private Thread thread;
 
     private int timer;
@@ -41,6 +18,11 @@ public class Timer implements Runnable {
         this.timer = timer;
     }
 
+    /**
+     * Timer starts at 0 and ends at the value of timer. If a player sends a end turn, the timer is set back to 0.
+     * If the timer reaches the end of the while, the method timesup is invoked ant the current player playing is
+     * set to suspended
+     */
     @Override
     public void run(){
 
@@ -77,6 +59,9 @@ public class Timer implements Runnable {
         this.model = model;
     }
 
+    /**
+     * Timer goes back to 0
+     */
     public void reStartTimer(){
 
         i = 0;
@@ -84,12 +69,18 @@ public class Timer implements Runnable {
 
     }
 
+    /**
+     * Timer is completely stopped. It happens when the game is over
+     */
     public void stopTimer(){
 
         stopTimer = true;
         System.out.println("ho stoppato il timer!");
     }
 
+    /**
+     * Starts a thread with the timer
+     */
     public void startTimer() {
         thread = new Thread(this);
         thread.start();

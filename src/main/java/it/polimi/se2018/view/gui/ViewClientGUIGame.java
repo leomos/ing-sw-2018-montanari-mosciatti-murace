@@ -1,16 +1,13 @@
 package it.polimi.se2018.view.gui;
 
 import it.polimi.se2018.model.events.*;
-import it.polimi.se2018.network.visitor.MessageVisitorInterface;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class ViewClientGUIGame extends SwingPhase {
     private JFrame jFrame = new JFrame();
@@ -25,21 +22,17 @@ public class ViewClientGUIGame extends SwingPhase {
 
     private int idClient;
 
-    private boolean end = false;
-
     private boolean isMyTurn;
 
-    private boolean move = false;
+    private ArrayList<String> idPlayers = new ArrayList<>();
 
-    private ArrayList<String> idPlayers = new ArrayList<String>();
+    private ArrayList<ModelChangedMessagePatternCard> patternCards = new ArrayList<>();
 
-    private ArrayList<ModelChangedMessagePatternCard> patternCards = new ArrayList<ModelChangedMessagePatternCard>();
+    private ArrayList<ModelChangedMessageDiceOnPatternCard> diceOnPatternCards = new ArrayList<>();
 
-    private ArrayList<ModelChangedMessageDiceOnPatternCard> diceOnPatternCards = new ArrayList<ModelChangedMessageDiceOnPatternCard>();
+    private ArrayList<ModelChangedMessagePublicObjective> publicObjectives = new ArrayList<>();
 
-    private ArrayList<ModelChangedMessagePublicObjective> publicObjectives = new ArrayList<ModelChangedMessagePublicObjective>();
-
-    private ArrayList<ModelChangedMessageToolCard> toolCards = new ArrayList<ModelChangedMessageToolCard>();
+    private ArrayList<ModelChangedMessageToolCard> toolCards = new ArrayList<>();
 
     private ModelChangedMessageDiceArena diceArena;
 
@@ -47,7 +40,7 @@ public class ViewClientGUIGame extends SwingPhase {
 
     private ModelChangedMessageTokensLeft tokensLeft;
 
-    private ArrayList<ModelChangedMessageRound> roundTrack = new ArrayList<ModelChangedMessageRound>();
+    private ArrayList<ModelChangedMessageRound> roundTrack = new ArrayList<>();
 
     public ViewClientGUIGame (int idClient) {
         this.idClient = idClient;
@@ -100,29 +93,37 @@ public class ViewClientGUIGame extends SwingPhase {
         }
         else if(message instanceof ModelChangedMessageRefresh) {
             isMyTurn = Integer.parseInt(((ModelChangedMessageRefresh) message).getIdPlayerPlaying()) == idClient;
-            if (isMyTurn)
-                new TurnFrame();
         }
     }
 
     public void print(){
+        jFrame.getContentPane().removeAll();
+        jFrame.repaint();
+
+        jFrame.setLayout(new GridBagLayout());
+        jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        jFrame.setTitle("TABLE");
+        Color c = new Color(34, 139, 34);
+        jFrame.getContentPane().setBackground(c);
+        jFrame.setResizable(false);
+
+        //TOOLCARD
         SwingToolCards[] toolCard = new SwingToolCards[3];
         for (int i=0; i<3; i++) {
             int finalI = i;
             toolCard[i] = new SwingToolCards(toolCards.get(i));
-            toolCard[i].getCard().addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
+            toolCard[i].getCard().addActionListener(actionListener -> {
                     toolCardChosen = toolCardChosen + toolCards.get(finalI).getIdToolCard();
-                }
             });
         }
 
+        //PUBLIC OBJECTIVE
         SwingPublicObjective[] publicObjective = new SwingPublicObjective[3];
         for (int i=0; i<3; i++) {
             publicObjective[i] = new SwingPublicObjective(publicObjectives.get(i));
         }
 
+        //PATTERNCARD
         SwingPatternCard myPatternCard;
         SwingDiceOnPatternCard mine = null;
         SwingDiceOnPatternCard[] patternCard = new SwingDiceOnPatternCard[3];
@@ -132,19 +133,16 @@ public class ViewClientGUIGame extends SwingPhase {
 
                 for (int m=0; m<diceOnPatternCards.size(); m++) {
                     if (diceOnPatternCards.get(m).getIdPlayer().equals(Integer.toString(idClient)))
-                        mine = new SwingDiceOnPatternCard(diceOnPatternCards.get(m), patternCards.get(i), myPatternCard.getPatternCard());
+                        mine = new SwingDiceOnPatternCard(diceOnPatternCards.get(m), patternCards.get(i), myPatternCard.getPatternCard(), false);
                 }
                 for (int n=0; n<20; n++) {
                     int finalN = n;
                     SwingDie die = mine.getPc().get(n);
-                    die.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
+                    die.addActionListener(actionListener -> {
                             if (!idDieChosen.equals("")) {
                                 riga = finalN / 5;
                                 colonna = finalN % 5;
                             }
-                        }
                     });
                 }
             }
@@ -152,30 +150,28 @@ public class ViewClientGUIGame extends SwingPhase {
                 SwingPatternCard card = new SwingPatternCard(patternCards.get(i), true);
                 for (int m=0; m<diceOnPatternCards.size(); m++) {
                     if (diceOnPatternCards.get(m).getIdPatternCard().equals(card.getId()))
-                        patternCard[m] = new SwingDiceOnPatternCard(diceOnPatternCards.get(m), patternCards.get(i), card.getPatternCard());
+                        patternCard[m] = new SwingDiceOnPatternCard(diceOnPatternCards.get(m), patternCards.get(i), card.getPatternCard(), true);
                 }
             }
         }
 
+        //DICEARENA
         SwingDiceArena arena = new SwingDiceArena(diceArena);
         for (int i=0; i<arena.getButtons().size(); i++){
             SwingDie b = arena.getButtons().get(i);
-            b.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
+            b.addActionListener(actionListener -> {
                     if (idDieChosen.equals("")) {
                         idDieChosen = idDieChosen + b.getId();
                     }
-                }
             });
         }
 
+        //PLAYER
         SwingPlayer player = new SwingPlayer(mine, new SwingPrivateObjective(privateObjective), tokensLeft.getTokensLeft());
 
-        JButton conferma = new JButton("CONFERMA MOSSA");
-        conferma.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        //BOTTONI
+        JButton conferma = new JButton("CONFIRM MOVE");
+        conferma.addActionListener(actionListener -> {
                 if (isMyTurn) {
                     if (!idDieChosen.equals("")) {
                         ConfirmationFrame f = new ConfirmationFrame(idDieChosen, colonna, riga, toolCardChosen);
@@ -190,8 +186,13 @@ public class ViewClientGUIGame extends SwingPhase {
 
                             @Override
                             public void windowClosed(WindowEvent e) {
-                                if (f.isOk() == 1)
-                                    move = true;
+                                if (f.isOk() == 1) {
+                                    try {
+                                        serverInterface.notify(getMainMove());
+                                    } catch (RemoteException e1) {
+                                        e1.printStackTrace();
+                                    }
+                                }
                                 if (f.isOk() == 2) {
                                     toolCardChosen = "";
                                     idDieChosen = "";
@@ -221,26 +222,24 @@ public class ViewClientGUIGame extends SwingPhase {
                     toolCardChosen = "";
                     idDieChosen = "";
                 }
-            }
         });
 
         JButton endTurn = new JButton("END TURN");
-        endTurn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                end = true;
-            }
+        endTurn.addActionListener(actionListener -> {
+                if (isMyTurn) {
+                    try {
+                        serverInterface.notify(new PlayerMessageEndTurn(idClient));
+                    } catch (RemoteException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+                else new NotYourTurnFrame();
         });
 
+        //ROUNDTRANCK
         SwingRoundTrack rt = new SwingRoundTrack(roundTrack);
 
         GridBagConstraints constraints = new GridBagConstraints();
-        jFrame.setLayout(new GridBagLayout());
-        jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        jFrame.setTitle("TABLE");
-        Color c = new Color(34, 139, 34);
-        jFrame.getContentPane().setBackground(c);
-
         constraints.insets = new Insets(0, 20, 0, 0);
         constraints.gridx = 0;
         constraints.gridy = 1;
@@ -329,6 +328,8 @@ public class ViewClientGUIGame extends SwingPhase {
 
         jFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         jFrame.setVisible(true);
+
+        jFrame.validate();
     }
 
     @Override
@@ -337,30 +338,16 @@ public class ViewClientGUIGame extends SwingPhase {
     }
 
     public PlayerMessage getMainMove() {
-        PlayerMessage message = new PlayerMessage() {
-            @Override
-            public void accept(MessageVisitorInterface messageVisitorInterface) {
 
-            }
-        };
-
-        if (!idDieChosen.equals("") && toolCardChosen.equals("") && move) {
-            message = new PlayerMessageDie(idClient, Integer.parseInt(idDieChosen), colonna, riga);
+        if (!idDieChosen.equals("") && toolCardChosen.length() == 0) {
+            int s = Integer.parseInt(idDieChosen);
             idDieChosen = "";
-            toolCardChosen = "";
-            new NotYourTurnFrame();
+            return  new PlayerMessageDie(idClient, s, colonna, riga);
         }
-        if (idDieChosen.equals("") && !toolCardChosen.equals("") && move) {
-            message = new PlayerMessageToolCard(idClient, Integer.parseInt(toolCardChosen));
-            idDieChosen = "";
-            toolCardChosen = "";
+        if (idDieChosen.equals("") && !toolCardChosen.equals("")) {
+            return new PlayerMessageToolCard(idClient, Integer.parseInt(toolCardChosen));
         }
-        if (end) {
-            message = new PlayerMessageEndTurn(idClient);
-            end = false;
-        }
+        return null;
 
-        return message;
     }
-
 }

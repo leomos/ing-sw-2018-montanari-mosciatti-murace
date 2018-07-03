@@ -23,7 +23,7 @@ public class Model extends Observable<ModelChangedMessage> {
 
     private Table table;
 
-    private HashMap<Integer, String> players;
+        private HashMap<Integer, String> players;
 
     private Timer timer;
 
@@ -33,18 +33,14 @@ public class Model extends Observable<ModelChangedMessage> {
         this.timer = new Timer(turnCountdownLength);
     }
 
-    public Table getTable() {
-        return table;
-    }
+
 
     /**
      * This method is called at the start of the game. It's purpose is to initialize 4 different patternCards and
      * a private objective for each player and send them so that they can pick one
      */
     public void initSetup() {
-
         table = new Table(players);
-
         this.gamePhase = GamePhase.SETUPPHASE;
         ModelChangedMessageChangeGamePhase modelChangedMessageChangeGamePhase = new ModelChangedMessageChangeGamePhase(gamePhase);
         notify(modelChangedMessageChangeGamePhase);
@@ -81,6 +77,9 @@ public class Model extends Observable<ModelChangedMessage> {
      * It also starts the timer of 90 seconds for the first player playing
      */
     public void initGame() {
+
+        table.checkPlayerDidNotDisconnectDuringPatternCardSelection();
+
         ModelChangedMessageRefresh modelChangedMessageRefresh;
         this.gamePhase = GamePhase.GAMEPHASE;
         ModelChangedMessageChangeGamePhase modelChangedMessageChangeGamePhase = new ModelChangedMessageChangeGamePhase(gamePhase);
@@ -138,26 +137,31 @@ public class Model extends Observable<ModelChangedMessage> {
      */
     public void setChosenPatternCard(int idPatternCard, int idPlayer){
 
-        boolean moveSucceed = false;
-
         for(PatternCard patternCard : table.getPlayers(idPlayer).getPatternCards())
             if(idPatternCard == patternCard.getId()) {
                 table.getPlayers(idPlayer).setChosenPatternCard(patternCard);
                 table.getPlayers(idPlayer).setTokens(patternCard.getDifficulty());
-                moveSucceed = true;
+
+                try {
+                    table.checkAllPlayerHasChosenAPatternCard();
+                } catch (PlayersHaveAllChosenAPatternCard e) {
+                    this.initGame();
                 }
 
-        if(!moveSucceed && !table.getPlayers(idPlayer).hasChosenPatternCard()) {
+                }
+
+        if(!table.getPlayers(idPlayer).hasChosenPatternCard()) {
             PatternCard patternCard = table.getPlayers(idPlayer).getPatternCards().get(0);
             table.getPlayers(idPlayer).setChosenPatternCard(patternCard);
             table.getPlayers(idPlayer).setTokens(patternCard.getDifficulty());
             setPlayerSuspended(idPlayer, true);
-        }
 
-        try {
-            table.checkAllPlayerHasChosenAPatternCard();
-            this.initGame();
-        } catch (PlayerHasYetToChooseAPatternCardException e) {
+            try {
+                table.checkAllPlayerHasChosenAPatternCard();
+            } catch (PlayersHaveAllChosenAPatternCard e) {
+                this.initGame();
+            }
+
         }
 
     }
@@ -232,8 +236,6 @@ public class Model extends Observable<ModelChangedMessage> {
      *                             player who just finished its turn
      */
     public void endTurn(PlayerMessageEndTurn playerMessageEndTurn){
-
-        //todo: problema se il giocatore ha due turni consecutivi e si disconnette al primo
         int idPlayerMessage = playerMessageEndTurn.getPlayer();
 
 
@@ -293,8 +295,8 @@ public class Model extends Observable<ModelChangedMessage> {
         {
             for(Integer key : players.keySet()) {
                 setChosenPatternCard(-1 , key);
-
             }
+
         }
 
 
@@ -416,7 +418,7 @@ public class Model extends Observable<ModelChangedMessage> {
 
     /**
      * This method is needed when you need to make two dice movements inside a pattern card. The way it works is really
-     * simple: it performs the first movement: if there is a problem, the movement doesn't go trough and the method
+     * simple: it performs the first movement: if there is a problem, the movement doesn't go trough and the me thod
      * ends; if it does go through, it performs the second movement: if the is no problem, it updates the tool card cost
      * and the player's tokens. If the second movements doesn't go trough, the first movement is reversed and to make
      * sure it goes trough, both ignoreValueConstraint and ignoreColorConstraint are set to true
@@ -905,21 +907,21 @@ public class Model extends Observable<ModelChangedMessage> {
      */
     public void setPlayerSuspended(int idPlayer, boolean afk){
         try {
-            table.getPlayers(idPlayer).setSuspended(afk);
+            this.table.getPlayers(idPlayer).setSuspended(afk);
             if(afk) {
-                table.checkActivePlayers();
+                this.table.checkActivePlayers();
                 if(gamePhase == GamePhase.GAMEPHASE)
                     endTurn(new PlayerMessageEndTurn(idPlayer));
                 notify(new ModelChangedMessagePlayerAFK(Integer.toString(idPlayer), "\nYou run out of time. You are now suspended. Type anything to get back into the game\n"));
-            }
+            } else
+                this.updatePlayerThatCameBackIntoTheGame(idPlayer);
         } catch (OnlyOnePlayerLeftException e) {
 
             notify(new ModelChangedMessagePlayerAFK(Integer.toString(idPlayer), "\nYou run out of time. You are now suspended. Type anything to get back into the game\n"));
 
+            this.gamePhase = GamePhase.ENDGAMEPHASE;
 
-            gamePhase = GamePhase.ENDGAMEPHASE;
-
-            table.calculateScores();
+            this.table.calculateScores();
             notify(new ModelChangedMessageChangeGamePhase(GamePhase.ENDGAMEPHASE));
             notify(new ModelChangedMessageEndGame(table.getScoreboard().getRepresentation()));
 

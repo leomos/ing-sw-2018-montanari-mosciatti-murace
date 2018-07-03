@@ -45,15 +45,13 @@ public class ViewClientConsoleSetup extends ViewClientConsolePrint {
     @Override
     public Integer askForPatternCard(String s)  {
 
-
-
-            for(int i = 0; i < patternCards.size(); i++){
-                if(patternCards.get(i).getIdPatternCard().equals(s)) {
-                    return Integer.parseInt(s);
-                }
+        for(int i = 0; i < patternCards.size(); i++){
+            if(patternCards.get(i).getIdPatternCard().equals(s)) {
+                return Integer.parseInt(s);
             }
+        }
 
-            System.out.println("Try Again!");
+        System.out.println("Try Again!");
 
         return -1;
     }

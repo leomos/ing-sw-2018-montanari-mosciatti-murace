@@ -1,6 +1,7 @@
 package it.polimi.se2018.view.gui;
 
 import it.polimi.se2018.model.events.ModelChangedMessage;
+import it.polimi.se2018.model.events.ModelChangedMessageEndGame;
 import it.polimi.se2018.model.events.PlayerMessage;
 
 import javax.swing.*;
@@ -9,7 +10,15 @@ import java.awt.*;
 public class EndGameFrame extends SwingPhase {
     private JFrame jFrame = new JFrame();
 
-    public EndGameFrame() {
+    private int idClient;
+
+    private ModelChangedMessageEndGame messageEndGame;
+
+    public EndGameFrame(int idClient) {
+        this.idClient = idClient;
+    }
+
+    public void print() {
         jFrame.setTitle("SAGRADA");
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -20,65 +29,78 @@ public class EndGameFrame extends SwingPhase {
         jFrame.setLayout(new GridBagLayout());
 
         JPanel title = new JPanel();
-        title.add(new JLabel("CLASSIFICA FINALE", SwingConstants.CENTER));
+        title.setBackground(new Color(210, 210, 210, 200));
+        JLabel label = new JLabel("FINAL RANKING", SwingConstants.CENTER);
+        label.setFont(new Font("Ravie", Font.PLAIN, 26));
+        label.setForeground(new Color(253, 233, 16));
+        title.add(label);
 
-        JPanel classifica = new JPanel();
-        classifica.setLayout(new GridLayout(4, 3));
-        classifica.setPreferredSize(new Dimension(200, 200));
-
-        for (int i=0; i<4; i++) {
-            JLabel label = new JLabel(Integer.toString(i), SwingConstants.CENTER);
-            JLabel player = new JLabel("PLAYER: " + Integer.toString(i));
-
-            classifica.add(label);
-            classifica.add(player);
-        }
+        SwingScoreboard classifica = new SwingScoreboard(messageEndGame.getScoreboard());
 
         JPanel thanks = new JPanel();
-        thanks.add(new JLabel("Thanks for playing!!", SwingConstants.CENTER));
-
+        JLabel l = new JLabel("Thanks for playing!!", SwingConstants.CENTER);
+        thanks.add(l);
+        thanks.setBackground(new Color(210, 210, 210, 200));
+        l.setFont(new Font("Ink Free", Font.BOLD, 20));
         GridBagConstraints constraints = new GridBagConstraints();
+
+        JButton esci = new JButton("EXIT");
+        esci.addActionListener(actionListener -> {
+                jFrame.dispose();
+        });
 
         constraints.weightx = 1;
         constraints.weighty = 1;
         constraints.gridx = 0;
         constraints.gridy = 0;
-        constraints.insets.top = 50;
+        constraints.insets.top = 150;
+        constraints.insets.bottom = 0;
         constraints.anchor = GridBagConstraints.NORTH;
         jFrame.add(title, constraints);
 
         constraints.weightx = 1;
         constraints.weighty = 1;
         constraints.gridx = 0;
-        constraints.gridy = 0;
-        constraints.insets.top = 200;
-        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.gridy = 1;
+        constraints.insets.bottom = 150;
+        constraints.insets.top = 0;
+        constraints.anchor = GridBagConstraints.NORTH;
         jFrame.add(classifica, constraints);
 
         constraints.weightx = 1;
         constraints.weighty = 1;
         constraints.gridx = 0;
         constraints.gridy = 1;
-        constraints.insets.bottom = 100;
+        constraints.insets.top = 100;
+        constraints.insets.bottom = 0;
         constraints.anchor = GridBagConstraints.CENTER;
         jFrame.add(thanks, constraints);
+
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        constraints.insets.bottom = 0;
+        constraints.insets.bottom = 70;
+        constraints.anchor = GridBagConstraints.SOUTH;
+        jFrame.add(esci, constraints);
 
         jFrame.setSize(500, 700);
         jFrame.setResizable(false);
         jFrame.setVisible(true);
+
+        if (idClient==classifica.getWinner())
+            new WinFrame();
+        else
+            new DefeatFrame();
     }
 
-    public static void main(String args[]) {
-        new EndGameFrame();
+    public void set() {
+        this.messageEndGame = new ModelChangedMessageEndGame("1231246231124050");
     }
 
     @Override
     public void update(ModelChangedMessage modelChangedMessage) {
-
-    }
-
-    @Override
-    public void print() {
 
     }
 

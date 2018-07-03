@@ -11,13 +11,13 @@ public class PublicObjective4 extends PublicObjective {
 
     public PublicObjective4(DiceContainer diceContainer) {
         super(diceContainer);
-        this.name = "Sfumature diverse - Colonna";
-        this.description = "Colonne senza sfumature ripetute";
+        this.name = "Columns Shade Variety";
+        this.description = "Columns with no repeated values";
         this.id = 4;
     }
 
     /**
-     *
+     * Calculates the score of the pattern card given: + 4 for each column without any repeated values
      * @param patternCard
      * @return PatternCard score at the end of the game based on public objective of card 4
      * @throws DiceContainerUnsupportedIdException If die's id is not valid

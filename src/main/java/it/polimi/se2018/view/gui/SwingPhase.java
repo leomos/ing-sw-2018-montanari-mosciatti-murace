@@ -2,12 +2,19 @@ package it.polimi.se2018.view.gui;
 
 import it.polimi.se2018.model.events.ModelChangedMessage;
 import it.polimi.se2018.model.events.PlayerMessage;
+import it.polimi.se2018.network.ServerInterface;
 
 public abstract class SwingPhase {
+
+    protected ServerInterface serverInterface;
 
     public abstract void update(ModelChangedMessage modelChangedMessage);
 
     public abstract void print();
+
+    public void setServerInterface(ServerInterface serverInterface){
+        this.serverInterface = serverInterface;
+    }
 
     public abstract Integer askForPatternCard();
 

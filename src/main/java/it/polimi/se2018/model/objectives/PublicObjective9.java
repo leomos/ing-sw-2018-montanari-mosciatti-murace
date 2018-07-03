@@ -11,13 +11,13 @@ public class PublicObjective9 extends PublicObjective {
 
     public PublicObjective9(DiceContainer diceContainer) {
         super(diceContainer);
-        this.name = "Diagonali colorate";
-        this.description = "Numero di dadi dello stesso colore diagonalmente adiacenti";
+        this.name = "Color Diagonals";
+        this.description = "Count of diagonally adjacent same color dice";
         this.id = 9;
     }
 
     /**
-     *
+     * Calculates the score of the pattern card given: + 1 for each die with a die of the same color adjacent to it
      * @param patternCard
      * @return PatternCard score at the end of the game based on public objective of card 9
      * @throws DiceContainerUnsupportedIdException If die's id is not valid

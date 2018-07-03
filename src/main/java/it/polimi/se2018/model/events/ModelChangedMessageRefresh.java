@@ -8,6 +8,10 @@ public class ModelChangedMessageRefresh extends ModelChangedMessage implements M
 
     String idPlayerPlaying;
 
+    /**
+     * When the view receive this message, they refresh the view of the game
+     * @param idPlayerPlaying player id that is gonna play this turn
+     */
     public ModelChangedMessageRefresh(String idPlayerPlaying){
         this.idPlayerPlaying = idPlayerPlaying;
     }

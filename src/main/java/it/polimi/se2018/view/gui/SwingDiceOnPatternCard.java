@@ -2,6 +2,7 @@ package it.polimi.se2018.view.gui;
 
 import it.polimi.se2018.model.events.ModelChangedMessageDiceOnPatternCard;
 import it.polimi.se2018.model.events.ModelChangedMessagePatternCard;
+import it.polimi.se2018.model.events.ModelChangedMessagePrivateObjective;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,11 +11,9 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class SwingDiceOnPatternCard extends JPanel {
-    private ArrayList<SwingDie> dice = new ArrayList<>();
-
     private ArrayList<SwingDie> pc = new ArrayList<>();
 
-    public SwingDiceOnPatternCard (ModelChangedMessageDiceOnPatternCard message, ModelChangedMessagePatternCard modelChangedMessagePatternCard, ArrayList<SwingDie> patterCard) {
+    public SwingDiceOnPatternCard (ModelChangedMessageDiceOnPatternCard message, ModelChangedMessagePatternCard modelChangedMessagePatternCard, ArrayList<SwingDie> patterCard, boolean enable) {
         int cont = 0;
         String id = "";
 
@@ -31,10 +30,12 @@ public class SwingDiceOnPatternCard extends JPanel {
         p1.add(l2);
         p1.add(l3);
 
+        ArrayList<SwingDie> dice = new ArrayList<>();
         while (cont<80) {
             id = id + message.getRepresentation().charAt(cont) + message.getRepresentation().charAt(cont+1);
             SwingDie button = new SwingDie(0);
-            //button.setEnabled(false);
+            if (enable)
+                button.setEnabled(false);
 
             if (!id.equals("**")) {
                 button.setId(id);

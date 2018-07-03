@@ -10,7 +10,7 @@ public abstract class PublicObjective {
 
     protected int id;
 
-    DiceContainer diceContainer;
+    protected DiceContainer diceContainer;
 
     public int getId() {
         return this.id;

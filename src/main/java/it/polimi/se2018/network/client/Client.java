@@ -83,7 +83,9 @@ public class Client {
         System.out.println(id);
         viewClient.setIdClient(id);
 
-        viewClient.run();
+
+        if(typeView.equals("0"))
+            ((ViewClientConsole)viewClient).run();
 
     }
 }

@@ -1,14 +1,12 @@
 package it.polimi.se2018.view.gui;
 
-import it.polimi.se2018.model.events.ModelChangedMessage;
-import it.polimi.se2018.model.events.ModelChangedMessagePatternCard;
-import it.polimi.se2018.model.events.ModelChangedMessagePrivateObjective;
-import it.polimi.se2018.model.events.PlayerMessage;
+import it.polimi.se2018.model.events.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -18,7 +16,7 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
 
     private int idClient;
 
-    private ArrayList<ModelChangedMessagePatternCard> patternCards = new ArrayList<ModelChangedMessagePatternCard>();
+    private ArrayList<ModelChangedMessagePatternCard> patternCards = new ArrayList<>();
 
     private ModelChangedMessagePrivateObjective privateObjective;
 
@@ -30,7 +28,7 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
         this.idClient = idClient;
     }
 
-    public void update(ModelChangedMessage message){
+    public void update(ModelChangedMessage message) {
         if(message instanceof ModelChangedMessagePatternCard) {
             if (((ModelChangedMessagePatternCard) message).getIdPlayer().equals(Integer.toString(idClient)))
                 patternCards.add((ModelChangedMessagePatternCard) message);
@@ -40,15 +38,13 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
                 privateObjective = ((ModelChangedMessagePrivateObjective) message);
     }
 
-    public void print(){
+    public void print() {
         SwingPatternCard p1 = new SwingPatternCard(patternCards.get(0), true);
         SwingPatternCard p2 = new SwingPatternCard(patternCards.get(1), true);
         SwingPatternCard p3 = new SwingPatternCard(patternCards.get(2), true);
         SwingPatternCard p4 = new SwingPatternCard(patternCards.get(3), true);
         JButton po = new JButton("PRIVATE OBJECTIVE");
-        po.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        po.addActionListener(actionListener -> {
                 JFrame f = new JFrame();
                 f.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
                 SwingPrivateObjective p = new SwingPrivateObjective(privateObjective);
@@ -56,11 +52,10 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
                 f.setVisible(true);
                 f.pack();
                 f.setResizable(false);
-            }
         });
 
         jFrame.setResizable(false);
-        jFrame.setTitle("SCELTA PATTERNCARD");
+        jFrame.setTitle("PATTERNCARD CHOICE");
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         jFrame.setSize(550, 700);
         jFrame.setLayout(new BorderLayout());
@@ -76,35 +71,23 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
 
         JRadioButton rb1 = new JRadioButton("PATTERNCARD 1");
         rb1.setActionCommand(patternCards.get(0).getIdPatternCard());
-        rb1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        rb1.addActionListener(actionListener -> {
                 b.setEnabled(true);
-            }
         });
         JRadioButton rb2 = new JRadioButton("PATTERNCARD 2");
         rb2.setActionCommand(patternCards.get(1).getIdPatternCard());
-        rb2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        rb2.addActionListener(actionListener -> {
                 b.setEnabled(true);
-            }
         });
         JRadioButton rb3 = new JRadioButton("PATTERNCARD 3");
         rb3.setActionCommand(patternCards.get(2).getIdPatternCard());
-        rb3.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        rb3.addActionListener(actionListener -> {
                 b.setEnabled(true);
-            }
         });
         JRadioButton rb4 = new JRadioButton("PATTERNCARD 4");
         rb4.setActionCommand(patternCards.get(3).getIdPatternCard());
-        rb4.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        rb4.addActionListener(actionListener -> {
                 b.setEnabled(true);
-            }
         });
 
         group = new ButtonGroup();
@@ -164,7 +147,12 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         idPatternCardChosen = idPatternCardChosen + group.getSelection().getActionCommand();
-        jFrame.setVisible(false);
+        try {
+            serverInterface.notify(new PlayerMessageSetup(idClient, Integer.parseInt(idPatternCardChosen)));
+        } catch (RemoteException e1) {
+            e1.printStackTrace();
+        }
+        jFrame.dispose();
     }
 
     public Integer askForPatternCard() {

@@ -42,13 +42,6 @@ public class ViewClientConsoleEndGame extends ViewClientConsolePrint {
             System.out.println("ID: " + score[0] + " | " + "SCORE: " + score[0] + " | " + "TOKENS LEFT: " + score[2]);
         }
 
-        System.out.println("The last player to play was " + scoreboard.charAt(scoreboard.length() - 1));
-
-        if(scoreboard.charAt(0) == idClient + '0')
-            System.out.println("CONGRATS, YOU WON");
-        else
-            System.out.println("CONGRATS, YOU LOSE");
-
         try {
             TimeUnit.SECONDS.sleep(30);
         } catch (InterruptedException e) {

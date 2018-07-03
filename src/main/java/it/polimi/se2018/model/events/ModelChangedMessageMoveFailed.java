@@ -8,6 +8,11 @@ public class ModelChangedMessageMoveFailed extends ModelChangedMessage implement
 
     private String errorMessage;
 
+    /**
+     * Message created by the model and put in a notify when a player move gets rejected
+     * @param player player id that performed the move
+     * @param errorMessage string containing the reason the move was rejected
+     */
     public ModelChangedMessageMoveFailed(String player, String errorMessage){
         this.player = player;
         this.errorMessage = errorMessage;
