@@ -38,8 +38,7 @@ public class SwingMainView extends ViewClient {
             }
         } else if (message instanceof ModelChangedMessageNewEvent) {
             if (((ModelChangedMessageNewEvent) message).getPlayer() == (idClient)) {
-                new MoveFailedFrame(((ModelChangedMessageNewEvent) message).getMessage());
-                //System.out.println("NEW EVENT: " + ((ModelChangedMessageNewEvent) message).getMessage());
+                new NewEventFrame(((ModelChangedMessageNewEvent) message).getMessage());
             }
         }
         else if(message instanceof ModelChangedMessageChangeGamePhase) {
