@@ -360,6 +360,7 @@ public class ViewClientGUIGame extends SwingPhase {
         return frame.getid();
     }
 
+    @Override
     public ArrayList<Integer> getIncrementedValue() {
         IncrementedValueFrame frame = new IncrementedValueFrame(diceArena);
         ArrayList<Integer> returnValues = frame.getValues();
@@ -367,6 +368,15 @@ public class ViewClientGUIGame extends SwingPhase {
         return returnValues;
     }
 
+    @Override
+    public ArrayList<Integer> getDieFromRoundTrack() {
+        RoundTrackFrame roundTrackFrame = new RoundTrackFrame(roundTrack);
+        ArrayList<Integer> returnValues = roundTrackFrame.getValues();
+
+        return returnValues;
+    }
+
+    @Override
     public PlayerMessage getMainMove() {
 
         if (!idDieChosen.equals("") && toolCardChosen.length() == 0) {

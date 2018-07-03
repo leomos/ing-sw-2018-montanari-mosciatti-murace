@@ -12,9 +12,9 @@ import java.util.ArrayList;
 public class OnePositionFrame {
     private JDialog dialog;
 
-    int row = -1;
+    private int row = -1;
 
-    int col = -1;
+    private int col = -1;
 
     public OnePositionFrame(ModelChangedMessageDiceOnPatternCard messageDiceOnPatternCard, ModelChangedMessagePatternCard messagePatternCard) {
         SwingPatternCard patternCard = new SwingPatternCard(messagePatternCard, false);

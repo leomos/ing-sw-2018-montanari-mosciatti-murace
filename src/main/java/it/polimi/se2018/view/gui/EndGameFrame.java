@@ -130,4 +130,8 @@ public class EndGameFrame extends SwingPhase {
         return null;
     }
 
+    @Override
+    public ArrayList<Integer> getDieFromRoundTrack() {
+        return null;
+    }
 }

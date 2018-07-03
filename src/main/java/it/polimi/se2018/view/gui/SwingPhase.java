@@ -14,7 +14,7 @@ public abstract class SwingPhase {
 
     public abstract void print();
 
-    public void setServerInterface(ServerInterface serverInterface){
+    public void setServerInterface(ServerInterface serverInterface) {
         this.serverInterface = serverInterface;
     }
 
@@ -27,4 +27,6 @@ public abstract class SwingPhase {
     public abstract Integer getDieFromDiceArena();
 
     public abstract ArrayList<Integer> getIncrementedValue();
+
+    public abstract ArrayList<Integer> getDieFromRoundTrack();
 }
