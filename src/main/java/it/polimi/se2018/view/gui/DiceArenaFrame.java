@@ -47,7 +47,8 @@ public class DiceArenaFrame {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dialog.dispose();
+                if (id!=-1)
+                    dialog.dispose();
             }
         });
 
