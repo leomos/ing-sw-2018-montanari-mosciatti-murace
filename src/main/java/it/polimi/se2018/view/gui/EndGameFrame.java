@@ -119,4 +119,10 @@ public class EndGameFrame extends SwingPhase {
     public ArrayList<Integer> getPositionInPatternCard() {
         return null;
     }
+
+    @Override
+    public Integer getDieFromDiceArena() {
+        return 0;
+    }
+
 }

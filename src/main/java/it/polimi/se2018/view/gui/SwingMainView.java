@@ -93,4 +93,13 @@ public class SwingMainView extends ViewClient {
         }
         return null;
     }
+
+    @Override
+    public Integer getDieFromDiceArena() {
+        if(idPlayerPlaying == idClient){
+            Integer returnValues = swingPhase.getDieFromDiceArena();
+            return returnValues;
+        }
+        return null;
+    }
 }
