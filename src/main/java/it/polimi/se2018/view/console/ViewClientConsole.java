@@ -6,6 +6,9 @@ import it.polimi.se2018.network.visitor.MessageVisitorImplementationView;
 import it.polimi.se2018.view.ViewClient;
 import it.polimi.se2018.view.gui.*;
 
+import javax.swing.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -136,8 +139,13 @@ public class ViewClientConsole extends ViewClient  {
             }
         }
         if(viewType == 1){
-
-            //todo:
+            SuspendFrame frame;
+            swingPhase.close();
+            if (modelChangedMessagePlayerAFK.getPlayer()==idClient) {
+                frame = new SuspendFrame();
+            }
+            else
+                new NewEventFrame("Player " + modelChangedMessagePlayerAFK.getPlayer() + " is now suspended");
         }
     }
 
