@@ -35,4 +35,6 @@ public abstract class SwingPhase {
     public abstract ArrayList<Integer> getDieFromRoundTrack();
 
     public abstract Integer getValueForDie();
+
+    public abstract void close();
 }

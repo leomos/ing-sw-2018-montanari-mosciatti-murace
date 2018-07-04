@@ -4,8 +4,6 @@ import it.polimi.se2018.model.events.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.rmi.RemoteException;
@@ -433,5 +431,11 @@ public class ViewClientGUIGame extends SwingPhase {
         }
         return null;
 
+    }
+
+    @Override
+    public void close(){
+        jFrame.setVisible(false);
+        jFrame.dispose();
     }
 }
