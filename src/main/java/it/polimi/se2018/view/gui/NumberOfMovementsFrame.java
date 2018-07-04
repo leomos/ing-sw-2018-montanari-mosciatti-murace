@@ -1,5 +1,7 @@
 package it.polimi.se2018.view.gui;
 
+import it.polimi.se2018.model.events.ModelChangedMessageDiceArena;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -44,6 +46,10 @@ public class NumberOfMovementsFrame {
         dialog.add(button, BorderLayout.SOUTH);
 
         dialog.setSize(300, 200);
+
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        dialog.setLocation ((screenSize.width - 300)/2, (screenSize.height - 200)/2);
+
         dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         dialog.setVisible(true);
     }

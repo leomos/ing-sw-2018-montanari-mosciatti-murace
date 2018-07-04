@@ -55,8 +55,6 @@ public class IncrementedValueFrame {
         panel.add(p, BorderLayout.CENTER);
         panel.add(die, BorderLayout.SOUTH);
 
-
-
         JButton button = new JButton("CONTINUE");
         button.addActionListener(actionListener -> {
                 if(!values.isEmpty()) {
@@ -72,9 +70,13 @@ public class IncrementedValueFrame {
         dialog.add(panel, BorderLayout.CENTER);
         dialog.add(button, BorderLayout.SOUTH);
 
-        dialog.setSize(500, 300);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        dialog.setLocation ((screenSize.width - 500)/2, (screenSize.height - 200)/2);
+
+        dialog.setSize(500, 200);
         dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         dialog.setVisible(true);
+
     }
 
     public ArrayList<Integer> getValues(){

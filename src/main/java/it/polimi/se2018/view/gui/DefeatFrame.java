@@ -6,6 +6,7 @@ import java.awt.*;
 public class DefeatFrame extends Frame {
     public DefeatFrame() {
         super();
+        setTitle("RESULT");
         label = new JLabel("YOU LOSE!!", SwingConstants.CENTER);
         add(label, BorderLayout.CENTER);
         setSize(200, 100);

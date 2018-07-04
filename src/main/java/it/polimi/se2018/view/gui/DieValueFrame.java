@@ -41,6 +41,10 @@ public class DieValueFrame {
         dialog.add(label, BorderLayout.NORTH);
         dialog.add(panel, BorderLayout.CENTER);
         dialog.add(button, BorderLayout.SOUTH);
+
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        dialog.setLocation ((screenSize.width - 100)/2, (screenSize.height - 150)/2);
+
         dialog.setVisible(true);
     }
 

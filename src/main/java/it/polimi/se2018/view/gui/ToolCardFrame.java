@@ -6,6 +6,7 @@ import java.awt.*;
 public class ToolCardFrame extends Frame {
     public ToolCardFrame(String s) {
         super();
+        setTitle("TOOLCARD");
         JLabel label = new JLabel(s, SwingConstants.CENTER);
         setSize(300, 100);
         Dimension frameSize = getSize ();
