@@ -4,6 +4,7 @@ import it.polimi.se2018.model.GamePhase;
 import it.polimi.se2018.model.events.*;
 import it.polimi.se2018.network.visitor.MessageVisitorImplementationView;
 import it.polimi.se2018.view.ViewClient;
+import it.polimi.se2018.view.gui.*;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -14,9 +15,15 @@ import static it.polimi.se2018.model.GamePhase.*;
 
 public class ViewClientConsole extends ViewClient  {
 
+    boolean runConsole = true;
+
+    private int viewType;
+
     private int idClient;
 
     private int idPlayerPlaying;
+
+    private SwingPhase swingPhase;
 
     private boolean canIPlay = true;
 
@@ -30,7 +37,8 @@ public class ViewClientConsole extends ViewClient  {
 
     private MessageVisitorImplementationView messageVisitorImplementationView;
 
-    public ViewClientConsole(){
+    public ViewClientConsole(int viewType){
+        this.viewType = viewType;
         this.messageVisitorImplementationView = new MessageVisitorImplementationView(this);
     }
 
@@ -40,6 +48,10 @@ public class ViewClientConsole extends ViewClient  {
 
     public ViewClientConsolePrint getViewClientConsolePrint(){ return this.viewClientConsolePrint;}
 
+    public SwingPhase getSwingPhase() {
+        return swingPhase;
+    }
+
     @Override
     public synchronized void update(ModelChangedMessage message) {
         message.accept(messageVisitorImplementationView);
@@ -47,53 +59,87 @@ public class ViewClientConsole extends ViewClient  {
 
     public void update(ModelChangedMessageMoveFailed messageMoveFailed) {
         if(messageMoveFailed.getPlayer() == idClient) {
-            System.out.println("ERROR: " + messageMoveFailed.getErrorMessage());
-            System.out.println("\n\nTry again");
+            if(viewType == 0) {
+                System.out.println("ERROR: " + messageMoveFailed.getErrorMessage());
+                System.out.println("\n\nTry again");
+            }
+            if (viewType == 1)
+                new MoveFailedFrame(messageMoveFailed.getErrorMessage());
         }
     }
 
     public void update(ModelChangedMessageNewEvent modelChangedMessageNewEvent){
         if(modelChangedMessageNewEvent.getPlayer() == idClient){
-            System.out.println("NEW EVENT: " + modelChangedMessageNewEvent.getMessage());
+            if(viewType == 0)
+                System.out.println("NEW EVENT: " + modelChangedMessageNewEvent.getMessage());
+            if(viewType == 1)
+                new NewEventFrame(modelChangedMessageNewEvent.getMessage());
         }
     }
 
     public void update(ModelChangedMessageChangeGamePhase modelChangedMessageChangeGamePhase) {
         gamePhase = modelChangedMessageChangeGamePhase.getGamePhase();
-        if(gamePhase == SETUPPHASE)
+        if(gamePhase == SETUPPHASE) {
+            swingPhase = new PatternCardsFrame(this.idClient);
+            swingPhase.setServerInterface(this.serverInterface);
             viewClientConsolePrint = new ViewClientConsoleSetup(this.idClient);
+        }
         if (gamePhase == GAMEPHASE) {
+            swingPhase = new ViewClientGUIGame(this.idClient);
+            swingPhase.setServerInterface(this.serverInterface);
             hasChoosePatternCard = true;
             viewClientConsolePrint = new ViewClientConsoleGame(this.idClient);
         }
-        if (gamePhase == ENDGAMEPHASE)
-            viewClientConsolePrint = new ViewClientConsoleEndGame(this.idClient);
+        if (gamePhase == ENDGAMEPHASE) {
+            if(viewType == 0)
+                viewClientConsolePrint = new ViewClientConsoleEndGame(this.idClient);
+            if(viewType == 1)
+                new EndGameFrame(this.idClient);
+        }
     }
 
     public void update(ModelChangedMessageRefresh modelChangedMessageRefresh) {
-        viewClientConsolePrint.print();
-        if (modelChangedMessageRefresh.getIdPlayerPlaying() != null) {
-            idPlayerPlaying = modelChangedMessageRefresh.getIdPlayerPlaying();
-            if (idPlayerPlaying == idClient && canIPlay) {
-                System.out.println("It's your turn");
-                System.out.println("/help: get List of moves");
+        if(viewType == 0) {
+            viewClientConsolePrint.print();
+            if (modelChangedMessageRefresh.getIdPlayerPlaying() != null) {
+                idPlayerPlaying = modelChangedMessageRefresh.getIdPlayerPlaying();
+                if (idPlayerPlaying == idClient && canIPlay) {
+                    System.out.println("It's your turn");
+                    System.out.println("/help: get List of moves");
+                }
             }
+        } else if(viewType == 1){
+
+            swingPhase.print();
+            if(modelChangedMessageRefresh.getIdPlayerPlaying() != null && modelChangedMessageRefresh.getIdPlayerPlaying() != idPlayerPlaying){
+                swingPhase.update(modelChangedMessageRefresh);
+                idPlayerPlaying = modelChangedMessageRefresh.getIdPlayerPlaying();
+                if(idPlayerPlaying == idClient && canIPlay)
+                    new TurnFrame();
+            }
+
+
         }
     }
 
     public void update(ModelChangedMessagePlayerAFK modelChangedMessagePlayerAFK) {
-        if(modelChangedMessagePlayerAFK.getPlayer() == idClient) {
-            System.out.println(modelChangedMessagePlayerAFK.getMessage());
-            clientSuspended = true;
-            viewClientConsolePrint.setSuspended(true);
-        } else {
-            System.out.println("\nPlayer " + modelChangedMessagePlayerAFK.getPlayer() + " is now suspended");
+        if(viewType == 0) {
+            if (modelChangedMessagePlayerAFK.getPlayer() == idClient) {
+                System.out.println(modelChangedMessagePlayerAFK.getMessage());
+                clientSuspended = true;
+                viewClientConsolePrint.setSuspended(true);
+            } else {
+                System.out.println("\nPlayer " + modelChangedMessagePlayerAFK.getPlayer() + " is now suspended");
+            }
+        }
+        if(viewType == 1){
+
+            //todo:
         }
     }
 
 
     public void run(){
-        boolean c = true;
 
         do {
 
@@ -126,7 +172,7 @@ public class ViewClientConsole extends ViewClient  {
 
 
 
-        while(c) {
+        while(runConsole) {
 
 
             boolean moveOk;
@@ -198,19 +244,21 @@ public class ViewClientConsole extends ViewClient  {
 
     @Override
     public Boolean block(){
+        if(viewType == 0)
+            if (idPlayerPlaying == idClient)
+                canIPlay = false;
 
-        if(idPlayerPlaying == idClient)
-            canIPlay = false;
         return true;
     }
 
     @Override
     public Boolean free(){
-        canIPlay = true;
-
-        if(idPlayerPlaying == idClient && canIPlay) {
-            System.out.println("It's your turn");
-            System.out.println("/help: get List of moves");
+        if(viewType == 0) {
+            canIPlay = true;
+            if (idPlayerPlaying == idClient && canIPlay) {
+                System.out.println("It's your turn");
+                System.out.println("/help: get List of moves");
+            }
         }
         return true;
     }
@@ -219,10 +267,16 @@ public class ViewClientConsole extends ViewClient  {
     public ArrayList<Integer> getPositionInPatternCard(){
         if(idPlayerPlaying == idClient){
 
-            ArrayList<Integer> returnValues = viewClientConsolePrint.getPositionInPatternCard();
+            ArrayList<Integer> returnValues = new ArrayList<>();
 
-            if(returnValues.isEmpty())
-                unSuspend();
+            if(viewType == 0) {
+                viewClientConsolePrint.getPositionInPatternCard();
+                if (returnValues.isEmpty())
+                    unSuspend();
+            }
+            if(viewType == 1)
+                swingPhase.getPositionInPatternCard();
+
             return returnValues;
 
         }
@@ -233,10 +287,16 @@ public class ViewClientConsole extends ViewClient  {
     public ArrayList<Integer> getSinglePositionInPatternCard(ArrayList<Integer> listOfAvailablePositions){
         if(idPlayerPlaying == idClient) {
 
-            ArrayList<Integer> returnValues = viewClientConsolePrint.getSinglePositionInPatternCard(listOfAvailablePositions);
+            ArrayList<Integer> returnValues = new ArrayList<>();
 
-            if(returnValues.isEmpty())
-                unSuspend();
+            if(viewType == 0){
+                returnValues = viewClientConsolePrint.getSinglePositionInPatternCard(listOfAvailablePositions);
+                if(returnValues.isEmpty())
+                    unSuspend();
+            }
+            if(viewType == 1)
+                returnValues = swingPhase.getSinglePositionInPatternCard(listOfAvailablePositions);
+
             return returnValues;
 
         }
@@ -247,10 +307,17 @@ public class ViewClientConsole extends ViewClient  {
     public ArrayList<Integer> getIncrementedValue() {
         if (idPlayerPlaying == idClient) {
 
-            ArrayList<Integer> returnValues = viewClientConsolePrint.getIncrementedValue();
+            ArrayList<Integer> returnValues = new ArrayList<>();
 
-            if(returnValues.isEmpty())
-                unSuspend();
+            if(viewType == 0) {
+                returnValues = viewClientConsolePrint.getIncrementedValue();
+                if (returnValues.isEmpty())
+                    unSuspend();
+            }
+            if(viewType == 1) {
+                returnValues = swingPhase.getIncrementedValue();
+            }
+
             return returnValues;
 
         }
@@ -261,10 +328,17 @@ public class ViewClientConsole extends ViewClient  {
     public Integer getDieFromDiceArena(){
         if(idPlayerPlaying == idClient) {
 
-            int returnValues = viewClientConsolePrint.getDieFromDiceArena();
+            int returnValues = -1;
 
-            if(returnValues == -1)
-                unSuspend();
+            if(viewType == 0) {
+                returnValues = viewClientConsolePrint.getDieFromDiceArena();
+                if (returnValues == -1)
+                    unSuspend();
+            }
+            if(viewType == 1){
+                returnValues = swingPhase.getDieFromDiceArena();
+            }
+
             return returnValues;
 
         }
@@ -275,10 +349,18 @@ public class ViewClientConsole extends ViewClient  {
     public ArrayList<Integer> getDieFromRoundTrack(){
         if(idPlayerPlaying == idClient) {
 
-            ArrayList<Integer> returnValues = viewClientConsolePrint.getDieFromRoundTrack();
+            ArrayList<Integer> returnValues = new ArrayList<>();
 
-            if(returnValues.isEmpty())
-                unSuspend();
+            if(viewType == 0) {
+                returnValues = viewClientConsolePrint.getDieFromRoundTrack();
+                if (returnValues.isEmpty())
+                    unSuspend();
+            }
+
+            if(viewType == 1){
+                returnValues = swingPhase.getDieFromRoundTrack();
+            }
+
             return returnValues;
 
         }
@@ -289,10 +371,16 @@ public class ViewClientConsole extends ViewClient  {
     public Integer getValueForDie(){
         if(idPlayerPlaying == idClient) {
 
-            int returnValues = viewClientConsolePrint.getValueForDie();
+            int returnValues = -1;
 
-            if(returnValues == -1)
-                unSuspend();
+            if(viewType == 0) {
+                returnValues = viewClientConsolePrint.getValueForDie();
+                if (returnValues == -1)
+                    unSuspend();
+            }
+            if(viewType == 1)
+                returnValues = swingPhase.getValueForDie();
+
             return returnValues;
 
         }
@@ -304,10 +392,17 @@ public class ViewClientConsole extends ViewClient  {
     public ArrayList<Integer> getDoublePositionInPatternCard(){
         if(idPlayerPlaying == idClient) {
 
-            ArrayList<Integer> returnValues = viewClientConsolePrint.getDoublePositionInPatternCard();
+            ArrayList<Integer> returnValues = new ArrayList<>();
 
-            if(returnValues.isEmpty())
-                unSuspend();
+            if(viewType == 0) {
+                returnValues = viewClientConsolePrint.getDoublePositionInPatternCard();
+                if (returnValues.isEmpty())
+                    unSuspend();
+            }
+            if(viewType == 1){
+                returnValues = swingPhase.getDoublePositionInPatternCard();
+            }
+
             return returnValues;
 
         }
@@ -316,22 +411,24 @@ public class ViewClientConsole extends ViewClient  {
 
     @Override
     public void handleDisconnection() {
-        System.out.println("Disconnesso!");
-        this.serverInterface = null;
-        this.executor.shutdownNow();
-        try {
-            this.executor.awaitTermination(3, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            System.out.println("Heartbeat terminato prima del previsto.");
+        if(viewType == 0) {
+            System.out.println("Disconnesso!");
+            this.serverInterface = null;
+            this.executor.shutdownNow();
+            try {
+                this.executor.awaitTermination(3, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+                System.out.println("Heartbeat terminato prima del previsto.");
+            }
+            System.out.println("Heartbeat terminato!");
+            try {
+                TimeUnit.SECONDS.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("provo a riconnettermi");
+            tryToReconnect();
         }
-        System.out.println("Heartbeat terminato!");
-        try {
-            TimeUnit.SECONDS.sleep(10);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        System.out.println("provo a riconnettermi");
-        tryToReconnect();
     }
 
     private void tryToReconnect() {
