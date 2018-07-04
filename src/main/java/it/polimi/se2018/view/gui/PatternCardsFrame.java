@@ -35,7 +35,8 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
 
     @Override
     public void update(ModelChangedMessagePrivateObjective message) {
-        privateObjective = (message);
+        if (message.getIdPlayer()==idClient)
+            privateObjective = message;
     }
 
     @Override
@@ -83,7 +84,7 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
         SwingPatternCard p2 = new SwingPatternCard(patternCards.get(1), true);
         SwingPatternCard p3 = new SwingPatternCard(patternCards.get(2), true);
         SwingPatternCard p4 = new SwingPatternCard(patternCards.get(3), true);
-        SwingPrivateObjective pri = new SwingPrivateObjective(privateObjective);
+
 
         jFrame.setResizable(false);
         jFrame.setTitle("PATTERNCARD CHOICE");
@@ -92,7 +93,6 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
         JPanel p = new JPanel();
         Color c = new Color(34, 139, 34);
         p.setBackground(c);
-
         jFrame.setContentPane(p);
 
         JButton b = new JButton("CONFERMA");
@@ -165,6 +165,8 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
 
         jPanel.add(panel, BorderLayout.CENTER);
         jPanel.add(b, BorderLayout.SOUTH);
+
+        SwingPrivateObjective pri = new SwingPrivateObjective(privateObjective);
 
         jFrame.add(jPanel);
         jFrame.add(pri);

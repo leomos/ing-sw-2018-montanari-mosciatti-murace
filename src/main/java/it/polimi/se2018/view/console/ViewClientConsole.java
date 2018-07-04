@@ -2,6 +2,7 @@ package it.polimi.se2018.view.console;
 
 import it.polimi.se2018.model.GamePhase;
 import it.polimi.se2018.model.events.*;
+import it.polimi.se2018.model.player.Player;
 import it.polimi.se2018.network.visitor.MessageVisitorImplementationView;
 import it.polimi.se2018.view.ViewClient;
 import it.polimi.se2018.view.gui.*;
@@ -140,12 +141,53 @@ public class ViewClientConsole extends ViewClient  {
         }
         if(viewType == 1){
             SuspendFrame frame;
-            swingPhase.close();
             if (modelChangedMessagePlayerAFK.getPlayer()==idClient) {
+                swingPhase.close();
                 frame = new SuspendFrame();
+                frame.addWindowListener(new WindowListener() {
+                    @Override
+                    public void windowOpened(WindowEvent e) {
+
+                    }
+
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+
+                    }
+
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        PlayerMessageNotAFK messageNotAFK = new PlayerMessageNotAFK(idClient);
+                        try {
+                            serverInterface.notify(messageNotAFK);
+                        } catch (RemoteException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void windowIconified(WindowEvent e) {
+
+                    }
+
+                    @Override
+                    public void windowDeiconified(WindowEvent e) {
+
+                    }
+
+                    @Override
+                    public void windowActivated(WindowEvent e) {
+
+                    }
+
+                    @Override
+                    public void windowDeactivated(WindowEvent e) {
+
+                    }
+                });
             }
             else
-                new NewEventFrame("Player " + modelChangedMessagePlayerAFK.getPlayer() + " is now suspended");
+                new MoveFailedFrame("Player " + modelChangedMessagePlayerAFK.getPlayer() + " is now suspended");
         }
     }
 

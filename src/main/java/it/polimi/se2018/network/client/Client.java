@@ -18,7 +18,9 @@ public class Client {
 
     public static void main(String[] args) {
         //String host = "163.172.183.230";
-        String host = "localhost";
+        //String host = "localhost";
+        String host = "192.168.43.123";
+
 
 
         System.out.println("\nInsert Type View");
