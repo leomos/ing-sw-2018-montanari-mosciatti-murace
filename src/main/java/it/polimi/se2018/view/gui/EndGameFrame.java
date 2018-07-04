@@ -154,4 +154,9 @@ public class EndGameFrame extends SwingPhase {
         return null;
     }
 
+    @Override
+    public void yourTurn() {
+
+    }
+
 }

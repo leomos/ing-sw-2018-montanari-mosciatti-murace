@@ -93,8 +93,10 @@ public class ViewClientConsole extends ViewClient  {
         if (gamePhase == ENDGAMEPHASE) {
             if(viewType == 0)
                 viewClientConsolePrint = new ViewClientConsoleEndGame(this.idClient);
-            if(viewType == 1)
-                new EndGameFrame(this.idClient);
+            if(viewType == 1) {
+                swingPhase = new EndGameFrame(this.idClient);
+                swingPhase.print();
+            }
         }
     }
 
@@ -115,7 +117,7 @@ public class ViewClientConsole extends ViewClient  {
                 swingPhase.update(modelChangedMessageRefresh);
                 idPlayerPlaying = modelChangedMessageRefresh.getIdPlayerPlaying();
                 if(idPlayerPlaying == idClient && canIPlay)
-                    new TurnFrame();
+                    swingPhase.yourTurn();
             }
 
 

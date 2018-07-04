@@ -214,6 +214,11 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
         return null;
     }
 
+    @Override
+    public void yourTurn() {
+
+    }
+
     public void waiting() {
         jFrame.getContentPane().removeAll();
         jFrame.repaint();

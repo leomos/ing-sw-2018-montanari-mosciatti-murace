@@ -6,11 +6,11 @@ import java.awt.*;
 public class ToolCardFrame extends Frame {
     public ToolCardFrame(String s) {
         super();
-        setTitle("TOOLCARD");
+        dialog.setTitle("TOOLCARD");
         JLabel label = new JLabel(s, SwingConstants.CENTER);
-        setSize(300, 100);
-        Dimension frameSize = getSize ();
-        setLocation ((screenSize.width-frameSize.width)/2, (screenSize.height-frameSize.height)/2);
-        add(label, BorderLayout.CENTER);
+        dialog.setSize(300, 100);
+        Dimension frameSize = dialog.getSize ();
+        dialog.setLocation ((screenSize.width-frameSize.width)/2, (screenSize.height-frameSize.height)/2);
+        dialog.add(label, BorderLayout.CENTER);
     }
 }

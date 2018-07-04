@@ -6,11 +6,11 @@ import java.awt.*;
 public class WinFrame extends Frame {
     public WinFrame() {
         super();
-        setTitle("RESULT");
-        setSize(200, 100);
+        dialog.setTitle("RESULT");
+        dialog.setSize(200, 100);
         label = new JLabel("CONGRATS, YOU WIN!!", SwingConstants.CENTER);
-        add(label, BorderLayout.CENTER);
-        Dimension frameSize = getSize ();
-        setLocation ((screenSize.width-frameSize.width)/2, (screenSize.height-frameSize.height)/2);
+        dialog.add(label, BorderLayout.CENTER);
+        dialog.setLocation ((screenSize.width-200)/2, (screenSize.height-100)/2);
+        dialog.setVisible(true);
     }
 }

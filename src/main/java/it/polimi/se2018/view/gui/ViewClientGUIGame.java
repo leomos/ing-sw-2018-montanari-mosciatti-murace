@@ -419,6 +419,11 @@ public class ViewClientGUIGame extends SwingPhase {
     }
 
     @Override
+    public void yourTurn() {
+        new TurnFrame();
+    }
+
+    @Override
     public PlayerMessage getMainMove() {
 
         if (!idDieChosen.equals("") && toolCardChosen.length() == 0) {

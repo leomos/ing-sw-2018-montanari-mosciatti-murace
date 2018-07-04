@@ -3,25 +3,28 @@ package it.polimi.se2018.view.gui;
 import javax.swing.*;
 import java.awt.*;
 
-public class Frame extends JDialog {
+public class Frame {
+    protected JDialog dialog;
+
     protected JLabel label;
 
     protected JButton ok;
 
-    protected  Dimension screenSize = Toolkit.getDefaultToolkit ().getScreenSize ();
+    protected  Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
     JFrame frame = new JFrame();
 
     public Frame() {
-        new JDialog(frame, "", true);
+        dialog = new JDialog(frame, "", true);
         JButton ok = new JButton("OK");
         ok.addActionListener(actionListener -> {
-                dispose();
+                dialog.dispose();
         });
-        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        setResizable(false);
-        setLayout(new BorderLayout());
-        add(ok, BorderLayout.SOUTH);
-        setVisible(true);
+
+        dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        dialog.setResizable(false);
+        dialog.setLayout(new BorderLayout());
+        dialog.add(ok, BorderLayout.SOUTH);
+        //dialog.setVisible(true);
     }
 }
