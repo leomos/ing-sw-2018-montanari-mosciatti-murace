@@ -29,6 +29,8 @@ public class Room extends Thread {
 
     private int turnCountdownLength;
 
+    private boolean isRunning = true;
+
 
     private Stream<ConnectedClient> activePlayers() {
         return players.stream()
@@ -61,38 +63,18 @@ public class Room extends Thread {
 
     @Override
     public void run() {
-        //while(gamePlaying) {
-            HashMap<Integer, String> clientsMap = createClientsMap();
-            messageVisitorUpdate = new MessageVisitorImplementationUpdate(this);
-            model = new Model(clientsMap, turnCountdownLength);
-            controller = new Controller(model);
-            view = new VirtualView();
-            model.register(view);
-            view.register(controller);
-            controller.addView(view);
+        HashMap<Integer, String> clientsMap = createClientsMap();
+        messageVisitorUpdate = new MessageVisitorImplementationUpdate(this);
+        model = new Model(clientsMap, turnCountdownLength);
+        controller = new Controller(model);
+        view = new VirtualView();
+        model.register(view);
+        view.register(controller);
+        controller.addView(view);
 
-            view.setRoom(this);
+        view.setRoom(this);
 
-            model.initSetup();
-            //patterncard choise
-
-        /*
-            players.parallelStream().forEach(player -> {
-                try {
-                    Integer m = player.getClientInterface().askForPatternCard();
-                    PlayerMessage playerMessage = new PlayerMessageSetup(player.getId(), m);
-                    view.callNotify(playerMessage);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-            });
-            */
-
-
-            //model.initGame();
-
-            //start rounds
-        //}
+        model.initSetup();
     }
 
     public void addPlayers(Set<ConnectedClient> players) {
@@ -120,42 +102,11 @@ public class Room extends Thread {
 
     public void updatePlayers(Message updateMessage) {
 
-        //se il messaggio è playerAFK, vuol dire che il time out del timerSuspendThreshold è scaduto, quindi metto il giocatore in
-        //AFK inoltrando solo a lui questo tipo di messaggio. a dire la verità lo inoltra due volte?
-        //bisogna togliere il INSTANCE OF e si può mettere nel for sotto volendo
-
-        /*if(updateMessage instanceof ModelChangedMessagePlayerAFK){
-            players.forEach((player) -> {
-
-                if(((ModelChangedMessagePlayerAFK) updateMessage).getPlayer().equals(Integer.toString(player.getId()))) {
-                    try {
-                        player.setInactive(true);
-                        System.out.println("giocatore INACTIVE");
-                        player.getClientInterface().update((ModelChangedMessage) updateMessage);
-                    } catch (RemoteException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            });
-        }*/
-
         ((MessageVisitorImplementationUpdate)messageVisitorUpdate).setCurrentPlayerPlayingId(model.currentPlayerPlaying());
 
         players.forEach((player) -> {
             ((MessageVisitorImplementationUpdate)messageVisitorUpdate).setPlayer(player);
             updateMessage.accept(messageVisitorUpdate);
-            /*try {
-                if(!player.isInactive()) {
-                    player.getClientInterface().update((ModelChangedMessage) updateMessage);
-                } else {
-                    if(player.getId() == model.currentPlayerPlaying()) {
-                        updateMessage.accept(messageVisitorUpdate);
-                    }
-                }
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }*/
         });
     }
 
@@ -270,6 +221,7 @@ public class Room extends Thread {
     }
 
     public Boolean reconnectPlayer(ClientInterface clientInterface, int id) {
+        if(!isRunning) return false;
         ConnectedClient reconnectedClient = inactivePlayers()
                 .filter(player -> player.getId() == id)
                 .findFirst()
@@ -282,5 +234,9 @@ public class Room extends Thread {
 
     public void sendGameStateToReconnectedPlayer(int id) {
         model.updatePlayerThatCameBackIntoTheGame(id);
+    }
+
+    public void dispose() {
+        isRunning = false;
     }
 }

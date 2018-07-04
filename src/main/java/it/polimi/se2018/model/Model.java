@@ -237,7 +237,7 @@ public class Model extends Observable<ModelChangedMessage> {
         int idPlayerMessage = playerMessageEndTurn.getPlayer();
 
 
-        if(isMyTurn(idPlayerMessage)) {
+        if(isMyTurn(idPlayerMessage) && gamePhase==GamePhase.GAMEPHASE) {
             System.out.println("Il giocatore " + idPlayerMessage + " ha mandato l'end turn");
             timer.reStartTimer();
 

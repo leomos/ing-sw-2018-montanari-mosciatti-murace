@@ -15,7 +15,7 @@ public class Server {
     private ExecutorService executorService;
 
     public static void main(String[] args) {
-
+        System.setProperty("java.rmi.server.hostname", "192.168.43.123");
         final OptionParser optionParser = new OptionParser();
 
 
@@ -53,7 +53,7 @@ public class Server {
         ClientGathererInterface clientGathererSocket = new ClientGathererImplementationSocket(1111);
         ClientGathererInterface clientGathererRMI = null;
         try {
-            clientGathererRMI = new ServerImplementationRMI(1099, "localhost", "sagrada");
+            clientGathererRMI = new ServerImplementationRMI(8080, "localhost", "sagrada");
         } catch (RemoteException e) {
             e.printStackTrace();
         }

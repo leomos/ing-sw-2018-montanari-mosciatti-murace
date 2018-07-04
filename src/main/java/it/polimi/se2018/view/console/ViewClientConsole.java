@@ -482,8 +482,12 @@ public class ViewClientConsole extends ViewClient  {
     }
 
     private void tryToReconnect() {
-        this.reconnect(idClient, 0);
-        initNewExecutor();
-        startHeartbeating(idClient);
+        if(this.reconnect(idClient, 0)) {
+            initNewExecutor();
+            startHeartbeating(idClient);
+        } else {
+            //TODO: modificare 
+            System.out.println("Room chiusa");
+        }
     }
 }
