@@ -17,7 +17,7 @@ public class Tokens extends JLabel {
         g.setColor(c);
 
         for (int i = 0; i< num; i++) {
-            g.fillOval(200+(i*25), 0, 15, 15);
+            g.fillOval(50+(i*20), 0, 15, 15);
         }
     }
 }

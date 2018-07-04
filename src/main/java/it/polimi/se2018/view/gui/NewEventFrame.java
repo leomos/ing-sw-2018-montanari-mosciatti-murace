@@ -23,6 +23,10 @@ public class NewEventFrame {
         dialog.setSize(200, 100);
         dialog.add(label, BorderLayout.CENTER);
         dialog.add(button, BorderLayout.SOUTH);
+
+        Dimension screenSize = Toolkit.getDefaultToolkit ().getScreenSize();
+        dialog.setLocation ((screenSize.width - 200) / 2, (screenSize.height - 100) / 2);
+
         dialog.setVisible(true);
     }
 }

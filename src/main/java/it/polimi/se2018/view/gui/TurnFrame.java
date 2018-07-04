@@ -6,11 +6,11 @@ import java.awt.*;
 public class TurnFrame extends Frame {
     public TurnFrame() {
         super();
-        setTitle("TURN");
-        setSize(200, 100);
+        dialog.setTitle("TURN");
+        dialog.setSize(200, 100);
         label = new JLabel("It's your turn!", SwingConstants.CENTER);
-        add(label, BorderLayout.CENTER);
-        Dimension frameSize = getSize ();
-        setLocation ((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
+        dialog.add(label, BorderLayout.CENTER);
+        dialog.setLocation ((screenSize.width - 200) / 2, (screenSize.height - 100) / 2);
+        dialog.setVisible(true);
     }
 }

@@ -6,11 +6,11 @@ import java.awt.*;
 public class MoveFailedFrame extends Frame {
     public MoveFailedFrame(String s) {
         super();
-        setTitle("MOVE FAILED");
+        dialog.setTitle("MOVE FAILED");
         label = new JLabel(s, SwingConstants.CENTER);
-        add(label, BorderLayout.CENTER);
-        setSize(500, 100);
-        Dimension frameSize = getSize ();
-        setLocation ((screenSize.width-frameSize.width)/2, (screenSize.height-frameSize.height)/2);
+        dialog.add(label, BorderLayout.CENTER);
+        dialog.setSize(500, 100);
+        dialog.setLocation ((screenSize.width-500)/2, (screenSize.height-100)/2);
+        dialog.setVisible(true);
     }
 }

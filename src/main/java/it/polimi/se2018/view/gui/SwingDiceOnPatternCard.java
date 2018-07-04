@@ -13,6 +13,8 @@ import java.util.ArrayList;
 public class SwingDiceOnPatternCard extends JPanel {
     private ArrayList<SwingDie> pc = new ArrayList<>();
 
+    private ModelChangedMessagePatternCard s;
+
     public SwingDiceOnPatternCard (ModelChangedMessageDiceOnPatternCard message, ModelChangedMessagePatternCard modelChangedMessagePatternCard, ArrayList<SwingDie> patterCard, boolean enable) {
         int cont = 0;
         String id = "";
@@ -20,6 +22,8 @@ public class SwingDiceOnPatternCard extends JPanel {
         JPanel p = new JPanel();
         p.setLayout(new GridLayout(4, 5));
         p.setPreferredSize(new Dimension(250, 200));
+
+        s = modelChangedMessagePatternCard;
 
         JPanel p1 = new JPanel();
         p1.setLayout(new GridLayout(3, 1));
@@ -103,5 +107,9 @@ public class SwingDiceOnPatternCard extends JPanel {
 
     public ArrayList<SwingDie> getPc() {
         return pc;
+    }
+
+    public ModelChangedMessagePatternCard getS() {
+        return s;
     }
 }

@@ -14,12 +14,14 @@ public class SwingScoreboard extends JPanel {
         String t;
         String points;
 
+        String[] s = scoreboard.split("/");
         ArrayList<ArrayList<Integer>> values = new ArrayList<>();
 
-        for (int i=0; i<scoreboard.length(); i+=4) {
-            id = "" + scoreboard.charAt(i);
-            points = "" + scoreboard.charAt(i + 1) + scoreboard.charAt(i + 2);
-            t = "" + scoreboard.charAt(i + 3);
+        for (int i=0; i<s.length-1; i++) {
+            String[] a = s[i].split(";");
+            id = "" + a[0];
+            points = "" + a[1];
+            t = "" + a[2];
 
             ArrayList<Integer> player = new ArrayList<>();
             player.add(Integer.parseInt(id));

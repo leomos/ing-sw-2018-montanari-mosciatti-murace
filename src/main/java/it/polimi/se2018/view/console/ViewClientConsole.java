@@ -2,10 +2,14 @@ package it.polimi.se2018.view.console;
 
 import it.polimi.se2018.model.GamePhase;
 import it.polimi.se2018.model.events.*;
+import it.polimi.se2018.model.player.Player;
 import it.polimi.se2018.network.visitor.MessageVisitorImplementationView;
 import it.polimi.se2018.view.ViewClient;
 import it.polimi.se2018.view.gui.*;
 
+import javax.swing.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -15,7 +19,7 @@ import static it.polimi.se2018.model.GamePhase.*;
 
 public class ViewClientConsole extends ViewClient  {
 
-    boolean runConsole = true;
+    private boolean runConsole = true;
 
     private int viewType;
 
@@ -85,6 +89,7 @@ public class ViewClientConsole extends ViewClient  {
             viewClientConsolePrint = new ViewClientConsoleSetup(this.idClient);
         }
         if (gamePhase == GAMEPHASE) {
+            swingPhase.close();
             swingPhase = new ViewClientGUIGame(this.idClient);
             swingPhase.setServerInterface(this.serverInterface);
             hasChoosePatternCard = true;
@@ -93,8 +98,10 @@ public class ViewClientConsole extends ViewClient  {
         if (gamePhase == ENDGAMEPHASE) {
             if(viewType == 0)
                 viewClientConsolePrint = new ViewClientConsoleEndGame(this.idClient);
-            if(viewType == 1)
-                new EndGameFrame(this.idClient);
+            if(viewType == 1) {
+                swingPhase.close();
+                swingPhase = new EndGameFrame(this.idClient);
+            }
         }
     }
 
@@ -111,14 +118,14 @@ public class ViewClientConsole extends ViewClient  {
         } else if(viewType == 1){
 
             swingPhase.print();
-            if(modelChangedMessageRefresh.getIdPlayerPlaying() != null && modelChangedMessageRefresh.getIdPlayerPlaying() != idPlayerPlaying){
+            if(modelChangedMessageRefresh.getIdPlayerPlaying() != null && modelChangedMessageRefresh.getIdPlayerPlaying() != idPlayerPlaying) {
                 swingPhase.update(modelChangedMessageRefresh);
                 idPlayerPlaying = modelChangedMessageRefresh.getIdPlayerPlaying();
-                if(idPlayerPlaying == idClient && canIPlay)
+                if (idPlayerPlaying == idClient && swingPhase.isNewTurn()) {
+                    swingPhase.setNewTurn(false);
                     new TurnFrame();
+                }
             }
-
-
         }
     }
 
@@ -133,8 +140,54 @@ public class ViewClientConsole extends ViewClient  {
             }
         }
         if(viewType == 1){
+            SuspendFrame frame;
+            if (modelChangedMessagePlayerAFK.getPlayer()==idClient) {
+                swingPhase.close();
+                frame = new SuspendFrame();
+                frame.addWindowListener(new WindowListener() {
+                    @Override
+                    public void windowOpened(WindowEvent e) {
 
-            //todo:
+                    }
+
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+
+                    }
+
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        PlayerMessageNotAFK messageNotAFK = new PlayerMessageNotAFK(idClient);
+                        try {
+                            serverInterface.notify(messageNotAFK);
+                        } catch (RemoteException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void windowIconified(WindowEvent e) {
+
+                    }
+
+                    @Override
+                    public void windowDeiconified(WindowEvent e) {
+
+                    }
+
+                    @Override
+                    public void windowActivated(WindowEvent e) {
+
+                    }
+
+                    @Override
+                    public void windowDeactivated(WindowEvent e) {
+
+                    }
+                });
+            }
+            else
+                new MoveFailedFrame("Player " + modelChangedMessagePlayerAFK.getPlayer() + " is now suspended");
         }
     }
 
@@ -436,5 +489,4 @@ public class ViewClientConsole extends ViewClient  {
         initNewExecutor();
         startHeartbeating(idClient);
     }
-
 }
