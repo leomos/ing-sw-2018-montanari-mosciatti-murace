@@ -67,7 +67,7 @@ public class Client {
         } else if(server == 1) {
             System.out.println("RMI!");
             try {
-                serverInterface = (ServerInterface) Naming.lookup("//"+host+"/sagrada");
+                serverInterface = (ServerInterface) Naming.lookup("//"+host+":8080/sagrada");
                 ClientImplementationRMI clientImplementationRMI = new ClientImplementationRMI(viewClient);
                 ClientInterface remoteRef = (ClientInterface) UnicastRemoteObject.exportObject(clientImplementationRMI, 0);
                 id = serverInterface.registerClient(remoteRef, name);
