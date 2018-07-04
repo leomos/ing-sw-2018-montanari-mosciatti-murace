@@ -2,12 +2,10 @@ package it.polimi.se2018.view.console;
 
 import it.polimi.se2018.model.GamePhase;
 import it.polimi.se2018.model.events.*;
-import it.polimi.se2018.model.player.Player;
 import it.polimi.se2018.network.visitor.MessageVisitorImplementationView;
 import it.polimi.se2018.view.ViewClient;
 import it.polimi.se2018.view.gui.*;
 
-import javax.swing.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.rmi.RemoteException;
@@ -84,7 +82,7 @@ public class ViewClientConsole extends ViewClient  {
     public void update(ModelChangedMessageChangeGamePhase modelChangedMessageChangeGamePhase) {
         gamePhase = modelChangedMessageChangeGamePhase.getGamePhase();
         if(gamePhase == SETUPPHASE) {
-            swingPhase = new PatternCardsFrame(this.idClient);
+            swingPhase = new ViewClientGUISetup(this.idClient);
             swingPhase.setServerInterface(this.serverInterface);
             viewClientConsolePrint = new ViewClientConsoleSetup(this.idClient);
         }
@@ -140,8 +138,8 @@ public class ViewClientConsole extends ViewClient  {
             }
         }
         if(viewType == 1){
-            SuspendFrame frame;
             if (modelChangedMessagePlayerAFK.getPlayer()==idClient) {
+                SuspendFrame frame;
                 swingPhase.close();
                 frame = new SuspendFrame();
                 frame.addWindowListener(new WindowListener() {

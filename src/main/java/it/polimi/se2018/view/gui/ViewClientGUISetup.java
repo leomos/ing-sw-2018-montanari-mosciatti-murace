@@ -10,7 +10,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-public class PatternCardsFrame extends SwingPhase implements ActionListener {
+public class ViewClientGUISetup extends SwingPhase implements ActionListener {
 
     private JFrame jFrame = new JFrame();
 
@@ -24,13 +24,14 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
 
     private ButtonGroup group;
 
-    public PatternCardsFrame(int idClient) {
+    public ViewClientGUISetup(int idClient) {
         this.idClient = idClient;
     }
 
     @Override
     public void update(ModelChangedMessagePatternCard message) {
-        patternCards.add(message);
+        if (message.getIdPlayer() == idClient)
+            patternCards.add(message);
     }
 
     @Override
