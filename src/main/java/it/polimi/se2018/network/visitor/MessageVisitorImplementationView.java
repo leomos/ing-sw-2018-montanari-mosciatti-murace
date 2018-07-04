@@ -22,16 +22,19 @@ public class MessageVisitorImplementationView implements MessageVisitorInterface
     @Override
     public void visitModelChangedMessageDiceArena(ModelChangedMessageDiceArena modelChangedMessageDiceArena) {
         viewClientConsole.getViewClientConsolePrint().update(modelChangedMessageDiceArena);
+        viewClientConsole.getSwingPhase().update(modelChangedMessageDiceArena);
     }
 
     @Override
     public void visitModelChangedMessageDiceOnPatternCard(ModelChangedMessageDiceOnPatternCard modelChangedMessageDiceOnPatternCard) {
         viewClientConsole.getViewClientConsolePrint().update(modelChangedMessageDiceOnPatternCard);
+        viewClientConsole.getSwingPhase().update(modelChangedMessageDiceOnPatternCard);
     }
 
     @Override
     public void visitModelChangedMessageEndGame(ModelChangedMessageEndGame modelChangedMessageEndGame) {
         viewClientConsole.getViewClientConsolePrint().update(modelChangedMessageEndGame);
+        viewClientConsole.getSwingPhase().update(modelChangedMessageEndGame);
     }
 
     @Override
@@ -42,16 +45,19 @@ public class MessageVisitorImplementationView implements MessageVisitorInterface
     @Override
     public void visitModelChangedMessagePatternCard(ModelChangedMessagePatternCard modelChangedMessagePatternCard) {
         viewClientConsole.getViewClientConsolePrint().update(modelChangedMessagePatternCard);
+        viewClientConsole.getSwingPhase().update(modelChangedMessagePatternCard);
     }
 
     @Override
     public void visitModelChangedMessagePrivateObjective(ModelChangedMessagePrivateObjective modelChangedMessagePrivateObjective) {
         viewClientConsole.getViewClientConsolePrint().update(modelChangedMessagePrivateObjective);
+        viewClientConsole.getSwingPhase().update(modelChangedMessagePrivateObjective);
     }
 
     @Override
     public void visitModelChangedMessagePublicObjective(ModelChangedMessagePublicObjective modelChangedMessagePublicObjective) {
         viewClientConsole.getViewClientConsolePrint().update(modelChangedMessagePublicObjective);
+        viewClientConsole.getSwingPhase().update(modelChangedMessagePublicObjective);
     }
 
     @Override
@@ -67,6 +73,7 @@ public class MessageVisitorImplementationView implements MessageVisitorInterface
     @Override
     public void visitModelChangedMessageRound(ModelChangedMessageRound modelChangedMessageRound) {
         viewClientConsole.getViewClientConsolePrint().update(modelChangedMessageRound);
+        viewClientConsole.getSwingPhase().update(modelChangedMessageRound);
     }
 
     @Override
@@ -77,11 +84,13 @@ public class MessageVisitorImplementationView implements MessageVisitorInterface
     @Override
     public void visitModelChangedMessageToolCard(ModelChangedMessageToolCard modelChangedMessageToolCard) {
         viewClientConsole.getViewClientConsolePrint().update(modelChangedMessageToolCard);
+        viewClientConsole.getSwingPhase().update(modelChangedMessageToolCard);
     }
 
     @Override
     public void visitModelChangedMessageTokensLeft(ModelChangedMessageTokensLeft modelChangedMessageTokensLeft) {
         viewClientConsole.getViewClientConsolePrint().update(modelChangedMessageTokensLeft);
+        viewClientConsole.getSwingPhase().update(modelChangedMessageTokensLeft);
     }
 
     @Override
