@@ -156,7 +156,6 @@ public class EndGameFrame extends SwingPhase {
 
     @Override
     public void close() {
-        jFrame.setVisible(false);
         jFrame.dispose();
     }
 

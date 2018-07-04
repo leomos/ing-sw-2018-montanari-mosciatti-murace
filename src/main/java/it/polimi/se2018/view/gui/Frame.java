@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Frame {
-    protected JDialog dialog;
+    //protected JDialog dialog;
 
     protected JLabel label;
 
@@ -12,10 +12,10 @@ public class Frame {
 
     protected  Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-    JFrame frame = new JFrame();
+    JFrame dialog = new JFrame();
 
     public Frame() {
-        dialog = new JDialog(frame, "", true);
+        //dialog = new JDialog(frame, "", true);
         JButton ok = new JButton("OK");
         ok.addActionListener(actionListener -> {
                 dialog.dispose();

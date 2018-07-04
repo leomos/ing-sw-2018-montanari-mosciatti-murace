@@ -15,7 +15,7 @@ import static it.polimi.se2018.model.GamePhase.*;
 
 public class ViewClientConsole extends ViewClient  {
 
-    boolean runConsole = true;
+    private boolean runConsole = true;
 
     private int viewType;
 
@@ -85,6 +85,7 @@ public class ViewClientConsole extends ViewClient  {
             viewClientConsolePrint = new ViewClientConsoleSetup(this.idClient);
         }
         if (gamePhase == GAMEPHASE) {
+            swingPhase.close();
             swingPhase = new ViewClientGUIGame(this.idClient);
             swingPhase.setServerInterface(this.serverInterface);
             hasChoosePatternCard = true;
@@ -94,6 +95,7 @@ public class ViewClientConsole extends ViewClient  {
             if(viewType == 0)
                 viewClientConsolePrint = new ViewClientConsoleEndGame(this.idClient);
             if(viewType == 1) {
+                swingPhase.close();
                 swingPhase = new EndGameFrame(this.idClient);
                 swingPhase.print();
             }
@@ -113,14 +115,14 @@ public class ViewClientConsole extends ViewClient  {
         } else if(viewType == 1){
 
             swingPhase.print();
-            if(modelChangedMessageRefresh.getIdPlayerPlaying() != null && modelChangedMessageRefresh.getIdPlayerPlaying() != idPlayerPlaying){
+            if(modelChangedMessageRefresh.getIdPlayerPlaying() != null && modelChangedMessageRefresh.getIdPlayerPlaying() != idPlayerPlaying) {
                 swingPhase.update(modelChangedMessageRefresh);
                 idPlayerPlaying = modelChangedMessageRefresh.getIdPlayerPlaying();
-                if(idPlayerPlaying == idClient && canIPlay)
-                    swingPhase.yourTurn();
+                if (idPlayerPlaying == idClient && swingPhase.isNewTurn()) {
+                    swingPhase.setNewTurn(false);
+                    new TurnFrame();
+                }
             }
-
-
         }
     }
 

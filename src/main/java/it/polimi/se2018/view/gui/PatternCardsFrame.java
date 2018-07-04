@@ -43,25 +43,12 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
         SwingPatternCard p2 = new SwingPatternCard(patternCards.get(1), true);
         SwingPatternCard p3 = new SwingPatternCard(patternCards.get(2), true);
         SwingPatternCard p4 = new SwingPatternCard(patternCards.get(3), true);
-        JButton po = new JButton("PRIVATE OBJECTIVE");
-        po.addActionListener(actionListener -> {
-                JFrame f = new JFrame();
-                f.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-                SwingPrivateObjective p = new SwingPrivateObjective(privateObjective);
-                f.getContentPane().add(p);
-                f.setVisible(true);
-                f.pack();
-                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-                Dimension frameSize = f.getSize ();
-                f.setLocation ((screenSize.width-frameSize.width)/2, (screenSize.height-frameSize.height)/2);
-                f.setResizable(false);
-        });
+        SwingPrivateObjective pri = new SwingPrivateObjective(privateObjective);
 
         jFrame.setResizable(false);
         jFrame.setTitle("PATTERNCARD CHOICE");
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        jFrame.setSize(550, 700);
-        jFrame.setLayout(new BorderLayout());
+        jFrame.setLayout(new FlowLayout());
         JPanel p = new JPanel();
         Color c = new Color(34, 139, 34);
         p.setBackground(c);
@@ -74,24 +61,16 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
 
         JRadioButton rb1 = new JRadioButton("PATTERNCARD 1");
         rb1.setActionCommand(Integer.toString(patternCards.get(0).getIdPatternCard()));
-        rb1.addActionListener(actionListener -> {
-                b.setEnabled(true);
-        });
+        rb1.addActionListener(actionListener -> b.setEnabled(true));
         JRadioButton rb2 = new JRadioButton("PATTERNCARD 2");
         rb2.setActionCommand(Integer.toString(patternCards.get(1).getIdPatternCard()));
-        rb2.addActionListener(actionListener -> {
-                b.setEnabled(true);
-        });
+        rb2.addActionListener(actionListener -> b.setEnabled(true));
         JRadioButton rb3 = new JRadioButton("PATTERNCARD 3");
         rb3.setActionCommand(Integer.toString(patternCards.get(2).getIdPatternCard()));
-        rb3.addActionListener(actionListener -> {
-                b.setEnabled(true);
-        });
+        rb3.addActionListener(actionListener -> b.setEnabled(true));
         JRadioButton rb4 = new JRadioButton("PATTERNCARD 4");
         rb4.setActionCommand(Integer.toString(patternCards.get(3).getIdPatternCard()));
-        rb4.addActionListener(actionListener -> {
-                b.setEnabled(true);
-        });
+        rb4.addActionListener(actionListener -> b.setEnabled(true));
 
         group = new ButtonGroup();
         group.add(rb1);
@@ -141,10 +120,16 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
         constraints.gridy = 1;
         panel.add(panel4, constraints);
 
-        jFrame.add(po, BorderLayout.NORTH);
-        jFrame.add(panel, BorderLayout.CENTER);
-        jFrame.add(b, BorderLayout.SOUTH);
+        JPanel jPanel = new JPanel();
+        jPanel.setLayout(new BorderLayout());
 
+        jPanel.add(panel, BorderLayout.CENTER);
+        jPanel.add(b, BorderLayout.SOUTH);
+
+        jFrame.add(jPanel);
+        jFrame.add(pri);
+
+        jFrame.pack();
         jFrame.setVisible(true);
 
         Dimension screenSize = Toolkit.getDefaultToolkit ().getScreenSize();
@@ -155,12 +140,11 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         idPatternCardChosen = idPatternCardChosen + group.getSelection().getActionCommand();
         try {
-            //waiting();
+            waiting();
             serverInterface.notify(new PlayerMessageSetup(idClient, Integer.parseInt(idPatternCardChosen)));
         } catch (RemoteException e1) {
             e1.printStackTrace();
         }
-        jFrame.dispose();
     }
 
     public Integer askForPatternCard() {
@@ -216,7 +200,6 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
 
     @Override
     public void close() {
-        jFrame.setVisible(false);
         jFrame.dispose();
     }
 
@@ -228,16 +211,17 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
         jFrame.getContentPane().setBackground(new Color(34, 139, 34));
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         jFrame.setResizable(false);
+        jFrame.setLayout(new BorderLayout());
 
         int tokens = 0;
         SwingDiceOnPatternCard diceOnPatternCard = null;
         SwingPatternCard patternCard;
-        for (int i=0; i<patternCards.size(); i++) {
-            if (patternCards.get(i).getIdPlayer()==idClient) {
-                patternCard = new SwingPatternCard(patternCards.get(i), true);
-                ModelChangedMessageDiceOnPatternCard message = new ModelChangedMessageDiceOnPatternCard(idClient, patternCards.get(i).getIdPatternCard(), s);
-                diceOnPatternCard = new SwingDiceOnPatternCard(message, patternCards.get(i), patternCard.getPatternCard(), true);
-                tokens = patternCards.get(i).getDifficulty();
+        for (ModelChangedMessagePatternCard patternCard1 : patternCards) {
+            if (patternCard1.getIdPatternCard() == Integer.parseInt(idPatternCardChosen)) {
+                patternCard = new SwingPatternCard(patternCard1, true);
+                ModelChangedMessageDiceOnPatternCard message = new ModelChangedMessageDiceOnPatternCard(idClient, patternCard1.getIdPatternCard(), s);
+                diceOnPatternCard = new SwingDiceOnPatternCard(message, patternCard1, patternCard.getPatternCard(), true);
+                tokens = patternCard1.getDifficulty();
             }
         }
 

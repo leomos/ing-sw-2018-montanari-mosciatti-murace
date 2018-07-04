@@ -4,11 +4,16 @@ import it.polimi.se2018.model.events.ModelChangedMessage;
 import it.polimi.se2018.model.events.PlayerMessage;
 import it.polimi.se2018.network.ServerInterface;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 public abstract class SwingPhase {
 
     protected ServerInterface serverInterface;
+
+    JFrame frame;
+
+    protected boolean newTurn = true;
 
     public abstract void update(ModelChangedMessage modelChangedMessage);
 
@@ -36,5 +41,15 @@ public abstract class SwingPhase {
 
     public abstract Integer getValueForDie();
 
-    public abstract void close();
+    public void close() {
+        frame.dispose();
+    }
+
+    public boolean isNewTurn() {
+        return this.newTurn;
+    }
+
+    public void setNewTurn(boolean b) {
+        this.newTurn = b;
+    }
 }
