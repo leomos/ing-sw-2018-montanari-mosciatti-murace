@@ -14,12 +14,12 @@ public class SwingRoundTrack extends JPanel {
 
     public SwingRoundTrack(ArrayList<ModelChangedMessageRound> roundtrack) {
         setLayout(new FlowLayout());
-        setPreferredSize(new Dimension(500, 60));
+        setPreferredSize(new Dimension(550, 60));
         setBackground(new Color(210, 210, 210, 200));
 
         Integer m = roundtrack.size();
 
-        for (Integer i = 1; i < 11; i++) {
+        for (Integer i=1; i<11; i++) {
             JButton b = new JButton();
             b.setPreferredSize(new Dimension(50, 50));
             b.setText(i.toString());
