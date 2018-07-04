@@ -328,7 +328,7 @@ public class ViewClientGUIGame extends SwingPhase {
 
         Dimension screenSize = Toolkit.getDefaultToolkit ().getScreenSize();
         Dimension frameSize = jFrame.getSize();
-        jFrame.setLocation ((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
+        jFrame.setLocation ((screenSize.width - frameSize.width) / 2, 0);
 
         jFrame.validate();
     }

@@ -49,6 +49,10 @@ public class ConfirmationFrame extends JFrame {
         add(choices, BorderLayout.CENTER);
         add(pannelloPulsanti, BorderLayout.SOUTH);
 
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension frameSize = getSize ();
+        setLocation ((screenSize.width-frameSize.width)/2, (screenSize.height-frameSize.height)/2);
+
         pack();
         setVisible(true);
     }

@@ -51,6 +51,9 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
                 f.getContentPane().add(p);
                 f.setVisible(true);
                 f.pack();
+                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+                Dimension frameSize = f.getSize ();
+                f.setLocation ((screenSize.width-frameSize.width)/2, (screenSize.height-frameSize.height)/2);
                 f.setResizable(false);
         });
 
