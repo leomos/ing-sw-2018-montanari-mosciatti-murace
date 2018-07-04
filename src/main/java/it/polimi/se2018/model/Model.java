@@ -237,7 +237,7 @@ public class Model extends Observable<ModelChangedMessage> {
         int idPlayerMessage = playerMessageEndTurn.getPlayer();
 
 
-        if(idPlayerMessage == table.getRoundTrack().getCurrentRound().getIdPlayerPlaying()) {
+        if(isMyTurn(idPlayerMessage)) {
             System.out.println("Il giocatore " + idPlayerMessage + " ha mandato l'end turn");
             timer.reStartTimer();
 
@@ -299,6 +299,14 @@ public class Model extends Observable<ModelChangedMessage> {
 
 
 
+    }
+
+    /**
+     * @param idPlayer player attempting to make a move
+     * @return true if it's player's turn
+     */
+    public boolean isMyTurn(int idPlayer){
+        return  idPlayer == table.getRoundTrack().getCurrentRound().getIdPlayerPlaying();
     }
 
     /**

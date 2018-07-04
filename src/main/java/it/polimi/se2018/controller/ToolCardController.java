@@ -25,7 +25,7 @@ public class ToolCardController implements Runnable{
         this.idToolCard = playerMessageToolCard.getToolCard();
         this.view = view;
 
-        if(model.checkToolCard(idPlayer, idToolCard)) {
+        if(model.checkToolCard(idPlayer, idToolCard) && model.isMyTurn(idPlayer)) {
 
             view.block(idPlayer);
 

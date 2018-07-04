@@ -18,12 +18,14 @@ public class DieController  {
      */
     public void execute(PlayerMessageDie playerMessageDie) {
 
-        int idPlayer = playerMessageDie.getPlayerId();
-        int idDie = playerMessageDie.getDie();
-        int x = playerMessageDie.getX_position();
-        int y = playerMessageDie.getY_position();
+        int idPlayer = playerMessageDie.getPlayer();
 
-        this.model.setDieInPatternCardFromDiceArena(idPlayer, idDie, x, y, false, -1);
+        if(model.isMyTurn(idPlayer)) {
+            int idDie = playerMessageDie.getDie();
+            int x = playerMessageDie.getX_position();
+            int y = playerMessageDie.getY_position();
 
+            this.model.setDieInPatternCardFromDiceArena(idPlayer, idDie, x, y, false, -1);
+        }
     }
 }

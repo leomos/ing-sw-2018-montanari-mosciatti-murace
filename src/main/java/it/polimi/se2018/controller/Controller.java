@@ -46,10 +46,8 @@ public class Controller implements Observer<PlayerMessage> {
      * @param /view network that sends the message
      * @param playerMessage message containing the information about player's move
      */
-    /* TODO: tests, finish update without instanceOf(). */
     @Override
     public synchronized void update(PlayerMessage playerMessage) {
-
         playerMessage.accept(messageVisitorImplementationController);
     }
 
