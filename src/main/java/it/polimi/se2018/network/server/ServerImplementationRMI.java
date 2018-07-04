@@ -30,6 +30,7 @@ public class ServerImplementationRMI extends UnicastRemoteObject implements Clie
 
     @Override
     public void notify(PlayerMessage playerMessage) throws RemoteException {
+
         Runnable task = () -> {
             roomDispatcher.getRoomForId(playerMessage.getPlayerId()).notifyView(playerMessage);
         };
@@ -39,6 +40,7 @@ public class ServerImplementationRMI extends UnicastRemoteObject implements Clie
 
     @Override
     public Integer registerClient(ClientInterface client, String name) throws RemoteException {
+
         return roomDispatcher.handleClient(client, name);
     }
 
@@ -59,6 +61,7 @@ public class ServerImplementationRMI extends UnicastRemoteObject implements Clie
 
     @Override
     public void run() {
+
         try {
             LocateRegistry.createRegistry(this.port);
         } catch (RemoteException e) {
@@ -66,7 +69,7 @@ public class ServerImplementationRMI extends UnicastRemoteObject implements Clie
         }
 
         try {
-            Naming.rebind("//"+this.host+"/"+this.serverName, (ServerInterface)this);
+            Naming.rebind("rmi://"+this.host+":"+this.port+"/"+this.serverName, (ServerInterface)this);
         } catch (RemoteException e) {
             e.printStackTrace();
         } catch (MalformedURLException e) {

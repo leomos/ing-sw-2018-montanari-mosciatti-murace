@@ -19,6 +19,8 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
 
     private Queue<ConnectedClient> currentClientsWaiting;
 
+    private List<ConnectedClient> wc;
+
     private int id = 0;
 
     private int roomCountdownLength;
@@ -43,16 +45,18 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
         this.currentClientsWaiting = new ConcurrentLinkedQueue<>();
         this.connectedClients = new HashSet<>();
         this.rooms = new HashSet<>();
-        this.heartbeatHandler = new HeartbeatHandler(2, 5, this);
+        this.heartbeatHandler = new HeartbeatHandler(2, 3, this);
         this.clientRoomMap = new HashMap<>();
+        this.wc = new ArrayList<>();
     }
 
     @Override
     public void run() {
         heartbeatHandler.start();
         while(roomDispatcherRunning) {
+            boolean roomStartable = true;
             LOGGER.info("Waiting for at least 2 clients.");
-            while (currentClientsWaiting.size() < 2) {
+            while (getNumberOfActiveClientsWaiting() < 2) {
                 try {
                     TimeUnit.SECONDS.sleep(this.refreshRate);
                 } catch (InterruptedException e) {
@@ -62,22 +66,31 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
             LOGGER.info("Two clients or more are waiting.");
             LOGGER.info("Starting the countdown.");
             try {
-                TimeUnit.SECONDS.sleep(roomCountdownLength);
+                for (int i = 0; i < roomCountdownLength; i++) {
+                    TimeUnit.SECONDS.sleep(1);
+                    if(getNumberOfActiveClientsWaiting() < 2) {
+                        i = roomCountdownLength + 1;
+                        roomStartable = false;
+                    }
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            LOGGER.info("Countdown ended, starting the room.");
-            ConnectedClient c;
-            Set<ConnectedClient> clients = new HashSet<>();
-            int i = 0;
-            while ((c = currentClientsWaiting.poll()) != null && i < 4) {
-                i++;
-                clients.add(c);
+            if(roomStartable) {
+                LOGGER.info("Countdown ended, starting the room.");
+                ConnectedClient c;
+                Set<ConnectedClient> clients = new HashSet<>();
+                int i = 0;
+                while ((c = currentClientsWaiting.poll()) != null && i < 4) {
+                    i++;
+                    clients.add(c);
+                }
+
+                startNewRoom(clients);
+                LOGGER.info("Room started with " + clients.size() + " clients.");
+            } else {
+                LOGGER.info("Countdown interrupted: not enough players.");
             }
-
-            startNewRoom(clients);
-
-            LOGGER.info("Room started with " + clients.size() + " clients.");
         }
     }
 
@@ -142,7 +155,16 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
     }
 
     public void setConnectedClientSuspended(int id) {
-        clientRoomMap.get(id).handleClientDisconnection(id);
+        if(clientRoomMap.containsKey(id)) {
+            clientRoomMap.get(id).handleClientDisconnection(id);
+        } else {
+            ConnectedClient faulty;
+            currentClientsWaiting.forEach(wc -> {
+                if(wc.getId() == id)
+                    wc.setInactive(true);
+            });
+
+        }
     }
 
     public Boolean reconnectClient(ClientInterface clientInterface, int id) {
@@ -151,5 +173,11 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
 
     public void sendGameStateToReconnectedClient(int id) {
         getRoomForId(id).sendGameStateToReconnectedPlayer(id);
+    }
+
+    private int getNumberOfActiveClientsWaiting() {
+        return(int) currentClientsWaiting.stream()
+                .filter(wc -> !wc.isInactive())
+                .count();
     }
 }

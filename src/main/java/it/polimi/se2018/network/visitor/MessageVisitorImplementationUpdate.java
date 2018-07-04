@@ -88,6 +88,7 @@ public class MessageVisitorImplementationUpdate implements MessageVisitorInterfa
     @Override
     public void visitModelChangedMessageEndGame(ModelChangedMessageEndGame modelChangedMessageEndGame) {
         update(modelChangedMessageEndGame);
+        room.dispose();
     }
 
     @Override
