@@ -36,5 +36,5 @@ public abstract class SwingPhase {
 
     public abstract Integer getValueForDie();
 
-    public abstract void yourTurn();
+    public abstract void close();
 }

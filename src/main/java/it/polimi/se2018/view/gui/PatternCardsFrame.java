@@ -215,8 +215,9 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
     }
 
     @Override
-    public void yourTurn() {
-
+    public void close() {
+        jFrame.setVisible(false);
+        jFrame.dispose();
     }
 
     public void waiting() {

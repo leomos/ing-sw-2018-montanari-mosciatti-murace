@@ -155,8 +155,9 @@ public class EndGameFrame extends SwingPhase {
     }
 
     @Override
-    public void yourTurn() {
-
+    public void close() {
+        jFrame.setVisible(false);
+        jFrame.dispose();
     }
 
 }
