@@ -113,8 +113,11 @@ public class ConfirmPositionFrame {
                     d.add(l, BorderLayout.NORTH);
                     d.add(panel, BorderLayout.CENTER);
                     d.add(b, BorderLayout.SOUTH);
-                    d.pack();
+                    d.setSize(500, 300);
                     d.setVisible(true);
+                    Dimension screenSize = Toolkit.getDefaultToolkit ().getScreenSize();
+                    Dimension frameSize = d.getSize();
+                    d.setLocation ((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
                 } else {
                     new MoveFailedFrame("Select two dice");
                 }
@@ -129,6 +132,9 @@ public class ConfirmPositionFrame {
         jDialog.setResizable(false);
         jDialog.setVisible(true);
 
+        Dimension screenSize = Toolkit.getDefaultToolkit ().getScreenSize();
+        Dimension frameSize = jDialog.getSize();
+        jDialog.setLocation ((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
     }
 
     public ArrayList<Integer> getvalues() {

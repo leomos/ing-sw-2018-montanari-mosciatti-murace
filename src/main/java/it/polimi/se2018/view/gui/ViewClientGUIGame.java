@@ -46,55 +46,81 @@ public class ViewClientGUIGame extends SwingPhase {
         this.idClient = idClient;
     }
 
-    @Override
-    public void update(ModelChangedMessage message) {
 
-        if (message instanceof ModelChangedMessagePatternCard){
-            idPlayers.add(((ModelChangedMessagePatternCard) message).getIdPlayer());
-            patternCards.add((ModelChangedMessagePatternCard) message);
-            diceOnPatternCards.add(null);
-        }
-        else if (message instanceof ModelChangedMessageDiceOnPatternCard){
-            int i = idPlayers.indexOf(((ModelChangedMessageDiceOnPatternCard) message).getIdPlayer());
-            diceOnPatternCards.remove(i);
-            diceOnPatternCards.add(i, (ModelChangedMessageDiceOnPatternCard) message);
-        }
-        else if(message instanceof ModelChangedMessagePrivateObjective) {
-            if (((ModelChangedMessagePrivateObjective) message).getIdPlayer() == idClient)
-                privateObjective = ((ModelChangedMessagePrivateObjective) message);
-        }
-        else if(message instanceof ModelChangedMessagePublicObjective)
-            publicObjectives.add((ModelChangedMessagePublicObjective)message);
-        else if(message instanceof ModelChangedMessageToolCard) {
-            if(toolCards.size() == 3) {
-                for(int i = 0; i < 3; i++)
-                    if(toolCards.get(i).getIdToolCard() == ((ModelChangedMessageToolCard) message).getIdToolCard()) {
-                        toolCards.remove(i);
-                        toolCards.add(i, (ModelChangedMessageToolCard) message);
-                    }
-            } else {
-                toolCards.add((ModelChangedMessageToolCard) message);
-            }
-        }
-        else if(message instanceof ModelChangedMessageDiceArena)
-            diceArena = ((ModelChangedMessageDiceArena)message);
-        else if(message instanceof ModelChangedMessageRound) {
-            int i = ((ModelChangedMessageRound) message).getIdRound();
-            if(i >= roundTrack.size())
-                roundTrack.add((ModelChangedMessageRound) message);
-            else {
-                roundTrack.remove(i);
-                roundTrack.add(i, (ModelChangedMessageRound) message);
-            }
-        }
-        else if(message instanceof ModelChangedMessageTokensLeft) {
-            if (((ModelChangedMessageTokensLeft) message).getIdPlayer() == idClient)
-                tokensLeft = (ModelChangedMessageTokensLeft) message;
-        }
-        else if(message instanceof ModelChangedMessageRefresh) {
-            isMyTurn = ((ModelChangedMessageRefresh) message).getIdPlayerPlaying() == idClient;
-        }
+
+    @Override
+    public void update(ModelChangedMessagePatternCard message) {
+        idPlayers.add(message.getIdPlayer());
+        patternCards.add(message);
+        diceOnPatternCards.add(null);
     }
+
+    @Override
+    public void update(ModelChangedMessagePrivateObjective message) {
+        if ((message).getIdPlayer() == idClient)
+            privateObjective = message;
+    }
+
+    @Override
+    public void update(ModelChangedMessageDiceOnPatternCard message) {
+        int i = idPlayers.indexOf(message.getIdPlayer());
+        diceOnPatternCards.remove(i);
+        diceOnPatternCards.add(i, message);
+    }
+
+    @Override
+    public void update(ModelChangedMessagePublicObjective message) {
+        publicObjectives.add(message);
+    }
+
+    @Override
+    public void update(ModelChangedMessageDiceArena message) {
+        diceArena = message;
+    }
+
+    @Override
+    public void update(ModelChangedMessageRound message) {
+        int i = (message).getIdRound();
+        if(i >= roundTrack.size())
+            roundTrack.add(message);
+        else {
+            roundTrack.remove(i);
+            roundTrack.add(i, message);
+        }
+
+    }
+
+    @Override
+    public void update(ModelChangedMessageTokensLeft message) {
+        if ((message).getIdPlayer() == idClient)
+            tokensLeft = message;
+    }
+
+    @Override
+    public void update(ModelChangedMessageEndGame message) {
+
+    }
+
+    @Override
+    public void update(ModelChangedMessageRefresh message) {
+        isMyTurn = (message).getIdPlayerPlaying() == idClient;
+    }
+
+    @Override
+    public void update(ModelChangedMessageToolCard message) {
+        if(toolCards.size() == 3) {
+            for(int i = 0; i < 3; i++)
+                if(toolCards.get(i).getIdToolCard() == (message).getIdToolCard()) {
+                    toolCards.remove(i);
+                    toolCards.add(i, message);
+                }
+        } else {
+            toolCards.add(message);
+        }
+
+    }
+
+
 
     public void print(){
         jFrame.getContentPane().removeAll();
@@ -110,9 +136,9 @@ public class ViewClientGUIGame extends SwingPhase {
         String s1 = "DRAFT POOL: die ";
         String s2 = "TOOLCARD: ";
         String s3 = "POSITION: (COLUMN, ROW): ";
-        JLabel l1 = new JLabel(s1);
-        JLabel l2 = new JLabel(s2);
-        JLabel l3 = new JLabel(s3);
+        JLabel l1 = new JLabel(s1, SwingConstants.CENTER);
+        JLabel l2 = new JLabel(s2, SwingConstants.CENTER);
+        JLabel l3 = new JLabel(s3, SwingConstants.CENTER);
 
         //TOOLCARD
         SwingToolCards[] toolCard = new SwingToolCards[3];
@@ -451,6 +477,11 @@ public class ViewClientGUIGame extends SwingPhase {
 
         value = frame.getValue();
         return value;
+    }
+
+    @Override
+    public void close() {
+        jFrame.dispose();
     }
 
     @Override

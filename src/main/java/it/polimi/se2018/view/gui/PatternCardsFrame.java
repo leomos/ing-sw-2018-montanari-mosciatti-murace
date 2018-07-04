@@ -28,14 +28,54 @@ public class PatternCardsFrame extends SwingPhase implements ActionListener {
         this.idClient = idClient;
     }
 
-    public void update(ModelChangedMessage message) {
-        if(message instanceof ModelChangedMessagePatternCard) {
-            if (((ModelChangedMessagePatternCard) message).getIdPlayer() == idClient)
-                patternCards.add((ModelChangedMessagePatternCard) message);
-        }
-        else if(message instanceof ModelChangedMessagePrivateObjective)
-            if (((ModelChangedMessagePrivateObjective) message).getIdPlayer() == idClient)
-                privateObjective = ((ModelChangedMessagePrivateObjective) message);
+    @Override
+    public void update(ModelChangedMessagePatternCard message) {
+        patternCards.add(message);
+    }
+
+    @Override
+    public void update(ModelChangedMessagePrivateObjective message) {
+        privateObjective = (message);
+    }
+
+    @Override
+    public void update(ModelChangedMessageDiceOnPatternCard message) {
+
+    }
+
+    @Override
+    public void update(ModelChangedMessagePublicObjective message) {
+
+    }
+
+    @Override
+    public void update(ModelChangedMessageDiceArena message) {
+
+    }
+
+    @Override
+    public void update(ModelChangedMessageRound message) {
+
+    }
+
+    @Override
+    public void update(ModelChangedMessageTokensLeft message) {
+
+    }
+
+    @Override
+    public void update(ModelChangedMessageEndGame message) {
+
+    }
+
+    @Override
+    public void update(ModelChangedMessageToolCard message) {
+
+    }
+
+    @Override
+    public void update(ModelChangedMessageRefresh message) {
+
     }
 
     public void print() {

@@ -97,7 +97,6 @@ public class ViewClientConsole extends ViewClient  {
             if(viewType == 1) {
                 swingPhase.close();
                 swingPhase = new EndGameFrame(this.idClient);
-                swingPhase.print();
             }
         }
     }
@@ -440,5 +439,4 @@ public class ViewClientConsole extends ViewClient  {
         initNewExecutor();
         startHeartbeating(idClient);
     }
-
 }

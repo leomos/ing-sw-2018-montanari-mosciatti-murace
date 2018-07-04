@@ -51,6 +51,9 @@ public class DiceArenaFrame {
         dialog.setSize(500, 300);
         dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         dialog.setVisible(true);
+
+        Dimension screenSize = Toolkit.getDefaultToolkit ().getScreenSize();
+        dialog.setLocation ((screenSize.width - 500) / 2, (screenSize.height - 300) / 2);
     }
 
     public Integer getid() {

@@ -19,7 +19,7 @@ public class SwingPlayer extends JPanel {
         panel.add(privateObjective, constraints);
 
         JPanel jPanel = new JPanel();
-        jPanel.setLayout(new FlowLayout());
+        jPanel.setLayout(new GridLayout(1, 2, 50, 0));
         jPanel.setBackground(c);
         JButton button = new JButton("PATTERNCARD");
         SwingPatternCard swingPatternCard = new SwingPatternCard(patternCard.getS(), true);

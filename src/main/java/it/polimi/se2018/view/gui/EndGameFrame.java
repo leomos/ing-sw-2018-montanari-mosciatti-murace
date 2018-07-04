@@ -1,8 +1,6 @@
 package it.polimi.se2018.view.gui;
 
-import it.polimi.se2018.model.events.ModelChangedMessage;
-import it.polimi.se2018.model.events.ModelChangedMessageEndGame;
-import it.polimi.se2018.model.events.PlayerMessage;
+import it.polimi.se2018.model.events.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -100,12 +98,53 @@ public class EndGameFrame extends SwingPhase {
         jFrame.setLocation ((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
     }
 
-    public void set() {
-        this.messageEndGame = new ModelChangedMessageEndGame("1231246231124050");
+    @Override
+    public void update(ModelChangedMessagePatternCard message) {
+
     }
 
     @Override
-    public void update(ModelChangedMessage modelChangedMessage) {
+    public void update(ModelChangedMessagePrivateObjective message) {
+
+    }
+
+    @Override
+    public void update(ModelChangedMessageDiceOnPatternCard message) {
+
+    }
+
+    @Override
+    public void update(ModelChangedMessagePublicObjective message) {
+
+    }
+
+    @Override
+    public void update(ModelChangedMessageDiceArena message) {
+
+    }
+
+    @Override
+    public void update(ModelChangedMessageRound message) {
+
+    }
+
+    @Override
+    public void update(ModelChangedMessageTokensLeft message) {
+
+    }
+
+    public void update(ModelChangedMessageEndGame message) {
+        messageEndGame = message;
+        this.print();
+    }
+
+    @Override
+    public void update(ModelChangedMessageToolCard message) {
+
+    }
+
+    @Override
+    public void update(ModelChangedMessageRefresh message) {
 
     }
 
@@ -158,5 +197,4 @@ public class EndGameFrame extends SwingPhase {
     public void close() {
         jFrame.dispose();
     }
-
 }
