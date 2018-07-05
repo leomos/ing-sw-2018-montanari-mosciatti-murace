@@ -6,6 +6,10 @@ public class ModelChangedMessageOnlyOnePlayerLeft extends ModelChangedMessage {
 
     private int playerIdLeft;
 
+    /**
+     * Message created by the model and put in a notify when only one player is active in the room
+     * @param playerIdLeft player id left
+     */
     public ModelChangedMessageOnlyOnePlayerLeft(int playerIdLeft){
         this.playerIdLeft = playerIdLeft;
     }

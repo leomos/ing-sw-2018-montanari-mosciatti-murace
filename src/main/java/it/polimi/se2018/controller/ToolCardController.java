@@ -36,6 +36,7 @@ public class ToolCardController implements Runnable{
         }
     }
 
+    //todo semplifica sta roba
     @Override
     public void run() {
         switch (idToolCard){

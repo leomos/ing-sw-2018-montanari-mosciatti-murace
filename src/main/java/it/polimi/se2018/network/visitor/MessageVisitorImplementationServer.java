@@ -108,7 +108,6 @@ public class MessageVisitorImplementationServer implements MessageVisitorInterfa
                 thread.start();
                 break;
             default:
-                /* TODO: send a WrongMethodException? */
                 break;
         }
 
