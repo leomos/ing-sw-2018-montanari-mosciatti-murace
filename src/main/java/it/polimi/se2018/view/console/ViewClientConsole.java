@@ -19,8 +19,6 @@ public class ViewClientConsole extends ViewClient  {
 
     private boolean runConsole = true;
 
-    private int viewType;
-
     private int idClient;
 
     private int idPlayerPlaying;
@@ -39,8 +37,8 @@ public class ViewClientConsole extends ViewClient  {
 
     private MessageVisitorImplementationView messageVisitorImplementationView;
 
-    public ViewClientConsole(int viewType){
-        this.viewType = viewType;
+    public ViewClientConsole(String host, int socketPort, int rmiPort, int viewType, int connectionType){
+        super(host, socketPort, rmiPort, viewType, connectionType);
         this.messageVisitorImplementationView = new MessageVisitorImplementationView(this);
     }
 
@@ -256,9 +254,10 @@ public class ViewClientConsole extends ViewClient  {
                         } else {
                             unSuspend();
                         }
-                    } else if(gamePhase == ENDGAMEPHASE)
+                    } else if(gamePhase == ENDGAMEPHASE) {
                         System.out.println("Game is over!");
-                    else
+                        System.exit(0);
+                    } else
                         System.out.println("Wait for other players to choose their pattern cards!");
 
                 }
@@ -475,16 +474,16 @@ public class ViewClientConsole extends ViewClient  {
                 e.printStackTrace();
             }
             System.out.println("provo a riconnettermi");
-            tryToReconnect();
+            tryToReconnect(this.connectionType);
         }
     }
 
-    private void tryToReconnect() {
-        if(this.reconnect(idClient, 0)) {
+    private void tryToReconnect(int connectionType) {
+        if(this.reconnect(idClient, connectionType)) {
             initNewExecutor();
             startHeartbeating(idClient);
         } else {
-            //TODO: modificare 
+            //TODO: modificare in base al tipo di view
             System.out.println("Room chiusa");
         }
     }
