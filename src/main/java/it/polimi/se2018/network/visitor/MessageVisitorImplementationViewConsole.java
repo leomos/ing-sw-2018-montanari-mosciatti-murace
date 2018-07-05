@@ -16,7 +16,7 @@ public class MessageVisitorImplementationViewConsole implements MessageVisitorIn
 
     @Override
     public void visitModelChangedMessageConnected(ModelChangedMessageConnected modelChangedMessageConnected) {
-        //todo
+        viewClientConsole.update(modelChangedMessageConnected);
     }
 
     @Override

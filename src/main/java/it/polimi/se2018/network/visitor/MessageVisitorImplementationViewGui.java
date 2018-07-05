@@ -16,7 +16,7 @@ public class MessageVisitorImplementationViewGui implements MessageVisitorInterf
 
     @Override
     public void visitModelChangedMessageConnected(ModelChangedMessageConnected modelChangedMessageConnected) {
-        //todo
+        viewClientGUI.update(modelChangedMessageConnected);
     }
 
     @Override

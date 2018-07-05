@@ -96,6 +96,11 @@ public class ViewClientConsole extends ViewClient  {
         }
     }
 
+    public void update(ModelChangedMessageConnected modelChangedMessageConnected){
+        if(modelChangedMessageConnected.getIdClient() != idClient)
+            System.out.println("Player " + modelChangedMessageConnected.getIdClient() + "is back in the game!");
+    }
+
 
     public void run(){
 
