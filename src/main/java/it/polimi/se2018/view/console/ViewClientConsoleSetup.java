@@ -64,6 +64,11 @@ public class ViewClientConsoleSetup extends ViewClientConsolePrint {
     }
 
     @Override
+    public void update(ModelChangedMessageOnlyOnePlayerLeft message) {
+
+    }
+
+    @Override
     public void print() {
         System.out.println("SETUP: print");
         for (int i = 0; i < patternCards.size(); i++)

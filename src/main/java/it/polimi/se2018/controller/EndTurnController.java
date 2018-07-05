@@ -13,7 +13,7 @@ public class EndTurnController  {
 
     public void execute(PlayerMessageEndTurn playerMessageEndTurn){
 
-        int idPlayer = playerMessageEndTurn.getPlayer();
+        int idPlayer = playerMessageEndTurn.getPlayerId();
 
         model.endTurn(playerMessageEndTurn);
     }

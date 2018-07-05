@@ -159,7 +159,8 @@ public class Model extends Observable<ModelChangedMessage> {
             try {
                 table.checkAllPlayerHasChosenAPatternCard();
             } catch (PlayersHaveAllChosenAPatternCard e) {
-                this.initGame();
+                if(this.gamePhase == GamePhase.SETUPPHASE)
+                    this.initGame();
             }
 
         }
@@ -234,7 +235,7 @@ public class Model extends Observable<ModelChangedMessage> {
      *                             player who just finished its turn
      */
     public void endTurn(PlayerMessageEndTurn playerMessageEndTurn){
-        int idPlayerMessage = playerMessageEndTurn.getPlayer();
+        int idPlayerMessage = playerMessageEndTurn.getPlayerId();
 
 
         if(isMyTurn(idPlayerMessage) && gamePhase==GamePhase.GAMEPHASE) {
@@ -258,7 +259,7 @@ public class Model extends Observable<ModelChangedMessage> {
                     table.getRoundTrack().startNextRound(table);
                 } catch (RoundTrackNoMoreRoundsException i) {
 
-                    gamePhase = GamePhase.GAMEPHASE;
+                    gamePhase = GamePhase.ENDGAMEPHASE;
 
                     table.calculateScores();
 
@@ -268,8 +269,8 @@ public class Model extends Observable<ModelChangedMessage> {
                     timer.stopTimer();
                 }
             }
-            table.getPlayers(playerMessageEndTurn.getPlayer()).setHasSetDieThisTurn(false);
-            table.getPlayers(playerMessageEndTurn.getPlayer()).setHasUsedToolCardThisTurn(false);
+            table.getPlayers(playerMessageEndTurn.getPlayerId()).setHasSetDieThisTurn(false);
+            table.getPlayers(playerMessageEndTurn.getPlayerId()).setHasUsedToolCardThisTurn(false);
 
             notify(new ModelChangedMessageRefresh((table.getRoundTrack().getCurrentRound().getIdPlayerPlaying())));
 
@@ -937,13 +938,19 @@ public class Model extends Observable<ModelChangedMessage> {
                 this.updatePlayerThatCameBackIntoTheGame(idPlayer);
         } catch (OnlyOnePlayerLeftException e) {
 
-            notify(new ModelChangedMessagePlayerAFK(idPlayer, "\nYou run out of time. You are now suspended. Type anything to get back into the game\n"));
-
             this.gamePhase = GamePhase.ENDGAMEPHASE;
 
-            this.table.calculateScores();
+            notify(new ModelChangedMessagePlayerAFK(idPlayer, "\nYou run out of time. You are now suspended. Type anything to get back into the game\n"));
+
             notify(new ModelChangedMessageChangeGamePhase(GamePhase.ENDGAMEPHASE));
-            notify(new ModelChangedMessageEndGame(table.getScoreboard().getRepresentation()));
+
+
+            for (Integer key : players.keySet()) {
+                if(!table.getPlayers(key).isSuspended()) {
+                    table.setWinner(key);
+                    notify(new ModelChangedMessageOnlyOnePlayerLeft(key));
+                }
+            }
 
             timer.stopTimer();
         }
@@ -958,7 +965,7 @@ public class Model extends Observable<ModelChangedMessage> {
      */
     public void updatePlayerThatCameBackIntoTheGame(int idPlayer){
 
-        if(gamePhase == GamePhase.GAMEPHASE) {
+        if(this.gamePhase == GamePhase.GAMEPHASE) {
 
             notify(new ModelChangedMessageChangeGamePhase(gamePhase));
 
@@ -1013,8 +1020,11 @@ public class Model extends Observable<ModelChangedMessage> {
         } else {
 
             notify(new ModelChangedMessageChangeGamePhase(GamePhase.ENDGAMEPHASE));
-            notify(new ModelChangedMessageEndGame(table.getScoreboard().getRepresentation()));
 
+            if(table.getRoundTrack().getCurrentRound().getId() == 10)
+                notify(new ModelChangedMessageEndGame(table.getScoreboard().getRepresentation()));
+            else
+                notify(new ModelChangedMessageOnlyOnePlayerLeft(table.getWinner()));
         }
     }
 }

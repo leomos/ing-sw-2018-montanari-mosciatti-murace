@@ -15,7 +15,7 @@ public class Server {
     private ExecutorService executorService;
 
     public static void main(String[] args) {
-        System.setProperty("java.rmi.server.hostname", "192.168.43.123");
+        //System.setProperty("java.rmi.server.hostname", "192.168.43.123");
         final OptionParser optionParser = new OptionParser();
 
 

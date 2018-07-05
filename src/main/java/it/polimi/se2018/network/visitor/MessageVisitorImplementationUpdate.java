@@ -10,7 +10,6 @@ public class MessageVisitorImplementationUpdate implements MessageVisitorInterfa
 
     private Room room;
 
-    // player for which we're going to visit the message
     private ConnectedClient player;
 
     private int currentPlayerPlayingId;
@@ -58,6 +57,11 @@ public class MessageVisitorImplementationUpdate implements MessageVisitorInterfa
         update(modelChangedMessagePlayerAFK);
         if(modelChangedMessagePlayerAFK.getPlayer() == player.getId())
             player.setInactive(true);
+    }
+
+    @Override
+    public void visitModelChangedMessageOnlyOnePlayerLeft(ModelChangedMessageOnlyOnePlayerLeft modelChangedMessageOnlyOnePlayerLeft) {
+        update(modelChangedMessageOnlyOnePlayerLeft);
     }
 
     @Override

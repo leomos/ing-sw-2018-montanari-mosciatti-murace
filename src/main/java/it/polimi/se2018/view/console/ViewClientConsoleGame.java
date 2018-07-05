@@ -94,6 +94,11 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
     }
 
     @Override
+    public void update(ModelChangedMessageOnlyOnePlayerLeft message) {
+
+    }
+
+    @Override
     public void update(ModelChangedMessageEndGame modelChangedMessageEndGame) {
 
     }

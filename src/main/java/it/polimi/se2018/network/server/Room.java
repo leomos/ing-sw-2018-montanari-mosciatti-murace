@@ -89,7 +89,7 @@ public class Room extends Thread {
 
         if(playerMessage instanceof PlayerMessageNotAFK) {
             players.forEach((player) -> {
-                if (((PlayerMessageNotAFK) playerMessage).getPlayer() == player.getId()) {
+                if (((PlayerMessageNotAFK) playerMessage).getPlayerId() == player.getId()) {
                     player.setInactive(false);
                 }
             });

@@ -120,4 +120,9 @@ public class MessageVisitorImplementationClient implements MessageVisitorInterfa
     public void visitModelChangedMessagePlayerAFK(ModelChangedMessagePlayerAFK modelChangedMessagePlayerAFK) {
 
     }
+
+    @Override
+    public void visitModelChangedMessageOnlyOnePlayerLeft(ModelChangedMessageOnlyOnePlayerLeft modelChangedMessageOnlyOnePlayerLeft) {
+
+    }
 }

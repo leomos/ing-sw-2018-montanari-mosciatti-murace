@@ -30,12 +30,6 @@ public class TestToolCard {
     }
 
     @Test
-    public void setUsedAtLeastOnce_FalseAsParam_isUsedAtLeastOnceShouldBeFalse() {
-        toolCard.setUsedAtLeastOnce(false);
-        assertFalse(toolCard.isUsedAtLeastOnce());
-    }
-
-    @Test
     public void setUsed_isUsedAtLeastOnceShouldBeTrue() {
         toolCard.setUsed();
         assertTrue(toolCard.isUsedAtLeastOnce());

@@ -150,6 +150,11 @@ public class EndGameFrame extends SwingPhase {
     }
 
     @Override
+    public void update(ModelChangedMessageOnlyOnePlayerLeft message) {
+
+    }
+
+    @Override
     public Integer askForPatternCard() {
         return null;
     }

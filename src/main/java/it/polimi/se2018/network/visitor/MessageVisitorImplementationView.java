@@ -99,6 +99,12 @@ public class MessageVisitorImplementationView implements MessageVisitorInterface
     }
 
     @Override
+    public void visitModelChangedMessageOnlyOnePlayerLeft(ModelChangedMessageOnlyOnePlayerLeft modelChangedMessageOnlyOnePlayerLeft) {
+        viewClientConsole.getSwingPhase().update(modelChangedMessageOnlyOnePlayerLeft);
+        viewClientConsole.getViewClientConsolePrint().update(modelChangedMessageOnlyOnePlayerLeft);
+    }
+
+    @Override
     public void visitPlayerMessageDie(PlayerMessageDie playerMessageDie) {
 
     }

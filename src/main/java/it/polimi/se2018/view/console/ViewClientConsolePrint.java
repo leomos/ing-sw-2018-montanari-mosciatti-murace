@@ -193,7 +193,7 @@ public abstract class ViewClientConsolePrint {
     public abstract void update(ModelChangedMessageTokensLeft message);
     public abstract void update(ModelChangedMessageEndGame message);
     public abstract void update(ModelChangedMessageToolCard message);
-
+    public abstract void update(ModelChangedMessageOnlyOnePlayerLeft message);
 
     public abstract void print();
 

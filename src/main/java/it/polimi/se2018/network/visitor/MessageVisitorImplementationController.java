@@ -117,6 +117,11 @@ public class MessageVisitorImplementationController implements MessageVisitorInt
 
     }
 
+    @Override
+    public void visitModelChangedMessageOnlyOnePlayerLeft(ModelChangedMessageOnlyOnePlayerLeft modelChangedMessageOnlyOnePlayerLeft) {
+
+    }
+
 
     @Override
     public void visitHeartbeatMessage(HeartbeatMessage heartbeatMessage) {

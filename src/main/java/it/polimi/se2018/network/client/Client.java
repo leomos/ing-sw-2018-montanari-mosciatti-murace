@@ -18,8 +18,8 @@ public class Client {
 
     public static void main(String[] args) {
         //String host = "163.172.183.230";
-        //String host = "localhost";
-        String host = "192.168.43.123";
+        String host = "localhost";
+        //String host = "192.168.43.123";
 
 
 
@@ -84,6 +84,7 @@ public class Client {
         System.out.println(id);
         viewClient.setIdClient(id);
 
+        System.out.println("Waiting for other players to start a lobby...");
 
         if(typeView.equals("0"))
             ((ViewClientConsole)viewClient).run();

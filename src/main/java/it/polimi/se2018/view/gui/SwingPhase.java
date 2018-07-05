@@ -3,7 +3,6 @@ package it.polimi.se2018.view.gui;
 import it.polimi.se2018.model.events.*;
 import it.polimi.se2018.network.ServerInterface;
 
-import javax.swing.*;
 import java.util.ArrayList;
 
 public abstract class SwingPhase {
@@ -21,6 +20,7 @@ public abstract class SwingPhase {
     public abstract void update(ModelChangedMessageEndGame message);
     public abstract void update(ModelChangedMessageToolCard message);
     public abstract void update(ModelChangedMessageRefresh message);
+    public abstract void update(ModelChangedMessageOnlyOnePlayerLeft message);
 
     public abstract void print();
 
