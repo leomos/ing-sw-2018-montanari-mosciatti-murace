@@ -523,8 +523,8 @@ public class ViewClientGUIGame extends SwingPhase {
 
     @Override
     public void close() {
+        toolCardFrame.close();
         jFrame.dispose();
-        toolCardFrame.dispose();
     }
 
     @Override

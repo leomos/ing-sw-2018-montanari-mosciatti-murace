@@ -8,7 +8,6 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class RoundTrackFrame extends ToolCardFrame {
-    private JDialog dialog;
 
     private int round = -1;
 
@@ -24,7 +23,7 @@ public class RoundTrackFrame extends ToolCardFrame {
         }
 
         JFrame frame = new JFrame();
-        dialog = new JDialog(frame, "", true);
+        new JDialog(frame, "", true);
 
         JLabel label = new JLabel("Select a die from RoundTrack", SwingConstants.CENTER);
 
@@ -55,20 +54,20 @@ public class RoundTrackFrame extends ToolCardFrame {
         JButton button = new JButton("CONFIRM");
         button.addActionListener(actionListener -> {
             if (round!=-1 && die!=-1)
-            dialog.dispose();
+            dispose();
         });
 
-        dialog.setLayout(new BorderLayout());
-        dialog.setSize(new Dimension(350, 350));
+        setLayout(new BorderLayout());
+        setSize(new Dimension(350, 350));
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        dialog.setLocation ((screenSize.width-350)/2, (screenSize.height-350)/2);
+        setLocation ((screenSize.width-350)/2, (screenSize.height-350)/2);
 
-        dialog.add(label, BorderLayout.NORTH);
-        dialog.add(panel, BorderLayout.CENTER);
-        dialog.add(button, BorderLayout.SOUTH);
-        dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        dialog.setVisible(true);
+        add(label, BorderLayout.NORTH);
+        add(panel, BorderLayout.CENTER);
+        add(button, BorderLayout.SOUTH);
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        setVisible(true);
     }
 
     @Override
@@ -82,5 +81,11 @@ public class RoundTrackFrame extends ToolCardFrame {
     @Override
     public int getValue() {
         return 0;
+    }
+
+    @Override
+    public void close() {
+        setModal(false);
+        dispose();
     }
 }

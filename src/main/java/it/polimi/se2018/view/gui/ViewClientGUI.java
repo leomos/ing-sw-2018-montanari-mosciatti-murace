@@ -150,7 +150,7 @@ public class ViewClientGUI extends ViewClient {
     public ArrayList<Integer> getSinglePositionInPatternCard(ArrayList<Integer> listOfAvailablePositions){
         if(idPlayerPlaying == idClient) {
 
-            ArrayList<Integer> returnValues = new ArrayList<>();
+            ArrayList<Integer> returnValues;
             returnValues = swingPhase.getSinglePositionInPatternCard(listOfAvailablePositions);
 
             return returnValues;
@@ -163,7 +163,7 @@ public class ViewClientGUI extends ViewClient {
     public ArrayList<Integer> getIncrementedValue() {
         if (idPlayerPlaying == idClient) {
 
-            ArrayList<Integer> returnValues = new ArrayList<>();
+            ArrayList<Integer> returnValues;
             returnValues = swingPhase.getIncrementedValue();
 
 
@@ -190,7 +190,7 @@ public class ViewClientGUI extends ViewClient {
     public ArrayList<Integer> getDieFromRoundTrack(){
         if(idPlayerPlaying == idClient) {
 
-            ArrayList<Integer> returnValues = new ArrayList<>();
+            ArrayList<Integer> returnValues;
             returnValues = swingPhase.getDieFromRoundTrack();
 
 
@@ -218,7 +218,7 @@ public class ViewClientGUI extends ViewClient {
     public ArrayList<Integer> getDoublePositionInPatternCard(){
         if(idPlayerPlaying == idClient) {
 
-            ArrayList<Integer> returnValues = new ArrayList<>();
+            ArrayList<Integer> returnValues;
             returnValues = swingPhase.getDoublePositionInPatternCard();
 
 

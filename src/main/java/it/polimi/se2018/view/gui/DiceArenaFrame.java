@@ -7,7 +7,6 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class DiceArenaFrame extends ToolCardFrame {
-    private JDialog dialog;
 
     private int id = -1;
 
@@ -15,8 +14,8 @@ public class DiceArenaFrame extends ToolCardFrame {
         SwingDiceArena diceArena = new SwingDiceArena(message);
 
         JFrame frame = new JFrame();
-        dialog = new JDialog(frame, "", true);
-        dialog.setLayout(new BorderLayout());
+        new JDialog(frame, "", true);
+        setLayout(new BorderLayout());
 
         JLabel label = new JLabel("Choose one die from DiceArena", SwingConstants.CENTER);
 
@@ -42,19 +41,19 @@ public class DiceArenaFrame extends ToolCardFrame {
         JButton button = new JButton("CONTINUE");
         button.addActionListener(actionListener -> {
                 if (id!=-1)
-                    dialog.dispose();
+                    dispose();
         });
 
-        dialog.add(label, BorderLayout.NORTH);
-        dialog.add(panel, BorderLayout.CENTER);
-        dialog.add(button, BorderLayout.SOUTH);
+        add(label, BorderLayout.NORTH);
+        add(panel, BorderLayout.CENTER);
+        add(button, BorderLayout.SOUTH);
 
-        dialog.setSize(500, 300);
-        dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        dialog.setVisible(true);
+        setSize(500, 300);
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        setVisible(true);
 
         Dimension screenSize = Toolkit.getDefaultToolkit ().getScreenSize();
-        dialog.setLocation ((screenSize.width - 500) / 2, (screenSize.height - 300) / 2);
+        setLocation ((screenSize.width - 500) / 2, (screenSize.height - 300) / 2);
     }
 
     @Override
@@ -66,5 +65,11 @@ public class DiceArenaFrame extends ToolCardFrame {
     public int getValue() {
         while(id==-1);
         return id;
+    }
+
+    @Override
+    public void close() {
+        setModal(false);
+        dispose();
     }
 }

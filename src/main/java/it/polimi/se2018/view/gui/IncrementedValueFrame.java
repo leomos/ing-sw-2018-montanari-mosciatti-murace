@@ -8,16 +8,14 @@ import java.util.ArrayList;
 
 public class IncrementedValueFrame extends ToolCardFrame {
 
-    private JDialog dialog;
-
     private ArrayList<Integer> values = new ArrayList<>();
 
     public IncrementedValueFrame(ModelChangedMessageDiceArena message) {
         SwingDiceArena diceArena = new SwingDiceArena(message);
 
         JFrame frame = new JFrame();
-        dialog = new JDialog(frame, "", true);
-        dialog.setLayout(new BorderLayout());
+        new JDialog(frame, "", true);
+        setLayout(new BorderLayout());
 
         JLabel label = new JLabel("Choose one die from DiceArena", SwingConstants.CENTER);
 
@@ -62,20 +60,20 @@ public class IncrementedValueFrame extends ToolCardFrame {
                         values.add(1, 1);
                     if (decrementButton.isSelected())
                         values.add(1, 0);
-                    dialog.dispose();
+                    dispose();
                 }
         });
 
-        dialog.add(label, BorderLayout.NORTH);
-        dialog.add(panel, BorderLayout.CENTER);
-        dialog.add(button, BorderLayout.SOUTH);
+        add(label, BorderLayout.NORTH);
+        add(panel, BorderLayout.CENTER);
+        add(button, BorderLayout.SOUTH);
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        dialog.setLocation ((screenSize.width - 500)/2, (screenSize.height - 200)/2);
+        setLocation ((screenSize.width - 500)/2, (screenSize.height - 200)/2);
 
-        dialog.setSize(500, 200);
-        dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        dialog.setVisible(true);
+        setSize(500, 200);
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        setVisible(true);
 
     }
 
@@ -88,5 +86,11 @@ public class IncrementedValueFrame extends ToolCardFrame {
     @Override
     public int getValue() {
         return 0;
+    }
+
+    @Override
+    public void close() {
+        setModal(false);
+        dispose();
     }
 }

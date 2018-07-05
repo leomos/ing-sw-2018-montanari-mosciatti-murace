@@ -9,7 +9,5 @@ public abstract class ToolCardFrame extends JDialog {
 
     public abstract int getValue();
 
-    public void close() {
-        this.dispose();
-    }
+    public abstract void close();
 }

@@ -8,7 +8,6 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class OnePositionFrame extends ToolCardFrame {
-    private JDialog dialog;
 
     private int row = -1;
 
@@ -19,7 +18,7 @@ public class OnePositionFrame extends ToolCardFrame {
         SwingDiceOnPatternCard diceOnPatternCard = new SwingDiceOnPatternCard(messageDiceOnPatternCard, messagePatternCard, patternCard.getPatternCard(), false);
 
         JFrame frame = new JFrame();
-        dialog = new JDialog(frame, "", true);
+        new JDialog(frame, "", true);
 
         JLabel label = new JLabel("Select position from your patternCard", SwingConstants.CENTER);
 
@@ -43,22 +42,22 @@ public class OnePositionFrame extends ToolCardFrame {
         JButton button = new JButton("CONFIRM");
         button.addActionListener(actionListener -> {
                 if (row!=-1 && col!=-1 && checkPositionsAreInArrayList(col, row, listOfAvailablePositions))
-                    dialog.dispose();
+                    dispose();
                 else
                     new MoveFailedFrame("Select an available position!");
         });
 
-        dialog.setLayout(new BorderLayout());
-        dialog.setSize(new Dimension(270, 350));
+        setLayout(new BorderLayout());
+        setSize(new Dimension(270, 350));
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        dialog.setLocation ((screenSize.width-270)/2, (screenSize.height-350)/2);
+        setLocation ((screenSize.width-270)/2, (screenSize.height-350)/2);
 
-        dialog.add(label, BorderLayout.NORTH);
-        dialog.add(panel, BorderLayout.CENTER);
-        dialog.add(button, BorderLayout.SOUTH);
-        dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        dialog.setVisible(true);
+        add(label, BorderLayout.NORTH);
+        add(panel, BorderLayout.CENTER);
+        add(button, BorderLayout.SOUTH);
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        setVisible(true);
     }
 
     private boolean checkPositionsAreInArrayList(int x, int y, ArrayList<Integer> list){
@@ -83,5 +82,11 @@ public class OnePositionFrame extends ToolCardFrame {
     @Override
     public int getValue() {
         return 0;
+    }
+
+    @Override
+    public void close() {
+        setModal(false);
+        dispose();
     }
 }

@@ -5,20 +5,19 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class DieValueFrame extends ToolCardFrame {
-    private JDialog dialog;
 
     private int value = 0;
 
     public DieValueFrame() {
         JFrame frame = new JFrame();
-        dialog = new JDialog(frame, "DIE VALUE", true);
+        new JDialog(frame, "DIE VALUE", true);
 
         JLabel label = new JLabel("Select a value", SwingConstants.CENTER);
 
         JButton button = new JButton("OK");
         button.setEnabled(false);
         button.addActionListener(actionListener -> {
-                dialog.dispose();
+            dispose();
         });
 
         ButtonGroup group = new ButtonGroup();
@@ -36,17 +35,17 @@ public class DieValueFrame extends ToolCardFrame {
             });
         }
 
-        dialog.setLayout(new BorderLayout());
-        dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        dialog.setSize(100, 150);
-        dialog.add(label, BorderLayout.NORTH);
-        dialog.add(panel, BorderLayout.CENTER);
-        dialog.add(button, BorderLayout.SOUTH);
+        setLayout(new BorderLayout());
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        setSize(100, 150);
+        add(label, BorderLayout.NORTH);
+        add(panel, BorderLayout.CENTER);
+        add(button, BorderLayout.SOUTH);
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        dialog.setLocation ((screenSize.width - 100)/2, (screenSize.height - 150)/2);
+        setLocation ((screenSize.width - 100)/2, (screenSize.height - 150)/2);
 
-        dialog.setVisible(true);
+        setVisible(true);
     }
 
     @Override
@@ -58,5 +57,11 @@ public class DieValueFrame extends ToolCardFrame {
     public int getValue() {
         while (value==0);
         return value;
+    }
+
+    @Override
+    public void close() {
+        setModal(false);
+        dispose();
     }
 }

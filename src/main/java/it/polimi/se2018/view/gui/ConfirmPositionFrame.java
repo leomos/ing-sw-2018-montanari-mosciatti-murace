@@ -19,8 +19,6 @@ public class ConfirmPositionFrame extends ToolCardFrame {
 
     private int col2 = -1;
 
-    private JDialog jDialog;
-
     private JDialog d;
 
     private ArrayList<Integer> v = new ArrayList<>();
@@ -46,8 +44,8 @@ public class ConfirmPositionFrame extends ToolCardFrame {
         }
 
         JFrame frame = new JFrame();
-        jDialog = new JDialog(frame, "", true);
-        jDialog.setLayout(new BorderLayout());
+        new JDialog(frame, "", true);
+        setLayout(new BorderLayout());
 
         JButton button = new JButton("CONTINUE");
         button.addActionListener(actionListener -> {
@@ -67,7 +65,7 @@ public class ConfirmPositionFrame extends ToolCardFrame {
 
                         @Override
                         public void windowClosed(WindowEvent e) {
-                            jDialog.dispose();
+                            dispose();
                         }
 
                         @Override
@@ -121,17 +119,17 @@ public class ConfirmPositionFrame extends ToolCardFrame {
                 }
         });
 
-        jDialog.add(label, BorderLayout.NORTH);
-        jDialog.add(diceOnPatternCard, BorderLayout.CENTER);
-        jDialog.add(button, BorderLayout.SOUTH);
-        jDialog.setSize(new Dimension(250, 350));
+        add(label, BorderLayout.NORTH);
+        add(diceOnPatternCard, BorderLayout.CENTER);
+        add(button, BorderLayout.SOUTH);
+        setSize(new Dimension(250, 350));
 
-        jDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        jDialog.setResizable(false);
-        jDialog.setVisible(true);
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        setResizable(false);
+        setVisible(true);
 
         Dimension screenSize = Toolkit.getDefaultToolkit ().getScreenSize();
-        jDialog.setLocation ((screenSize.width - 250) / 2, (screenSize.height - 350) / 2);
+        setLocation ((screenSize.width - 250) / 2, (screenSize.height - 350) / 2);
     }
 
     @Override
@@ -143,5 +141,11 @@ public class ConfirmPositionFrame extends ToolCardFrame {
     @Override
     public int getValue() {
         return 0;
+    }
+
+    @Override
+    public void close() {
+        setModal(false);
+        dispose();
     }
 }
