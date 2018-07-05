@@ -49,6 +49,13 @@ public class Room extends Thread {
                 .get();
     }
 
+    public ConnectedClient inactiveClientById(int id) {
+        return inactivePlayers()
+                .filter(player -> player.getId() == id)
+                .findFirst()
+                .get();
+    }
+
     private HashMap<Integer, String> createClientsMap() {
         HashMap<Integer, String> clientsMap = new HashMap<>();
         players.forEach(player -> {
@@ -82,23 +89,9 @@ public class Room extends Thread {
     }
 
     public void notifyView(Message playerMessage) {
-
-        //se il messaggio è un notAFK, allora setto il giocatore in attivo e gli mando un refresh
-        //così si "riaggiorna" con ciò che è successo in sua assenza;
-        //bisogna togliere INSTANCE OF
-
-        if(playerMessage instanceof PlayerMessageNotAFK) {
-            players.forEach((player) -> {
-                if (((PlayerMessageNotAFK) playerMessage).getPlayerId() == player.getId()) {
-                    player.setInactive(false);
-                }
-            });
-        }
-
+        playerMessage.accept(messageVisitorUpdate);
         view.callNotify((PlayerMessage) playerMessage);
     }
-
-
 
     public void updatePlayers(Message updateMessage) {
 

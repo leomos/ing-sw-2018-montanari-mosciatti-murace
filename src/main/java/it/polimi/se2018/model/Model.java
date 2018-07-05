@@ -303,9 +303,10 @@ public class Model extends Observable<ModelChangedMessage> {
             }
 
         }
+    }
 
-
-
+    public void timeIsRunningOut() {
+        notify(new ModelChangedMessageNewEvent(currentPlayerPlaying(), "Time is running out! 15s left!"));
     }
 
     /**
@@ -313,7 +314,7 @@ public class Model extends Observable<ModelChangedMessage> {
      * @return true if it's player's turn
      */
     public boolean isMyTurn(int idPlayer){
-        return  idPlayer == table.getRoundTrack().getCurrentRound().getIdPlayerPlaying();
+        return  idPlayer == currentPlayerPlaying();
     }
 
     /**
@@ -384,7 +385,7 @@ public class Model extends Observable<ModelChangedMessage> {
 
                     notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
 
-                    int playerIdPlaying = table.getRoundTrack().getCurrentRound().getIdPlayerPlaying();
+                    int playerIdPlaying = currentPlayerPlaying();
                     notify(new ModelChangedMessageRefresh(playerIdPlaying, players.get(playerIdPlaying)));
 
                 } catch (DieRolledValueOutOfBoundException e) {
@@ -585,7 +586,7 @@ public class Model extends Observable<ModelChangedMessage> {
 
             notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
 
-            int playerIdPlaying = table.getRoundTrack().getCurrentRound().getIdPlayerPlaying();
+            int playerIdPlaying = currentPlayerPlaying();
             notify(new ModelChangedMessageRefresh(playerIdPlaying, players.get(playerIdPlaying)));
         } catch (RoundTrackNotInSecondPartOfRoundException e) {
             notify(new ModelChangedMessageMoveFailed(idPlayer, "Can only be used during second turn of round"));
@@ -634,7 +635,7 @@ public class Model extends Observable<ModelChangedMessage> {
                 d.roll();
 
                 notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
-                int playerIdPlaying = table.getRoundTrack().getCurrentRound().getIdPlayerPlaying();
+                int playerIdPlaying = currentPlayerPlaying();
                 notify(new ModelChangedMessageRefresh(playerIdPlaying, players.get(playerIdPlaying)));
 
                 notify(new ModelChangedMessageNewEvent(idPlayer, "The new value for the die is " + d.getRolledValue()));
@@ -684,7 +685,7 @@ public class Model extends Observable<ModelChangedMessage> {
 
                     notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
 
-                    int playerIdPlaying = table.getRoundTrack().getCurrentRound().getIdPlayerPlaying();
+                    int playerIdPlaying = currentPlayerPlaying();
                     notify(new ModelChangedMessageRefresh(playerIdPlaying, players.get(playerIdPlaying)));
                 } catch (DieNotPresentException e) {
                     roundTrack.swapDieInRound(actualIdDieInDiceArena, idRound, actualIdDieInRoundTrack);
@@ -752,7 +753,7 @@ public class Model extends Observable<ModelChangedMessage> {
         table.getDiceArena().rollOneDieIntoDiceArena(positionInDiceArena, actualIdDie, value);
 
         notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
-        int playerIdPlaying = table.getRoundTrack().getCurrentRound().getIdPlayerPlaying();
+        int playerIdPlaying = currentPlayerPlaying();
         notify(new ModelChangedMessageRefresh(playerIdPlaying, players.get(playerIdPlaying)));    }
 
     /**
@@ -974,7 +975,6 @@ public class Model extends Observable<ModelChangedMessage> {
 
         if(this.gamePhase == GamePhase.GAMEPHASE) {
 
-            notify(new ModelChangedMessageConnected(idPlayer));
             notify(new ModelChangedMessageChangeGamePhase(gamePhase));
 
             for (Integer key : players.keySet()) {
@@ -1021,11 +1021,12 @@ public class Model extends Observable<ModelChangedMessage> {
                 notify(new ModelChangedMessageRound(i, table.getRoundTrack().getRound(i).getRepresentation()));
             }
 
-            int playerIdPlaying = table.getRoundTrack().getCurrentRound().getIdPlayerPlaying();
+            int playerIdPlaying = currentPlayerPlaying();
             notify(new ModelChangedMessageRefresh(playerIdPlaying, players.get(playerIdPlaying)));
 
             notify(new ModelChangedMessageNewEvent(idPlayer, "You are back in the game!"));
 
+            notify(new ModelChangedMessageConnected(idPlayer));
         } else {
 
             notify(new ModelChangedMessageChangeGamePhase(GamePhase.ENDGAMEPHASE));
