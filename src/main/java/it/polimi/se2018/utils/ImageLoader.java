@@ -19,18 +19,22 @@ public class ImageLoader {
     }
 
     public Image getToolCard(int id) {
-        return getImage(Paths.get("/","images","toolcards", "ToolCard"+id+".jpg").toString());
+        return getImage("/images/toolcards/ToolCard"+id+".jpg");
+        //return getImage(Paths.get("/","images","toolcards", "ToolCard"+id+".jpg").toString());
     }
 
     public Image getPrivateObjective(int id) {
-        return getImage(Paths.get("/","images", "privateobjectives", "PrivateObjective"+id+".png").toString());
+        return getImage("/images/privateobjectives/PrivateObjective"+id+".png");
+        //return getImage(Paths.get("/","images", "privateobjectives", "PrivateObjective"+id+".png").toString());
     }
 
     public Image getPublicObjective(int id) {
-        return getImage(Paths.get("/","images", "publicobjectives", "PublicObjective"+id+".JPG").toString());
+        return getImage("/images/publicobjectives/PublicObjective"+id+".JPG");
+        //return getImage(Paths.get("/","images", "publicobjectives", "PublicObjective"+id+".JPG").toString());
     }
 
     public Image getSagradaCover() {
-        return getImage(Paths.get("/","images", "Sagrada.jpg").toString());
+        return getImage("/images/Sagrada.jpg");
+        //return getImage(Paths.get("/","images", "Sagrada.jpg").toString());
     }
 }
