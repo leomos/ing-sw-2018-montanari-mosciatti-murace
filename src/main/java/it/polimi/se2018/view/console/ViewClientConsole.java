@@ -117,10 +117,6 @@ public class ViewClientConsole extends ViewClient  {
             if(modelChangedMessageRefresh.getIdPlayerPlaying() != null && modelChangedMessageRefresh.getIdPlayerPlaying() != idPlayerPlaying) {
                 swingPhase.update(modelChangedMessageRefresh);
                 idPlayerPlaying = modelChangedMessageRefresh.getIdPlayerPlaying();
-                if (idPlayerPlaying == idClient && swingPhase.isNewTurn()) {
-                    swingPhase.setNewTurn(false);
-                    new TurnFrame();
-                }
             }
             swingPhase.print();
         }

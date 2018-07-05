@@ -7,10 +7,9 @@ import javax.swing.*;
 import java.util.ArrayList;
 
 public abstract class SwingPhase {
+    //protected boolean newTurn;
 
     protected ServerInterface serverInterface;
-
-    protected boolean newTurn = true;
 
     public abstract void update(ModelChangedMessagePatternCard message);
     public abstract void update(ModelChangedMessagePrivateObjective message);
@@ -49,11 +48,9 @@ public abstract class SwingPhase {
 
     public abstract void close();
 
-    public boolean isNewTurn() {
+    /*public boolean isNewTurn() {
         return this.newTurn;
     }
 
-    public void setNewTurn(boolean b) {
-        this.newTurn = b;
-    }
+    public abstract void setNewTurn(boolean b);*/
 }

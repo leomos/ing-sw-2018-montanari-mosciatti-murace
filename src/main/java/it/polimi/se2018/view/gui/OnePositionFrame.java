@@ -51,6 +51,9 @@ public class OnePositionFrame {
         dialog.setLayout(new BorderLayout());
         dialog.setSize(new Dimension(270, 350));
 
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        dialog.setLocation ((screenSize.width-270)/2, (screenSize.height-350)/2);
+
         dialog.add(label, BorderLayout.NORTH);
         dialog.add(panel, BorderLayout.CENTER);
         dialog.add(button, BorderLayout.SOUTH);
