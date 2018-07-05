@@ -8,6 +8,8 @@ import java.util.Map;
 
 public class MethodCallMessage implements Serializable, Message {
 
+    private static final long serialVersionUID = 3000L;
+
     private String methodName;
 
     private Map<String, Object> arguments;
