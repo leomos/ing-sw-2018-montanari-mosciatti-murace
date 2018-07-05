@@ -6,6 +6,8 @@ public class ModelChangedMessagePatternCard extends ModelChangedMessage implemen
 
     private int idPlayer;
 
+    private String playerName;
+
     private int idPatternCard;
 
     private String name;
@@ -22,9 +24,10 @@ public class ModelChangedMessagePatternCard extends ModelChangedMessage implemen
      * @param difficulty pattern card difficulty
      * @param representation pattern card representation
      */
-    public ModelChangedMessagePatternCard(int idPlayer, int idPatternCard, String name, int difficulty, String representation){
+    public ModelChangedMessagePatternCard(int idPlayer, String playerName, int idPatternCard, String name, int difficulty, String representation){
         this.idPlayer = idPlayer;
         this.idPatternCard = idPatternCard;
+        this.playerName = playerName;
         this.name = name;
         this.difficulty = difficulty;
         this.representation = representation;
@@ -49,6 +52,8 @@ public class ModelChangedMessagePatternCard extends ModelChangedMessage implemen
     public String getRepresentation() {
         return representation;
     }
+
+    public String getPlayerName(){ return playerName; }
 
     @Override
     public void accept(MessageVisitorInterface messageVisitorInterface) {

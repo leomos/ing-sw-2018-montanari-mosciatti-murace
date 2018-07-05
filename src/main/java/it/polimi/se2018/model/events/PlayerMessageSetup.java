@@ -15,7 +15,7 @@ public class PlayerMessageSetup extends PlayerMessage implements Serializable, M
      * @param patternCardId pattern card id chosen by the player
      */
     public PlayerMessageSetup(int player, int patternCardId){
-        this.player = player;
+        super(player);
         this.patternCardId = patternCardId;
     }
 

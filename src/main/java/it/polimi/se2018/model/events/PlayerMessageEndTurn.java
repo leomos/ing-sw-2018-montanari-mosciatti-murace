@@ -9,7 +9,7 @@ public class PlayerMessageEndTurn extends PlayerMessage {
      * @param player player id finishing his turn
      */
     public PlayerMessageEndTurn(int player){
-        this.player = player;
+        super(player);
     }
 
     @Override

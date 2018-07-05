@@ -110,14 +110,14 @@ public class ViewClientConsole extends ViewClient  {
                     System.out.println("It's your turn");
                     System.out.println("/help: get List of moves");
                 } else {
-                    System.out.println("It's player " + idPlayerPlaying + " turn!");
+                    System.out.println("It's player " + idPlayerPlaying + " " + modelChangedMessageRefresh.getPlayerName() +" turn!");
                 }
             }
         } else if(viewType == 1){
             if(modelChangedMessageRefresh.getIdPlayerPlaying() != null && modelChangedMessageRefresh.getIdPlayerPlaying() != idPlayerPlaying) {
-                swingPhase.update(modelChangedMessageRefresh);
                 idPlayerPlaying = modelChangedMessageRefresh.getIdPlayerPlaying();
             }
+            swingPhase.update(modelChangedMessageRefresh);
             swingPhase.print();
         }
     }
@@ -458,24 +458,22 @@ public class ViewClientConsole extends ViewClient  {
 
     @Override
     public void handleDisconnection() {
-        if(viewType == 0) {
-            System.out.println("Disconnesso!");
-            this.serverInterface = null;
-            this.executor.shutdownNow();
-            try {
-                this.executor.awaitTermination(3, TimeUnit.SECONDS);
-            } catch (InterruptedException e) {
-                System.out.println("Heartbeat terminato prima del previsto.");
-            }
-            System.out.println("Heartbeat terminato!");
-            try {
-                TimeUnit.SECONDS.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            System.out.println("provo a riconnettermi");
-            tryToReconnect(this.connectionType);
+        System.out.println("Disconnesso!");
+        this.serverInterface = null;
+        this.executor.shutdownNow();
+        try {
+            this.executor.awaitTermination(3, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            System.out.println("Heartbeat terminato prima del previsto.");
         }
+        System.out.println("Heartbeat terminato!");
+        try {
+            TimeUnit.SECONDS.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("provo a riconnettermi");
+        tryToReconnect(this.connectionType);
     }
 
     private void tryToReconnect(int connectionType) {

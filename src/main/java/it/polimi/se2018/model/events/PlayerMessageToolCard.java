@@ -12,7 +12,7 @@ public class PlayerMessageToolCard extends PlayerMessage implements Message {
      * @param toolCard tool card id chosen by the player
      */
     public PlayerMessageToolCard(int player, int toolCard){
-        this.player = player;
+        super(player);
         this.toolCard = toolCard;
     }
 
