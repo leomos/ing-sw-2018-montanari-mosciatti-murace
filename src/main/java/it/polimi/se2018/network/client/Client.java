@@ -19,8 +19,8 @@ public class Client {
 
     public static void main(String[] args) {
         //String host = "163.172.183.230";
-        //String host = "localhost";
-        String host = "192.168.43.123";
+        String host = "localhost";
+        //String host = "192.168.43.123";
         int socketPort = 1111;
         int rmiPort = 8080;
 

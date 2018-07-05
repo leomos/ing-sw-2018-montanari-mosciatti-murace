@@ -54,7 +54,7 @@ public class ViewClientConsole extends ViewClient  {
     }
 
     public void update(ModelChangedMessageNewEvent modelChangedMessageNewEvent){
-        if(modelChangedMessageNewEvent.getPlayer() == idClient){
+        if(modelChangedMessageNewEvent.getPlayer() == idClient && this.gamePhase == GAMEPHASE){
             System.out.println("NEW EVENT: " + modelChangedMessageNewEvent.getMessage());
         }
     }

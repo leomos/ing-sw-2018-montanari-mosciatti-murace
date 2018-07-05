@@ -50,7 +50,7 @@ public class ViewClientGUI extends ViewClient {
     }
 
     public void update(ModelChangedMessageNewEvent modelChangedMessageNewEvent){
-        if(modelChangedMessageNewEvent.getPlayer() == idClient) {
+        if(modelChangedMessageNewEvent.getPlayer() == idClient && this.gamePhase == GAMEPHASE) {
             new NewEventFrame(modelChangedMessageNewEvent.getMessage());
         }
     }
