@@ -80,6 +80,11 @@ public class ViewClientGUISetup extends SwingPhase implements ActionListener {
 
     }
 
+    @Override
+    public void update(ModelChangedMessageOnlyOnePlayerLeft message) {
+
+    }
+
     public void print() {
         SwingPatternCard p1 = new SwingPatternCard(patternCards.get(0), true);
         SwingPatternCard p2 = new SwingPatternCard(patternCards.get(1), true);

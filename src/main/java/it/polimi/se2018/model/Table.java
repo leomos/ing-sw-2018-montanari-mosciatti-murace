@@ -24,6 +24,8 @@ public class Table {
 
     private DiceArena diceArena;
 
+    private int winner;
+
     private Database database;
 
     private RoundTrack roundTrack;
@@ -313,7 +315,13 @@ public class Table {
 
         }
 
+    }
 
+    public int getWinner() {
+        return winner;
+    }
 
+    public void setWinner(int winner) {
+        this.winner = winner;
     }
 }

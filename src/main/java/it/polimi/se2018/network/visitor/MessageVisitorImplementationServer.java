@@ -190,6 +190,11 @@ public class MessageVisitorImplementationServer implements MessageVisitorInterfa
     }
 
     @Override
+    public void visitModelChangedMessageOnlyOnePlayerLeft(ModelChangedMessageOnlyOnePlayerLeft modelChangedMessageOnlyOnePlayerLeft) {
+        serverImplementationSocket.updateView(modelChangedMessageOnlyOnePlayerLeft);
+    }
+
+    @Override
     public void visitPlayerMessageDie(PlayerMessageDie playerMessageDie) {
 
     }

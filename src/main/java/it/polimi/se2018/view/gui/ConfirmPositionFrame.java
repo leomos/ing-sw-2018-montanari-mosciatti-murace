@@ -92,7 +92,6 @@ public class ConfirmPositionFrame {
                     });
 
                     d.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-                    d.setSize(200, 100);
 
                     JLabel l = new JLabel("Do you confirm?");
                     JLabel label1 = new JLabel("Old position: (" + Integer.toString(row1) + "," + Integer.toString(col1) + ")", SwingConstants.CENTER);
@@ -116,8 +115,7 @@ public class ConfirmPositionFrame {
                     d.setSize(500, 300);
                     d.setVisible(true);
                     Dimension screenSize = Toolkit.getDefaultToolkit ().getScreenSize();
-                    Dimension frameSize = d.getSize();
-                    d.setLocation ((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
+                    d.setLocation ((screenSize.width - 500) / 2, (screenSize.height - 300) / 2);
                 } else {
                     new MoveFailedFrame("Select two dice");
                 }
@@ -133,8 +131,7 @@ public class ConfirmPositionFrame {
         jDialog.setVisible(true);
 
         Dimension screenSize = Toolkit.getDefaultToolkit ().getScreenSize();
-        Dimension frameSize = jDialog.getSize();
-        jDialog.setLocation ((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
+        jDialog.setLocation ((screenSize.width - 250) / 2, (screenSize.height - 350) / 2);
     }
 
     public ArrayList<Integer> getvalues() {

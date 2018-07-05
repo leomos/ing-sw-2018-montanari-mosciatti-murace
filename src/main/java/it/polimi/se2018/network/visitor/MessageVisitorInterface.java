@@ -36,6 +36,8 @@ public interface MessageVisitorInterface {
 
     public void visitModelChangedMessagePlayerAFK(ModelChangedMessagePlayerAFK modelChangedMessagePlayerAFK);
 
+    public void visitModelChangedMessageOnlyOnePlayerLeft(ModelChangedMessageOnlyOnePlayerLeft modelChangedMessageOnlyOnePlayerLeft);
+
     public void visitPlayerMessageDie(PlayerMessageDie playerMessageDie);
 
     public void visitPlayerMessageEndTurn(PlayerMessageEndTurn playerMessageEndTurn);

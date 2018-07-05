@@ -3,14 +3,12 @@ package it.polimi.se2018.view.gui;
 import it.polimi.se2018.model.events.*;
 import it.polimi.se2018.network.ServerInterface;
 
-import javax.swing.*;
 import java.util.ArrayList;
 
 public abstract class SwingPhase {
+    //protected boolean newTurn;
 
     protected ServerInterface serverInterface;
-
-    protected boolean newTurn = true;
 
     public abstract void update(ModelChangedMessagePatternCard message);
     public abstract void update(ModelChangedMessagePrivateObjective message);
@@ -22,6 +20,7 @@ public abstract class SwingPhase {
     public abstract void update(ModelChangedMessageEndGame message);
     public abstract void update(ModelChangedMessageToolCard message);
     public abstract void update(ModelChangedMessageRefresh message);
+    public abstract void update(ModelChangedMessageOnlyOnePlayerLeft message);
 
     public abstract void print();
 
@@ -49,11 +48,9 @@ public abstract class SwingPhase {
 
     public abstract void close();
 
-    public boolean isNewTurn() {
+    /*public boolean isNewTurn() {
         return this.newTurn;
     }
 
-    public void setNewTurn(boolean b) {
-        this.newTurn = b;
-    }
+    public abstract void setNewTurn(boolean b);*/
 }

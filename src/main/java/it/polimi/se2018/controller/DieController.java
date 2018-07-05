@@ -18,7 +18,7 @@ public class DieController  {
      */
     public void execute(PlayerMessageDie playerMessageDie) {
 
-        int idPlayer = playerMessageDie.getPlayer();
+        int idPlayer = playerMessageDie.getPlayerId();
 
         if(model.isMyTurn(idPlayer)) {
             int idDie = playerMessageDie.getDie();

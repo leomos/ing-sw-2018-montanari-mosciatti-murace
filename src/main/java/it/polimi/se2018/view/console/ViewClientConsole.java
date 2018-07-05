@@ -111,16 +111,14 @@ public class ViewClientConsole extends ViewClient  {
                 if (idPlayerPlaying == idClient && canIPlay) {
                     System.out.println("It's your turn");
                     System.out.println("/help: get List of moves");
+                } else {
+                    System.out.println("It's player " + idPlayerPlaying + " turn!");
                 }
             }
         } else if(viewType == 1){
             if(modelChangedMessageRefresh.getIdPlayerPlaying() != null && modelChangedMessageRefresh.getIdPlayerPlaying() != idPlayerPlaying) {
                 swingPhase.update(modelChangedMessageRefresh);
                 idPlayerPlaying = modelChangedMessageRefresh.getIdPlayerPlaying();
-                if (idPlayerPlaying == idClient && swingPhase.isNewTurn()) {
-                    swingPhase.setNewTurn(false);
-                    new TurnFrame();
-                }
             }
             swingPhase.print();
         }

@@ -4,8 +4,6 @@ import java.util.concurrent.TimeUnit;
 
 public class Timer implements Runnable {
 
-    private Thread thread;
-
     private int timer;
 
     private boolean stopTimer = false;
@@ -29,20 +27,14 @@ public class Timer implements Runnable {
         do {
 
             i = 0;
-            System.out.println("è cominciato un nuovo timer");
             while (i < timer && !stopTimer) {
-
-
                 try {
                     TimeUnit.SECONDS.sleep(1);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
                 i++;
             }
-
-
 
             if (i >= timer) {
                 System.out.println("è scaduto il timer!");
@@ -50,8 +42,6 @@ public class Timer implements Runnable {
             }
 
         }while(!stopTimer);
-
-        System.out.println("IL TIMER THREAD è CHIUSO!!!");
 
     }
 
@@ -63,25 +53,21 @@ public class Timer implements Runnable {
      * Timer goes back to 0
      */
     public void reStartTimer(){
-
         i = 0;
-        System.out.println("ho restartato il timer: " + i);
-
     }
 
     /**
      * Timer is completely stopped. It happens when the game is over
      */
     public void stopTimer(){
-
         stopTimer = true;
-        System.out.println("ho stoppato il timer!");
     }
 
     /**
      * Starts a thread with the timer
      */
     public void startTimer() {
+        Thread thread;
         thread = new Thread(this);
         thread.start();
     }

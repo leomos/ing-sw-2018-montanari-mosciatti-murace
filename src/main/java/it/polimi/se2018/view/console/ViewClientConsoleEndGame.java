@@ -3,7 +3,6 @@ package it.polimi.se2018.view.console;
 import it.polimi.se2018.model.events.*;
 
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 public class ViewClientConsoleEndGame extends ViewClientConsolePrint {
 
@@ -20,6 +19,17 @@ public class ViewClientConsoleEndGame extends ViewClientConsolePrint {
     public void update(ModelChangedMessageEndGame message) {
         scoreboardMessage = message;
         this.print();
+    }
+
+    @Override
+    public void update(ModelChangedMessageOnlyOnePlayerLeft message) {
+        System.out.println("\n\nOnly player " + message.getPlayerIdLeft() + " is left in the game!");
+        if(message.getPlayerIdLeft() == idClient)
+            System.out.println("You won!");
+        else
+            System.out.println("You lost!");
+
+        System.exit(0);
     }
 
     @Override
@@ -69,20 +79,15 @@ public class ViewClientConsoleEndGame extends ViewClientConsolePrint {
 
         System.out.println("\n\n/°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°/");
         System.out.println("/°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°/");
-        System.out.println("/°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°/");
+        System.out.println("/°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°//°-°/\n\n");
+
+        System.out.println("FINAL SCORE:\n\n");
 
         for (String s : scoreboard.split("/")) {
             String[] score = s.split(";");
             if(score.length == 3)
                 System.out.println("ID: " + score[0] + " | " + "SCORE: " + score[1] + " | " + "TOKENS LEFT: " + score[2]);
         }
-
-        try {
-            TimeUnit.SECONDS.sleep(30);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
 
         System.exit(0);
 

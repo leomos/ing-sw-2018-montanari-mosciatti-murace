@@ -4,16 +4,11 @@ import java.util.*;
 
 public class Scoreboard {
 
-    private ArrayList<Integer> player = new ArrayList<>();
-
-    private HashMap<Integer, Integer> tokens = new HashMap<>();
-
     private int lastId;
 
     private String representation;
 
     private HashMap<Integer, Integer[]> board = new HashMap<>();
-
 
     public Scoreboard(int lastId){
         this.lastId = lastId;

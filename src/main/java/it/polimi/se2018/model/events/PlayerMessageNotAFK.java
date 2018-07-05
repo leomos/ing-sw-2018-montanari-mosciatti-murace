@@ -16,10 +16,6 @@ public class PlayerMessageNotAFK extends PlayerMessage {
     public void accept(MessageVisitorInterface messageVisitorInterface) {
         messageVisitorInterface.visitPlayerMessageNotAFK(this);
     }
-
-    public int getPlayer() {
-        return player;
-    }
 }
 
 
