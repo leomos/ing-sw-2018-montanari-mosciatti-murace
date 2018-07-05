@@ -16,10 +16,6 @@ public class PlayerMessageToolCard extends PlayerMessage implements Message {
         this.toolCard = toolCard;
     }
 
-    public int getPlayer() {
-        return player;
-    }
-
     public int getToolCard() {
         return toolCard;
     }

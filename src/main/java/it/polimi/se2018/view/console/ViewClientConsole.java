@@ -111,6 +111,8 @@ public class ViewClientConsole extends ViewClient  {
                 if (idPlayerPlaying == idClient && canIPlay) {
                     System.out.println("It's your turn");
                     System.out.println("/help: get List of moves");
+                } else {
+                    System.out.println("It's player " + idPlayerPlaying + " turn!");
                 }
             }
         } else if(viewType == 1){

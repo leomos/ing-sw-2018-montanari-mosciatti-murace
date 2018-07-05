@@ -21,7 +21,7 @@ public class ToolCardController implements Runnable{
     }
 
     public void execute(PlayerMessageToolCard playerMessageToolCard, VirtualView view){
-        this.idPlayer = playerMessageToolCard.getPlayer();
+        this.idPlayer = playerMessageToolCard.getPlayerId();
         this.idToolCard = playerMessageToolCard.getToolCard();
         this.view = view;
 

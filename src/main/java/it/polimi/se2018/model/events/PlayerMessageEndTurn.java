@@ -16,8 +16,4 @@ public class PlayerMessageEndTurn extends PlayerMessage {
     public void accept(MessageVisitorInterface messageVisitorInterface) {
         messageVisitorInterface.visitPlayerMessageEndTurn(this);
     }
-
-    public int getPlayer() {
-        return player;
-    }
 }

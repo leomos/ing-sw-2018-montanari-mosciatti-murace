@@ -12,6 +12,6 @@ public class AfkController {
     }
 
     public void execute(PlayerMessageNotAFK playerMessageNotAFK){
-        this.model.setPlayerSuspended(playerMessageNotAFK.getPlayer(), false);
+        this.model.setPlayerSuspended(playerMessageNotAFK.getPlayerId(), false);
     }
 }

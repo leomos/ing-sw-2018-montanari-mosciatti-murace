@@ -110,6 +110,11 @@ public class ViewClientGUIGame extends SwingPhase {
     }
 
     @Override
+    public void update(ModelChangedMessageOnlyOnePlayerLeft message) {
+
+    }
+
+    @Override
     public void update(ModelChangedMessageToolCard message) {
         if(toolCards.size() == 3) {
             for(int i = 0; i < 3; i++)

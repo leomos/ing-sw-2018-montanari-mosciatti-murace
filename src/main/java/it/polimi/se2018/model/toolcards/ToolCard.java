@@ -37,10 +37,6 @@ public class ToolCard {
         return isUsedAtLeastOnce;
     }
 
-    public void setUsedAtLeastOnce(boolean usedAtLeastOnce){
-        isUsedAtLeastOnce = usedAtLeastOnce;
-    }
-
     public void setUsed() {
         isUsedAtLeastOnce = true;
     }
@@ -49,6 +45,10 @@ public class ToolCard {
         return toolCardId;
     }
 
+    /**
+     * how many tokens are needed for the tool card
+     * @return 1 if the tool card has never been used, 2 otherwise
+     */
     public int cost(){
         if (isUsedAtLeastOnce)
             return 2;

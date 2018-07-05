@@ -5,15 +5,11 @@ import it.polimi.se2018.utils.Database;
 
 import java.util.ArrayList;
 
-/* TODO: test and documentation */
-
 public class ToolCardContainer {
 
     private static final int NUMBER_OF_TOOLCARDS = 12;
 
     private ArrayList<ToolCard> toolCards = new ArrayList<>();
-
-    private ArrayList<Integer> toolCardsInPlay = new ArrayList<>();
 
     /**
      * The tool cards container creates the array list containing the tool cards from the database
@@ -33,7 +29,7 @@ public class ToolCardContainer {
     }
 
     /**
-     * @return the array list containing all the tool cards that are on the table this game
+     * @return the array list containing all the 3 tool cards that are on the table this game
      */
     public ArrayList<ToolCard> getToolCardInPlay() {
         ArrayList<ToolCard> toolCardsInGame= new ArrayList<ToolCard>();
