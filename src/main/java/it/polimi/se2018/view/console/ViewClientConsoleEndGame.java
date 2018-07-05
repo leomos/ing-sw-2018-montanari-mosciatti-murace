@@ -3,6 +3,7 @@ package it.polimi.se2018.view.console;
 import it.polimi.se2018.model.events.*;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class ViewClientConsoleEndGame extends ViewClientConsolePrint {
 
@@ -28,7 +29,7 @@ public class ViewClientConsoleEndGame extends ViewClientConsolePrint {
         else
             System.out.println("You lost!");
 
-        System.exit(0);
+        System.out.println("\n\nPress any key to close the game.");
     }
 
     @Override
@@ -88,7 +89,7 @@ public class ViewClientConsoleEndGame extends ViewClientConsolePrint {
                 System.out.println("ID: " + score[0] + " - " + scoreboardMessage.getPlayers().get(idClient) + " | " + "SCORE: " + score[1] + " | " + "TOKENS LEFT: " + score[2]);
         }
 
-        System.exit(0);
+        System.out.println("\n\nPress any key to close the game.");
 
     }
 
