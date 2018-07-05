@@ -133,6 +133,11 @@ public class ViewClientGUI extends ViewClient {
 
     }
 
+    public void update(ModelChangedMessageConnected modelChangedMessageConnected) {
+        if(modelChangedMessageConnected.getIdClient() != idClient)
+            new PlayerReconnectedFrame(modelChangedMessageConnected.getIdClient());
+    }
+
     @Override
     public ArrayList<Integer> getPositionInPatternCard(){
         if(idPlayerPlaying == idClient){
