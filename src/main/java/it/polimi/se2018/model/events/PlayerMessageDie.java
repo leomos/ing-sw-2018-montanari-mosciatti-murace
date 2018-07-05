@@ -20,6 +20,7 @@ public class PlayerMessageDie extends PlayerMessage implements Message {
      * @param y cell's ordinate
      */
     public PlayerMessageDie(Integer player, Integer die, Integer x, Integer y){
+        this.player = player;
         this.die = die;
         this.x_position = x;
         this.y_position = y;
