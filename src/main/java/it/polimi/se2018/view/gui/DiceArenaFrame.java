@@ -4,8 +4,9 @@ import it.polimi.se2018.model.events.ModelChangedMessageDiceArena;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
-public class DiceArenaFrame {
+public class DiceArenaFrame extends ToolCardFrame {
     private JDialog dialog;
 
     private int id = -1;
@@ -56,7 +57,13 @@ public class DiceArenaFrame {
         dialog.setLocation ((screenSize.width - 500) / 2, (screenSize.height - 300) / 2);
     }
 
-    public Integer getid() {
+    @Override
+    public ArrayList<Integer> getValues() {
+        return null;
+    }
+
+    @Override
+    public int getValue() {
         while(id==-1);
         return id;
     }

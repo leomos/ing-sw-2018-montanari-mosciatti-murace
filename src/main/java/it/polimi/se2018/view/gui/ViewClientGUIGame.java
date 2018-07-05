@@ -12,6 +12,8 @@ import java.util.ArrayList;
 public class ViewClientGUIGame extends SwingPhase {
     private JFrame jFrame = new JFrame();
 
+    private ToolCardFrame toolCardFrame;
+
     private boolean newturn;
 
     private String idDieChosen = "";
@@ -448,21 +450,21 @@ public class ViewClientGUIGame extends SwingPhase {
                 myId = i;
 
 
-        ConfirmPositionFrame frame = new ConfirmPositionFrame(diceOnPatternCards.get(myId), patternCards.get(myId));
-        ArrayList<Integer> returnValues = frame.getvalues();
+        toolCardFrame = new ConfirmPositionFrame(diceOnPatternCards.get(myId), patternCards.get(myId));
+        ArrayList<Integer> returnValues = toolCardFrame.getValues();
         return returnValues;
     }
 
     @Override
     public Integer getDieFromDiceArena() {
-        DiceArenaFrame frame = new DiceArenaFrame(diceArena);
-        return frame.getid();
+        toolCardFrame = new DiceArenaFrame(diceArena);
+        return toolCardFrame.getValue();
     }
 
     @Override
     public ArrayList<Integer> getIncrementedValue() {
-        IncrementedValueFrame frame = new IncrementedValueFrame(diceArena);
-        ArrayList<Integer> returnValues = frame.getValues();
+        toolCardFrame = new IncrementedValueFrame(diceArena);
+        ArrayList<Integer> returnValues = toolCardFrame.getValues();
 
         return returnValues;
     }
@@ -475,8 +477,8 @@ public class ViewClientGUIGame extends SwingPhase {
             if (patternCards.get(i).getIdPlayer() == idClient)
                 myId = i;
 
-        OnePositionFrame frame = new OnePositionFrame(diceOnPatternCards.get(myId), patternCards.get(myId), listOfAvailablePosition);
-        ArrayList<Integer> returnValues = frame.getValues();
+        toolCardFrame = new OnePositionFrame(diceOnPatternCards.get(myId), patternCards.get(myId), listOfAvailablePosition);
+        ArrayList<Integer> returnValues = toolCardFrame.getValues();
 
         return returnValues;
     }
@@ -489,23 +491,23 @@ public class ViewClientGUIGame extends SwingPhase {
             if (patternCards.get(i).getIdPlayer() == idClient)
                 myId = i;
 
-        NumberOfMovementsFrame numberOfMovementsFrame = new NumberOfMovementsFrame();
-        int momevemnts = numberOfMovementsFrame.getNumber();
+        toolCardFrame = new NumberOfMovementsFrame();
+        int momevemnts = toolCardFrame.getValue();
 
-        ConfirmPositionFrame frame = new ConfirmPositionFrame(diceOnPatternCards.get(myId), patternCards.get(myId));
-        ArrayList<Integer> returnValues = frame.getvalues();
+        toolCardFrame = new ConfirmPositionFrame(diceOnPatternCards.get(myId), patternCards.get(myId));
+        ArrayList<Integer> returnValues = toolCardFrame.getValues();
 
         if(momevemnts == 2) {
-            frame = new ConfirmPositionFrame(diceOnPatternCards.get(myId), patternCards.get(myId));
-            returnValues.addAll(frame.getvalues());
+            toolCardFrame = new ConfirmPositionFrame(diceOnPatternCards.get(myId), patternCards.get(myId));
+            returnValues.addAll(toolCardFrame.getValues());
         }
         return returnValues;
     }
 
     @Override
     public ArrayList<Integer> getDieFromRoundTrack() {
-        RoundTrackFrame roundTrackFrame = new RoundTrackFrame(roundTrack);
-        ArrayList<Integer> returnValues = roundTrackFrame.getValues();
+        toolCardFrame = new RoundTrackFrame(roundTrack);
+        ArrayList<Integer> returnValues = toolCardFrame.getValues();
 
         return returnValues;
     }
@@ -513,15 +515,16 @@ public class ViewClientGUIGame extends SwingPhase {
     @Override
     public Integer getValueForDie() {
         Integer value;
-        DieValueFrame frame = new DieValueFrame();
+        toolCardFrame = new DieValueFrame();
 
-        value = frame.getValue();
+        value = toolCardFrame.getValue();
         return value;
     }
 
     @Override
     public void close() {
         jFrame.dispose();
+        toolCardFrame.dispose();
     }
 
     @Override

@@ -6,8 +6,6 @@ import it.polimi.se2018.network.ServerInterface;
 import java.util.ArrayList;
 
 public abstract class SwingPhase {
-    //protected boolean newTurn;
-
     protected ServerInterface serverInterface;
 
     public abstract void update(ModelChangedMessagePatternCard message);
@@ -47,10 +45,4 @@ public abstract class SwingPhase {
     public abstract Integer getValueForDie();
 
     public abstract void close();
-
-    /*public boolean isNewTurn() {
-        return this.newTurn;
-    }
-
-    public abstract void setNewTurn(boolean b);*/
 }

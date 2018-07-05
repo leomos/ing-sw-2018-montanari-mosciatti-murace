@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class RoundTrackFrame {
+public class RoundTrackFrame extends ToolCardFrame {
     private JDialog dialog;
 
     private int round = -1;
@@ -71,10 +71,16 @@ public class RoundTrackFrame {
         dialog.setVisible(true);
     }
 
+    @Override
     public ArrayList<Integer> getValues() {
         ArrayList<Integer> v = new ArrayList<>();
         v.add(round);
         v.add(die);
         return v;
+    }
+
+    @Override
+    public int getValue() {
+        return 0;
     }
 }

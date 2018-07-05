@@ -2,8 +2,9 @@ package it.polimi.se2018.view.gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
-public class DieValueFrame {
+public class DieValueFrame extends ToolCardFrame {
     private JDialog dialog;
 
     private int value = 0;
@@ -48,6 +49,12 @@ public class DieValueFrame {
         dialog.setVisible(true);
     }
 
+    @Override
+    public ArrayList<Integer> getValues() {
+        return null;
+    }
+
+    @Override
     public int getValue() {
         while (value==0);
         return value;

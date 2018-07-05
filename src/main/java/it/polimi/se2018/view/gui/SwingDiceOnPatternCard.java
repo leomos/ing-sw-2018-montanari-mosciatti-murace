@@ -27,7 +27,7 @@ public class SwingDiceOnPatternCard extends JPanel {
 
         JPanel p1 = new JPanel();
         p1.setLayout(new GridLayout(3, 1));
-        JLabel l1 = new JLabel("PLAYER: " + modelChangedMessagePatternCard.getIdPlayer(), SwingConstants.CENTER);
+        JLabel l1 = new JLabel("PLAYER: " + modelChangedMessagePatternCard.getIdPlayer() + " - " + modelChangedMessagePatternCard.getPlayerName(), SwingConstants.CENTER);
         JLabel l2 = new JLabel("PATTERNCARD: " + modelChangedMessagePatternCard.getName(), SwingConstants.CENTER);
         JLabel l3 = new JLabel("DIFFICULTY: " + modelChangedMessagePatternCard.getDifficulty(), SwingConstants.CENTER);
         p1.add(l1);

@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class OnePositionFrame {
+public class OnePositionFrame extends ToolCardFrame {
     private JDialog dialog;
 
     private int row = -1;
@@ -72,10 +72,16 @@ public class OnePositionFrame {
         return false;
     }
 
+    //@Override
     public ArrayList<Integer> getValues() {
         ArrayList<Integer> v = new ArrayList<>();
         v.add(row);
         v.add(col);
         return v;
+    }
+
+    @Override
+    public int getValue() {
+        return 0;
     }
 }

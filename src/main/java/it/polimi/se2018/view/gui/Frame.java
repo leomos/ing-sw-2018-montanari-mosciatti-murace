@@ -8,7 +8,7 @@ public class Frame {
 
     protected JButton ok;
 
-    protected  Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    protected Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
     JFrame dialog = new JFrame();
 

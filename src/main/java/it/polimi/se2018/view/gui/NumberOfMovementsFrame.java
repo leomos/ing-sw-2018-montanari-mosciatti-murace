@@ -4,8 +4,9 @@ import it.polimi.se2018.model.events.ModelChangedMessageDiceArena;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
-public class NumberOfMovementsFrame {
+public class NumberOfMovementsFrame extends ToolCardFrame {
 
     private int i = -1;
 
@@ -54,7 +55,13 @@ public class NumberOfMovementsFrame {
         dialog.setVisible(true);
     }
 
-    public int getNumber(){
+    @Override
+    public ArrayList<Integer> getValues() {
+        return null;
+    }
+
+    @Override
+    public int getValue() {
         while(i == -1) {}
         return i;
     }

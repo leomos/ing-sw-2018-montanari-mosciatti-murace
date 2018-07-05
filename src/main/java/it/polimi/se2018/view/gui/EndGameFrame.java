@@ -14,6 +14,10 @@ public class EndGameFrame extends SwingPhase {
 
     private ModelChangedMessageEndGame messageEndGame;
 
+    private ModelChangedMessageOnlyOnePlayerLeft messageOnlyOnePlayerLeft;
+
+    private int onePlayer = 0;
+
     public EndGameFrame(int idClient) {
         this.idClient = idClient;
     }
@@ -31,12 +35,17 @@ public class EndGameFrame extends SwingPhase {
 
         JPanel title = new JPanel();
         title.setBackground(new Color(210, 210, 210, 200));
-        JLabel label = new JLabel("FINAL RANKING", SwingConstants.CENTER);
-        label.setFont(new Font("Ravie", Font.PLAIN, 26));
+        JLabel label;
+        if (onePlayer!=0) {
+            label = new JLabel("Only player " + onePlayer + " - " + messageOnlyOnePlayerLeft.getPlayers().get(onePlayer) + " is left in game!!", SwingConstants.CENTER);
+            label.setFont(new Font("Ravie", Font.PLAIN, 20));
+        }
+        else {
+            label = new JLabel("FINAL RANKING", SwingConstants.CENTER);
+            label.setFont(new Font("Ravie", Font.PLAIN, 26));
+        }
         label.setForeground(new Color(253, 233, 16));
         title.add(label);
-
-        SwingScoreboard classifica = new SwingScoreboard(messageEndGame.getScoreboard());
 
         JPanel thanks = new JPanel();
         JLabel l = new JLabel("Thanks for playing!!", SwingConstants.CENTER);
@@ -60,14 +69,46 @@ public class EndGameFrame extends SwingPhase {
         constraints.anchor = GridBagConstraints.NORTH;
         jFrame.add(title, constraints);
 
-        constraints.weightx = 1;
-        constraints.weighty = 1;
-        constraints.gridx = 0;
-        constraints.gridy = 1;
-        constraints.insets.bottom = 150;
-        constraints.insets.top = 0;
-        constraints.anchor = GridBagConstraints.NORTH;
-        jFrame.add(classifica, constraints);
+        if (onePlayer==0) {
+            SwingScoreboard classifica = new SwingScoreboard(messageEndGame.getScoreboard());
+
+            constraints.weightx = 1;
+            constraints.weighty = 1;
+            constraints.gridx = 0;
+            constraints.gridy = 1;
+            constraints.insets.bottom = 150;
+            constraints.insets.top = 0;
+            constraints.anchor = GridBagConstraints.NORTH;
+            jFrame.add(classifica, constraints);
+
+            if (idClient==classifica.getWinner())
+                new WinFrame();
+            else
+                new DefeatFrame();
+        }
+        else {
+            JPanel result = new JPanel();
+            result.setBackground(new Color(210, 210, 210, 200));
+            JLabel jLabel = new JLabel("", SwingConstants.CENTER);
+            jLabel.setFont(new Font("Ravie", Font.PLAIN, 24));
+            if (onePlayer==idClient) {
+                jLabel.setText("CONGRATS, YOU WIN!!");
+                jLabel.setForeground(Color.GREEN);
+            }
+            if (onePlayer!=idClient) {
+                jLabel.setText("YOU LOSE!");
+                jLabel.setForeground(Color.RED);
+            }
+            result.add(jLabel);
+            constraints.weightx = 1;
+            constraints.weighty = 1;
+            constraints.gridx = 0;
+            constraints.gridy = 1;
+            constraints.insets.bottom = 150;
+            constraints.insets.top = 0;
+            constraints.anchor = GridBagConstraints.NORTH;
+            jFrame.add(result, constraints);
+        }
 
         constraints.weightx = 1;
         constraints.weighty = 1;
@@ -90,11 +131,6 @@ public class EndGameFrame extends SwingPhase {
         jFrame.setSize(500, 700);
         jFrame.setResizable(false);
         jFrame.setVisible(true);
-
-        if (idClient==classifica.getWinner())
-            new WinFrame();
-        else
-            new DefeatFrame();
 
         Dimension screenSize = Toolkit.getDefaultToolkit ().getScreenSize();
         Dimension frameSize = jFrame.getSize();
@@ -153,7 +189,9 @@ public class EndGameFrame extends SwingPhase {
 
     @Override
     public void update(ModelChangedMessageOnlyOnePlayerLeft message) {
-
+        messageOnlyOnePlayerLeft = message;
+        onePlayer = message.getPlayerIdLeft();
+        this.print();
     }
 
     @Override

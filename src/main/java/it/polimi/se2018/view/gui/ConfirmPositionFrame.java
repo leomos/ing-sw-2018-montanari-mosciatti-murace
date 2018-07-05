@@ -9,7 +9,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
-public class ConfirmPositionFrame {
+public class ConfirmPositionFrame extends ToolCardFrame {
 
     private int row1 = -1;
 
@@ -134,8 +134,14 @@ public class ConfirmPositionFrame {
         jDialog.setLocation ((screenSize.width - 250) / 2, (screenSize.height - 350) / 2);
     }
 
-    public ArrayList<Integer> getvalues() {
+    @Override
+    public ArrayList<Integer> getValues() {
         while(v.isEmpty()) {}
         return v;
+    }
+
+    @Override
+    public int getValue() {
+        return 0;
     }
 }

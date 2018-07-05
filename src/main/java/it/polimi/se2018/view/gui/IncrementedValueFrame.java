@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class IncrementedValueFrame {
+public class IncrementedValueFrame extends ToolCardFrame {
 
     private JDialog dialog;
 
@@ -79,8 +79,14 @@ public class IncrementedValueFrame {
 
     }
 
+    @Override
     public ArrayList<Integer> getValues(){
         while(values.size() != 2);
         return values;
+    }
+
+    @Override
+    public int getValue() {
+        return 0;
     }
 }
