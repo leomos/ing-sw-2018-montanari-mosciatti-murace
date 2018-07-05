@@ -1,6 +1,7 @@
 package it.polimi.se2018.view.gui;
 
 import it.polimi.se2018.model.events.*;
+import it.polimi.se2018.utils.ImageLoader;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,7 +22,8 @@ public class EndGameFrame extends SwingPhase {
         jFrame.setTitle("SAGRADA");
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        Image image = java.awt.Toolkit.getDefaultToolkit().getImage("../ing-sw-2018-montanari-mosciatti-murace\\src\\images\\Sagrada.jpg");
+        ImageLoader imageLoader = new ImageLoader();
+        Image image = imageLoader.getSagradaCover();
         image = image.getScaledInstance(500, 670, Image.SCALE_SMOOTH);
         it.polimi.se2018.view.gui.Panel p = new it.polimi.se2018.view.gui.Panel(image);
         jFrame.setContentPane(p);

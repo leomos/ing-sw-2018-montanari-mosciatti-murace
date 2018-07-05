@@ -1,6 +1,7 @@
 package it.polimi.se2018.view.gui;
 
 import it.polimi.se2018.model.events.ModelChangedMessageToolCard;
+import it.polimi.se2018.utils.ImageLoader;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,11 +10,11 @@ public class SwingToolCards extends JPanel {
     private JButton b;
 
     public SwingToolCards(ModelChangedMessageToolCard message) {
-        String path = "../ing-sw-2018-montanari-mosciatti-murace\\src\\images\\toolcards\\Toolcard";
-        path = path + message.getIdToolCard() + ".jpg";
+        ImageLoader imageLoader = new ImageLoader();
+        ImageIcon icon = new ImageIcon(imageLoader.getToolCard(message.getIdToolCard()));
 
         b = new JButton();
-        b.setIcon(new ImageIcon(path));
+        b.setIcon(icon);
         b.setPreferredSize(new Dimension(185, 255));
         b.setToolTipText("Toolcards");
 

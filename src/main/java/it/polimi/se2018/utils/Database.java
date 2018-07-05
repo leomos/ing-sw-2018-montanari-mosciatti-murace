@@ -7,18 +7,17 @@ import it.polimi.se2018.model.toolcards.ToolCard;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
 
 public class Database {
 
-    private String dbName = "db.json";
+    private String dbName = "/db.json";
 
     private File dbFile;
 
@@ -26,35 +25,36 @@ public class Database {
 
     private JSONObject dbJsonObject;
 
+
+
     /**
      *
      * @param diceContainer
      */
     public Database(DiceContainer diceContainer) {
         this.diceContainer = diceContainer;
-        ClassLoader classLoader = getClass().getClassLoader();
-        String s = null;
-        try {
-            s = URLDecoder.decode(classLoader.getResource(dbName).toString(),"UTF-8");
-            dbFile = new File((new URL(s)).getFile());
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-
+        InputStream is = getClass().getResourceAsStream(dbName);
+        InputStreamReader isr = new InputStreamReader(is);
+        BufferedReader br = new BufferedReader(isr);
+        String line;
         StringBuilder result = new StringBuilder("");
-        try (Scanner scanner = new Scanner(dbFile)) {
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
+        try {
+            while ((line=br.readLine()) != null) {
                 result.append(line).append("\n");
             }
-            scanner.close();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         dbJsonObject = new JSONObject(result.toString());
+    }
+
+    public static void main(String[] args) {
+        new Database(new DiceContainer());
+        for (int i = 1; i < 11; i++) {
+            new ImageLoader().getPublicObjective(i);
+        }
+        new ImageLoader().getSagradaCover();
     }
 
     /**

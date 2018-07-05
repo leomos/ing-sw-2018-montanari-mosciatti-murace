@@ -34,7 +34,7 @@ public class ModelChangedMessagePrivateObjective extends ModelChangedMessage imp
         return name;
     }
 
-    public int getIdPublicObjective() {
+    public int getIdPrivateObjective() {
         return idPrivateObjective;
     }
 
