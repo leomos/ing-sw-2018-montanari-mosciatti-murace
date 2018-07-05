@@ -80,8 +80,6 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
             tokensLeft = modelChangedMessageTokensLeft;
     }
 
-
-
     @Override
     public void update(ModelChangedMessageToolCard modelChangedMessageToolCard) {
         if(toolCards.size() == 3) {

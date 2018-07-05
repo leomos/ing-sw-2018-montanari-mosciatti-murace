@@ -24,6 +24,8 @@ public class ViewClientGUIGame extends SwingPhase {
 
     private boolean isMyTurn;
 
+    private int idPlayerPlaying;
+
     private ArrayList<Integer> idPlayers = new ArrayList<>();
 
     private ArrayList<ModelChangedMessagePatternCard> patternCards = new ArrayList<>();
@@ -103,7 +105,8 @@ public class ViewClientGUIGame extends SwingPhase {
 
     @Override
     public void update(ModelChangedMessageRefresh message) {
-        isMyTurn = (message).getIdPlayerPlaying() == idClient;
+        isMyTurn = message.getIdPlayerPlaying() == idClient;
+        idPlayerPlaying = message.getIdPlayerPlaying();
     }
 
     @Override
@@ -223,6 +226,7 @@ public class ViewClientGUIGame extends SwingPhase {
 
         //BOTTONI
         JPanel p = new JPanel();
+        p.setPreferredSize(new Dimension(200, 150));
         p.setLayout(new GridLayout(5, 1, 0, 5));
         p.setBackground(c);
         JButton conferma = new JButton("CONFIRM MOVE");
@@ -297,7 +301,20 @@ public class ViewClientGUIGame extends SwingPhase {
         //ROUNDTRANCK
         SwingRoundTrack rt = new SwingRoundTrack(roundTrack);
 
+        JPanel turn = new JPanel();
+        turn.setBackground(new Color(210, 210, 210, 200));
+        turn.setPreferredSize(new Dimension(200, 50));
+        turn.setLayout(new GridLayout(2, 1));
+        int m = roundTrack.size() + 1;
+        JLabel cr = new JLabel("CURRENT ROUND: " + m, SwingConstants.CENTER);
+        JLabel pp = new JLabel("PLAYER PLAYING: " + idPlayerPlaying, SwingConstants.CENTER);
+        cr.setFont(new Font("ERAS DEMI ITC", Font.PLAIN, 12));
+        pp.setFont(new Font("ERAS DEMI ITC", Font.PLAIN, 12));
+        turn.add(cr);
+        turn.add(pp);
+
         GridBagConstraints constraints = new GridBagConstraints();
+
         constraints.insets = new Insets(0, 20, 0, 0);
         constraints.gridx = 0;
         constraints.gridy = 1;
@@ -365,15 +382,6 @@ public class ViewClientGUIGame extends SwingPhase {
         constraints.anchor = GridBagConstraints.EAST;
         jFrame.add(p, constraints);
 
-        /*constraints.insets.top = 70;
-        constraints.insets.right = 50;
-        constraints.gridx = 0;
-        constraints.gridy = 1;
-        constraints.weightx = 1;
-        constraints.weighty = 1;
-        constraints.anchor = GridBagConstraints.EAST;
-        jFrame.add(endTurn, constraints);*/
-
         constraints.fill = GridBagConstraints.NONE;
         constraints.insets.top = 300;
         constraints.insets.left = 10;
@@ -383,6 +391,17 @@ public class ViewClientGUIGame extends SwingPhase {
         constraints.weighty = 1;
         constraints.anchor = GridBagConstraints.SOUTHWEST;
         jFrame.add(rt, constraints);
+
+        constraints.insets.top = 300;
+        constraints.insets.right = 500;
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        constraints.gridwidth = 2;
+        constraints.gridheight = 1;
+        constraints.anchor = GridBagConstraints.SOUTHEAST;
+        jFrame.add(turn, constraints);
 
         jFrame.pack();
         jFrame.setVisible(true);

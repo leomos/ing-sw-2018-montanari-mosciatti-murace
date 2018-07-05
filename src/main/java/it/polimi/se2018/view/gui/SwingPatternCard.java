@@ -36,27 +36,27 @@ public class SwingPatternCard extends JPanel {
             switch (c) {
                 case '1':
                     d.setVal(1);
-                    d.setBackground(Color.gray);
+                    d.setBackground(Color.WHITE);
                     break;
                 case '2':
                     d.setVal(2);
-                    d.setBackground(Color.gray);
+                    d.setBackground(Color.WHITE);
                     break;
                 case '3':
                     d.setVal(3);
-                    d.setBackground(Color.gray);
+                    d.setBackground(Color.WHITE);
                     break;
                 case '4':
                     d.setVal(4);
-                    d.setBackground(Color.gray);
+                    d.setBackground(Color.WHITE);
                     break;
                 case '5':
                     d.setVal(5);
-                    d.setBackground(Color.gray);
+                    d.setBackground(Color.WHITE);
                     break;
                 case '6':
                     d.setVal(6);
-                    d.setBackground(Color.gray);
+                    d.setBackground(Color.WHITE);
                     break;
 
                 case 'r':

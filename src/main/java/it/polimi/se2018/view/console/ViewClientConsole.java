@@ -114,8 +114,6 @@ public class ViewClientConsole extends ViewClient  {
                 }
             }
         } else if(viewType == 1){
-
-            swingPhase.print();
             if(modelChangedMessageRefresh.getIdPlayerPlaying() != null && modelChangedMessageRefresh.getIdPlayerPlaying() != idPlayerPlaying) {
                 swingPhase.update(modelChangedMessageRefresh);
                 idPlayerPlaying = modelChangedMessageRefresh.getIdPlayerPlaying();
@@ -124,6 +122,7 @@ public class ViewClientConsole extends ViewClient  {
                     new TurnFrame();
                 }
             }
+            swingPhase.print();
         }
     }
 
