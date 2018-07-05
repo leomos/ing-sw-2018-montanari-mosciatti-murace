@@ -24,27 +24,46 @@ public class Client {
         int socketPort = 1111;
         int rmiPort = 8080;
 
-        System.out.println("\nInsert Type View");
-        Scanner input = new Scanner(System.in);
-        String typeView = input.nextLine();
-
-        System.out.println("\nInsert Name");
-        input = new Scanner(System.in);
-        String name = input.nextLine();
-
         boolean moveOk = true;
-        String type;
+        Scanner input = new Scanner(System.in);
+
+        String typeView;
+        do {
+            System.out.println("\nInsert 0 to use Console, 1 to use GUI");
+            typeView = input.nextLine();
+
+            if (typeView.equals("0") || typeView.equals("1"))
+                moveOk = false;
+        }
+        while (moveOk);
+
+        String name;
+        moveOk = true;
+        do {
+            System.out.println("\nInsert Name");
+            name = input.nextLine();
+
+            if(name.length() < 10)
+                moveOk = false;
+            else
+                System.out.println("Name too long!");
+
+        }
+        while (moveOk);
+
+        String typeConnection;
+        moveOk = true;
         do {
             System.out.println("\nInsert 0 to use SOCKET, 1 to use RMI");
-            type = input.nextLine();
+            typeConnection = input.nextLine();
 
-            if(type.equals("0") || type.equals("1"))
+            if(typeConnection.equals("0") || typeConnection.equals("1"))
                 moveOk = false;
         }
         while(moveOk);
 
 
-        int server = Integer.parseInt(type);
+        int server = Integer.parseInt(typeConnection);
 
         ViewClient viewClient;
         if(typeView.equals("0")) {
