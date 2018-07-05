@@ -87,8 +87,8 @@ public abstract class ViewClient {
         };
 
         int initialDelay = 0;
-        int period = 1;
-        executor.scheduleAtFixedRate(task, initialDelay, period, TimeUnit.SECONDS);
+        int period = 250;
+        executor.scheduleAtFixedRate(task, initialDelay, period, TimeUnit.MILLISECONDS);
         System.out.println("Heartbeat started for client " + id);
     }
 
@@ -99,6 +99,7 @@ public abstract class ViewClient {
         this.executor.shutdown();
     }
 
+    //TODO: cambiare host
     protected Boolean reconnect(int id, int connectionType) {
         switch (connectionType) {
             case 0:
