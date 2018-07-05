@@ -19,8 +19,6 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
 
     private Queue<ConnectedClient> currentClientsWaiting;
 
-    private List<ConnectedClient> wc;
-
     private int id = 0;
 
     private int roomCountdownLength;
@@ -47,7 +45,6 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
         this.rooms = new HashSet<>();
         this.heartbeatHandler = new HeartbeatHandler(2, 3, this);
         this.clientRoomMap = new HashMap<>();
-        this.wc = new ArrayList<>();
     }
 
     @Override
@@ -82,8 +79,10 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
                 Set<ConnectedClient> clients = new HashSet<>();
                 int i = 0;
                 while ((c = currentClientsWaiting.poll()) != null && i < 4) {
-                    i++;
-                    clients.add(c);
+                    if(!c.isInactive()) {
+                        i++;
+                        clients.add(c);
+                    }
                 }
 
                 startNewRoom(clients);
@@ -110,6 +109,7 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
 
     }
 
+    //todo: problema : stampa anche quelli che diventano inactive
     @Override
     public synchronized Integer handleClient(ClientInterface clientInterface, String name) {
         id++;

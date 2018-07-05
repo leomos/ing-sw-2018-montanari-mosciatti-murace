@@ -27,7 +27,6 @@ public class Controller implements Observer<PlayerMessage> {
     /**
      * @param view
      */
-    /* TODO: tests */
     public void addView(VirtualView view){
         this.view = view;
     }

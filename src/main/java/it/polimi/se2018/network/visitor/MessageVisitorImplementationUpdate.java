@@ -62,6 +62,7 @@ public class MessageVisitorImplementationUpdate implements MessageVisitorInterfa
     @Override
     public void visitModelChangedMessageOnlyOnePlayerLeft(ModelChangedMessageOnlyOnePlayerLeft modelChangedMessageOnlyOnePlayerLeft) {
         update(modelChangedMessageOnlyOnePlayerLeft);
+        room.dispose();
     }
 
     @Override
