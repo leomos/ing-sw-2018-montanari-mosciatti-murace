@@ -1,23 +1,19 @@
 package it.polimi.se2018.network.server;
 
 import it.polimi.se2018.model.events.HeartbeatMessage;
-import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 public class HeartbeatHandler extends Thread {
 
-    private int controlRateInSeconds;
+    private int controlRateInMillieconds;
 
-    private int disconnectedThreshold;
+    private int disconnectedThresholdInMilliseconds;
 
     private HashMap<Integer, Instant> heartbeats;
 
@@ -25,10 +21,10 @@ public class HeartbeatHandler extends Thread {
 
     private SimpleRoomDispatcherImplementation simpleRoomDispatcherImplementation;
 
-    public HeartbeatHandler(int controlRateInSeconds, int disconnectedThreshold, SimpleRoomDispatcherImplementation simpleRoomDispatcherImplementation) {
-        this.controlRateInSeconds = controlRateInSeconds;
+    public HeartbeatHandler(int controlRateInMillieconds, int disconnectedThresholdInMilliseconds, SimpleRoomDispatcherImplementation simpleRoomDispatcherImplementation) {
+        this.controlRateInMillieconds = controlRateInMillieconds;
         this.heartbeats = new HashMap<>();
-        this.disconnectedThreshold = disconnectedThreshold;
+        this.disconnectedThresholdInMilliseconds = disconnectedThresholdInMilliseconds;
         this.simpleRoomDispatcherImplementation = simpleRoomDispatcherImplementation;
     }
 
@@ -41,7 +37,8 @@ public class HeartbeatHandler extends Thread {
                     for (Map.Entry<Integer, Instant> heartbeat : heartbeats.entrySet()) {
                         Integer id = heartbeat.getKey();
                         Instant received = heartbeat.getValue();
-                        if (Duration.between(received, Instant.now()).getSeconds() > disconnectedThreshold) {
+                        //TODO: controllo che non sia disconnesso
+                        if (Duration.between(received, Instant.now()).toMillis() > disconnectedThresholdInMilliseconds) {
                             simpleRoomDispatcherImplementation.setConnectedClientSuspended(id);
                             heartbeats.remove(id);
                             System.out.println(heartbeats);
@@ -52,7 +49,7 @@ public class HeartbeatHandler extends Thread {
                 }
             }
             try {
-                TimeUnit.SECONDS.sleep(controlRateInSeconds);
+                TimeUnit.MILLISECONDS.sleep(controlRateInMillieconds);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
