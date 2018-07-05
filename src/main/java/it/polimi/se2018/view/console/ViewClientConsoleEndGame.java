@@ -10,7 +10,6 @@ public class ViewClientConsoleEndGame extends ViewClientConsolePrint {
 
     private ModelChangedMessageEndGame scoreboardMessage;
 
-
     public ViewClientConsoleEndGame(int idClient){
         this.idClient = idClient;
     }
@@ -23,7 +22,7 @@ public class ViewClientConsoleEndGame extends ViewClientConsolePrint {
 
     @Override
     public void update(ModelChangedMessageOnlyOnePlayerLeft message) {
-        System.out.println("\n\nOnly player " + message.getPlayerIdLeft() + " is left in the game!");
+        System.out.println("\n\nOnly player " + message.getPlayerIdLeft() + " - " + message.getPlayers().get(idClient) + " is left in the game!");
         if(message.getPlayerIdLeft() == idClient)
             System.out.println("You won!");
         else
@@ -86,7 +85,7 @@ public class ViewClientConsoleEndGame extends ViewClientConsolePrint {
         for (String s : scoreboard.split("/")) {
             String[] score = s.split(";");
             if(score.length == 3)
-                System.out.println("ID: " + score[0] + " | " + "SCORE: " + score[1] + " | " + "TOKENS LEFT: " + score[2]);
+                System.out.println("ID: " + score[0] + " - " + scoreboardMessage.getPlayers().get(idClient) + " | " + "SCORE: " + score[1] + " | " + "TOKENS LEFT: " + score[2]);
         }
 
         System.exit(0);

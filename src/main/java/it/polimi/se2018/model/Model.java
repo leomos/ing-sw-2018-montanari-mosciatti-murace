@@ -48,7 +48,9 @@ public class Model extends Observable<ModelChangedMessage> {
         for(Integer key : players.keySet()) {
             for (int j = 0; j < 4; j++) {
                 PatternCard patternCard = table.getPlayers(key).getPatternCards().get(j);
+
                 notify(new ModelChangedMessagePatternCard(key,
+                        players.get(key),
                         patternCard.getId(),
                         patternCard.getName(),
                         patternCard.getDifficulty(),
@@ -62,7 +64,7 @@ public class Model extends Observable<ModelChangedMessage> {
                     privateObjective.getDescription()));
 
         }
-        notify(new ModelChangedMessageRefresh(null));
+        notify(new ModelChangedMessageRefresh(null, null));
 
         timer.setModel(this);
         timer.startTimer();
@@ -89,6 +91,7 @@ public class Model extends Observable<ModelChangedMessage> {
             PatternCard patternCard = table.getPlayers(key).getChosenPatternCard();
 
             notify(new ModelChangedMessagePatternCard(key,
+                    players.get(key),
                     patternCard.getId(),
                     patternCard.getName(),
                     patternCard.getDifficulty(),
@@ -124,7 +127,9 @@ public class Model extends Observable<ModelChangedMessage> {
 
         notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
 
-        modelChangedMessageRefresh = new ModelChangedMessageRefresh(table.getRoundTrack().getCurrentRound().getIdPlayerPlaying());
+        int playerIdPlaying = table.getRoundTrack().getCurrentRound().getIdPlayerPlaying();
+
+        modelChangedMessageRefresh = new ModelChangedMessageRefresh(playerIdPlaying, players.get(playerIdPlaying));
         notify(modelChangedMessageRefresh);
 
     }
@@ -200,7 +205,8 @@ public class Model extends Observable<ModelChangedMessage> {
 
                 notify(new ModelChangedMessageDiceOnPatternCard(idPlayer, patternCard.getId(), patternCard.getDiceRepresentation()));
                 notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
-                notify(new ModelChangedMessageRefresh(table.getRoundTrack().getCurrentRound().getIdPlayerPlaying()));
+                int playerIdPlaying = table.getRoundTrack().getCurrentRound().getIdPlayerPlaying();
+                notify(new ModelChangedMessageRefresh(playerIdPlaying, players.get(playerIdPlaying)));
 
             } catch (PlayerHasAlreadySetDieThisTurnException e) {
                 notify(new ModelChangedMessageMoveFailed(idPlayer, "Already set a Die this turn"));
@@ -264,7 +270,7 @@ public class Model extends Observable<ModelChangedMessage> {
                     table.calculateScores();
 
                     notify(new ModelChangedMessageChangeGamePhase(GamePhase.ENDGAMEPHASE));
-                    notify(new ModelChangedMessageEndGame(table.getScoreboard().getRepresentation()));
+                    notify(new ModelChangedMessageEndGame(table.getScoreboard().getRepresentation(), players));
 
                     timer.stopTimer();
                 }
@@ -272,8 +278,8 @@ public class Model extends Observable<ModelChangedMessage> {
             table.getPlayers(playerMessageEndTurn.getPlayerId()).setHasSetDieThisTurn(false);
             table.getPlayers(playerMessageEndTurn.getPlayerId()).setHasUsedToolCardThisTurn(false);
 
-            notify(new ModelChangedMessageRefresh((table.getRoundTrack().getCurrentRound().getIdPlayerPlaying())));
-
+            int playerIdPlaying = table.getRoundTrack().getCurrentRound().getIdPlayerPlaying();
+            notify(new ModelChangedMessageRefresh(playerIdPlaying, players.get(playerIdPlaying)));
         }
     }
 
@@ -378,7 +384,8 @@ public class Model extends Observable<ModelChangedMessage> {
 
                     notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
 
-                    notify(new ModelChangedMessageRefresh(table.getRoundTrack().getCurrentRound().getIdPlayerPlaying()));
+                    int playerIdPlaying = table.getRoundTrack().getCurrentRound().getIdPlayerPlaying();
+                    notify(new ModelChangedMessageRefresh(playerIdPlaying, players.get(playerIdPlaying)));
 
                 } catch (DieRolledValueOutOfBoundException e) {
                     notify(new ModelChangedMessageMoveFailed(idPlayer, "Can't turn a 6 into a 1 or a 6 into a 1!"));
@@ -413,7 +420,7 @@ public class Model extends Observable<ModelChangedMessage> {
             performMoveDieInsidePatternCard(idPlayer, positions.get(0), positions.get(1), positions.get(2), positions.get(3), ignoreValueConstraint, ignoreColorConstraint);
 
             updateToolCard(idPlayer, idToolCard);
-            notify(new ModelChangedMessageRefresh(idPlayer));
+            notify(new ModelChangedMessageRefresh(idPlayer, players.get(idPlayer)));
 
 
         } catch (PatternCardMoveFailedException e) {
@@ -444,7 +451,7 @@ public class Model extends Observable<ModelChangedMessage> {
                 performMoveDieInsidePatternCard(idPlayer, positions2.get(0), positions2.get(1), positions2.get(2), positions2.get(3), false, false);
 
                 updateToolCard(idPlayer, idToolCard);
-                notify(new ModelChangedMessageRefresh(idPlayer));
+                notify(new ModelChangedMessageRefresh(idPlayer, players.get(idPlayer)));
 
             } catch (PatternCardMoveFailedException e){
                 performMoveDieInsidePatternCard(idPlayer, positions1.get(2), positions1.get(3), positions1.get(0), positions1.get(1), true, true);
@@ -552,7 +559,7 @@ public class Model extends Observable<ModelChangedMessage> {
 
                 notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
 
-                notify(new ModelChangedMessageRefresh(idPlayer));
+                notify(new ModelChangedMessageRefresh(idPlayer, players.get(idPlayer)));
 
             } catch (DiceContainerUnsupportedIdException e) {
 
@@ -578,8 +585,8 @@ public class Model extends Observable<ModelChangedMessage> {
 
             notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
 
-            notify(new ModelChangedMessageRefresh(table.getRoundTrack().getCurrentRound().getIdPlayerPlaying()));
-
+            int playerIdPlaying = table.getRoundTrack().getCurrentRound().getIdPlayerPlaying();
+            notify(new ModelChangedMessageRefresh(playerIdPlaying, players.get(playerIdPlaying)));
         } catch (RoundTrackNotInSecondPartOfRoundException e) {
             notify(new ModelChangedMessageMoveFailed(idPlayer, "Can only be used during second turn of round"));
         } catch (PlayerHasAlreadySetDieThisTurnException e) {
@@ -627,8 +634,8 @@ public class Model extends Observable<ModelChangedMessage> {
                 d.roll();
 
                 notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
-                notify(new ModelChangedMessageRefresh(table.getRoundTrack().getCurrentRound().getIdPlayerPlaying()));
-
+                int playerIdPlaying = table.getRoundTrack().getCurrentRound().getIdPlayerPlaying();
+                notify(new ModelChangedMessageRefresh(playerIdPlaying, players.get(playerIdPlaying)));
 
                 notify(new ModelChangedMessageNewEvent(idPlayer, "The new value for the die is " + d.getRolledValue()));
 
@@ -677,8 +684,8 @@ public class Model extends Observable<ModelChangedMessage> {
 
                     notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
 
-                    notify(new ModelChangedMessageRefresh(table.getRoundTrack().getCurrentRound().getIdPlayerPlaying()));
-
+                    int playerIdPlaying = table.getRoundTrack().getCurrentRound().getIdPlayerPlaying();
+                    notify(new ModelChangedMessageRefresh(playerIdPlaying, players.get(playerIdPlaying)));
                 } catch (DieNotPresentException e) {
                     roundTrack.swapDieInRound(actualIdDieInDiceArena, idRound, actualIdDieInRoundTrack);
                     notify(new ModelChangedMessageMoveFailed(idPlayer, "Die not Present in DiceArena"));
@@ -745,8 +752,8 @@ public class Model extends Observable<ModelChangedMessage> {
         table.getDiceArena().rollOneDieIntoDiceArena(positionInDiceArena, actualIdDie, value);
 
         notify(new ModelChangedMessageDiceArena(table.getDiceArena().getRepresentation()));
-        notify(new ModelChangedMessageRefresh(table.getRoundTrack().getCurrentRound().getIdPlayerPlaying()));
-    }
+        int playerIdPlaying = table.getRoundTrack().getCurrentRound().getIdPlayerPlaying();
+        notify(new ModelChangedMessageRefresh(playerIdPlaying, players.get(playerIdPlaying)));    }
 
     /**
      * this method returns a list of available position given a die. It serves for tool card 11 and tool card 6, where
@@ -948,7 +955,7 @@ public class Model extends Observable<ModelChangedMessage> {
             for (Integer key : players.keySet()) {
                 if(!table.getPlayers(key).isSuspended()) {
                     table.setWinner(key);
-                    notify(new ModelChangedMessageOnlyOnePlayerLeft(key));
+                    notify(new ModelChangedMessageOnlyOnePlayerLeft(key, players));
                 }
             }
 
@@ -973,6 +980,7 @@ public class Model extends Observable<ModelChangedMessage> {
                 PatternCard patternCard = table.getPlayers(key).getChosenPatternCard();
 
                 notify(new ModelChangedMessagePatternCard(key,
+                        players.get(key),
                         patternCard.getId(),
                         patternCard.getName(),
                         patternCard.getDifficulty(),
@@ -1012,8 +1020,8 @@ public class Model extends Observable<ModelChangedMessage> {
                 notify(new ModelChangedMessageRound(i, table.getRoundTrack().getRound(i).getRepresentation()));
             }
 
-            ModelChangedMessageRefresh modelChangedMessageRefresh = new ModelChangedMessageRefresh(table.getRoundTrack().getCurrentRound().getIdPlayerPlaying());
-            notify(modelChangedMessageRefresh);
+            int playerIdPlaying = table.getRoundTrack().getCurrentRound().getIdPlayerPlaying();
+            notify(new ModelChangedMessageRefresh(playerIdPlaying, players.get(playerIdPlaying)));
 
             notify(new ModelChangedMessageNewEvent(idPlayer, "You are back in the game!"));
 
@@ -1022,9 +1030,9 @@ public class Model extends Observable<ModelChangedMessage> {
             notify(new ModelChangedMessageChangeGamePhase(GamePhase.ENDGAMEPHASE));
 
             if(table.getRoundTrack().getCurrentRound().getId() == 10)
-                notify(new ModelChangedMessageEndGame(table.getScoreboard().getRepresentation()));
+                notify(new ModelChangedMessageEndGame(table.getScoreboard().getRepresentation(), players));
             else
-                notify(new ModelChangedMessageOnlyOnePlayerLeft(table.getWinner()));
+                notify(new ModelChangedMessageOnlyOnePlayerLeft(table.getWinner(), players));
         }
     }
 }

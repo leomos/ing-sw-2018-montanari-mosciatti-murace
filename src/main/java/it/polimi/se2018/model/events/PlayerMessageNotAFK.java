@@ -9,7 +9,7 @@ public class PlayerMessageNotAFK extends PlayerMessage {
      * @param player player coming back into game
      */
     public PlayerMessageNotAFK(int player) {
-        this.player = player;
+        super(player);
     }
 
     @Override

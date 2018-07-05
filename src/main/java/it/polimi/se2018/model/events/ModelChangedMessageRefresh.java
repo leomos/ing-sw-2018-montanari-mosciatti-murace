@@ -8,12 +8,15 @@ public class ModelChangedMessageRefresh extends ModelChangedMessage implements M
 
     private Integer idPlayerPlaying;
 
+    private String playerName;
+
     /**
      * When the view receive this message, they refresh the view of the game
      * @param idPlayerPlaying player id that is gonna play this turn
      */
-    public ModelChangedMessageRefresh(Integer idPlayerPlaying){
+    public ModelChangedMessageRefresh(Integer idPlayerPlaying, String playerName){
         this.idPlayerPlaying = idPlayerPlaying;
+        this.playerName = playerName;
     }
 
     @Override
@@ -22,5 +25,9 @@ public class ModelChangedMessageRefresh extends ModelChangedMessage implements M
     }
     public Integer getIdPlayerPlaying() {
         return idPlayerPlaying;
+    }
+
+    public String getPlayerName() {
+        return playerName;
     }
 }
