@@ -75,7 +75,8 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
         try {
             this.objectOutputStream.writeObject(modelChangedMessage);
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            System.out.println("Cannot talk with client even though is not inactive!");
         }
     }
 

@@ -974,6 +974,7 @@ public class Model extends Observable<ModelChangedMessage> {
 
         if(this.gamePhase == GamePhase.GAMEPHASE) {
 
+            notify(new ModelChangedMessageConnected(idPlayer));
             notify(new ModelChangedMessageChangeGamePhase(gamePhase));
 
             for (Integer key : players.keySet()) {

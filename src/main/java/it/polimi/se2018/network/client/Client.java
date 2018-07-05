@@ -4,6 +4,7 @@ import it.polimi.se2018.network.ClientInterface;
 import it.polimi.se2018.network.ServerInterface;
 import it.polimi.se2018.view.ViewClient;
 import it.polimi.se2018.view.console.ViewClientConsole;
+import it.polimi.se2018.view.gui.ViewClientGUI;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -18,10 +19,10 @@ public class Client {
 
     public static void main(String[] args) {
         //String host = "163.172.183.230";
-        String host = "localhost";
-        //String host = "192.168.43.123";
-
-
+        //String host = "localhost";
+        String host = "192.168.43.123";
+        int socketPort = 1111;
+        int rmiPort = 8080;
 
         System.out.println("\nInsert Type View");
         Scanner input = new Scanner(System.in);
@@ -44,14 +45,15 @@ public class Client {
 
 
         int server = Integer.parseInt(type);
+
         ViewClient viewClient;
         if(typeView.equals("0")) {
             System.out.println("Starting console");
-            viewClient = new ViewClientConsole(0);
+            viewClient = new ViewClientConsole(host, socketPort, rmiPort, server);
         }
         else {
             System.out.println("Starting GUI");
-            viewClient = new ViewClientConsole(1);
+            viewClient = new ViewClientGUI(host, socketPort, rmiPort, server);
         }
         ServerInterface serverInterface = null;
         int id = 0;
@@ -59,7 +61,7 @@ public class Client {
             System.out.println("SOCKET!");
             try {
                 serverInterface = new ServerImplementationSocket(viewClient);
-                Socket socket = new Socket(host, 1111);
+                Socket socket = new Socket(host, socketPort);
                 id = serverInterface.registerClient(socket, name);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -67,7 +69,7 @@ public class Client {
         } else if(server == 1) {
             System.out.println("RMI!");
             try {
-                serverInterface = (ServerInterface) Naming.lookup("//"+host+":8080/sagrada");
+                serverInterface = (ServerInterface) Naming.lookup("//"+host+":"+rmiPort+"/sagrada");
                 ClientImplementationRMI clientImplementationRMI = new ClientImplementationRMI(viewClient);
                 ClientInterface remoteRef = (ClientInterface) UnicastRemoteObject.exportObject(clientImplementationRMI, 0);
                 id = serverInterface.registerClient(remoteRef, name);

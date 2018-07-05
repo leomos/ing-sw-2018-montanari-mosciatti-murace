@@ -1,13 +1,13 @@
 package it.polimi.se2018.network.visitor;
 
 import it.polimi.se2018.model.events.*;
-import it.polimi.se2018.view.console.ViewClientConsole;
+import it.polimi.se2018.view.gui.ViewClientGUI;
 
-public class MessageVisitorImplementationView implements MessageVisitorInterface {
+public class MessageVisitorImplementationViewGui implements MessageVisitorInterface {
 
-    private ViewClientConsole viewClientConsole;
+    private ViewClientGUI viewClientGUI;
 
-    public MessageVisitorImplementationView(ViewClientConsole viewClientConsole){ this.viewClientConsole = viewClientConsole;}
+    public MessageVisitorImplementationViewGui(ViewClientGUI viewClientGUI){ this.viewClientGUI = viewClientGUI;}
 
     @Override
     public void visitMethodCallMessage(MethodCallMessage methodCallMessage) {
@@ -16,92 +16,82 @@ public class MessageVisitorImplementationView implements MessageVisitorInterface
 
     @Override
     public void visitModelChangedMessageConnected(ModelChangedMessageConnected modelChangedMessageConnected) {
-        //todo
+        viewClientGUI.update(modelChangedMessageConnected);
     }
 
     @Override
     public void visitModelChangedMessageDiceArena(ModelChangedMessageDiceArena modelChangedMessageDiceArena) {
-        viewClientConsole.getViewClientConsolePrint().update(modelChangedMessageDiceArena);
-        viewClientConsole.getSwingPhase().update(modelChangedMessageDiceArena);
+        viewClientGUI.getSwingPhase().update(modelChangedMessageDiceArena);
     }
 
     @Override
     public void visitModelChangedMessageDiceOnPatternCard(ModelChangedMessageDiceOnPatternCard modelChangedMessageDiceOnPatternCard) {
-        viewClientConsole.getViewClientConsolePrint().update(modelChangedMessageDiceOnPatternCard);
-        viewClientConsole.getSwingPhase().update(modelChangedMessageDiceOnPatternCard);
+        viewClientGUI.getSwingPhase().update(modelChangedMessageDiceOnPatternCard);
     }
 
     @Override
     public void visitModelChangedMessageEndGame(ModelChangedMessageEndGame modelChangedMessageEndGame) {
-        viewClientConsole.getViewClientConsolePrint().update(modelChangedMessageEndGame);
-        viewClientConsole.getSwingPhase().update(modelChangedMessageEndGame);
+        viewClientGUI.getSwingPhase().update(modelChangedMessageEndGame);
     }
 
     @Override
     public void visitModelChangedMessageMoveFailed(ModelChangedMessageMoveFailed modelChangedMessageMoveFailed) {
-        viewClientConsole.update(modelChangedMessageMoveFailed);
+        viewClientGUI.update(modelChangedMessageMoveFailed);
     }
 
     @Override
     public void visitModelChangedMessagePatternCard(ModelChangedMessagePatternCard modelChangedMessagePatternCard) {
-        viewClientConsole.getViewClientConsolePrint().update(modelChangedMessagePatternCard);
-        viewClientConsole.getSwingPhase().update(modelChangedMessagePatternCard);
+        viewClientGUI.getSwingPhase().update(modelChangedMessagePatternCard);
     }
 
     @Override
     public void visitModelChangedMessagePrivateObjective(ModelChangedMessagePrivateObjective modelChangedMessagePrivateObjective) {
-        viewClientConsole.getViewClientConsolePrint().update(modelChangedMessagePrivateObjective);
-        viewClientConsole.getSwingPhase().update(modelChangedMessagePrivateObjective);
+        viewClientGUI.getSwingPhase().update(modelChangedMessagePrivateObjective);
     }
 
     @Override
     public void visitModelChangedMessagePublicObjective(ModelChangedMessagePublicObjective modelChangedMessagePublicObjective) {
-        viewClientConsole.getViewClientConsolePrint().update(modelChangedMessagePublicObjective);
-        viewClientConsole.getSwingPhase().update(modelChangedMessagePublicObjective);
+        viewClientGUI.getSwingPhase().update(modelChangedMessagePublicObjective);
     }
 
     @Override
     public void visitModelChangedMessageChangeGamePhase(ModelChangedMessageChangeGamePhase modelChangedMessageChangeGamePhase) {
-        viewClientConsole.update(modelChangedMessageChangeGamePhase);
+        viewClientGUI.update(modelChangedMessageChangeGamePhase);
     }
 
     @Override
     public void visitModelChangedMessageRefresh(ModelChangedMessageRefresh modelChangedMessageRefresh) {
-        viewClientConsole.update(modelChangedMessageRefresh);
+        viewClientGUI.update(modelChangedMessageRefresh);
     }
 
     @Override
     public void visitModelChangedMessageRound(ModelChangedMessageRound modelChangedMessageRound) {
-        viewClientConsole.getViewClientConsolePrint().update(modelChangedMessageRound);
-        viewClientConsole.getSwingPhase().update(modelChangedMessageRound);
+        viewClientGUI.getSwingPhase().update(modelChangedMessageRound);
     }
 
     @Override
     public void visitModelChangedMessageNewEvent(ModelChangedMessageNewEvent modelChangedMessageNewEvent) {
-        viewClientConsole.update(modelChangedMessageNewEvent);
+        viewClientGUI.update(modelChangedMessageNewEvent);
     }
 
     @Override
     public void visitModelChangedMessageToolCard(ModelChangedMessageToolCard modelChangedMessageToolCard) {
-        viewClientConsole.getViewClientConsolePrint().update(modelChangedMessageToolCard);
-        viewClientConsole.getSwingPhase().update(modelChangedMessageToolCard);
+        viewClientGUI.getSwingPhase().update(modelChangedMessageToolCard);
     }
 
     @Override
     public void visitModelChangedMessageTokensLeft(ModelChangedMessageTokensLeft modelChangedMessageTokensLeft) {
-        viewClientConsole.getViewClientConsolePrint().update(modelChangedMessageTokensLeft);
-        viewClientConsole.getSwingPhase().update(modelChangedMessageTokensLeft);
+        viewClientGUI.getSwingPhase().update(modelChangedMessageTokensLeft);
     }
 
     @Override
     public void visitModelChangedMessagePlayerAFK(ModelChangedMessagePlayerAFK modelChangedMessagePlayerAFK) {
-        viewClientConsole.update(modelChangedMessagePlayerAFK);
+        viewClientGUI.update(modelChangedMessagePlayerAFK);
     }
 
     @Override
     public void visitModelChangedMessageOnlyOnePlayerLeft(ModelChangedMessageOnlyOnePlayerLeft modelChangedMessageOnlyOnePlayerLeft) {
-        viewClientConsole.getSwingPhase().update(modelChangedMessageOnlyOnePlayerLeft);
-        viewClientConsole.getViewClientConsolePrint().update(modelChangedMessageOnlyOnePlayerLeft);
+        viewClientGUI.getSwingPhase().update(modelChangedMessageOnlyOnePlayerLeft);
     }
 
     @Override
