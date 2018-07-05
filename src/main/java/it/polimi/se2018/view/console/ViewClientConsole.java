@@ -117,9 +117,9 @@ public class ViewClientConsole extends ViewClient  {
             }
         } else if(viewType == 1){
             if(modelChangedMessageRefresh.getIdPlayerPlaying() != null && modelChangedMessageRefresh.getIdPlayerPlaying() != idPlayerPlaying) {
-                swingPhase.update(modelChangedMessageRefresh);
                 idPlayerPlaying = modelChangedMessageRefresh.getIdPlayerPlaying();
             }
+            swingPhase.update(modelChangedMessageRefresh);
             swingPhase.print();
         }
     }

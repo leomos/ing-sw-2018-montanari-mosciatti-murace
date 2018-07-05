@@ -77,7 +77,7 @@ public class Model extends Observable<ModelChangedMessage> {
      * It also starts the timer of 90 seconds for the first player playing
      */
     private void initGame() {
-
+        timer.reStartTimer();
         table.checkPlayerDidNotDisconnectDuringPatternCardSelection();
 
         ModelChangedMessageRefresh modelChangedMessageRefresh;
