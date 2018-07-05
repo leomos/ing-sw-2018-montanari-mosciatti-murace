@@ -158,7 +158,7 @@ public class MessageVisitorImplementationUpdate implements MessageVisitorInterfa
 
     @Override
     public void visitPlayerMessageNotAFK(PlayerMessageNotAFK playerMessageNotAFK) {
-
+        room.inactiveClientById(playerMessageNotAFK.getPlayerId()).setInactive(false);
     }
 
     @Override

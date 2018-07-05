@@ -34,6 +34,7 @@ public class Timer implements Runnable {
                     e.printStackTrace();
                 }
                 i++;
+                if(i == timer-15) model.timeIsRunningOut();
             }
 
             if (i >= timer) {

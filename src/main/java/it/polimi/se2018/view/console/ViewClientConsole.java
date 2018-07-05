@@ -92,13 +92,13 @@ public class ViewClientConsole extends ViewClient  {
             clientSuspended = true;
             viewClientConsolePrint.setSuspended(true);
         } else {
-            System.out.println("\nPlayer " + modelChangedMessagePlayerAFK.getPlayer() + " is now suspended");
+            System.out.println("\nPlayer " + modelChangedMessagePlayerAFK.getPlayer() + " is now suspended\n");
         }
     }
 
     public void update(ModelChangedMessageConnected modelChangedMessageConnected){
         if(modelChangedMessageConnected.getIdClient() != idClient)
-            System.out.println("Player " + modelChangedMessageConnected.getIdClient() + "is back in the game!");
+            System.out.println("\nPlayer " + modelChangedMessageConnected.getIdClient() + " is back in the game!\n");
     }
 
 
