@@ -23,12 +23,10 @@ public class ViewClientGUI extends ViewClient {
 
     private GamePhase gamePhase;
 
-    private int viewType;
-
     private MessageVisitorImplementationViewGui messageVisitorImplementationView;
 
-    public ViewClientGUI(int viewType){
-        this.viewType = viewType;
+    public ViewClientGUI(String host, int socketPort, int rmiPort, int connectionType){
+        super(host, socketPort, rmiPort, 1, connectionType);
         this.messageVisitorImplementationView = new MessageVisitorImplementationViewGui(this);
     }
 

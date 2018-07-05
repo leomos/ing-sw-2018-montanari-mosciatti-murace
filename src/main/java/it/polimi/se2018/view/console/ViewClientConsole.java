@@ -32,8 +32,8 @@ public class ViewClientConsole extends ViewClient  {
 
     private MessageVisitorImplementationViewConsole messageVisitorImplementationViewConsole;
 
-    public ViewClientConsole(String host, int socketPort, int rmiPort, int viewType, int connectionType){
-        super(host, socketPort, rmiPort, viewType, connectionType);
+    public ViewClientConsole(String host, int socketPort, int rmiPort, int connectionType){
+        super(host, socketPort, rmiPort, 0, connectionType);
         this.messageVisitorImplementationViewConsole = new MessageVisitorImplementationViewConsole(this);
     }
 

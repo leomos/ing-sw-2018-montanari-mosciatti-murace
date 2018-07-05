@@ -4,6 +4,7 @@ import it.polimi.se2018.network.ClientInterface;
 import it.polimi.se2018.network.ServerInterface;
 import it.polimi.se2018.view.ViewClient;
 import it.polimi.se2018.view.console.ViewClientConsole;
+import it.polimi.se2018.view.gui.ViewClientGUI;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -48,11 +49,11 @@ public class Client {
         ViewClient viewClient;
         if(typeView.equals("0")) {
             System.out.println("Starting console");
-            viewClient = new ViewClientConsole(host, socketPort, rmiPort, 0, server);
+            viewClient = new ViewClientConsole(host, socketPort, rmiPort, server);
         }
         else {
             System.out.println("Starting GUI");
-            viewClient = new ViewClientConsole(host, socketPort, rmiPort, 1, server);
+            viewClient = new ViewClientGUI(host, socketPort, rmiPort, server);
         }
         ServerInterface serverInterface = null;
         int id = 0;
