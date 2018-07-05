@@ -22,7 +22,7 @@ public class ViewClientConsoleEndGame extends ViewClientConsolePrint {
 
     @Override
     public void update(ModelChangedMessageOnlyOnePlayerLeft message) {
-        System.out.println("\n\nOnly player " + message.getPlayerIdLeft() + " - " + message.getPlayers().get(idClient) + " is left in the game!");
+        System.out.println("\n\nOnly player " + message.getPlayerIdLeft() + " - " + message.getPlayers().get(message.getPlayerIdLeft()) + " is left in the game!");
         if(message.getPlayerIdLeft() == idClient)
             System.out.println("You won!");
         else
