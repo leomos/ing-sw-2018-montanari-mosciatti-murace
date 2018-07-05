@@ -60,6 +60,10 @@ public class RoundTrackFrame {
 
         dialog.setLayout(new BorderLayout());
         dialog.setSize(new Dimension(350, 350));
+
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        dialog.setLocation ((screenSize.width-350)/2, (screenSize.height-350)/2);
+
         dialog.add(label, BorderLayout.NORTH);
         dialog.add(panel, BorderLayout.CENTER);
         dialog.add(button, BorderLayout.SOUTH);

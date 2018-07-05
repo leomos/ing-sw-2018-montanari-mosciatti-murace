@@ -12,6 +12,8 @@ import java.util.ArrayList;
 public class ViewClientGUIGame extends SwingPhase {
     private JFrame jFrame = new JFrame();
 
+    private boolean newturn;
+
     private String idDieChosen = "";
 
     private String toolCardChosen = "";
@@ -46,6 +48,7 @@ public class ViewClientGUIGame extends SwingPhase {
 
     public ViewClientGUIGame (int idClient) {
         this.idClient = idClient;
+        newturn = true;
     }
 
 
@@ -107,6 +110,7 @@ public class ViewClientGUIGame extends SwingPhase {
     public void update(ModelChangedMessageRefresh message) {
         isMyTurn = message.getIdPlayerPlaying() == idClient;
         idPlayerPlaying = message.getIdPlayerPlaying();
+
     }
 
     @Override
@@ -147,6 +151,9 @@ public class ViewClientGUIGame extends SwingPhase {
         JLabel l1 = new JLabel(s1, SwingConstants.CENTER);
         JLabel l2 = new JLabel(s2, SwingConstants.CENTER);
         JLabel l3 = new JLabel(s3, SwingConstants.CENTER);
+        l1.setFont(new Font("ERAS DEMI ITC", Font.PLAIN, 12));
+        l2.setFont(new Font("ERAS DEMI ITC", Font.PLAIN, 12));
+        l3.setFont(new Font("ERAS DEMI ITC", Font.PLAIN, 12));
 
         //TOOLCARD
         SwingToolCards[] toolCard = new SwingToolCards[3];
@@ -289,8 +296,8 @@ public class ViewClientGUIGame extends SwingPhase {
         endTurn.addActionListener(actionListener -> {
                 if (isMyTurn) {
                     try {
-                        setNewTurn(true);
                         serverInterface.notify(new PlayerMessageEndTurn(idClient));
+                        newturn = true;
                     } catch (RemoteException e1) {
                         e1.printStackTrace();
                     }
@@ -307,12 +314,16 @@ public class ViewClientGUIGame extends SwingPhase {
         SwingRoundTrack rt = new SwingRoundTrack(roundTrack);
 
         JPanel turn = new JPanel();
-        turn.setBackground(new Color(210, 210, 210, 200));
+        turn.setBackground(new Color(244, 241, 255));
         turn.setPreferredSize(new Dimension(200, 50));
         turn.setLayout(new GridLayout(2, 1));
         int m = roundTrack.size() + 1;
         JLabel cr = new JLabel("CURRENT ROUND: " + m, SwingConstants.CENTER);
-        JLabel pp = new JLabel("PLAYER PLAYING: " + idPlayerPlaying, SwingConstants.CENTER);
+        JLabel pp;
+        if (idPlayerPlaying==idClient)
+            pp = new JLabel("PLAYER PLAYING: " + idPlayerPlaying + ", YOU!!", SwingConstants.CENTER);
+        else
+            pp = new JLabel("PLAYER PLAYING: " + idPlayerPlaying, SwingConstants.CENTER);
         cr.setFont(new Font("ERAS DEMI ITC", Font.PLAIN, 12));
         pp.setFont(new Font("ERAS DEMI ITC", Font.PLAIN, 12));
         turn.add(cr);
@@ -410,6 +421,11 @@ public class ViewClientGUIGame extends SwingPhase {
 
         jFrame.pack();
         jFrame.setVisible(true);
+
+        if (isMyTurn && newturn) {
+            new TurnFrame();
+            newturn = false;
+        }
 
         Dimension screenSize = Toolkit.getDefaultToolkit ().getScreenSize();
         Dimension frameSize = jFrame.getSize();

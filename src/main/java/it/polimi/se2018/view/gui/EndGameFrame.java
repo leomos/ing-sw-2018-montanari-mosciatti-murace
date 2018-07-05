@@ -45,7 +45,8 @@ public class EndGameFrame extends SwingPhase {
 
         JButton esci = new JButton("EXIT");
         esci.addActionListener(actionListener -> {
-                jFrame.dispose();
+                System.exit(0);
+                //jFrame.dispose();
         });
 
         constraints.weightx = 1;

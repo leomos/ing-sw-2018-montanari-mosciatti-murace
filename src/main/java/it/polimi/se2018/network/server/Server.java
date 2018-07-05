@@ -15,9 +15,7 @@ public class Server {
     private ExecutorService executorService;
 
     public static void main(String[] args) {
-        //System.setProperty("java.rmi.server.hostname", "192.168.43.123");
         final OptionParser optionParser = new OptionParser();
-
 
         final String[] roomTimerOptions = {
                 "r",
@@ -40,10 +38,22 @@ public class Server {
                 .ofType(Integer.class)
                 .defaultsTo(90);
 
+
+        final String[] serverHostnameOptions = {
+                "s",
+                "serverHostname"
+        };
+
+        optionParser.acceptsAll(Arrays.asList(serverHostnameOptions), "Server hostname.")
+                .withRequiredArg()
+                .ofType(String.class)
+                .defaultsTo("localhost");
+
         final OptionSet optionSet = optionParser.parse(args);
 
         System.out.println(optionSet.asMap());
 
+        System.setProperty("java.rmi.server.hostname", (String) optionSet.valueOf("serverHostname"));
 
         RoomDispatcherInterface roomDispatcher = new SimpleRoomDispatcherImplementation(
                 (Integer) optionSet.valueOf("roomTimer"),
