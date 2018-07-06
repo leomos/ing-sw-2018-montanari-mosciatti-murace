@@ -11,6 +11,8 @@ public class IncrementedValueFrame extends ToolCardFrame {
 
     private ArrayList<Integer> values = new ArrayList<>();
 
+    private boolean confirm = false;
+
     /**
      * This constructor creates a ToolCardFrame when the player uses ToolCard 1. It shows a JFrame with
      * Dice Arena and two RadioButtons. The player has to choose one die and a RadioButton
@@ -66,6 +68,7 @@ public class IncrementedValueFrame extends ToolCardFrame {
                         values.add(1, 1);
                     if (decrementButton.isSelected())
                         values.add(1, 0);
+                    confirm = true;
                     dispose();
                 }
         });
@@ -85,7 +88,7 @@ public class IncrementedValueFrame extends ToolCardFrame {
 
     @Override
     public ArrayList<Integer> getValues(){
-        while(values.size() != 2) {
+        while(values.size() != 2 || !confirm) {
             try {
                 TimeUnit.MILLISECONDS.sleep(200);
             } catch (InterruptedException e) {
