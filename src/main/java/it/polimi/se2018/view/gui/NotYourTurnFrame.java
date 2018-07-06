@@ -4,6 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 
 public class NotYourTurnFrame extends Frame {
+
+    /**
+     * This constructor creates a Frame that shows the message "It's not your turn!!"
+     */
     public NotYourTurnFrame() {
         super();
         dialog.setTitle("TURN");

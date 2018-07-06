@@ -3,11 +3,16 @@ package it.polimi.se2018.view.gui;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class NumberOfMovementsFrame extends ToolCardFrame {
 
     private int i = -1;
 
+    /**
+     * This constructor creates a ToolCardFrame when the player uses ToolCard 12. It shows a JFrame with
+     * two RadioButtons. The player has to choose one RadioButton to move one or two dice
+     */
     public NumberOfMovementsFrame(){
 
         JFrame frame = new JFrame();
@@ -60,7 +65,13 @@ public class NumberOfMovementsFrame extends ToolCardFrame {
 
     @Override
     public int getValue() {
-        while(i == -1) {}
+        while(i == -1) {
+            try {
+                TimeUnit.MILLISECONDS.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         return i;
     }
 

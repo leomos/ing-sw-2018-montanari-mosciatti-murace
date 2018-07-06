@@ -107,6 +107,12 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
         this.suspended = suspended;
     }
 
+    /**
+     * Prints the table:
+     * first it prints the other player's pattern card
+     * then it prints the rounds, the tool card, the public objectives
+     * then it prints the player's information (pattern card and private objective) + the draft pool
+     */
     @Override
     public void print() {
 
@@ -144,6 +150,13 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
     }
 
+    /**
+     * Checks if the string inserted by the player is acceptable and generates either a playerMessageDie,
+     * a playerMessageToolCard, player playerMessageEndTurn. If the move is not correct, it generates a
+     * playerMessage with clientId as -1
+     * @param s string inserted by the player
+     * @return playerMessage if the move was correct otherwise a playerMessage with clientId as -1
+     */
     public PlayerMessage getMainMove(String s){
 
 
@@ -186,6 +199,10 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
     }
 
+    /**
+     * Method needed for pattern card n.2, n.3 and n.4 to get a starting and a final position to move a die
+     * @return array list containing the starting and the final positions
+     */
     @Override
     public ArrayList<Integer> getPositionInPatternCard(){
         ArrayList<Integer> position = new ArrayList<>();
@@ -235,6 +252,10 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
         return position;
     }
 
+    /**
+     * Method needed for tool card n.12 to move either one or two dice
+     * @return array list containing the start and the final positions of the movement(s)
+     */
     @Override
     public ArrayList<Integer> getDoublePositionInPatternCard(){
         ArrayList<Integer> position = new ArrayList<>();
@@ -304,6 +325,12 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
         return position;
     }
 
+    /**
+     * Get a single position (x and y) that needs to be contained in listOfAvailablePositions.
+     * If list of available positions is empty, the player can insert any positions
+     * @param listOfAvailablePositions positions available
+     * @return array list containing the position chosen by the player
+     */
     @Override
     public ArrayList<Integer> getSinglePositionInPatternCard(ArrayList<Integer> listOfAvailablePositions){
         boolean moveNotOk = true;
@@ -350,6 +377,10 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
         return position;
     }
 
+    /**
+     * Method needed for tool card n.1
+     * @return array list containing the die chosen and a value to see if he wants to increase or decrease its value
+     */
     @Override
     public ArrayList<Integer> getIncrementedValue() {
         ArrayList<Integer> dieAndDecision = new ArrayList<>();
@@ -392,6 +423,10 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
     }
 
+    /**
+     * Method needed for pattern card so that the player can select one of the dice from the dice arena
+     * @return die chosen
+     */
     @Override
     public Integer getDieFromDiceArena(){
         input = new Scanner(System.in);
@@ -421,6 +456,10 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
     }
 
+    /**
+     * Method needed for tool cards
+     * @return array list containing the die chosen by the player and in which round it appears
+     */
     @Override
     public ArrayList<Integer> getDieFromRoundTrack(){
         boolean moveNotOk;
@@ -455,6 +494,10 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
 
     }
 
+    /**
+     * Method needed for pattern card so that the player can choose which value to give to the die
+     * @return value chosen by the player
+     */
     @Override
     public Integer getValueForDie(){
         boolean moveNotOk;

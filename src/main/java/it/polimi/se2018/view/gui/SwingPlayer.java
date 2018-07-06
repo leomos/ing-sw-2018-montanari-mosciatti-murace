@@ -4,6 +4,13 @@ import javax.swing.*;
 import java.awt.*;
 
 public class SwingPlayer extends JPanel {
+
+    /**
+     * This constructor creates a JPanel that contains PatternCard, tokens and Private Objective of a player
+     * @param patternCard to represent the PatternCard in model during the game with a JPanel
+     * @param privateObjective to represent the PrivateObjective in model with a Panel
+     * @param tokens is the number of tokens of the player
+     */
     public SwingPlayer(SwingDiceOnPatternCard patternCard, SwingPrivateObjective privateObjective, int tokens) {
         Color c = new Color(34, 139, 34);
         setBackground(c);

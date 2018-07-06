@@ -88,7 +88,7 @@ public class ViewClientConsole extends ViewClient  {
     }
 
     public void update(ModelChangedMessagePlayerAFK modelChangedMessagePlayerAFK) {
-        if (modelChangedMessagePlayerAFK.getPlayer() == idClient) {
+        if (modelChangedMessagePlayerAFK.getPlayer() == idClient && gamePhase == GAMEPHASE) {
             System.out.println(modelChangedMessagePlayerAFK.getMessage());
             clientSuspended = true;
             viewClientConsolePrint.setSuspended(true);
@@ -103,6 +103,11 @@ public class ViewClientConsole extends ViewClient  {
     }
 
 
+    /**
+     * Player's pattern card choosing and main move (use of die, tool card and end turn), happens trough this run
+     * When it's is turn he can type to make a move, otherwise it's movement is gonna get rejected here but in the model
+     * as well.
+     */
     public void run(){
 
         do {
@@ -198,10 +203,14 @@ public class ViewClientConsole extends ViewClient  {
 
     }
 
+    /**
+     * If the player gets suspended, if he sends anything, he goes back into the game with this method
+     */
     public void unSuspend(){
         System.out.println("You are not suspended anymore!");
         clientSuspended = false;
         viewClientConsolePrint.setSuspended(false);
+        canIPlay = true;
         try {
             serverInterface.notify(new PlayerMessageNotAFK(idClient));
         } catch (RemoteException e) {
@@ -209,6 +218,10 @@ public class ViewClientConsole extends ViewClient  {
         }
     }
 
+    /**
+     * After the player chooses to use a tool card, the main input is disabled through this method
+     * @return boolean
+     */
     @Override
     public Boolean block(){
         if (idPlayerPlaying == idClient)
@@ -217,6 +230,10 @@ public class ViewClientConsole extends ViewClient  {
         return true;
     }
 
+    /**
+     * After the player finishes to use a tool card, the main input is enabled again through this method
+     * @return boolean
+     */
     @Override
     public Boolean free(){
         canIPlay = true;
@@ -228,12 +245,16 @@ public class ViewClientConsole extends ViewClient  {
         return true;
     }
 
+    /**
+     * Method needed for tool cards
+     * @return player choice or empty array list if the player's turn finished while he was choosing the values
+     */
     @Override
     public ArrayList<Integer> getPositionInPatternCard(){
         if(idPlayerPlaying == idClient){
 
             ArrayList<Integer> returnValues = new ArrayList<>();
-            viewClientConsolePrint.getPositionInPatternCard();
+            returnValues = viewClientConsolePrint.getPositionInPatternCard();
             if (returnValues.isEmpty())
                 unSuspend();
 
@@ -243,19 +264,26 @@ public class ViewClientConsole extends ViewClient  {
         return null;
     }
 
+    /**
+     * Method needed for tool cards
+     * @return player choice or empty array list if the player's turn finished while he was choosing the values
+     */
     @Override
     public ArrayList<Integer> getSinglePositionInPatternCard(ArrayList<Integer> listOfAvailablePositions){
         if(idPlayerPlaying == idClient) {
 
-            ArrayList<Integer> returnValues = new ArrayList<>();
-            returnValues = viewClientConsolePrint.getSinglePositionInPatternCard(listOfAvailablePositions);
+            ArrayList<Integer> returnValues = viewClientConsolePrint.getSinglePositionInPatternCard(listOfAvailablePositions);
             if(returnValues.isEmpty())
                 unSuspend();
-
+            return returnValues;
         }
         return null;
     }
 
+    /**
+     * Method needed for tool cards
+     * @return player choice or empty array list if the player's turn finished while he was choosing the values
+     */
     @Override
     public ArrayList<Integer> getIncrementedValue() {
         if (idPlayerPlaying == idClient) {
@@ -271,6 +299,10 @@ public class ViewClientConsole extends ViewClient  {
         return null;
     }
 
+    /**
+     * Method needed for tool cards
+     * @return player choice or -1 if the player's turn finished while he was choosing the values
+     */
     @Override
     public Integer getDieFromDiceArena(){
         if(idPlayerPlaying == idClient) {
@@ -286,6 +318,10 @@ public class ViewClientConsole extends ViewClient  {
         return null;
     }
 
+    /**
+     * Method needed for tool cards
+     * @return player choice or empty array list if the player's turn finished while he was choosing the values
+     */
     @Override
     public ArrayList<Integer> getDieFromRoundTrack(){
         if(idPlayerPlaying == idClient) {
@@ -301,12 +337,15 @@ public class ViewClientConsole extends ViewClient  {
         return null;
     }
 
+    /**
+     * Method needed for tool cards
+     * @return player choice or -1 if the player's turn finished while he was choosing the values
+     */
     @Override
     public Integer getValueForDie(){
         if(idPlayerPlaying == idClient) {
 
-            int returnValues = -1;
-            returnValues = viewClientConsolePrint.getValueForDie();
+            int returnValues =  viewClientConsolePrint.getValueForDie();
             if (returnValues == -1)
                 unSuspend();
 
@@ -317,6 +356,10 @@ public class ViewClientConsole extends ViewClient  {
 
     }
 
+    /**
+     * Method needed for tool card
+     * @return player choice or empty array list if the player's turn finished while he was choosing the values
+     */
     @Override
     public ArrayList<Integer> getDoublePositionInPatternCard(){
         if(idPlayerPlaying == idClient) {
@@ -344,13 +387,16 @@ public class ViewClientConsole extends ViewClient  {
             System.out.println("Heartbeat terminato prima del previsto.");
         }
         System.out.println("Heartbeat terminato!");
-        try {
-            TimeUnit.SECONDS.sleep(10);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        boolean c = true;
+        while (c) {
+            try {
+                TimeUnit.SECONDS.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("provo a riconnettermi");
+            tryToReconnect(this.connectionType);
         }
-        System.out.println("provo a riconnettermi");
-        tryToReconnect(this.connectionType);
     }
 
     private void tryToReconnect(int connectionType) {
@@ -358,7 +404,6 @@ public class ViewClientConsole extends ViewClient  {
             initNewExecutor();
             startHeartbeating(idClient);
         } else {
-            //TODO: modificare in base al tipo di view
             System.out.println("Room chiusa");
         }
     }

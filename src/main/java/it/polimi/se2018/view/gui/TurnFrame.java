@@ -4,6 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 
 public class TurnFrame extends Frame {
+
+    /**
+     * This constructor creates a Frame that shows the message "It's your turn!"
+     */
     public TurnFrame() {
         super();
         dialog.setTitle("TURN");

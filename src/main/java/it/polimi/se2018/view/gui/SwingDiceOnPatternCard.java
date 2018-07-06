@@ -15,6 +15,13 @@ public class SwingDiceOnPatternCard extends JPanel {
 
     private ModelChangedMessagePatternCard s;
 
+    /**
+     * This constructor generates a JPanel that represents a PatternCard dice put during the game
+     * @param message to represent dice put in PatternCard during the game
+     * @param modelChangedMessagePatternCard to represent the empty PatternCard
+     * @param patterCard is the JPanel that represent a PatternCard
+     * @param enable to decide if dice to create are to be enable or not
+     */
     public SwingDiceOnPatternCard (ModelChangedMessageDiceOnPatternCard message, ModelChangedMessagePatternCard modelChangedMessagePatternCard, ArrayList<SwingDie> patterCard, boolean enable) {
         int cont = 0;
         String id = "";

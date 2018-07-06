@@ -68,6 +68,9 @@ public class ViewClientConsoleSetup extends ViewClientConsolePrint {
 
     }
 
+    /**
+     * Prints the 4 pattern cards given to the player
+     */
     @Override
     public void print() {
         System.out.println("SETUP: print");
@@ -79,6 +82,11 @@ public class ViewClientConsoleSetup extends ViewClientConsolePrint {
 
     }
 
+    /**
+     * Method needed for the player to choose one of the 4 available pattern cards
+     * @param s string inserted by the player
+     * @return pattern card id if the value is accepted, -1 otherwise
+     */
     @Override
     public Integer askForPatternCard(String s)  {
 

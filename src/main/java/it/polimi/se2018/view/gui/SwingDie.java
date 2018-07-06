@@ -22,6 +22,10 @@ public class SwingDie extends JButton {
         this.id = id;
     }
 
+    /**
+     * This method paints the button creating a different die due to attribute val
+     * @param g
+     */
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -31,28 +35,26 @@ public class SwingDie extends JButton {
         g.setColor(Color.black);
 
         if (val > 1) {
-            // punto in alto a sinistra
             g.fillOval(10, 10, 9, 9);
-            // punto in basso a destra
             g.fillOval(30, 30, 9, 9);
         }
         if (val > 3) {
-            // punto in alto a destra
             g.fillOval(30, 10, 9, 9);
-            // punto in basso a sinistra
             g.fillOval(10, 30, 9,9);
         }
         if (val == 6) {
-            // punto nel mezzo a sinistra
             g.fillOval(10, 20, 9, 9);
-            // punto nel mezzo a destra
             g.fillOval(30, 20, 9, 9);
         }
         if (val % 2 == 1)
-            // punto al centro
             g.fillOval(20, 20, 9, 9);
     }
 
+    /**
+     *
+     * @param representation of dies to be created
+     * @return An ArrayList of buttons created according to the representation
+     */
     public ArrayList<SwingDie> setOfDice(String representation) {
         ArrayList<SwingDie> dice = new ArrayList<>();
         char c;

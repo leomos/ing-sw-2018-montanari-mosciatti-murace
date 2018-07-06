@@ -5,8 +5,13 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class SwingScoreboard extends JPanel {
+
     private ArrayList<ArrayList<Integer>> values1;
 
+    /**
+     * This constructor creates a JPanel which contains the final ranking
+     * @param scoreboard is a string that represents the ranking of the game
+     */
     public SwingScoreboard(String scoreboard) {
         setBackground(new Color(0, 0, 0, 0));
 

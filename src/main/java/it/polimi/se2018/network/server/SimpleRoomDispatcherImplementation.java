@@ -35,8 +35,6 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
 
     private Map<Integer, Room> clientRoomMap;
 
-    private boolean isRoomAboutToStart = false;
-
 
 
     public SimpleRoomDispatcherImplementation(int roomCountdownLength, int refreshRate, int turnCountdownLength) {
@@ -47,7 +45,7 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
         this.currentClientsWaiting = new ConcurrentLinkedQueue<>();
         this.connectedClients = new HashSet<>();
         this.rooms = new HashSet<>();
-        this.heartbeatHandler = new HeartbeatHandler(250, 750, this);
+        this.heartbeatHandler = new HeartbeatHandler(250,2000, this);
         this.clientRoomMap = new HashMap<>();
     }
 
@@ -66,7 +64,6 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
             }
             LOGGER.info("Two clients or more are waiting.");
             LOGGER.info("Starting the countdown.");
-            isRoomAboutToStart = true;
 
             final ModelChangedMessageRoomUpdate message = new ModelChangedMessageRoomUpdate("Countdown started with "+getNumberOfActiveClientsWaiting()+" players!");
             currentClientsWaiting.iterator().forEachRemaining(wc -> {
@@ -95,7 +92,7 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
                     } else if(getNumberOfActiveClientsWaiting() == 4) {
                         i = roomCountdownLength + 1;
                         roomStartable = true;
-                    } else if(i%5==0){
+                    } else if((roomCountdownLength - i)%5==0 && (roomCountdownLength - i) != 0){
                         final ModelChangedMessageRoomUpdate countdownReset =
                                 new ModelChangedMessageRoomUpdate("Room will start in " + (roomCountdownLength - i) + "s with " + getNumberOfActiveClientsWaiting() + " players.");
                         currentClientsWaiting.iterator().forEachRemaining(wc -> {
@@ -139,7 +136,6 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
             clientRoomMap.put(client.getId(), room);
             connectedClients.add(client);
         });
-        isRoomAboutToStart = false;
         room.start();
 
         rooms.add(room);

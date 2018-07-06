@@ -12,6 +12,9 @@ public class Frame {
 
     JFrame dialog = new JFrame();
 
+    /**
+     * This constructor creates a JFrame to show a message to the player. It has a button to close it
+     */
     public Frame() {
         JButton ok = new JButton("OK");
         ok.addActionListener(actionListener -> {

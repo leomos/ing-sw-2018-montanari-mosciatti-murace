@@ -5,11 +5,17 @@ import it.polimi.se2018.model.events.ModelChangedMessageDiceArena;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class IncrementedValueFrame extends ToolCardFrame {
 
     private ArrayList<Integer> values = new ArrayList<>();
 
+    /**
+     * This constructor creates a ToolCardFrame when the player uses ToolCard 1. It shows a JFrame with
+     * Dice Arena and two RadioButtons. The player has to choose one die and a RadioButton
+     * @param message to represent Dice Arena in model
+     */
     public IncrementedValueFrame(ModelChangedMessageDiceArena message) {
         SwingDiceArena diceArena = new SwingDiceArena(message);
 
@@ -79,7 +85,13 @@ public class IncrementedValueFrame extends ToolCardFrame {
 
     @Override
     public ArrayList<Integer> getValues(){
-        while(values.size() != 2);
+        while(values.size() != 2) {
+            try {
+                TimeUnit.MILLISECONDS.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         return values;
     }
 

@@ -22,6 +22,9 @@ public class EndGameFrame extends SwingPhase {
         this.idClient = idClient;
     }
 
+    /**
+     * Creates a frame that contains the scoreboard
+     */
     public void print() {
         jFrame.setTitle("SAGRADA");
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -38,7 +41,7 @@ public class EndGameFrame extends SwingPhase {
         JLabel label;
         if (onePlayer!=0) {
             label = new JLabel("Only player " + onePlayer + " - " + messageOnlyOnePlayerLeft.getPlayers().get(onePlayer) + " is left in game!!", SwingConstants.CENTER);
-            label.setFont(new Font("Ravie", Font.PLAIN, 20));
+            label.setFont(new Font("Ravie", Font.PLAIN, 16));
         }
         else {
             label = new JLabel("FINAL RANKING", SwingConstants.CENTER);
@@ -93,7 +96,7 @@ public class EndGameFrame extends SwingPhase {
             jLabel.setFont(new Font("Ravie", Font.PLAIN, 24));
             if (onePlayer==idClient) {
                 jLabel.setText("CONGRATS, YOU WIN!!");
-                jLabel.setForeground(Color.GREEN);
+                jLabel.setForeground(new Color(0, 160, 0));
             }
             if (onePlayer!=idClient) {
                 jLabel.setText("YOU LOSE!");
@@ -172,6 +175,11 @@ public class EndGameFrame extends SwingPhase {
 
     }
 
+    /**
+     * Update invoked when the 10 round are over
+     * @param message contains the final scoreboard
+     */
+    @Override
     public void update(ModelChangedMessageEndGame message) {
         messageEndGame = message;
         this.print();
@@ -187,6 +195,10 @@ public class EndGameFrame extends SwingPhase {
 
     }
 
+    /**
+     * Update invoked when only one player is left active in the room
+     * @param message contains the only player not suspended
+     */
     @Override
     public void update(ModelChangedMessageOnlyOnePlayerLeft message) {
         messageOnlyOnePlayerLeft = message;
@@ -239,6 +251,9 @@ public class EndGameFrame extends SwingPhase {
         return null;
     }
 
+    /**
+     * Method to close the JFrame created
+     */
     @Override
     public void close() {
         jFrame.dispose();
