@@ -33,12 +33,8 @@ public class Die {
      * @param rolled
      * @throws DieRolledStateNotChangedException if rolled parameter is equal to rolled property
      */
-    public void setRolled(boolean rolled) throws DieRolledStateNotChangedException {
-        if(this.rolled == rolled) {
-            throw new DieRolledStateNotChangedException();
-        } else {
-            this.rolled = rolled;
-        }
+    public void setRolled(boolean rolled) {
+        this.rolled = rolled;
     }
 
     /**
