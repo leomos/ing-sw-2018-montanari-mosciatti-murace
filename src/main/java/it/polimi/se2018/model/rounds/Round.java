@@ -134,11 +134,12 @@ public class Round {
     public void updateRepresentation(){
         representation = "";
         for(int i = 0; i < rolledDiceLeft.size(); i++){
-            Die d = null;
+            Die d;
             try {
                 d = diceContainer.getDie(rolledDiceLeft.get(i));
             } catch (DiceContainerUnsupportedIdException e) {
                 e.printStackTrace();
+                return;
             }
             if(rolledDiceLeft.get(i) < 10)
                 representation = representation + "0";
