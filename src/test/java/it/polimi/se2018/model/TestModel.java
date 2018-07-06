@@ -333,4 +333,15 @@ public class TestModel {
 
     }
 
+    @Test
+    public void checkSetSuspended_ParamaAsFalse_CheckHeIsntSuspendedAnymore(){
+
+        model.getTable().getPlayers(1).setSuspended(true);
+
+        model.setPlayerSuspended(1, false);
+
+        assertEquals(false, model.getTable().getPlayers(1).isSuspended());
+
+    }
+
 }
