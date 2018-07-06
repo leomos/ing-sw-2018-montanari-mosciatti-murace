@@ -91,10 +91,10 @@ public class TestModel {
 
         if (initialValue == 6)
             assertEquals(initialValue, finalValue);
-        else
+        else {
             assertEquals(initialValue + 1, finalValue);
-
-        assertEquals(initialCost + 1, finalCost);
+            assertEquals(initialCost + 1, finalCost);
+        }
 
     }
 
@@ -208,6 +208,11 @@ public class TestModel {
 
         model.rerollDiceArena(1, 1);
 
+        for (int i = 0; i < 5; i++)
+            model.endTurn(new PlayerMessageEndTurn(model.currentPlayerPlaying()));
+
+        model.rerollDiceArena(1, 1);
+
         ArrayList<DieColor> d2 = new ArrayList<>();
         for (int i = 0; i < model.getTable().getDiceArena().getArena().size(); i++)
             d2.add(diceContainer.getDie(model.getTable().getDiceArena().getArena().get(i)).getColor());
@@ -309,6 +314,23 @@ public class TestModel {
 
     }
 
+    @Test
+    public void checkTimesUp_NoParams_CheckPlayerIsActuallySuspended(){
+        int playerPlaying = model.currentPlayerPlaying();
+        model.timesUp();
 
+        assertEquals(true, model.getTable().getPlayers(playerPlaying).isSuspended());
+
+    }
+
+    @Test
+    public void checkSwapDieWithDieFromDiceBag_ParamsAreRandoms_CheckNewIdIsDifferentFromOldOne(){
+        int oldId = model.getTable().getDiceArena().getArena().get(0);
+
+        int newId = model.swapDieWithDieFromDiceBag(0, 1);
+
+        assertNotEquals(oldId, newId);
+
+    }
 
 }
