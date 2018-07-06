@@ -10,6 +10,12 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 
+/**
+ * Implementation of ServerInterface and ClientGathererInterface for clients connecting with RMI.
+ * This object will be passed as a remote reference to the client
+ * @see it.polimi.se2018.network.ClientGathererInterface
+ * @see it.polimi.se2018.network.ServerInterface
+ */
 public class ServerImplementationRMI extends UnicastRemoteObject implements ClientGathererInterface,
                                                                             ServerInterface<ClientInterface> {
 
@@ -59,6 +65,10 @@ public class ServerImplementationRMI extends UnicastRemoteObject implements Clie
         this.roomDispatcher = roomDispatcher;
     }
 
+
+    /**
+     * Creates the RMI registry, and bind this object to the specified url.
+     */
     @Override
     public void run() {
 
