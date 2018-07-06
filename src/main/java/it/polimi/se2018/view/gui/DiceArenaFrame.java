@@ -11,6 +11,8 @@ public class DiceArenaFrame extends ToolCardFrame {
 
     private int id = -1;
 
+    private boolean confirm = false;
+
     /**
      * This constructor creates a ToolCardFrame when the player uses ToolCard 5, 6, 8, 9, 10 or 11. It shows a JFrame
      * with the representation of Dice Arena. The palyer has to choose one die and confirm his move
@@ -46,8 +48,10 @@ public class DiceArenaFrame extends ToolCardFrame {
 
         JButton button = new JButton("CONTINUE");
         button.addActionListener(actionListener -> {
-                if (id!=-1)
+                if (id!=-1) {
+                    confirm = true;
                     dispose();
+                }
         });
 
         add(label, BorderLayout.NORTH);
@@ -69,7 +73,7 @@ public class DiceArenaFrame extends ToolCardFrame {
 
     @Override
     public int getValue() {
-        while(id==-1) {
+        while(id==-1 || !confirm) {
             try {
                 TimeUnit.MILLISECONDS.sleep(200);
             } catch (InterruptedException e) {

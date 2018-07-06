@@ -14,6 +14,8 @@ public class RoundTrackFrame extends ToolCardFrame {
 
     private int die = -1;
 
+    private boolean confirm = false;
+
     /**
      * This constructor creates a ToolCardFrame when the player uses ToolCard 5. It shows a JFrame with
      * dice in RoundTrack. The player has to choose one die
@@ -59,8 +61,10 @@ public class RoundTrackFrame extends ToolCardFrame {
 
         JButton button = new JButton("CONFIRM");
         button.addActionListener(actionListener -> {
-            if (round!=-1 && die!=-1)
+            if (round!=-1 && die!=-1) {
+                confirm = true;
                 dispose();
+            }
         });
 
         setLayout(new BorderLayout());
@@ -79,7 +83,7 @@ public class RoundTrackFrame extends ToolCardFrame {
     @Override
     public ArrayList<Integer> getValues() {
         ArrayList<Integer> v = new ArrayList<>();
-        while (round==-1 && die==-1) {
+        while (!confirm) {
             try {
                 TimeUnit.MILLISECONDS.sleep(200);
             } catch (InterruptedException e) {

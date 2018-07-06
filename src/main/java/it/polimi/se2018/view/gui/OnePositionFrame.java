@@ -6,12 +6,15 @@ import it.polimi.se2018.model.events.ModelChangedMessagePatternCard;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class OnePositionFrame extends ToolCardFrame {
 
     private int row = -1;
 
     private int col = -1;
+
+    private boolean confirm = false;
 
     /**
      * This constructor creates a ToolCardFrame when the player uses ToolCard 12. It shows a JFrame with
@@ -48,8 +51,10 @@ public class OnePositionFrame extends ToolCardFrame {
 
         JButton button = new JButton("CONFIRM");
         button.addActionListener(actionListener -> {
-                if (row!=-1 && col!=-1 && checkPositionsAreInArrayList(col, row, listOfAvailablePositions))
+                if (row!=-1 && col!=-1 && checkPositionsAreInArrayList(col, row, listOfAvailablePositions)) {
+                    confirm = true;
                     dispose();
+                }
                 else
                     new MoveFailedFrame("Select an available position!");
         });
@@ -81,6 +86,13 @@ public class OnePositionFrame extends ToolCardFrame {
     //@Override
     public ArrayList<Integer> getValues() {
         ArrayList<Integer> v = new ArrayList<>();
+        while(!confirm) {
+            try {
+                TimeUnit.MILLISECONDS.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         v.add(row);
         v.add(col);
         return v;

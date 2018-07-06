@@ -9,6 +9,8 @@ public class DieValueFrame extends ToolCardFrame {
 
     private int value = 0;
 
+    private boolean confirm = false;
+
     /**
      * This constructor creates a ToolCardFrame when the player uses ToolCard 11. It shows a JFrame with
      * number from 1 to 6. The player has to choose a value that would be given to a die
@@ -22,7 +24,10 @@ public class DieValueFrame extends ToolCardFrame {
         JButton button = new JButton("OK");
         button.setEnabled(false);
         button.addActionListener(actionListener -> {
-            dispose();
+            if(value != 0) {
+                confirm = true;
+                dispose();
+            }
         });
 
         ButtonGroup group = new ButtonGroup();
@@ -60,7 +65,7 @@ public class DieValueFrame extends ToolCardFrame {
 
     @Override
     public int getValue() {
-        while (value==0) {
+        while (value==0 || !confirm) {
             try {
                 TimeUnit.MILLISECONDS.sleep(200);
             } catch (InterruptedException e) {
