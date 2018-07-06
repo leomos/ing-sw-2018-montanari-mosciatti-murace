@@ -7,6 +7,10 @@ import it.polimi.se2018.view.ViewClient;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
+/**
+ * Implementation of ClientInterface for clients connecting with RMI
+ * @see it.polimi.se2018.network.ClientInterface
+ */
 public class ClientImplementationRMI implements ClientInterface {
 
     private ViewClient viewClient;

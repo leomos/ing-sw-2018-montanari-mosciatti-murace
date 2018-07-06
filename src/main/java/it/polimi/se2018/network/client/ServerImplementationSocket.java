@@ -12,6 +12,9 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.rmi.RemoteException;
 
+/**
+ * @see it.polimi.se2018.network.ServerInterface
+ */
 public class ServerImplementationSocket extends Thread implements ServerInterface<Socket> {
 
     private ObjectInputStream objectInputStream;
@@ -109,18 +112,35 @@ public class ServerImplementationSocket extends Thread implements ServerInterfac
         }
     }
 
+    /**
+     * Returns the viewClient used by this implementation
+     * @return the viewClient used by this implementation
+     */
     public ViewClient getViewClient() {
         return viewClient;
     }
 
+
+    /**
+     * Updates the view with a message
+     * @param message message to pass to the view
+     */
     public synchronized void updateView(Message message) {
         viewClient.update((ModelChangedMessage) message);
     }
 
+    /**
+     * Writes a message to the output stream
+     * @param message message to be written
+     */
     public void writeMessage(Message message) {
         send(message);
     }
 
+    /**
+     * Writes an object to the output stream
+     * @param object object to be written
+     */
     private void send(Object object) {
         try {
             this.objectOutputStream.writeObject(object);

@@ -16,6 +16,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Implementation of ClientInterface for clients connecting with Socket
+ * @see it.polimi.se2018.network.ClientInterface
+ */
 public class ClientImplementationSocket extends Thread implements ClientInterface {
 
     private Socket clientSocket;
@@ -41,6 +45,14 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
         this.objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
     }
 
+
+    /**
+     * Constructs a new ClientImplementationSocket using specfic object stream and room dispatcher
+     * @param objectInputStream ObjectInputStream to be used to receive messages
+     * @param objectOutputStream  ObjectOutputStream to be used to send messages
+     * @param roomDispatcher RoomDispatcherInterface to be used to dispatch new clients
+     * @throws IOException
+     */
     public ClientImplementationSocket(ObjectInputStream objectInputStream,
                                       ObjectOutputStream objectOutputStream,
                                       RoomDispatcherInterface roomDispatcher) throws IOException {
@@ -66,6 +78,11 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
         }
     }
 
+
+    /**
+     * Notify the room where this client is playing, passing from the room dispatcher
+     * @param playerMessage message to notify to the room
+     */
     public void notifyRoom(PlayerMessage playerMessage) {
         roomDispatcher.getRoomForId(playerMessage.getPlayerId()).notifyView(playerMessage);
     }
@@ -138,10 +155,18 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
     }
 
 
+    /**
+     * Sends heartbeat to the room
+     * @param heartbeatMessage heartbeat message to send to the room
+     */
     public void notifyHeartbeat(HeartbeatMessage heartbeatMessage) {
         roomDispatcher.heartbeat(heartbeatMessage);
     }
 
+
+    /**
+     * Unlocks the lock waiting for the response from a called method
+     */
     public void unlockAndSetReady() {
         synchronized (lock) {
             ready = true;
@@ -149,6 +174,19 @@ public class ClientImplementationSocket extends Thread implements ClientInterfac
         }
     }
 
+
+    /**
+     * When a message of MethodCallMessage type is sent, the server needs to wait for its return value.
+     * This is done calling this method: the name of the method to be called on the view and its arguments
+     * are written into the message. After that the message is written to the client with the objectOutputStream.
+     * Now this method enters in a while loop, waiting for a lock to be unlocked (see unlockAndSetReady).
+     * When the lock is unlocked and variable ready is set to true, this method returns an object containing the
+     * return value.
+     * @param methodName String representing the method to be called on the view
+     * @param args Map of the arguments to be passed to the function where the key is the name of the argument and
+     *             the value is the value of the argument
+     * @return an object that is the return value of the function called on the view
+     */
     private Object waitForMethodCallResponse(String methodName, Optional<Map> args) {
         MethodCallMessage methodCallMessage = new MethodCallMessage(methodName);
         args.ifPresent(argumentsMap -> {

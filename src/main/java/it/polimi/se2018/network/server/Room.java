@@ -13,9 +13,16 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
+
+/**
+ * A process that puts in communication various clients, creates the Model, the Controller and the VirtualView.
+ */
 public class Room extends Thread {
+
+    private static final Logger LOGGER = Logger.getLogger(SimpleRoomDispatcherImplementation.class.getName());
 
     private Model model;
 
@@ -32,23 +39,47 @@ public class Room extends Thread {
     private boolean isRunning = true;
 
 
-    private Stream<ConnectedClient> activePlayers() {
-        return players.stream()
-                .filter(player -> !player.isInactive());
+    /**
+     * Returns and ArrayList of the ConnectedClients in players with isInactive == false
+     * @return and ArrayList of the ConnectedClients in players with isInactive == false
+     */
+    private ArrayList<ConnectedClient> activePlayers() {
+        ArrayList<ConnectedClient> result = new ArrayList<>();
+        for(ConnectedClient c : players) {
+            if(!c.isInactive())
+                result.add(c);
+        }
+        return result;
     }
 
+    /**
+     * Returns and ArrayList of the ConnectedClients in players with isInactive == true
+     * @return and ArrayList of the ConnectedClients in players with isInactive == true
+     */
     private Stream<ConnectedClient> inactivePlayers() {
         return players.stream()
                 .filter(player -> player.isInactive());
     }
 
-    private ConnectedClient connectedClientById(int id) {
-        return activePlayers()
-                .filter(player -> player.getId() == id)
-                .findFirst()
-                .get();
+    /**
+     * Returns an active ConnectedClient with a specific id in players
+     * @param id integer representing the id to search for
+     * @return an active ConnectedClient with a specific id in players
+     * @throws IllegalStateException when there are no active players
+     */
+    private ConnectedClient connectedClientById(int id) throws IllegalStateException {
+        for (ConnectedClient c : activePlayers()) {
+            if(c.getId() == id) return c;
+        }
+        throw new IllegalStateException();
     }
 
+    /**
+     * Returns an inactive ConnectedClient with a specific id in players
+     * @param id integer representing the id to search for
+     * @return an inactive ConnectedClient with a specific id in players
+     * @throws IllegalStateException when there are no inactive players
+     */
     public ConnectedClient inactiveClientById(int id) {
         return inactivePlayers()
                 .filter(player -> player.getId() == id)
@@ -56,6 +87,11 @@ public class Room extends Thread {
                 .get();
     }
 
+
+    /**
+     * Returns a map of the players where the key is the id, and value is the name of the player
+     * @return a map of the players where the key is the id, and value is the name of the player
+     */
     private HashMap<Integer, String> createClientsMap() {
         HashMap<Integer, String> clientsMap = new HashMap<>();
         players.forEach(player -> {
@@ -67,6 +103,7 @@ public class Room extends Thread {
     public Room(int turnCountdownLength) {
         this.turnCountdownLength = turnCountdownLength;
     }
+
 
     @Override
     public void run() {
@@ -110,8 +147,10 @@ public class Room extends Thread {
                     .getPositionInPatternCard();
         } catch (RemoteException e) {
             e.printStackTrace();
+        } catch (IllegalStateException e) {
+            LOGGER.severe("No connected clients left in room.");
         }
-        return null;
+        return new ArrayList<>();
     }
 
     public ArrayList<Integer> getIncrementedValue(int idClient) {
@@ -121,8 +160,10 @@ public class Room extends Thread {
                     .getIncrementedValue();
         } catch (RemoteException e) {
             e.printStackTrace();
+        } catch (IllegalStateException e) {
+            LOGGER.severe("No connected clients left in room.");
         }
-        return null;
+        return new ArrayList<>();
     }
 
     public ArrayList<Integer> getDoublePositionInPatternCard(int idClient){
@@ -132,8 +173,10 @@ public class Room extends Thread {
                     .getDoublePositionInPatternCard();
         } catch (RemoteException e) {
             e.printStackTrace();
+        } catch (IllegalStateException e) {
+            LOGGER.severe("No connected clients left in room.");
         }
-        return null;
+        return new ArrayList<>();
     }
 
 
@@ -144,6 +187,8 @@ public class Room extends Thread {
                     .getSinglePositionInPatternCard(listOfAvailablePositions);
         } catch (RemoteException e) {
             e.printStackTrace();
+        } catch (IllegalStateException e) {
+            LOGGER.severe("No connected clients left in room.");
         }
         return new ArrayList<>();
     }
@@ -155,6 +200,8 @@ public class Room extends Thread {
                     .getDieFromDiceArena();
         } catch (RemoteException e) {
             e.printStackTrace();
+        }  catch (IllegalStateException e) {
+            LOGGER.severe("No connected clients left in room.");
         }
         return null;
     }
@@ -166,6 +213,8 @@ public class Room extends Thread {
                     .getValueForDie();
         } catch (RemoteException e) {
             e.printStackTrace();
+        } catch (IllegalStateException e) {
+            LOGGER.severe("No connected clients left in room.");
         }
         return null;
     }
@@ -177,8 +226,10 @@ public class Room extends Thread {
                     .getDieFromRoundTrack();
         } catch (RemoteException e) {
             e.printStackTrace();
+        } catch (IllegalStateException e) {
+            LOGGER.severe("No connected clients left in room.");
         }
-        return null;
+        return new ArrayList<>();
     }
 
     public void block(int idClient){
@@ -188,6 +239,8 @@ public class Room extends Thread {
                     .block();
         } catch (RemoteException e) {
             e.printStackTrace();
+        } catch (IllegalStateException e) {
+            LOGGER.severe("No connected clients left in room.");
         }
     }
 
@@ -198,6 +251,8 @@ public class Room extends Thread {
                     .free();
         } catch (RemoteException e) {
             e.printStackTrace();
+        } catch (IllegalStateException e) {
+            LOGGER.severe("No connected clients left in room.");
         }
     }
 

@@ -9,6 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * A process controlling that clients are still connected to the server
+ */
 public class HeartbeatHandler extends Thread {
 
     private int controlRateInMillieconds;
@@ -21,6 +24,13 @@ public class HeartbeatHandler extends Thread {
 
     private SimpleRoomDispatcherImplementation simpleRoomDispatcherImplementation;
 
+
+    /**
+     * Constructs a new HeatbeatHandler with specific parameters
+     * @param controlRateInMillieconds milliseconds to wait before controlling again the heartbeats
+     * @param disconnectedThresholdInMilliseconds threshold in milliseconds for marking a client as disconnected
+     * @param simpleRoomDispatcherImplementation dispatcher to manage connections and disconnections
+     */
     public HeartbeatHandler(int controlRateInMillieconds, int disconnectedThresholdInMilliseconds, SimpleRoomDispatcherImplementation simpleRoomDispatcherImplementation) {
         this.controlRateInMillieconds = controlRateInMillieconds;
         this.heartbeats = new HashMap<>();
@@ -28,6 +38,11 @@ public class HeartbeatHandler extends Thread {
         this.simpleRoomDispatcherImplementation = simpleRoomDispatcherImplementation;
     }
 
+    /**
+     * Runs while heartbeatRunning is true.
+     * Every cycle controls that the heartbeats' offsets with the current moment is not above the threshold,
+     * otherwise notifies the dispatcher and removes the client from the map (see heartbeat).
+     */
     @Override
     public void run() {
         while (heartbeatRunning) {
@@ -45,7 +60,7 @@ public class HeartbeatHandler extends Thread {
                         }
                     }
                 } catch (ConcurrentModificationException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
                 }
             }
             try {
@@ -56,11 +71,19 @@ public class HeartbeatHandler extends Thread {
         }
     }
 
+
+    /**
+     * When a heartbeat arrives it updates the map containing the last heartbeats with the instants in which the arrived
+     * @param heartbeatMessage message of the heartbeat
+     */
     public synchronized void heartbeat(HeartbeatMessage heartbeatMessage) {
         Instant receivedInstant = Instant.now();
         heartbeats.put(heartbeatMessage.getId(), receivedInstant);
     }
 
+    /**
+     *  Sets heartbeatRunning to false
+     */
     public void stopHeartbeatRunning() {
         heartbeatRunning = false;
     }

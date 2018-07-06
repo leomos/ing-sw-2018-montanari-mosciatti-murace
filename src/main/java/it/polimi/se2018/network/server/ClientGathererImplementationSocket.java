@@ -12,6 +12,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Logger;
 
+/**
+ * Implementation of ClientGathererInterface for RMI
+ * @see it.polimi.se2018.network.ClientGathererInterface
+ */
 public class ClientGathererImplementationSocket implements ClientGathererInterface {
 
     private static final Logger LOGGER = Logger.getLogger(ClientGathererImplementationSocket.class.getName());
@@ -26,8 +30,9 @@ public class ClientGathererImplementationSocket implements ClientGathererInterfa
 
 
     /**
-     * This constructor is used the fir
-     * @param port
+     * Constructs a new client gatherer, serving on the port specified
+     * @param port integer representing the port where the gatherer should
+     *             listen for incoming connections
      */
     public ClientGathererImplementationSocket(int port) {
         this.port = port;
@@ -39,6 +44,11 @@ public class ClientGathererImplementationSocket implements ClientGathererInterfa
         }
     }
 
+    /**
+     * Constructs a new client gatherer, using the ServerSocket specified
+     * @param serverSocket ServerSocket to use to listen for incoming
+     *                     connections
+     */
     public ClientGathererImplementationSocket(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
         this.port = serverSocket.getLocalPort();
@@ -86,6 +96,16 @@ public class ClientGathererImplementationSocket implements ClientGathererInterfa
 
     }
 
+
+    /**
+     * Handles a new client represented by a socket.
+     * When this is called it start another thread of this gatherer,
+     * listening on the same port.
+     * In this way no clients connecting with socket have to wait for
+     * the preceding client to connect.
+     * @param clientConnection
+     * @throws WrongMethodException
+     */
     private void handleClient(Socket clientConnection) throws WrongMethodException {
         ObjectInputStream objectInputStream;
         ObjectOutputStream objectOutputStream;
@@ -148,6 +168,9 @@ public class ClientGathererImplementationSocket implements ClientGathererInterfa
         }
     }
 
+    /**
+     * Starts a new thread of this gatherer
+     */
     private void startNewClientGathererSocket() {
         Thread t = new Thread(this);
         t.start();

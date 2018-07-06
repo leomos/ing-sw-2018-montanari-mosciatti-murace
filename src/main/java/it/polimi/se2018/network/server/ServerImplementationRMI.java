@@ -78,15 +78,4 @@ public class ServerImplementationRMI extends UnicastRemoteObject implements Clie
 
         System.out.println("RMI started.");
     }
-
-    /*private Room getRoomForId(int id) {
-        Room room;
-        for(ConnectedClient connectedClient : roomDispatcher.getAllConnectedClients()) {
-            if(connectedClient.getId() == id) {
-                room = connectedClient.getRoom();
-                return room;
-            }
-        }
-        return null;
-    }*/
 }
