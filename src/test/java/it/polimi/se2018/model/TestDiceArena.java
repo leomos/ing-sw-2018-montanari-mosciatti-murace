@@ -1,6 +1,7 @@
 package it.polimi.se2018.model;
 
 import it.polimi.se2018.model.container.DiceContainer;
+import it.polimi.se2018.model.container.DieRolledValueOutOfBoundException;
 import it.polimi.se2018.model.rounds.DieNotPresentException;
 import org.junit.Before;
 import org.junit.Test;
@@ -83,5 +84,19 @@ public class TestDiceArena {
             assertTrue(7 > m);
         }
     }
+
+    @Test
+    public void checkRemoveDieFromDiceArena_23AsParam_SizeOfDiceArenaShouldBe6() {
+        diceArena.rollOneDieIntoDiceArena(0, 4, 4);
+        diceArena.rollOneDieIntoDiceArena(1, 11, 4);
+        diceArena.rollOneDieIntoDiceArena(2, 23, 4);
+        diceArena.rollOneDieIntoDiceArena(3, 34, 4);
+        diceArena.rollOneDieIntoDiceArena(4, 54, 4);
+        diceArena.rollOneDieIntoDiceArena(5, 63, 4);
+        diceArena.rollOneDieIntoDiceArena(6, 85, 4);
+        diceArena.removeDieFromDiceArena(23);
+        assertEquals(6, diceArena.getArena().size());
+    }
+
 
 }

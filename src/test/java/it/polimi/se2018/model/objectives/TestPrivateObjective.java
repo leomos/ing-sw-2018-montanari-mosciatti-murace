@@ -7,6 +7,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import static it.polimi.se2018.model.container.DieColor.PURPLE;
 import static org.junit.Assert.assertEquals;
 
 public class TestPrivateObjective {
@@ -26,6 +27,14 @@ public class TestPrivateObjective {
         diceContainer = null;
         patternCard = null;
         privateObjective = null;
+    }
+
+    @Test
+    public void getter() {
+        assertEquals(5, privateObjective.getId());
+        assertEquals("Sfumature Viola - Privata", privateObjective.getName());
+        assertEquals("Somma dei valori su tutti i dadi viola", privateObjective.getDescription());
+        assertEquals(PURPLE, privateObjective.getColor());
     }
 
     @Test
