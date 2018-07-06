@@ -95,6 +95,11 @@ public class MessageVisitorImplementationViewConsole implements MessageVisitorIn
     }
 
     @Override
+    public void visitModelChangedMessageRoomUpdate(ModelChangedMessageRoomUpdate modelChangedMessageRoomUpdate) {
+        viewClientConsole.update(modelChangedMessageRoomUpdate);
+    }
+
+    @Override
     public void visitPlayerMessageDie(PlayerMessageDie playerMessageDie) {
 
     }

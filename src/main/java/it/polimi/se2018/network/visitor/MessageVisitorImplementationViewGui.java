@@ -95,6 +95,11 @@ public class MessageVisitorImplementationViewGui implements MessageVisitorInterf
     }
 
     @Override
+    public void visitModelChangedMessageRoomUpdate(ModelChangedMessageRoomUpdate modelChangedMessageRoomUpdate) {
+        viewClientGUI.update(modelChangedMessageRoomUpdate);
+    }
+
+    @Override
     public void visitPlayerMessageDie(PlayerMessageDie playerMessageDie) {
 
     }

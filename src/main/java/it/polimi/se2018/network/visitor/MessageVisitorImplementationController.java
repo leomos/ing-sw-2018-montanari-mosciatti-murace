@@ -122,6 +122,11 @@ public class MessageVisitorImplementationController implements MessageVisitorInt
 
     }
 
+    @Override
+    public void visitModelChangedMessageRoomUpdate(ModelChangedMessageRoomUpdate modelChangedMessageRoomUpdate) {
+
+    }
+
 
     @Override
     public void visitHeartbeatMessage(HeartbeatMessage heartbeatMessage) {

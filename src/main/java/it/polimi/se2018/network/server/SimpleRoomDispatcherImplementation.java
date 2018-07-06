@@ -1,10 +1,12 @@
 package it.polimi.se2018.network.server;
 
 import it.polimi.se2018.model.events.HeartbeatMessage;
+import it.polimi.se2018.model.events.ModelChangedMessageRoomUpdate;
 import it.polimi.se2018.network.ClientInterface;
 import it.polimi.se2018.network.ConnectedClient;
 import it.polimi.se2018.network.RoomDispatcherInterface;
 
+import java.rmi.RemoteException;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.logging.Logger;
@@ -32,6 +34,8 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
     private HeartbeatHandler heartbeatHandler;
 
     private Map<Integer, Room> clientRoomMap;
+
+    private boolean isRoomAboutToStart = false;
 
 
 
@@ -62,12 +66,45 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
             }
             LOGGER.info("Two clients or more are waiting.");
             LOGGER.info("Starting the countdown.");
+            isRoomAboutToStart = true;
+
+            final ModelChangedMessageRoomUpdate message = new ModelChangedMessageRoomUpdate("Countdown started with "+getNumberOfActiveClientsWaiting()+" players!");
+            currentClientsWaiting.iterator().forEachRemaining(wc -> {
+                try {
+                    wc.getClientInterface().update(message);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            });
+
+
             try {
                 for (int i = 0; i < roomCountdownLength; i++) {
                     TimeUnit.SECONDS.sleep(1);
                     if(getNumberOfActiveClientsWaiting() < 2) {
                         i = roomCountdownLength + 1;
                         roomStartable = false;
+                        final ModelChangedMessageRoomUpdate countdownReset = new ModelChangedMessageRoomUpdate("Countdown reset, not enough players to start the room.");
+                        currentClientsWaiting.iterator().forEachRemaining(wc -> {
+                            try {
+                                wc.getClientInterface().update(countdownReset);
+                            } catch (RemoteException e) {
+                                e.printStackTrace();
+                            }
+                        });
+                    } else if(getNumberOfActiveClientsWaiting() == 4) {
+                        i = roomCountdownLength + 1;
+                        roomStartable = true;
+                    } else if(i%5==0){
+                        final ModelChangedMessageRoomUpdate countdownReset =
+                                new ModelChangedMessageRoomUpdate("Room will start in " + (roomCountdownLength - i) + "s with " + getNumberOfActiveClientsWaiting() + " players.");
+                        currentClientsWaiting.iterator().forEachRemaining(wc -> {
+                            try {
+                                wc.getClientInterface().update(countdownReset);
+                            } catch (RemoteException e) {
+                                e.printStackTrace();
+                            }
+                        });
                     }
                 }
             } catch (InterruptedException e) {
@@ -102,7 +139,7 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
             clientRoomMap.put(client.getId(), room);
             connectedClients.add(client);
         });
-
+        isRoomAboutToStart = false;
         room.start();
 
         rooms.add(room);
@@ -158,7 +195,6 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
         if(clientRoomMap.containsKey(id)) {
             clientRoomMap.get(id).handleClientDisconnection(id);
         } else {
-            ConnectedClient faulty;
             currentClientsWaiting.forEach(wc -> {
                 if(wc.getId() == id)
                     wc.setInactive(true);

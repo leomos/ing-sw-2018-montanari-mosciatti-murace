@@ -38,6 +38,8 @@ public interface MessageVisitorInterface {
 
     public void visitModelChangedMessageOnlyOnePlayerLeft(ModelChangedMessageOnlyOnePlayerLeft modelChangedMessageOnlyOnePlayerLeft);
 
+    public void visitModelChangedMessageRoomUpdate(ModelChangedMessageRoomUpdate modelChangedMessageRoomUpdate);
+
     public void visitPlayerMessageDie(PlayerMessageDie playerMessageDie);
 
     public void visitPlayerMessageEndTurn(PlayerMessageEndTurn playerMessageEndTurn);
