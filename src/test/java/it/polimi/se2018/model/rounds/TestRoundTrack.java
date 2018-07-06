@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -37,6 +38,11 @@ public class TestRoundTrack {
 
     @Test
     public void startNextRound_CalledOneTime_currentRoundIdShouldBe0() {
+        HashMap<Integer, String> HM = new HashMap<>();
+        HM.put(0, "Mat");
+        HM.put(1, "Leo");
+        HM.put(34, "Ale");
+        table = new Table(HM);
         try {
             roundTrack.startNextRound(table);
         } catch (RoundTrackNoMoreRoundsException e) {
@@ -47,6 +53,11 @@ public class TestRoundTrack {
 
     @Test
     public void startNextRound_Called10Times_currentRoundIdShouldBe9() {
+        HashMap<Integer, String> HM = new HashMap<>();
+        HM.put(0, "Mat");
+        HM.put(1, "Leo");
+        HM.put(34, "Ale");
+        table = new Table(HM);
         for (int i = 0; i < 10; i++) {
             try {
                 roundTrack.startNextRound(table);
@@ -59,6 +70,11 @@ public class TestRoundTrack {
 
     @Test(expected = RoundTrackNoMoreRoundsException.class)
     public void startNextRound_Called11Times_ExceptionThrown() throws RoundTrackNoMoreRoundsException {
+        HashMap<Integer, String> HM = new HashMap<>();
+        HM.put(0, "Mat");
+        HM.put(1, "Leo");
+        HM.put(34, "Ale");
+        table = new Table(HM);
         for (int i = 0; i < 11; i++) {
             roundTrack.startNextRound(table);
         }
@@ -67,6 +83,11 @@ public class TestRoundTrack {
 
     @Test
     public void setRolledDiceLeftForCurrentRound_1stParamAsCustomMadeArrayOfInt_currentRoundRolledDiceLeftShouldBeEqualsToCustomMadeArray(){
+        HashMap<Integer, String> HM = new HashMap<>();
+        HM.put(0, "Mat");
+        HM.put(1, "Leo");
+        HM.put(34, "Ale");
+        table = new Table(HM);
         ArrayList<Integer> diceLeft = new ArrayList<Integer>();
         diceLeft.add(34);
         diceLeft.add(22);
