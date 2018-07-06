@@ -140,7 +140,7 @@ public class Model extends Observable<ModelChangedMessage> {
      * @param idPatternCard id selected by the player
      * @param idPlayer id that represents the player view
      */
-    public void setChosenPatternCard(int idPatternCard, int idPlayer){
+    public synchronized void setChosenPatternCard(int idPatternCard, int idPlayer){
 
         for(PatternCard patternCard : table.getPlayers(idPlayer).getPatternCards())
             if(idPatternCard == patternCard.getId()) {
@@ -251,6 +251,11 @@ public class Model extends Observable<ModelChangedMessage> {
 
                 try {
                     table.getRoundTrack().getCurrentRound().setNextPlayer(table);
+                    table.getPlayers(playerMessageEndTurn.getPlayerId()).setHasSetDieThisTurn(false);
+                    table.getPlayers(playerMessageEndTurn.getPlayerId()).setHasUsedToolCardThisTurn(false);
+
+                    int playerIdPlaying = table.getRoundTrack().getCurrentRound().getIdPlayerPlaying();
+                    notify(new ModelChangedMessageRefresh(playerIdPlaying, players.get(playerIdPlaying)));
                 } catch (RoundFinishedException e) {
 
                 Round round = table.getRoundTrack().getCurrentRound();
@@ -265,6 +270,7 @@ public class Model extends Observable<ModelChangedMessage> {
                     table.getRoundTrack().startNextRound(table);
                 } catch (RoundTrackNoMoreRoundsException i) {
 
+                    timer.stopTimer();
                     gamePhase = GamePhase.ENDGAMEPHASE;
 
                     table.calculateScores();
@@ -272,14 +278,9 @@ public class Model extends Observable<ModelChangedMessage> {
                     notify(new ModelChangedMessageChangeGamePhase(GamePhase.ENDGAMEPHASE));
                     notify(new ModelChangedMessageEndGame(table.getScoreboard().getRepresentation(), players));
 
-                    timer.stopTimer();
+
                 }
             }
-            table.getPlayers(playerMessageEndTurn.getPlayerId()).setHasSetDieThisTurn(false);
-            table.getPlayers(playerMessageEndTurn.getPlayerId()).setHasUsedToolCardThisTurn(false);
-
-            int playerIdPlaying = table.getRoundTrack().getCurrentRound().getIdPlayerPlaying();
-            notify(new ModelChangedMessageRefresh(playerIdPlaying, players.get(playerIdPlaying)));
         }
     }
 
