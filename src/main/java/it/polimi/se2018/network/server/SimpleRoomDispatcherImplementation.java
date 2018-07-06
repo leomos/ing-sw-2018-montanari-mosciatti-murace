@@ -11,6 +11,14 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.logging.Logger;
 
+
+/**
+ * Implementation of RoomDispatcherInterface.
+ * This works as per requirements: wait for 2 clients to connect then starts a countdown. If during the countdown 4
+ * players connects it starts a Room immediately, otherwise it waits for the countdown to end. If at the end of the
+ * countdown the number of connected players is greater or equal to two, than it starts a Room, otherwise it keeps
+ * waiting for one or two clients (depending on how many connected clients are left) to start the Room.
+ */
 public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterface {
 
     private static final Logger LOGGER = Logger.getLogger(SimpleRoomDispatcherImplementation.class.getName());
@@ -36,7 +44,12 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
     private Map<Integer, Room> clientRoomMap;
 
 
-
+    /**
+     * Constructs a new implementation of RoomDispatcherInterface
+     * @param roomCountdownLength number of seconds to wait before starting the room
+     * @param refreshRate rate at which to control if a new client has connected
+     * @param turnCountdownLength length of the turn countdown in length for every room
+     */
     public SimpleRoomDispatcherImplementation(int roomCountdownLength, int refreshRate, int turnCountdownLength) {
         this.roomCountdownLength = roomCountdownLength;
         this.refreshRate = refreshRate;
@@ -49,6 +62,9 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
         this.clientRoomMap = new HashMap<>();
     }
 
+    /**
+     * Starts the heartbeat, enters a while cycle and it keeps running, waiting for new clients given by the gatherers.
+     */
     @Override
     public void run() {
         heartbeatHandler.start();
@@ -127,6 +143,11 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
         }
     }
 
+
+    /**
+     * Starts a new room with clients passed as parameter
+     * @param clients set of clients that will be playing in the new room
+     */
     private synchronized void startNewRoom(Set<ConnectedClient> clients) {
         Room room = new Room(this.turnCountDownLength);
 
@@ -187,6 +208,16 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
         heartbeatHandler.heartbeat(heartbeatMessage);
     }
 
+    @Override
+    public Boolean reconnectClient(ClientInterface clientInterface, int id) {
+        return getRoomForId(id).reconnectPlayer(clientInterface, id);
+    }
+
+
+    /**
+     * Sets a specific client suspended searching it in the rooms
+     * @param id id of the client to be suspended
+     */
     public void setConnectedClientSuspended(int id) {
         if(clientRoomMap.containsKey(id)) {
             clientRoomMap.get(id).handleClientDisconnection(id);
@@ -199,10 +230,10 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
         }
     }
 
-    public Boolean reconnectClient(ClientInterface clientInterface, int id) {
-        return getRoomForId(id).reconnectPlayer(clientInterface, id);
-    }
-
+    /**
+     * Calls the same method on the room where the player with the specified id is playing
+     * @param id id of the player reconnected
+     */
     public void sendGameStateToReconnectedClient(int id) {
         getRoomForId(id).sendGameStateToReconnectedPlayer(id);
     }

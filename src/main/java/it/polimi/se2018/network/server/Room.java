@@ -105,6 +105,10 @@ public class Room extends Thread {
     }
 
 
+    /**
+     * Creates model, controller and view, does reciprocal registration for observer pattern and initialize model
+     * setup phase
+     */
     @Override
     public void run() {
         HashMap<Integer, String> clientsMap = createClientsMap();
@@ -125,13 +129,22 @@ public class Room extends Thread {
         this.players = players;
     }
 
+
+    /**
+     * Notifies view created in run
+     * @param playerMessage message to pass to the view
+     */
     public void notifyView(Message playerMessage) {
         playerMessage.accept(messageVisitorUpdate);
         view.callNotify((PlayerMessage) playerMessage);
     }
 
-    public void updatePlayers(Message updateMessage) {
 
+    /**
+     * Sends an UpdateMessage to every player
+     * @param updateMessage
+     */
+    public void updatePlayers(Message updateMessage) {
         ((MessageVisitorImplementationUpdate)messageVisitorUpdate).setCurrentPlayerPlayingId(model.currentPlayerPlaying());
 
         players.forEach((player) -> {
@@ -256,6 +269,11 @@ public class Room extends Thread {
         }
     }
 
+
+    /**
+     * Called by the dispatcher to notify the model about the disconnection of a client
+     * @param id id of the player that has disconnected
+     */
     public synchronized void handleClientDisconnection(int id) {
         System.out.println("Client " + id + " disconnected!");
         connectedClientById(id).setInactive(true);
@@ -268,7 +286,14 @@ public class Room extends Thread {
         }
     }
 
-    public Boolean reconnectPlayer(ClientInterface clientInterface, int id) {
+    /**
+     * Called by the dispatcher when a client tries to reconnect.
+     * Notifies the model about the riconnection.
+     * @param clientInterface interface of the client that wants to reconnect
+     * @param id id of the player that is trying to reconnect
+     * @return true if the clients is able to reconnect, false otherwise
+     */
+    public Boolean  reconnectPlayer(ClientInterface clientInterface, int id) {
         if(!isRunning) return false;
         ConnectedClient reconnectedClient = inactivePlayers()
                 .filter(player -> player.getId() == id)
@@ -280,10 +305,19 @@ public class Room extends Thread {
         return true;
     }
 
+
+    /**
+     * Sends all the necessary information to the client to get back in the game
+     * @param id id of the player that reconnected
+     */
     public void sendGameStateToReconnectedPlayer(int id) {
         model.updatePlayerThatCameBackIntoTheGame(id);
     }
 
+
+    /**
+     * Stops the room
+     */
     public void dispose() {
         isRunning = false;
     }
