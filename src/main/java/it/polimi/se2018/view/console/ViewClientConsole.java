@@ -388,13 +388,16 @@ public class ViewClientConsole extends ViewClient  {
             System.out.println("Heartbeat terminato prima del previsto.");
         }
         System.out.println("Heartbeat terminato!");
-        try {
-            TimeUnit.SECONDS.sleep(10);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        boolean c = true;
+        while (c) {
+            try {
+                TimeUnit.SECONDS.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("provo a riconnettermi");
+            tryToReconnect(this.connectionType);
         }
-        System.out.println("provo a riconnettermi");
-        tryToReconnect(this.connectionType);
     }
 
     private void tryToReconnect(int connectionType) {

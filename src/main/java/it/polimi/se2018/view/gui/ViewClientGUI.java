@@ -244,13 +244,17 @@ public class ViewClientGUI extends ViewClient {
             System.out.println("Heartbeat terminato prima del previsto.");
         }
         System.out.println("Heartbeat terminato!");
-        try {
-            TimeUnit.SECONDS.sleep(10);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+
+        boolean c = true;
+        while(c) {
+            try {
+                TimeUnit.SECONDS.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("provo a riconnettermi");
+            tryToReconnect();
         }
-        System.out.println("provo a riconnettermi");
-        tryToReconnect();
     }
 
     private void tryToReconnect() {
@@ -258,7 +262,6 @@ public class ViewClientGUI extends ViewClient {
             initNewExecutor();
             startHeartbeating(idClient);
         } else {
-            //TODO: modificare
             System.out.println("Room chiusa");
         }
     }

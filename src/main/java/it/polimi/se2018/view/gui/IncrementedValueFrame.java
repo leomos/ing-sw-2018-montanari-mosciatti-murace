@@ -5,6 +5,7 @@ import it.polimi.se2018.model.events.ModelChangedMessageDiceArena;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class IncrementedValueFrame extends ToolCardFrame {
 
@@ -79,7 +80,13 @@ public class IncrementedValueFrame extends ToolCardFrame {
 
     @Override
     public ArrayList<Integer> getValues(){
-        while(values.size() != 2);
+        while(values.size() != 2) {
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         return values;
     }
 
