@@ -251,11 +251,7 @@ public class Model extends Observable<ModelChangedMessage> {
 
                 try {
                     table.getRoundTrack().getCurrentRound().setNextPlayer(table);
-                    table.getPlayers(playerMessageEndTurn.getPlayerId()).setHasSetDieThisTurn(false);
-                    table.getPlayers(playerMessageEndTurn.getPlayerId()).setHasUsedToolCardThisTurn(false);
 
-                    int playerIdPlaying = table.getRoundTrack().getCurrentRound().getIdPlayerPlaying();
-                    notify(new ModelChangedMessageRefresh(playerIdPlaying, players.get(playerIdPlaying)));
                 } catch (RoundFinishedException e) {
 
                 Round round = table.getRoundTrack().getCurrentRound();
@@ -279,6 +275,15 @@ public class Model extends Observable<ModelChangedMessage> {
 
 
                 }
+
+            }
+
+            if(gamePhase != GamePhase.ENDGAMEPHASE) {
+                table.getPlayers(playerMessageEndTurn.getPlayerId()).setHasSetDieThisTurn(false);
+                table.getPlayers(playerMessageEndTurn.getPlayerId()).setHasUsedToolCardThisTurn(false);
+
+                int playerIdPlaying = table.getRoundTrack().getCurrentRound().getIdPlayerPlaying();
+                notify(new ModelChangedMessageRefresh(playerIdPlaying, players.get(playerIdPlaying)));
             }
         }
     }
@@ -892,21 +897,23 @@ public class Model extends Observable<ModelChangedMessage> {
                 this.updatePlayerThatCameBackIntoTheGame(idPlayer);
         } catch (OnlyOnePlayerLeftException e) {
 
-            this.gamePhase = GamePhase.ENDGAMEPHASE;
+            if(gamePhase != GamePhase.ENDGAMEPHASE) {
+                this.gamePhase = GamePhase.ENDGAMEPHASE;
 
-            notify(new ModelChangedMessagePlayerAFK(idPlayer, "\nYou run out of time. You are now suspended. Type anything to get back into the game\n"));
+                notify(new ModelChangedMessagePlayerAFK(idPlayer, "\nYou run out of time. You are now suspended. Type anything to get back into the game\n"));
 
-            notify(new ModelChangedMessageChangeGamePhase(GamePhase.ENDGAMEPHASE));
+                notify(new ModelChangedMessageChangeGamePhase(GamePhase.ENDGAMEPHASE));
 
 
-            for (Integer key : players.keySet()) {
-                if(!table.getPlayers(key).isSuspended()) {
-                    table.setWinner(key);
-                    notify(new ModelChangedMessageOnlyOnePlayerLeft(key, players));
+                for (Integer key : players.keySet()) {
+                    if (!table.getPlayers(key).isSuspended()) {
+                        table.setWinner(key);
+                        notify(new ModelChangedMessageOnlyOnePlayerLeft(key, players));
+                    }
                 }
-            }
 
-            timer.stopTimer();
+                timer.stopTimer();
+            }
         }
 
 
