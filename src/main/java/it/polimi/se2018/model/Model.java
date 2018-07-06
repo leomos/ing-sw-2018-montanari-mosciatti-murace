@@ -23,7 +23,7 @@ public class Model extends Observable<ModelChangedMessage> {
 
     private Table table;
 
-        private HashMap<Integer, String> players;
+    private HashMap<Integer, String> players;
 
     private Timer timer;
 
@@ -33,7 +33,11 @@ public class Model extends Observable<ModelChangedMessage> {
         this.timer = new Timer(turnCountdownLength);
     }
 
+    public Table getTable() {
+        return table;
+    }
 
+    public GamePhase getGamePhase(){return this.gamePhase; }
 
     /**
      * This method is called at the start of the game. It's purpose is to initialize 4 different patternCards and
@@ -245,7 +249,6 @@ public class Model extends Observable<ModelChangedMessage> {
 
 
         if(isMyTurn(idPlayerMessage) && gamePhase==GamePhase.GAMEPHASE) {
-            System.out.println("Il giocatore " + idPlayerMessage + " ha mandato l'end turn");
             timer.reStartTimer();
 
 

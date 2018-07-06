@@ -6,6 +6,7 @@ import it.polimi.se2018.model.container.DieRolledStateNotChangedException;
 import it.polimi.se2018.model.container.DieRolledValueOutOfBoundException;
 import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.patternCard.PatternCard;
+import it.polimi.se2018.model.player.PlayersHaveAllChosenAPatternCard;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -105,7 +106,7 @@ public class TestTable {
     }
 
     @Test
-    public void test() throws DiceContainerUnsupportedIdException, DieRolledValueOutOfBoundException, DieRolledStateNotChangedException {
+    public void checkCalculateScore_ParamAsInstructionExample_ExpectedScoreBoardRepresentationAs2_42_0_0_40_0_1_30_0_1() throws DiceContainerUnsupportedIdException, DieRolledValueOutOfBoundException, DieRolledStateNotChangedException {
 
         diceContainer = new DiceContainer();
         patternCard = new PatternCard(diceContainer, 13,"FractalDrop",3,"040y6r020000rp1by000");
@@ -176,6 +177,18 @@ public class TestTable {
         table.calculateScores();
         assertEquals("2;42;0/0;40;0/1;30;0/1", table.getScoreboard().getRepresentation());
 
+    }
+
+    @Test(expected = PlayersHaveAllChosenAPatternCard.class)
+    public void checkAllPlayerHasChosenAPatternCard_ParamAs_ExceptionThrown() throws PlayersHaveAllChosenAPatternCard{
+
+        patternCard = new PatternCard(diceContainer, 13,"FractalDrop",3,"040y6r020000rp1by000");
+
+        table.getPlayers(0).setChosenPatternCard(patternCard);
+        table.getPlayers(1).setChosenPatternCard(patternCard);
+        table.getPlayers(2).setChosenPatternCard(patternCard);
+
+        table.checkAllPlayerHasChosenAPatternCard();
     }
 
 }
