@@ -39,7 +39,6 @@ public class Timer implements Runnable {
             }
 
             if (i >= timer) {
-                System.out.println("è scaduto il timer!");
                 model.timesUp();
             }
 

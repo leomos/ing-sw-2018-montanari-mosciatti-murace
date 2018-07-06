@@ -51,7 +51,22 @@ public class TestDiceArena {
         diceArena.swapDie(7,87);
     }
 
-    /*TODO: giocare in 4 giocatori, fare 10 turni e assicurarsi che escano tutti e 90 i valori */
+    @Test
+    public void checkRolledDiceIntoArena_ThrowDiceTwice_ExpectedSize7(){
+        diceArena.rollDiceIntoArena();
+        assertEquals(7, diceArena.getArena().size());
+    }
+
+    @Test
+    public void checkRemoveDie_DiePresentFirstAndNotPresentAfter_ExpectedTrueAndFalse(){
+        diceArena.rollOneDieIntoDiceArena(0, 12,3);
+        assertEquals(true, diceArena.getArena().contains(12));
+        diceArena.removeDieFromDiceArena(12);
+        assertEquals(false, diceArena.getArena().contains(12));
+    }
+
+
+
     @Test
     public void checkUpdateRepresentation_ParamsAreRandom_CheckValuesAreAcceptable() {
 
