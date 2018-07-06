@@ -152,9 +152,9 @@ public class Table {
 
         //TO FORCE 3 PATTERNCARDS FOR TESTS
 
-        /*toolCardsList.add(0,10);
-        toolCardsList.add(1,5);
-        toolCardsList.add(2,8);*/
+        toolCardsList.add(0,3);
+        toolCardsList.add(1,4);
+        toolCardsList.add(2,5);
 
 
         for(int j = 0; j < 3; j++)
@@ -186,7 +186,7 @@ public class Table {
      */
     private void setPatternCardsToPlayer(){
         ArrayList<Integer> patternCardsList = new ArrayList<>();
-        for (Integer i = 0; i < 12; i++)
+        for (Integer i = 0; i < patternCards.size()/2; i++)
             patternCardsList.add(i);
 
         Collections.shuffle(patternCardsList);
@@ -195,10 +195,10 @@ public class Table {
             ArrayList<PatternCard> patternCardsToPlayer = new ArrayList<>();
             int val = patternCardsList.get(j);
             patternCardsToPlayer.add(patternCards.get(val));
-            patternCardsToPlayer.add(patternCards.get(val + 12));
+            patternCardsToPlayer.add(patternCards.get(val + patternCards.size()/2));
             val = patternCardsList.get(11 - j);
             patternCardsToPlayer.add(patternCards.get(val));
-            patternCardsToPlayer.add(patternCards.get(val + 12));
+            patternCardsToPlayer.add(patternCards.get(val + patternCards.size()/2));
             players.get(j).setPatternCards(patternCardsToPlayer);
         }
     }
@@ -274,7 +274,7 @@ public class Table {
      * PlayersHaveAllChosenAPatternCard and the game is ready to start the main phase
      * @throws PlayersHaveAllChosenAPatternCard when all players have chosen a pattern card
      */
-    public void checkAllPlayerHasChosenAPatternCard() throws PlayersHaveAllChosenAPatternCard {
+    public synchronized void checkAllPlayerHasChosenAPatternCard() throws PlayersHaveAllChosenAPatternCard {
 
         for(Player player : this.players)
             if(!player.hasChosenPatternCard())
