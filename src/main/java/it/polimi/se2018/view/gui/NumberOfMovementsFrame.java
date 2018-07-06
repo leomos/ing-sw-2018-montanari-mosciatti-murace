@@ -3,6 +3,7 @@ package it.polimi.se2018.view.gui;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class NumberOfMovementsFrame extends ToolCardFrame {
 
@@ -60,7 +61,13 @@ public class NumberOfMovementsFrame extends ToolCardFrame {
 
     @Override
     public int getValue() {
-        while(i == -1) {}
+        while(i == -1) {
+            try {
+                TimeUnit.MILLISECONDS.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         return i;
     }
 

@@ -235,6 +235,7 @@ public class ViewClientGUI extends ViewClient {
 
     @Override
     public void handleDisconnection() {
+        swingPhase.close();
         System.out.println("Disconnesso!");
         this.serverInterface = null;
         this.executor.shutdownNow();

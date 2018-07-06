@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class ConfirmPositionFrame extends ToolCardFrame {
 
@@ -27,21 +28,45 @@ public class ConfirmPositionFrame extends ToolCardFrame {
         SwingPatternCard patternCard = new SwingPatternCard(messagePatternCard, false);
         SwingDiceOnPatternCard diceOnPatternCard = new SwingDiceOnPatternCard(messageDiceOnPatternCard, messagePatternCard, patternCard.getPatternCard(), false);
 
-        JLabel label = new JLabel("Select a couple of dice from your patternCard");
+        JLabel label = new JLabel("Select two positions");
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout());
+        String s = "INITIAL POSITION (COLUMN - ROW): ";
+        String t = "FINAL POSITION (COLUMN - ROW): ";
+        JLabel initialPosition = new JLabel(s, SwingConstants.CENTER);
+        JLabel finalPosition = new JLabel(t, SwingConstants.CENTER);
+
+        panel.setPreferredSize(new Dimension(300, 250));
+        panel.add(diceOnPatternCard);
+        panel.add(initialPosition);
+        panel.add(finalPosition);
 
         for (int i=0; i<20; i++) {
             int finalN = i;
             diceOnPatternCard.getPc().get(i).addActionListener(actionListener -> {
-                    if (row1==-1 && col1==-1) {
-                        row1 = finalN % 5;
-                        col1 = finalN / 5;
-                    }
-                    else if (row2==-1 && col2==-1) {
-                        row2 = finalN % 5;
-                        col2 = finalN / 5;
-                    }
+                if (row1==-1 && col1==-1) {
+                    row1 = finalN % 5;
+                    col1 = finalN / 5;
+                    initialPosition.setText(s + col1 + " - " + row1);
+                }
+                else if (row2==-1 && col2==-1) {
+                    row2 = finalN % 5;
+                    col2 = finalN / 5;
+                    finalPosition.setText(t + col2 + " - " + row2);
+                }
             });
         }
+
+        JButton b = new JButton("RESET CHOICES");
+        b.addActionListener(actionListener -> {
+            initialPosition.setText(s);
+            finalPosition.setText(t);
+            col1 = -1;
+            row1 = -1;
+            col2 = -1;
+            row2 = -1;
+        });
 
         JFrame frame = new JFrame();
         new JDialog(frame, "", true);
@@ -50,79 +75,25 @@ public class ConfirmPositionFrame extends ToolCardFrame {
         JButton button = new JButton("CONTINUE");
         button.addActionListener(actionListener -> {
                 if (row1 != -1 && col1 != -1 && row2 != -1 && col2 != -1) {
-                    JFrame f = new JFrame();
-                    d = new JDialog(f, "", Dialog.ModalityType.APPLICATION_MODAL);
-                    d.addWindowListener(new WindowListener() {
-                        @Override
-                        public void windowOpened(WindowEvent e) {
-
-                        }
-
-                        @Override
-                        public void windowClosing(WindowEvent e) {
-
-                        }
-
-                        @Override
-                        public void windowClosed(WindowEvent e) {
-                            dispose();
-                        }
-
-                        @Override
-                        public void windowIconified(WindowEvent e) {
-
-                        }
-
-                        @Override
-                        public void windowDeiconified(WindowEvent e) {
-
-                        }
-
-                        @Override
-                        public void windowActivated(WindowEvent e) {
-
-                        }
-
-                        @Override
-                        public void windowDeactivated(WindowEvent e) {
-
-                        }
-                    });
-
-                    d.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-
-                    JLabel l = new JLabel("Do you confirm?");
-                    JLabel label1 = new JLabel("Old position: (" + Integer.toString(row1) + "," + Integer.toString(col1) + ")", SwingConstants.CENTER);
-                    JLabel label2 = new JLabel("New position: (" + Integer.toString(row2) + "," + Integer.toString(col2) + ")", SwingConstants.CENTER);
-                    JPanel panel = new JPanel();
-                    panel.setLayout(new GridLayout(2,1));
-                    panel.add(label1);
-                    panel.add(label2);
-                    JButton b = new JButton("CONFIRM");
-                    b.addActionListener(actionlistener -> {
-                            v.add(row1);
-                            v.add(col1);
-                            v.add(row2);
-                            v.add(col2);
-                            d.dispose();
-                    });
-                    d.setLayout(new BorderLayout());
-                    d.add(l, BorderLayout.NORTH);
-                    d.add(panel, BorderLayout.CENTER);
-                    d.add(b, BorderLayout.SOUTH);
-                    d.setSize(500, 300);
-                    d.setVisible(true);
-                    Dimension screenSize = Toolkit.getDefaultToolkit ().getScreenSize();
-                    d.setLocation ((screenSize.width - 500) / 2, (screenSize.height - 300) / 2);
+                    v.add(row1);
+                    v.add(col1);
+                    v.add(row2);
+                    v.add(col2);
+                    dispose();
                 } else {
                     new MoveFailedFrame("Select two dice");
                 }
         });
 
+        JPanel buttons = new JPanel();
+        buttons.setLayout(new FlowLayout());
+        buttons.add(b);
+        buttons.add(button);
+
         add(label, BorderLayout.NORTH);
-        add(diceOnPatternCard, BorderLayout.CENTER);
-        add(button, BorderLayout.SOUTH);
-        setSize(new Dimension(250, 350));
+        add(panel, BorderLayout.CENTER);
+        add(buttons, BorderLayout.SOUTH);
+        setSize(new Dimension(300, 400));
 
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setResizable(false);
@@ -134,7 +105,13 @@ public class ConfirmPositionFrame extends ToolCardFrame {
 
     @Override
     public ArrayList<Integer> getValues() {
-        while(v.isEmpty()) {}
+        while(v.isEmpty()) {
+            try {
+                TimeUnit.MILLISECONDS.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         return v;
     }
 

@@ -82,7 +82,7 @@ public class IncrementedValueFrame extends ToolCardFrame {
     public ArrayList<Integer> getValues(){
         while(values.size() != 2) {
             try {
-                TimeUnit.SECONDS.sleep(1);
+                TimeUnit.MILLISECONDS.sleep(200);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
