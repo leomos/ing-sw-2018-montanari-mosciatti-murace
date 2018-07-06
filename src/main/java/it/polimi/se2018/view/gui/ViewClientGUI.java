@@ -269,7 +269,7 @@ public class ViewClientGUI extends ViewClient {
     }
 
     private boolean tryToReconnect() {
-        if(this.reconnect(idClient, 0)) {
+        if(this.reconnect(idClient, this.connectionType)) {
             initNewExecutor();
             startHeartbeating(idClient);
             return false;

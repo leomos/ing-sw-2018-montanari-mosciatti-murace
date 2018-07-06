@@ -1,5 +1,6 @@
 package it.polimi.se2018.model;
 
+import it.polimi.se2018.model.container.*;
 import it.polimi.se2018.model.container.DiceContainer;
 import it.polimi.se2018.model.container.DieRolledValueOutOfBoundException;
 import it.polimi.se2018.model.patternCard.CellIsEmptyException;
@@ -72,5 +73,58 @@ public class TestPatternCardCell {
             e.printStackTrace();
         }
         assertEquals(-1, patternCardCell.getRolledDieId());
+    }
+
+    @Test(expected = CellIsEmptyException.class)
+    public void checkRemoveDie_NoDieInCell_ExpeptionThrown() throws CellIsEmptyException{
+        patternCardCell.removeDie();
+    }
+
+    @Test
+    public void checkDieValidity_RedDieOnBlueCellWithAndWithoutIgnoreColorConstraint_ExpectedTrueAndFalse(){
+        patternCardCell = new PatternCardCell(DieColor.BLUE, 0);
+        Die die = new Die(DieColor.RED);
+        try {
+            die.setRolledValue(4);
+        } catch (DieRolledValueOutOfBoundException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals(false, patternCardCell.checkDieValidity(die.getRolledValue(), die.getColor(), false, false));
+        assertEquals(true, patternCardCell.checkDieValidity(die.getRolledValue(), die.getColor(), false, true));
+
+    }
+
+    @Test
+    public void checkDieValidity_DieWithWrongValueComparedToCellWithAndWithoutIgnoreColorConstraint_ExpectedTrueAndFalse(){
+        patternCardCell = new PatternCardCell(null, 2);
+        Die die = new Die(DieColor.RED);
+        try {
+            die.setRolledValue(4);
+        } catch (DieRolledValueOutOfBoundException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals(false, patternCardCell.checkDieValidity(die.getRolledValue(), die.getColor(), false, false));
+        assertEquals(true, patternCardCell.checkDieValidity(die.getRolledValue(), die.getColor(), true, false));
+
+    }
+
+    @Test
+    public void checkDieValidity_RedDieWithValueOf4OnEmptyCell_ExpectedTrue(){
+        patternCardCell = new PatternCardCell(null, 0);
+        Die die = new Die(DieColor.RED);
+
+        try {
+            die.setRolledValue(4);
+        } catch (DieRolledValueOutOfBoundException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals(true, patternCardCell.checkDieValidity(die.getRolledValue(), die.getColor(), false, false));
+        assertEquals(true, patternCardCell.checkDieValidity(die.getRolledValue(), die.getColor(), false, true));
+        assertEquals(true, patternCardCell.checkDieValidity(die.getRolledValue(), die.getColor(), true, false));
+        assertEquals(true, patternCardCell.checkDieValidity(die.getRolledValue(), die.getColor(), true, true));
+
     }
 }

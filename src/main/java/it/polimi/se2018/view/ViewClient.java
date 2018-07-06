@@ -103,6 +103,11 @@ public abstract class ViewClient {
 
     public abstract void setIdClient(int idClient);
 
+    /**
+     * Starts an "heartbeat" where every period of time, to remind the server that it is still connected.
+     * If heartbeat stops arriving to the server, the server will consider this client disconnected
+     * @param id
+     */
     public void startHeartbeating(int id) {
         task = () -> {
             try {
@@ -122,13 +127,24 @@ public abstract class ViewClient {
         System.out.println("Heartbeat started for client " + id);
     }
 
+    /**
+     * Handle disconnection is invoked by the serverImplementationSocket or by the catch of
+     * a remoteException. It stops the heartbeat and set server interface to null
+     */
     public void handleDisconnection() {
         System.out.println("Problema di connessione!");
-        // QUESTE DUE OPERAZIONI VANNO FATTE ASSOLUTAMENTE NELLE IMPLEMENTAZIONI DI QUESTO METODO!!!
         this.serverInterface = null;
         this.executor.shutdown();
     }
 
+    /**
+     * When the player tries to reconnect, it does the same as in main of client but it calls serverInterface.reconnect()
+     * instead of serverInterface.register(). This way the server checks if the room is still going and in that case,
+     * it puts the player back in the game
+     * @param id player trying to reconnect
+     * @param connectionType player connection
+     * @return false if the reconnect fails, true otherwise
+     */
     protected Boolean reconnect(int id, int connectionType) {
         switch (connectionType) {
             case 0:
@@ -160,6 +176,9 @@ public abstract class ViewClient {
         return false;
     }
 
+    /**
+     * Starts heartbeating
+     */
     protected void initNewExecutor() {
         this.executor = Executors.newScheduledThreadPool(1);
     }
