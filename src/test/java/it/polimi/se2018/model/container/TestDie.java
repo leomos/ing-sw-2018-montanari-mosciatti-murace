@@ -131,4 +131,31 @@ public class TestDie {
         assertEquals(false, d.isRolled());
         assertEquals(0, d.getRolledValue());
     }
+
+    @Test
+    public void turnAround_ReturnShouldBe1() {
+        try {
+            die.setRolledValue(6);
+            try {
+                die.setRolled(true);
+            } catch (DieRolledStateNotChangedException e) {
+                e.printStackTrace();
+            }
+        } catch (DieRolledValueOutOfBoundException e) {
+            e.printStackTrace();
+        }
+        die.turnAround();
+        assertEquals(1, die.getRolledValue());
+    }
+
+    @Test
+    public void turnAround_ReturnShouldBe6() {
+        try {
+            die.setRolledValue(6);
+        } catch (DieRolledValueOutOfBoundException e) {
+            e.printStackTrace();
+        }
+        die.turnAround();
+        assertEquals(6, die.getRolledValue());
+    }
 }
