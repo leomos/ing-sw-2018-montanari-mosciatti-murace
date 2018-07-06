@@ -5,8 +5,6 @@ import it.polimi.se2018.model.events.ModelChangedMessagePatternCard;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -109,7 +107,7 @@ public class ConfirmPositionFrame extends ToolCardFrame {
 
     @Override
     public ArrayList<Integer> getValues() {
-        while(v.isEmpty()) {
+        while(v.size() != 4) {
             try {
                 TimeUnit.MILLISECONDS.sleep(200);
             } catch (InterruptedException e) {

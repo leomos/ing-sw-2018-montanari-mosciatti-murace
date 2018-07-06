@@ -129,7 +129,6 @@ public abstract class ViewClient {
         this.executor.shutdown();
     }
 
-    //TODO: cambiare host
     protected Boolean reconnect(int id, int connectionType) {
         switch (connectionType) {
             case 0:
