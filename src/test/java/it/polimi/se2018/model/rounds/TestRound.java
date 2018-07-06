@@ -5,6 +5,7 @@ import it.polimi.se2018.model.container.DiceContainer;
 import org.junit.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static org.junit.Assert.*;
 
@@ -68,6 +69,11 @@ public class TestRound {
         players.add(1);
         players.add(0);
         round.setPlayers(players);
+        HashMap<Integer, String> HM = new HashMap<>();
+        HM.put(0, "Mat");
+        HM.put(1, "Leo");
+        HM.put(34, "Ale");
+        table = new Table(HM);
         round.setFirstPlayer(0);
         for (int i = 0; i < 5; i++) {
             try {
@@ -85,6 +91,11 @@ public class TestRound {
         players.add(34);
         players.add(1);
         players.add(0);
+        HashMap<Integer, String> HM = new HashMap<>();
+        HM.put(0, "Mat");
+        HM.put(1, "Leo");
+        HM.put(34, "Ale");
+        table = new Table(HM);
         round.setPlayers(players);
         try {
             round.setFirstPlayer(1);
@@ -105,6 +116,11 @@ public class TestRound {
         players.add(1);
         players.add(0);
         round.setPlayers(players);
+        HashMap<Integer, String> HM = new HashMap<>();
+        HM.put(0, "Mat");
+        HM.put(1, "Leo");
+        HM.put(34, "Ale");
+        table = new Table(HM);
         try {
             round.setFirstPlayer(0);
         } catch (RoundFirstPlayerAlreadySetException roundFirstPlayerAlreadySet) {
@@ -121,6 +137,11 @@ public class TestRound {
         players.add(1);
         players.add(0);
         round.setPlayers(players);
+        HashMap<Integer, String> HM = new HashMap<>();
+        HM.put(0, "Mat");
+        HM.put(1, "Leo");
+        HM.put(34, "Ale");
+        table = new Table(HM);
         try {
             round.setFirstPlayer(34);
         } catch (RoundFirstPlayerAlreadySetException roundFirstPlayerAlreadySet) {
@@ -137,6 +158,11 @@ public class TestRound {
         players.add(1);
         players.add(0);
         round.setPlayers(players);
+        HashMap<Integer, String> HM = new HashMap<>();
+        HM.put(0, "Mat");
+        HM.put(1, "Leo");
+        HM.put(34, "Ale");
+        table = new Table(HM);
         try {
             round.setFirstPlayer(34);
         } catch (RoundFirstPlayerAlreadySetException roundFirstPlayerAlreadySet) {
@@ -156,6 +182,12 @@ public class TestRound {
         players.add(1);
         players.add(0);
         round.setPlayers(players);
+        HashMap<Integer, String> HM = new HashMap<>();
+        HM.put(0, "Mat");
+        HM.put(1, "Leo");
+        HM.put(34, "Ale");
+        HM.put(21, "Ale");
+        table = new Table(HM);
         try {
             round.setFirstPlayer(34);
         } catch (RoundFirstPlayerAlreadySetException roundFirstPlayerAlreadySet) {

@@ -13,6 +13,7 @@ import java.net.Socket;
 import java.rmi.RemoteException;
 
 /**
+ * Implementation of ServerInterface for clients connecting with socket
  * @see it.polimi.se2018.network.ServerInterface
  */
 public class ServerImplementationSocket extends Thread implements ServerInterface<Socket> {
@@ -74,7 +75,6 @@ public class ServerImplementationSocket extends Thread implements ServerInterfac
 
             this.objectInputStream = new ObjectInputStream(client.getInputStream());
             while((received = this.objectInputStream.readObject()) != null) {
-                System.out.println(received);
                 if(received instanceof MethodCallMessage) {
                     methodCallMessage = (MethodCallMessage) received;
                     this.start();

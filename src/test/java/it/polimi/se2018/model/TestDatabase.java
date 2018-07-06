@@ -33,7 +33,7 @@ public class TestDatabase {
 
     @Test
     public void loadPToolCards_ParamAs3_getDescription(){
-        assertEquals("Muovi esattamente due dadi, rispettando tutte le restrizioni di piazzamento", database.loadToolCards().get(3).getDescription());
+        assertEquals("Move exactly two dice, obeying all placement restrictions", database.loadToolCards().get(3).getDescription());
     }
 
     @Test

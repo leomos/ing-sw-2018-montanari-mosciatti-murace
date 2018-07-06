@@ -28,13 +28,13 @@ public class TestToolCardContainer {
     @Test
     public void setToolCardInPlay_ControlName() {
         toolCardContainer.setToolCardInPlay(0);
-            assertEquals("Pinza Sgrossatrice", toolCardContainer.getToolCardInPlay().get(0).getName());
+            assertEquals("Grozing Pliers", toolCardContainer.getToolCardInPlay().get(0).getName());
     }
 
     @Test
     public void setToolCardInPlay_ControlDescription() {
         toolCardContainer.setToolCardInPlay(0);
-            assertEquals("Dopo aver scelto un dado, aumenta o diminuisci il valore del dado scelto di 1. Non puoi cambiare un 6 in 1 o un 1 in 6.", toolCardContainer.getToolCardInPlay().get(0).getDescription());
+            assertEquals("After drafting, increase or decrease the value of the drafted die by 1. 1 may not change to 6, or 6 to 1.", toolCardContainer.getToolCardInPlay().get(0).getDescription());
 
     }
 
