@@ -16,7 +16,6 @@ public class SwingScoreboard extends JPanel {
         setBackground(new Color(0, 0, 0, 0));
 
         String id;
-        String t;
         String points;
 
         String[] s = scoreboard.split("/");
@@ -26,11 +25,10 @@ public class SwingScoreboard extends JPanel {
             String[] a = s[i].split(";");
             id = "" + a[0];
             points = "" + a[1];
-            t = "" + a[2];
 
             ArrayList<Integer> player = new ArrayList<>();
             player.add(Integer.parseInt(id));
-            player.add(Integer.parseInt(points) + Integer.parseInt(t));
+            player.add(Integer.parseInt(points));
             values.add(player);
         }
 

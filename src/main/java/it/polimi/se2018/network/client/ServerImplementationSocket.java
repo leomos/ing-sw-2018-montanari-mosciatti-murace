@@ -74,7 +74,6 @@ public class ServerImplementationSocket extends Thread implements ServerInterfac
 
             this.objectInputStream = new ObjectInputStream(client.getInputStream());
             while((received = this.objectInputStream.readObject()) != null) {
-                System.out.println(received);
                 if(received instanceof MethodCallMessage) {
                     methodCallMessage = (MethodCallMessage) received;
                     this.start();
