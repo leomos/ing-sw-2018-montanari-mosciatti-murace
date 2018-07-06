@@ -24,17 +24,8 @@ public class TestDie {
 
     @Test
     public void setRolled_TrueAsParam_isRolledShouldBeTrue() {
-        try {
-            die.setRolled(true);
-        } catch (DieRolledStateNotChangedException e) {
-            fail();
-        }
+        die.setRolled(true);
         assertTrue(die.isRolled());
-    }
-
-    @Test(expected = DieRolledStateNotChangedException.class)
-    public void setRolled_FalseAsParam_ExceptionThrown() throws DieRolledStateNotChangedException {
-        die.setRolled(false);
     }
 
     @Test
@@ -108,11 +99,7 @@ public class TestDie {
             e.printStackTrace();
         }
 
-        try {
-            d.setRolled(true);
-        } catch (DieRolledStateNotChangedException e) {
-            e.printStackTrace();
-        }
+        d.setRolled(true);
 
         assertEquals(5, d.getRolledValue());
 
@@ -136,11 +123,7 @@ public class TestDie {
     public void turnAround_ReturnShouldBe1() {
         try {
             die.setRolledValue(6);
-            try {
-                die.setRolled(true);
-            } catch (DieRolledStateNotChangedException e) {
-                e.printStackTrace();
-            }
+            die.setRolled(true);
         } catch (DieRolledValueOutOfBoundException e) {
             e.printStackTrace();
         }

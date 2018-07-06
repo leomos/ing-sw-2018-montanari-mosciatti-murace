@@ -31,12 +31,8 @@ public class TestDiceContainer {
 
     @Test
     public void getUnrolledDice_TwoDiceSetAsRolled_sizeShouldBe88() {
-        try {
-            diceContainer.getDie(0).setRolled(true);
-            diceContainer.getDie(1).setRolled(true);
-        } catch (DieRolledStateNotChangedException e) {
-            fail();
-        }
+        diceContainer.getDie(0).setRolled(true);
+        diceContainer.getDie(1).setRolled(true);
         assertEquals(88, diceContainer.getUnrolledDice().size());
     }
 

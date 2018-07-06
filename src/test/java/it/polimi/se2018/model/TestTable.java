@@ -1,7 +1,6 @@
 package it.polimi.se2018.model;
 
 import it.polimi.se2018.model.container.DiceContainer;
-import it.polimi.se2018.model.container.DieRolledStateNotChangedException;
 import it.polimi.se2018.model.container.DieRolledValueOutOfBoundException;
 import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.patternCard.PatternCard;
@@ -104,7 +103,7 @@ public class TestTable {
     }
 
     @Test
-    public void test() throws DieRolledValueOutOfBoundException, DieRolledStateNotChangedException {
+    public void test() throws DieRolledValueOutOfBoundException {
 
         diceContainer = new DiceContainer();
         patternCard = new PatternCard(diceContainer, 13,"FractalDrop",3,"040y6r020000rp1by000");
