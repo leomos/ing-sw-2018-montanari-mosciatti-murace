@@ -88,7 +88,7 @@ public class ViewClientConsole extends ViewClient  {
     }
 
     public void update(ModelChangedMessagePlayerAFK modelChangedMessagePlayerAFK) {
-        if (modelChangedMessagePlayerAFK.getPlayer() == idClient) {
+        if (modelChangedMessagePlayerAFK.getPlayer() == idClient && gamePhase == GAMEPHASE) {
             System.out.println(modelChangedMessagePlayerAFK.getMessage());
             clientSuspended = true;
             viewClientConsolePrint.setSuspended(true);
@@ -210,6 +210,7 @@ public class ViewClientConsole extends ViewClient  {
         System.out.println("You are not suspended anymore!");
         clientSuspended = false;
         viewClientConsolePrint.setSuspended(false);
+        canIPlay = true;
         try {
             serverInterface.notify(new PlayerMessageNotAFK(idClient));
         } catch (RemoteException e) {
@@ -253,7 +254,7 @@ public class ViewClientConsole extends ViewClient  {
         if(idPlayerPlaying == idClient){
 
             ArrayList<Integer> returnValues = new ArrayList<>();
-            viewClientConsolePrint.getPositionInPatternCard();
+            returnValues = viewClientConsolePrint.getPositionInPatternCard();
             if (returnValues.isEmpty())
                 unSuspend();
 
@@ -271,8 +272,7 @@ public class ViewClientConsole extends ViewClient  {
     public ArrayList<Integer> getSinglePositionInPatternCard(ArrayList<Integer> listOfAvailablePositions){
         if(idPlayerPlaying == idClient) {
 
-            ArrayList<Integer> returnValues = new ArrayList<>();
-            returnValues = viewClientConsolePrint.getSinglePositionInPatternCard(listOfAvailablePositions);
+            ArrayList<Integer> returnValues = viewClientConsolePrint.getSinglePositionInPatternCard(listOfAvailablePositions);
             if(returnValues.isEmpty())
                 unSuspend();
 
@@ -345,8 +345,7 @@ public class ViewClientConsole extends ViewClient  {
     public Integer getValueForDie(){
         if(idPlayerPlaying == idClient) {
 
-            int returnValues = -1;
-            returnValues = viewClientConsolePrint.getValueForDie();
+            int returnValues =  viewClientConsolePrint.getValueForDie();
             if (returnValues == -1)
                 unSuspend();
 

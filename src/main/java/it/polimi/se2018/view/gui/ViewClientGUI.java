@@ -82,7 +82,7 @@ public class ViewClientGUI extends ViewClient {
     }
 
     public void update(ModelChangedMessagePlayerAFK modelChangedMessagePlayerAFK) {
-        if (modelChangedMessagePlayerAFK.getPlayer()==idClient) {
+        if (modelChangedMessagePlayerAFK.getPlayer()==idClient && gamePhase == GAMEPHASE) {
             SuspendFrame frame;
             swingPhase.close();
             frame = new SuspendFrame();
@@ -142,10 +142,7 @@ public class ViewClientGUI extends ViewClient {
     public ArrayList<Integer> getPositionInPatternCard(){
         if(idPlayerPlaying == idClient){
 
-            ArrayList<Integer> returnValues = new ArrayList<>();
-            swingPhase.getPositionInPatternCard();
-
-            return returnValues;
+            return swingPhase.getPositionInPatternCard();
 
         }
         return null;
@@ -155,10 +152,7 @@ public class ViewClientGUI extends ViewClient {
     public ArrayList<Integer> getSinglePositionInPatternCard(ArrayList<Integer> listOfAvailablePositions){
         if(idPlayerPlaying == idClient) {
 
-            ArrayList<Integer> returnValues;
-            returnValues = swingPhase.getSinglePositionInPatternCard(listOfAvailablePositions);
-
-            return returnValues;
+            return swingPhase.getSinglePositionInPatternCard(listOfAvailablePositions);
 
         }
         return null;
@@ -168,11 +162,7 @@ public class ViewClientGUI extends ViewClient {
     public ArrayList<Integer> getIncrementedValue() {
         if (idPlayerPlaying == idClient) {
 
-            ArrayList<Integer> returnValues;
-            returnValues = swingPhase.getIncrementedValue();
-
-
-            return returnValues;
+            return swingPhase.getIncrementedValue();
 
         }
         return null;
@@ -182,10 +172,7 @@ public class ViewClientGUI extends ViewClient {
     public Integer getDieFromDiceArena(){
         if(idPlayerPlaying == idClient) {
 
-            int returnValues = -1;
-            returnValues = swingPhase.getDieFromDiceArena();
-
-            return returnValues;
+            return swingPhase.getDieFromDiceArena();
 
         }
         return null;
@@ -195,11 +182,7 @@ public class ViewClientGUI extends ViewClient {
     public ArrayList<Integer> getDieFromRoundTrack(){
         if(idPlayerPlaying == idClient) {
 
-            ArrayList<Integer> returnValues;
-            returnValues = swingPhase.getDieFromRoundTrack();
-
-
-            return returnValues;
+            return  swingPhase.getDieFromRoundTrack();
 
         }
         return null;
@@ -209,10 +192,7 @@ public class ViewClientGUI extends ViewClient {
     public Integer getValueForDie(){
         if(idPlayerPlaying == idClient) {
 
-            int returnValues = -1;
-            returnValues = swingPhase.getValueForDie();
-
-            return returnValues;
+            return swingPhase.getValueForDie();
 
         }
         return null;
@@ -223,11 +203,8 @@ public class ViewClientGUI extends ViewClient {
     public ArrayList<Integer> getDoublePositionInPatternCard(){
         if(idPlayerPlaying == idClient) {
 
-            ArrayList<Integer> returnValues;
-            returnValues = swingPhase.getDoublePositionInPatternCard();
+            return swingPhase.getDoublePositionInPatternCard();
 
-
-            return returnValues;
 
         }
         return null;
