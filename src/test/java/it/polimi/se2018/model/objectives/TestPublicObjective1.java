@@ -29,6 +29,12 @@ public class TestPublicObjective1 {
     }
 
     @Test
+    public void getter() {
+        assertEquals("Rows with no repeated colors", publicObjective1.getDescription());
+        assertEquals("Row Color Variety", publicObjective1.getName());
+    }
+
+    @Test
     public void checkCalculateScore_ParamAsInstructionExample_ReturnShouldBe10() throws DieRolledValueOutOfBoundException {
         //RED
         diceContainer.getDie(0).setRolledValue(2);
