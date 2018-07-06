@@ -43,7 +43,7 @@ public class SimpleRoomDispatcherImplementation implements RoomDispatcherInterfa
         this.currentClientsWaiting = new ConcurrentLinkedQueue<>();
         this.connectedClients = new HashSet<>();
         this.rooms = new HashSet<>();
-        this.heartbeatHandler = new HeartbeatHandler(250, 750, this);
+        this.heartbeatHandler = new HeartbeatHandler(250,1000, this);
         this.clientRoomMap = new HashMap<>();
     }
 

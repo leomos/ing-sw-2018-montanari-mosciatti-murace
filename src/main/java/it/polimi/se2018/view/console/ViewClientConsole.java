@@ -102,6 +102,11 @@ public class ViewClientConsole extends ViewClient  {
     }
 
 
+    /**
+     * Player's pattern card choosing and main move (use of die, tool card and end turn), happens trough this run
+     * When it's is turn he can type to make a move, otherwise it's movement is gonna get rejected here but in the model
+     * as well.
+     */
     public void run(){
 
         do {
@@ -196,6 +201,9 @@ public class ViewClientConsole extends ViewClient  {
 
     }
 
+    /**
+     * If the player gets suspended, if he sends anything, he goes back into the game with this method
+     */
     public void unSuspend(){
         System.out.println("You are not suspended anymore!");
         clientSuspended = false;
@@ -207,6 +215,10 @@ public class ViewClientConsole extends ViewClient  {
         }
     }
 
+    /**
+     * After the player chooses to use a tool card, the main input is disabled through this method
+     * @return boolean
+     */
     @Override
     public Boolean block(){
         if (idPlayerPlaying == idClient)
@@ -215,6 +227,10 @@ public class ViewClientConsole extends ViewClient  {
         return true;
     }
 
+    /**
+     * After the player finishes to use a tool card, the main input is enabled again through this method
+     * @return boolean
+     */
     @Override
     public Boolean free(){
         canIPlay = true;
@@ -226,6 +242,10 @@ public class ViewClientConsole extends ViewClient  {
         return true;
     }
 
+    /**
+     * Method needed for tool cards
+     * @return player choice or empty array list if the player's turn finished while he was choosing the values
+     */
     @Override
     public ArrayList<Integer> getPositionInPatternCard(){
         if(idPlayerPlaying == idClient){
@@ -241,6 +261,10 @@ public class ViewClientConsole extends ViewClient  {
         return null;
     }
 
+    /**
+     * Method needed for tool cards
+     * @return player choice or empty array list if the player's turn finished while he was choosing the values
+     */
     @Override
     public ArrayList<Integer> getSinglePositionInPatternCard(ArrayList<Integer> listOfAvailablePositions){
         if(idPlayerPlaying == idClient) {
@@ -254,6 +278,10 @@ public class ViewClientConsole extends ViewClient  {
         return null;
     }
 
+    /**
+     * Method needed for tool cards
+     * @return player choice or empty array list if the player's turn finished while he was choosing the values
+     */
     @Override
     public ArrayList<Integer> getIncrementedValue() {
         if (idPlayerPlaying == idClient) {
@@ -269,6 +297,10 @@ public class ViewClientConsole extends ViewClient  {
         return null;
     }
 
+    /**
+     * Method needed for tool cards
+     * @return player choice or -1 if the player's turn finished while he was choosing the values
+     */
     @Override
     public Integer getDieFromDiceArena(){
         if(idPlayerPlaying == idClient) {
@@ -284,6 +316,10 @@ public class ViewClientConsole extends ViewClient  {
         return null;
     }
 
+    /**
+     * Method needed for tool cards
+     * @return player choice or empty array list if the player's turn finished while he was choosing the values
+     */
     @Override
     public ArrayList<Integer> getDieFromRoundTrack(){
         if(idPlayerPlaying == idClient) {
@@ -299,6 +335,10 @@ public class ViewClientConsole extends ViewClient  {
         return null;
     }
 
+    /**
+     * Method needed for tool cards
+     * @return player choice or -1 if the player's turn finished while he was choosing the values
+     */
     @Override
     public Integer getValueForDie(){
         if(idPlayerPlaying == idClient) {
@@ -315,6 +355,10 @@ public class ViewClientConsole extends ViewClient  {
 
     }
 
+    /**
+     * Method needed for tool card
+     * @return player choice or empty array list if the player's turn finished while he was choosing the values
+     */
     @Override
     public ArrayList<Integer> getDoublePositionInPatternCard(){
         if(idPlayerPlaying == idClient) {
@@ -356,7 +400,6 @@ public class ViewClientConsole extends ViewClient  {
             initNewExecutor();
             startHeartbeating(idClient);
         } else {
-            //TODO: modificare in base al tipo di view
             System.out.println("Room chiusa");
         }
     }

@@ -3,7 +3,6 @@ package it.polimi.se2018.view.console;
 import it.polimi.se2018.model.events.*;
 
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 public class ViewClientConsoleEndGame extends ViewClientConsolePrint {
 
@@ -15,12 +14,20 @@ public class ViewClientConsoleEndGame extends ViewClientConsolePrint {
         this.idClient = idClient;
     }
 
+    /**
+     * Update invoked when the 10 round are over
+     * @param message contains the final scoreboard
+     */
     @Override
     public void update(ModelChangedMessageEndGame message) {
         scoreboardMessage = message;
         this.print();
     }
 
+    /**
+     * Update invoked when only one player is left active in the room
+     * @param message contains the only player not suspended
+     */
     @Override
     public void update(ModelChangedMessageOnlyOnePlayerLeft message) {
         System.out.println("\n\nOnly player " + message.getPlayerIdLeft() + " - " + message.getPlayers().get(message.getPlayerIdLeft()) + " is left in the game!");
@@ -72,6 +79,9 @@ public class ViewClientConsoleEndGame extends ViewClientConsolePrint {
 
     }
 
+    /**
+     * Prints the scoreboard
+     */
     @Override
     public void print() {
 

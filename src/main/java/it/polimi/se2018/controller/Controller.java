@@ -25,7 +25,7 @@ public class Controller implements Observer<PlayerMessage> {
     private MessageVisitorImplementationController messageVisitorImplementationController;
 
     /**
-     * @param view
+     * @param view virtual view so that the controller can invoke methods on views
      */
     public void addView(VirtualView view){
         this.view = view;
@@ -42,7 +42,6 @@ public class Controller implements Observer<PlayerMessage> {
     }
 
     /**
-     * @param /view network that sends the message
      * @param playerMessage message containing the information about player's move
      */
     @Override
