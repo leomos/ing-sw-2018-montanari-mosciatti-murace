@@ -14,6 +14,11 @@ public class RoundTrackFrame extends ToolCardFrame {
 
     private int die = -1;
 
+    /**
+     * This constructor creates a ToolCardFrame when the player uses ToolCard 5. It shows a JFrame with
+     * dice in RoundTrack. The player has to choose one die
+     * @param roundTrack is an ArrayList of messages that represent dice left in every round
+     */
     public RoundTrackFrame(ArrayList<ModelChangedMessageRound> roundTrack) {
         ArrayList<SwingDiceArena> arena = new ArrayList<>();
 

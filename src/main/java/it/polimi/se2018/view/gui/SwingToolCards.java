@@ -7,8 +7,13 @@ import javax.swing.*;
 import java.awt.*;
 
 public class SwingToolCards extends JPanel {
+
     private JButton b;
 
+    /**
+     * This constructor creates a button which contains the ToolCard sent by message and its cost
+     * @param message represents one ToolCard
+     */
     public SwingToolCards(ModelChangedMessageToolCard message) {
         ImageLoader imageLoader = new ImageLoader();
         ImageIcon icon = new ImageIcon(imageLoader.getToolCard(message.getIdToolCard()));

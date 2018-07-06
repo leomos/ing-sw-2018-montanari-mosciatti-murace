@@ -11,6 +11,12 @@ public class SwingPatternCard extends JPanel {
 
     private String id;
 
+    /**
+     * This constructor generates a JPanel that represent a PatternCard. It contains 20 dice with different background
+     * due to the representation
+     * @param modelChangedMessagePatternCard to represent a PatternCard in model
+     * @param enable to decide if dice to create are to be enable or not
+     */
     public SwingPatternCard(ModelChangedMessagePatternCard modelChangedMessagePatternCard, boolean enable) {
         id = Integer.toString(modelChangedMessagePatternCard.getIdPatternCard());
         JPanel p = new JPanel();

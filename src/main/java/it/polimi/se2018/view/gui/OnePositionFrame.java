@@ -13,6 +13,13 @@ public class OnePositionFrame extends ToolCardFrame {
 
     private int col = -1;
 
+    /**
+     * This constructor creates a ToolCardFrame when the player uses ToolCard 12. It shows a JFrame with
+     * player's PatternCard. The player has to choose a position from the PatternCard
+     * @param messageDiceOnPatternCard to represent dice put in PatternCard during the game
+     * @param messagePatternCard to represent the empty PatternCard
+     * @param listOfAvailablePositions are the positions in which a die could be
+     */
     public OnePositionFrame(ModelChangedMessageDiceOnPatternCard messageDiceOnPatternCard, ModelChangedMessagePatternCard messagePatternCard, ArrayList<Integer> listOfAvailablePositions) {
         SwingPatternCard patternCard = new SwingPatternCard(messagePatternCard, false);
         SwingDiceOnPatternCard diceOnPatternCard = new SwingDiceOnPatternCard(messageDiceOnPatternCard, messagePatternCard, patternCard.getPatternCard(), false);

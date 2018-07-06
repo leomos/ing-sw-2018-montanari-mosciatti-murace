@@ -4,6 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 
 public class WinFrame extends Frame {
+
+    /**
+     * This constructor creates a Frame that shows the message "CONGRATS, YOU WIN!!"
+     */
     public WinFrame() {
         super();
         dialog.setTitle("RESULT");

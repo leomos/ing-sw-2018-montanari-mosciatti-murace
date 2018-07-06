@@ -4,6 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 
 public class DefeatFrame extends Frame {
+
+    /**
+     * This constructor creates a Frame that shows the message "YOU LOSE!!"
+     */
     public DefeatFrame() {
         super();
         dialog.setTitle("RESULT");

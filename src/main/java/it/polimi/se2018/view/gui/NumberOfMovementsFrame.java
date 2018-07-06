@@ -9,6 +9,10 @@ public class NumberOfMovementsFrame extends ToolCardFrame {
 
     private int i = -1;
 
+    /**
+     * This constructor creates a ToolCardFrame when the player uses ToolCard 12. It shows a JFrame with
+     * two RadioButtons. The player has to choose one RadioButton to move one or two dice
+     */
     public NumberOfMovementsFrame(){
 
         JFrame frame = new JFrame();

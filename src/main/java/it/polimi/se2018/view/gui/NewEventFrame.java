@@ -7,6 +7,10 @@ public class NewEventFrame {
 
     private JDialog dialog;
 
+    /**
+     * This constructor creates a JDialog that shows the message of String s
+     * @param s is the message to show
+     */
     public NewEventFrame(String s) {
         JFrame frame = new JFrame();
         dialog = new JDialog(frame, "NEW EVENT", true);

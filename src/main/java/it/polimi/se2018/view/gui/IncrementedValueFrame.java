@@ -11,6 +11,11 @@ public class IncrementedValueFrame extends ToolCardFrame {
 
     private ArrayList<Integer> values = new ArrayList<>();
 
+    /**
+     * This constructor creates a ToolCardFrame when the player uses ToolCard 1. It shows a JFrame with
+     * Dice Arena and two RadioButtons. The player has to choose one die and a RadioButton
+     * @param message to represent Dice Arena in model
+     */
     public IncrementedValueFrame(ModelChangedMessageDiceArena message) {
         SwingDiceArena diceArena = new SwingDiceArena(message);
 

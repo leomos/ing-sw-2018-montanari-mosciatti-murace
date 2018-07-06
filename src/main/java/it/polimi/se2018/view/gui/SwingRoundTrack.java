@@ -10,8 +10,13 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class SwingRoundTrack extends JPanel {
+
     private ArrayList<SwingDiceArena> arena = new ArrayList<>();
 
+    /**
+     * This constructor creates a JPanel that contains 10 disable buttons, one for every round
+     * @param roundtrack is an ArrayList of messages that represent dice left in every round
+     */
     public SwingRoundTrack(ArrayList<ModelChangedMessageRound> roundtrack) {
         setLayout(new FlowLayout());
         setPreferredSize(new Dimension(550, 60));

@@ -9,6 +9,10 @@ public class DieValueFrame extends ToolCardFrame {
 
     private int value = 0;
 
+    /**
+     * This constructor creates a ToolCardFrame when the player uses ToolCard 11. It shows a JFrame with
+     * number from 1 to 6. The player has to choose a value that would be given to a die
+     */
     public DieValueFrame() {
         JFrame frame = new JFrame();
         new JDialog(frame, "DIE VALUE", true);

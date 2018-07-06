@@ -6,6 +6,13 @@ import java.awt.*;
 public class ConfirmationFrame extends JFrame {
     private int isok;
 
+    /**
+     * This method creates a JFrame that shows the move made and asks to confirm it
+     * @param idDie is the id of chosen die
+     * @param x is the column selected in PatternCard
+     * @param y is the row selected in PatternCard
+     * @param toolCard is the id of ToolCard chosen
+     */
     public ConfirmationFrame(String idDie, int x, int y, String toolCard) {
         isok = 0;
         setLayout(new BorderLayout());

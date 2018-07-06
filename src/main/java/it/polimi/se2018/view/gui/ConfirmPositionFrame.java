@@ -20,10 +20,14 @@ public class ConfirmPositionFrame extends ToolCardFrame {
 
     private int col2 = -1;
 
-    private JDialog d;
-
     private ArrayList<Integer> v = new ArrayList<>();
 
+    /**
+     * This constructor creates a ToolCardFrame when the player uses ToolCard 2 or 3. It shows a JFrame with the
+     * representation of PatternCard with the dice. The palyer has to choose 2 positions and confirm his move
+     * @param messageDiceOnPatternCard contains the representation of PatternCard during the game
+     * @param messagePatternCard contains the representation of PatternCard without dice
+     */
     public ConfirmPositionFrame(ModelChangedMessageDiceOnPatternCard messageDiceOnPatternCard, ModelChangedMessagePatternCard messagePatternCard) {
         SwingPatternCard patternCard = new SwingPatternCard(messagePatternCard, false);
         SwingDiceOnPatternCard diceOnPatternCard = new SwingDiceOnPatternCard(messageDiceOnPatternCard, messagePatternCard, patternCard.getPatternCard(), false);

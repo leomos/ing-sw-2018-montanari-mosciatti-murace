@@ -11,6 +11,10 @@ public class Tokens extends JLabel {
         this.num = n;
     }
 
+    /**
+     * This method creates a set of white ovals which represent the tokens
+     * @param g
+     */
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Color c = new Color(240, 248, 255);

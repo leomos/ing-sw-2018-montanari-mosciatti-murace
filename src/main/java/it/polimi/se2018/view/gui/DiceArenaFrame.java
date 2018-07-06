@@ -11,6 +11,11 @@ public class DiceArenaFrame extends ToolCardFrame {
 
     private int id = -1;
 
+    /**
+     * This constructor creates a ToolCardFrame when the player uses ToolCard 5, 6, 8, 9, 10 or 11. It shows a JFrame
+     * with the representation of Dice Arena. The palyer has to choose one die and confirm his move
+     * @param message that represents Dice Arena
+     */
     public DiceArenaFrame(ModelChangedMessageDiceArena message) {
         SwingDiceArena diceArena = new SwingDiceArena(message);
 

@@ -4,8 +4,12 @@ import javax.swing.*;
 import java.awt.*;
 
 public class SuspendFrame extends JDialog {
+
     private JFrame frame;
 
+    /**
+     * This constructor creates a JDialog to make the player know he is suspended
+     */
     public SuspendFrame() {
         frame = new JFrame();
         new JDialog(frame, "SUSPEND", true);
