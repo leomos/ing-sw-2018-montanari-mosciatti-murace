@@ -138,6 +138,10 @@ public class ViewClientGUI extends ViewClient {
             new PlayerReconnectedFrame(modelChangedMessageConnected.getIdClient());
     }
 
+    /**
+     * Method needed for tool cards
+     * @return player choice or empty array list if the player's turn finished while he was choosing the values
+     */
     @Override
     public ArrayList<Integer> getPositionInPatternCard(){
         if(idPlayerPlaying == idClient){
@@ -148,6 +152,10 @@ public class ViewClientGUI extends ViewClient {
         return null;
     }
 
+    /**
+     * Method needed for tool cards
+     * @return player choice or empty array list if the player's turn finished while he was choosing the values
+     */
     @Override
     public ArrayList<Integer> getSinglePositionInPatternCard(ArrayList<Integer> listOfAvailablePositions){
         if(idPlayerPlaying == idClient) {
@@ -158,6 +166,10 @@ public class ViewClientGUI extends ViewClient {
         return null;
     }
 
+    /**
+     * Method needed for tool cards
+     * @return player choice or empty array list if the player's turn finished while he was choosing the values
+     */
     @Override
     public ArrayList<Integer> getIncrementedValue() {
         if (idPlayerPlaying == idClient) {
@@ -168,6 +180,10 @@ public class ViewClientGUI extends ViewClient {
         return null;
     }
 
+    /**
+     * Method needed for tool cards
+     * @return player choice or -1 if the player's turn finished while he was choosing the values
+     */
     @Override
     public Integer getDieFromDiceArena(){
         if(idPlayerPlaying == idClient) {
@@ -178,6 +194,10 @@ public class ViewClientGUI extends ViewClient {
         return null;
     }
 
+    /**
+     * Method needed for tool cards
+     * @return player choice or empty array list if the player's turn finished while he was choosing the values
+     */
     @Override
     public ArrayList<Integer> getDieFromRoundTrack(){
         if(idPlayerPlaying == idClient) {
@@ -188,6 +208,10 @@ public class ViewClientGUI extends ViewClient {
         return null;
     }
 
+    /**
+     * Method needed for tool cards
+     * @return player choice or -1 if the player's turn finished while he was choosing the values
+     */
     @Override
     public Integer getValueForDie(){
         if(idPlayerPlaying == idClient) {
@@ -199,6 +223,10 @@ public class ViewClientGUI extends ViewClient {
 
     }
 
+    /**
+     * Method needed for tool card
+     * @return player choice or empty array list if the player's turn finished while he was choosing the values
+     */
     @Override
     public ArrayList<Integer> getDoublePositionInPatternCard(){
         if(idPlayerPlaying == idClient) {

@@ -135,7 +135,11 @@ public class ViewClientGUIGame extends SwingPhase {
     }
 
 
-
+    /**
+     * Prints the table:
+     * it prints the other player's pattern card, the rounds, the tool cards, the public objectives,
+     * the player's information (pattern card, private objective and tokens left) + the draft pool
+     */
     public void print(){
         jFrame.getContentPane().removeAll();
         jFrame.repaint();
@@ -441,6 +445,10 @@ public class ViewClientGUIGame extends SwingPhase {
         return null;
     }
 
+    /**
+     * Method needed for pattern card n.2, n.3 and n.4 to get a starting and a final position to move a die
+     * @return array list containing the starting and the final positions
+     */
     @Override
     public ArrayList<Integer> getPositionInPatternCard() {
         int myId = -1;
@@ -455,12 +463,20 @@ public class ViewClientGUIGame extends SwingPhase {
         return returnValues;
     }
 
+    /**
+     * Method needed for pattern card so that the player can select one of the dice from the dice arena
+     * @return die chosen
+     */
     @Override
     public Integer getDieFromDiceArena() {
         toolCardFrame = new DiceArenaFrame(diceArena);
         return toolCardFrame.getValue();
     }
 
+    /**
+     * Method needed for tool card n.1
+     * @return array list containing the die chosen and a value to see if he wants to increase or decrease its value
+     */
     @Override
     public ArrayList<Integer> getIncrementedValue() {
         toolCardFrame = new IncrementedValueFrame(diceArena);
@@ -469,6 +485,12 @@ public class ViewClientGUIGame extends SwingPhase {
         return returnValues;
     }
 
+    /**
+     * Get a single position (x and y) that needs to be contained in listOfAvailablePositions.
+     * If list of available positions is empty, the player can insert any positions
+     * @param listOfAvailablePosition positions available
+     * @return array list containing the position chosen by the player
+     */
     @Override
     public ArrayList<Integer> getSinglePositionInPatternCard(ArrayList<Integer> listOfAvailablePosition) {
         int myId = -1;
@@ -483,6 +505,10 @@ public class ViewClientGUIGame extends SwingPhase {
         return returnValues;
     }
 
+    /**
+     * Method needed for tool card n.12 to move either one or two dice
+     * @return array list containing the start and the final positions of the movement(s)
+     */
     @Override
     public ArrayList<Integer> getDoublePositionInPatternCard() {
         int myId = -1;
@@ -504,6 +530,10 @@ public class ViewClientGUIGame extends SwingPhase {
         return returnValues;
     }
 
+    /**
+     * Method needed for tool cards
+     * @return array list containing the die chosen by the player and in which round it appears
+     */
     @Override
     public ArrayList<Integer> getDieFromRoundTrack() {
         toolCardFrame = new RoundTrackFrame(roundTrack);
@@ -512,6 +542,10 @@ public class ViewClientGUIGame extends SwingPhase {
         return returnValues;
     }
 
+    /**
+     * Method needed for pattern card so that the player can choose which value to give to the die
+     * @return value chosen by the player
+     */
     @Override
     public Integer getValueForDie() {
         Integer value;
@@ -521,12 +555,21 @@ public class ViewClientGUIGame extends SwingPhase {
         return value;
     }
 
+    /**
+     * Method to close the JFrame created and the ToolCardFrame if it is already open
+     */
     @Override
     public void close() {
         if(toolCardFrame != null) toolCardFrame.close();
         jFrame.dispose();
     }
 
+    /**
+     * checks if the move choosed by the player is acceptable and generates either a playerMessageDie,
+     * a playerMessageToolCard, player playerMessageEndTurn. If the moves is not correct, it generates a
+     * playerMessage with clientId as -1
+     * @return playerMessage if the move was correct otherwise a playerMessage with clientId as -1
+     */
     @Override
     public PlayerMessage getMainMove() {
 

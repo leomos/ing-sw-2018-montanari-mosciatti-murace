@@ -85,6 +85,9 @@ public class ViewClientGUISetup extends SwingPhase implements ActionListener {
 
     }
 
+    /**
+     * Prints the 4 pattern cards given to the player
+     */
     public void print() {
         SwingPatternCard p1 = new SwingPatternCard(patternCards.get(0), true);
         SwingPatternCard p2 = new SwingPatternCard(patternCards.get(1), true);
@@ -185,6 +188,10 @@ public class ViewClientGUISetup extends SwingPhase implements ActionListener {
         jFrame.setLocation ((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
     }
 
+    /**
+     * Reprint the JFrame when the player push the button b in method print()
+     * @param e
+     */
     public void actionPerformed(ActionEvent e) {
         idPatternCardChosen = idPatternCardChosen + group.getSelection().getActionCommand();
         try {
@@ -195,6 +202,11 @@ public class ViewClientGUISetup extends SwingPhase implements ActionListener {
         }
     }
 
+    /**
+     * Method needed for the player to choose one of the 4 available pattern cards
+     * @param s string inserted by the player
+     * @return pattern card id if the value is accepted, -1 otherwise
+     */
     public Integer askForPatternCard() {
         do {
             try {
@@ -246,11 +258,18 @@ public class ViewClientGUISetup extends SwingPhase implements ActionListener {
         return null;
     }
 
+    /**
+     * Method to close the JFrame created
+     */
     @Override
     public void close() {
         jFrame.dispose();
     }
 
+    /**
+     * Creates a JFrame that contains the PatternCard chosen, the Private Objective and the tokens of the player while
+     * he is waiting for other players' choice
+     */
     public void waiting() {
         jFrame.getContentPane().removeAll();
         jFrame.repaint();
