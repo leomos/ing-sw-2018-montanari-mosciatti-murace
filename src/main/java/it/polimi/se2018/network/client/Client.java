@@ -5,6 +5,8 @@ import it.polimi.se2018.network.ServerInterface;
 import it.polimi.se2018.view.ViewClient;
 import it.polimi.se2018.view.console.ViewClientConsole;
 import it.polimi.se2018.view.gui.ViewClientGUI;
+import joptsimple.OptionParser;
+import joptsimple.OptionSet;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -13,16 +15,51 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Client {
 
     public static void main(String[] args) {
-        //String host = "163.172.183.230";
-        String host = "localhost";
-        //String host = "192.168.43.123";
-        int socketPort = 1111;
-        int rmiPort = 8080;
+        final OptionParser optionParser = new OptionParser();
+
+        final String[] hostOptions = {
+                "h",
+                "host"
+        };
+        optionParser.acceptsAll(Arrays.asList(hostOptions),"Host to connect to.")
+                .withRequiredArg()
+                .ofType(String.class)
+                .defaultsTo("localhost");
+
+
+        final String[] socketPortOptions = {
+                "s",
+                "socketPort"
+        };
+        optionParser.acceptsAll(Arrays.asList(socketPortOptions), "Turn timer countdown value.")
+                .withRequiredArg()
+                .ofType(Integer.class)
+                .defaultsTo(1111);
+
+
+        final String[] rmiPortOptions = {
+                "r",
+                "rmiPort"
+        };
+
+        optionParser.acceptsAll(Arrays.asList(rmiPortOptions), "Server hostname.")
+                .withRequiredArg()
+                .ofType(Integer.class)
+                .defaultsTo(1099);
+
+        final OptionSet optionSet = optionParser.parse(args);
+
+
+        System.out.println(optionSet.asMap());
+        String host = (String) optionSet.valueOf("host");
+        int socketPort = (int) optionSet.valueOf("socketPort");
+        int rmiPort = (int) optionSet.valueOf("rmiPort");
 
         boolean moveOk = true;
         Scanner input = new Scanner(System.in);
