@@ -125,4 +125,9 @@ public class MessageVisitorImplementationClient implements MessageVisitorInterfa
     public void visitModelChangedMessageOnlyOnePlayerLeft(ModelChangedMessageOnlyOnePlayerLeft modelChangedMessageOnlyOnePlayerLeft) {
 
     }
+
+    @Override
+    public void visitModelChangedMessageRoomUpdate(ModelChangedMessageRoomUpdate modelChangedMessageRoomUpdate) {
+
+    }
 }

@@ -2,6 +2,7 @@ package it.polimi.se2018.view;
 
 import it.polimi.se2018.model.events.HeartbeatMessage;
 import it.polimi.se2018.model.events.ModelChangedMessage;
+import it.polimi.se2018.model.events.ModelChangedMessageRoomUpdate;
 import it.polimi.se2018.network.ClientInterface;
 import it.polimi.se2018.network.ServerInterface;
 import it.polimi.se2018.network.client.ClientImplementationRMI;
@@ -54,6 +55,10 @@ public abstract class ViewClient {
     }
 
     public synchronized void update(ModelChangedMessage modelChangedMessage) {
+    }
+
+    public void update(ModelChangedMessageRoomUpdate modelChangedMessageRoomUpdate) {
+        System.out.println(modelChangedMessageRoomUpdate.getMessage());
     }
 
     public void setServerInterface(ServerInterface serverInterface) {

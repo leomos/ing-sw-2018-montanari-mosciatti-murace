@@ -69,6 +69,7 @@ public class ViewClientConsole extends ViewClient  {
             viewClientConsolePrint = new ViewClientConsoleGame(this.idClient);
         }
         if (gamePhase == ENDGAMEPHASE) {
+            hasChoosePatternCard = true;
             viewClientConsolePrint = new ViewClientConsoleEndGame(this.idClient);
         }
     }
@@ -133,6 +134,7 @@ public class ViewClientConsole extends ViewClient  {
                 }
             } else {
                 unSuspend();
+                hasChoosePatternCard = true;
             }
         }
         while(!hasChoosePatternCard);

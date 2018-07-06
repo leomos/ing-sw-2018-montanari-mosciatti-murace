@@ -38,19 +38,8 @@ public class MessageVisitorImplementationUpdate implements MessageVisitorInterfa
 
     @Override
     public void visitModelChangedMessageChangeGamePhase(ModelChangedMessageChangeGamePhase modelChangedMessageChangeGamePhase) {
-    /*    if(this.player.isInactive()
-                && (this.player.getId() == this.currentPlayerPlayingId)
-                && modelChangedMessageChangeGamePhase.getGamePhase() == GamePhase.GAMEPHASE) {
-//            Integer id = Integer.parseInt(modelChangedMessageRefresh.getIdPlayerPlaying());
-            ;
-
-//            Message fakeMessage = new PlayerMessageEndTurn(id);
-  //          this.room.notifyView(fakeMessage);
-        } else { */
-            update(modelChangedMessageChangeGamePhase);
-     //   }
+        update(modelChangedMessageChangeGamePhase);
     }
-
 
     @Override
     public void visitModelChangedMessagePlayerAFK(ModelChangedMessagePlayerAFK modelChangedMessagePlayerAFK) {
@@ -63,6 +52,11 @@ public class MessageVisitorImplementationUpdate implements MessageVisitorInterfa
     public void visitModelChangedMessageOnlyOnePlayerLeft(ModelChangedMessageOnlyOnePlayerLeft modelChangedMessageOnlyOnePlayerLeft) {
         update(modelChangedMessageOnlyOnePlayerLeft);
         room.dispose();
+    }
+
+    @Override
+    public void visitModelChangedMessageRoomUpdate(ModelChangedMessageRoomUpdate modelChangedMessageRoomUpdate) {
+
     }
 
     @Override
