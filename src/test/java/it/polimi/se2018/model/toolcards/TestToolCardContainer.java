@@ -15,7 +15,7 @@ public class TestToolCardContainer {
     public void setUp() {
         diceContainer = new DiceContainer();
         database = new Database(diceContainer);
-        toolCardContainer = new ToolCardContainer(diceContainer, database);
+        toolCardContainer = new ToolCardContainer(database);
     }
 
     @After

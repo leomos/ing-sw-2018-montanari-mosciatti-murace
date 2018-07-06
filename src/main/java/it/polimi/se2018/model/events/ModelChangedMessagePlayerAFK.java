@@ -2,7 +2,7 @@ package it.polimi.se2018.model.events;
 
 import it.polimi.se2018.network.visitor.MessageVisitorInterface;
 
-public class ModelChangedMessagePlayerAFK  extends ModelChangedMessage{
+public class ModelChangedMessagePlayerAFK  extends ModelChangedMessage implements Message{
 
 
     private int player;

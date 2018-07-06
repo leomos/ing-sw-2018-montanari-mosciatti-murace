@@ -1,6 +1,5 @@
 package it.polimi.se2018.model.toolcards;
 
-import it.polimi.se2018.model.container.DiceContainer;
 import it.polimi.se2018.utils.Database;
 
 import java.util.ArrayList;
@@ -13,10 +12,9 @@ public class ToolCardContainer {
 
     /**
      * The tool cards container creates the array list containing the tool cards from the database
-     * @param diceContainer dice container needed for the database
      * @param database database where the tool cards name and descriptions are stored
      */
-    public ToolCardContainer(DiceContainer diceContainer, Database database) {
+    public ToolCardContainer(Database database) {
         this.toolCards = database.loadToolCards();
     }
 

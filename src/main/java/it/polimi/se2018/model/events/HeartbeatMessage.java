@@ -3,7 +3,6 @@ package it.polimi.se2018.model.events;
 import it.polimi.se2018.network.visitor.MessageVisitorInterface;
 
 import java.io.Serializable;
-import java.time.Duration;
 import java.time.Instant;
 
 public class HeartbeatMessage implements Message, Serializable {

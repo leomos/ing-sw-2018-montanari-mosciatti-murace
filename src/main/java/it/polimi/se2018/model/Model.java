@@ -305,6 +305,9 @@ public class Model extends Observable<ModelChangedMessage> {
         }
     }
 
+    /**
+     * Sends a message to the player playing informing him that in 15 minutes his round will end and he will be set suspended
+     */
     public void timeIsRunningOut() {
         notify(new ModelChangedMessageNewEvent(currentPlayerPlaying(), "Time is running out! 15s left!"));
     }

@@ -1,19 +1,17 @@
 package it.polimi.se2018.utils;
 
-import it.polimi.se2018.model.patternCard.PatternCard;
 import it.polimi.se2018.model.container.DiceContainer;
 import it.polimi.se2018.model.objectives.PrivateObjective;
+import it.polimi.se2018.model.patternCard.PatternCard;
 import it.polimi.se2018.model.toolcards.ToolCard;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLDecoder;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.concurrent.ExecutorService;
 
 public class Database {
 
@@ -28,8 +26,9 @@ public class Database {
 
 
     /**
-     *
-     * @param diceContainer
+     * access to the json containing all the information for pattern cards, public objective and
+     * private objective
+     * @param diceContainer necessary to create the pattern cards
      */
     public Database(DiceContainer diceContainer) {
         this.diceContainer = diceContainer;
@@ -49,16 +48,8 @@ public class Database {
         dbJsonObject = new JSONObject(result.toString());
     }
 
-    public static void main(String[] args) {
-        new Database(new DiceContainer());
-        for (int i = 1; i < 11; i++) {
-            new ImageLoader().getPublicObjective(i);
-        }
-        new ImageLoader().getSagradaCover();
-    }
-
     /**
-     * Creates an ArrayList of ToolCards from db.json object defined in the contructor
+     * Creates an ArrayList of ToolCards from db.json object defined in the constructor
      * @return ArrayList containing all ToolCards
      */
     public ArrayList<ToolCard> loadToolCards() {
@@ -76,7 +67,7 @@ public class Database {
     }
 
     /**
-     * Creates an ArrayList of PatternCards from db.json object defined in the contructor
+     * Creates an ArrayList of PatternCards from db.json object defined in the constructor
      * @return ArrayList containing all PatternCards
      */
     public ArrayList<PatternCard> loadPatternCard() {
@@ -94,6 +85,10 @@ public class Database {
         return patternCard;
     }
 
+    /**
+     * Creates an ArrayList of ToolCards from db.json object defined in the constructor
+     * @return ArrayList containing all the private objectives
+     */
     public ArrayList<PrivateObjective> loadPrivateObjective() {
         ArrayList<PrivateObjective> privateObjectives = new ArrayList<>();
 

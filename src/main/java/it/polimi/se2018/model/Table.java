@@ -32,11 +32,11 @@ public class Table {
 
     private DiceContainer diceContainer;
 
-    private ArrayList<PatternCard> patternCards = new ArrayList<PatternCard>();
+    private ArrayList<PatternCard> patternCards = new ArrayList<>();
 
-    private ArrayList<PrivateObjective> privateObjectives = new ArrayList<PrivateObjective>();
+    private ArrayList<PrivateObjective> privateObjectives = new ArrayList<>();
 
-    private ArrayList<Player> players = new ArrayList<Player>();
+    private ArrayList<Player> players = new ArrayList<>();
 
     private Scoreboard scoreboard;
 
@@ -52,7 +52,7 @@ public class Table {
         }
         this.diceContainer = new DiceContainer();
         this.database = new Database(diceContainer);
-        this.toolCardContainer = new ToolCardContainer(diceContainer, database);
+        this.toolCardContainer = new ToolCardContainer(database);
         this.diceArena = new DiceArena(players.size() * 2 + 1, diceContainer);
         this.roundTrack = new RoundTrack(players, diceContainer);
 
