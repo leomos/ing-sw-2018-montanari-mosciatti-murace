@@ -151,8 +151,8 @@ public class ViewClientConsoleGame extends ViewClientConsolePrint {
     }
 
     /**
-     * checks if the string inserted by the player is acceptable and generates either a playerMessageDie,
-     * a playerMessageToolCard, player playerMessageEndTurn. If the moves is not correct, it generates a
+     * Checks if the string inserted by the player is acceptable and generates either a playerMessageDie,
+     * a playerMessageToolCard, player playerMessageEndTurn. If the move is not correct, it generates a
      * playerMessage with clientId as -1
      * @param s string inserted by the player
      * @return playerMessage if the move was correct otherwise a playerMessage with clientId as -1
