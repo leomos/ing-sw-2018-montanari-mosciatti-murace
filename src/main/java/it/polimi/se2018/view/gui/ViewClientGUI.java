@@ -60,15 +60,20 @@ public class ViewClientGUI extends ViewClient {
         if(gamePhase == SETUPPHASE) {
             swingPhase = new ViewClientGUISetup(this.idClient);
             swingPhase.setServerInterface(this.serverInterface);
+            swingPhase.setViewClientGUI(this);
         }
         if (gamePhase == GAMEPHASE) {
             swingPhase.close();
             swingPhase = new ViewClientGUIGame(this.idClient);
             swingPhase.setServerInterface(this.serverInterface);
+            swingPhase.setViewClientGUI(this);
+
         }
         if (gamePhase == ENDGAMEPHASE) {
                 swingPhase.close();
                 swingPhase = new EndGameFrame(this.idClient);
+                swingPhase.setViewClientGUI(this);
+
         }
     }
 
@@ -259,16 +264,18 @@ public class ViewClientGUI extends ViewClient {
                 e.printStackTrace();
             }
             System.out.println("provo a riconnettermi");
-            tryToReconnect();
+            c = tryToReconnect();
         }
     }
 
-    private void tryToReconnect() {
+    private boolean tryToReconnect() {
         if(this.reconnect(idClient, 0)) {
             initNewExecutor();
             startHeartbeating(idClient);
+            return false;
         } else {
             System.out.println("Room chiusa");
+            return true;
         }
     }
 

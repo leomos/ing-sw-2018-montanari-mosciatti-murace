@@ -9,6 +9,8 @@ public abstract class SwingPhase {
 
     protected ServerInterface serverInterface;
 
+    protected ViewClientGUI viewClientGUI;
+
     public abstract void update(ModelChangedMessagePatternCard message);
     public abstract void update(ModelChangedMessagePrivateObjective message);
     public abstract void update(ModelChangedMessageDiceOnPatternCard message);
@@ -28,6 +30,10 @@ public abstract class SwingPhase {
 
     public void setServerInterface(ServerInterface serverInterface) {
         this.serverInterface = serverInterface;
+    }
+
+    public void setViewClientGUI(ViewClientGUI viewClientGUI) {
+        this.viewClientGUI = viewClientGUI;
     }
 
     /**

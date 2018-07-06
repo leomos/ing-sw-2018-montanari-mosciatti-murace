@@ -49,8 +49,10 @@ public class ViewClientConsole extends ViewClient  {
     }
 
     public void update(ModelChangedMessageMoveFailed messageMoveFailed) {
-        System.out.println("ERROR: " + messageMoveFailed.getErrorMessage());
-        System.out.println("\n\nTry again");
+        if(messageMoveFailed.getPlayer() == idClient) {
+            System.out.println("ERROR: " + messageMoveFailed.getErrorMessage());
+            System.out.println("\n\nTry again");
+        }
     }
 
     public void update(ModelChangedMessageNewEvent modelChangedMessageNewEvent){
@@ -88,7 +90,7 @@ public class ViewClientConsole extends ViewClient  {
     }
 
     public void update(ModelChangedMessagePlayerAFK modelChangedMessagePlayerAFK) {
-        if (modelChangedMessagePlayerAFK.getPlayer() == idClient && gamePhase == GAMEPHASE) {
+        if (modelChangedMessagePlayerAFK.getPlayer() == idClient) {
             System.out.println(modelChangedMessagePlayerAFK.getMessage());
             clientSuspended = true;
             viewClientConsolePrint.setSuspended(true);
@@ -395,16 +397,18 @@ public class ViewClientConsole extends ViewClient  {
                 e.printStackTrace();
             }
             System.out.println("provo a riconnettermi");
-            tryToReconnect(this.connectionType);
+            c = tryToReconnect(this.connectionType);
         }
     }
 
-    private void tryToReconnect(int connectionType) {
+    private boolean tryToReconnect(int connectionType) {
         if(this.reconnect(idClient, connectionType)) {
             initNewExecutor();
             startHeartbeating(idClient);
+            return false;
         } else {
             System.out.println("Room chiusa");
+            return true;
         }
     }
 }

@@ -271,7 +271,7 @@ public class ViewClientGUIGame extends SwingPhase {
                                     try {
                                         serverInterface.notify(getMainMove());
                                     } catch (RemoteException e1) {
-                                        e1.printStackTrace();
+                                        viewClientGUI.handleDisconnection();
                                     }
                                 } else {
                                     idDieChosen = "";
@@ -312,7 +312,7 @@ public class ViewClientGUIGame extends SwingPhase {
                         serverInterface.notify(new PlayerMessageEndTurn(idClient));
                         newturn = true;
                     } catch (RemoteException e1) {
-                        e1.printStackTrace();
+                        viewClientGUI.handleDisconnection();
                     }
                 }
                 else
@@ -623,4 +623,7 @@ public class ViewClientGUIGame extends SwingPhase {
     public void free() {
         canIPlay = true;
     }
+
+
+
 }
