@@ -1,6 +1,6 @@
 package it.polimi.se2018.model;
 
-import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
+import it.polimi.se2018.model.container.DiceContainer;
 import it.polimi.se2018.model.container.DieRolledValueOutOfBoundException;
 import it.polimi.se2018.model.events.PlayerMessageEndTurn;
 import it.polimi.se2018.model.patternCard.*;
@@ -80,7 +80,7 @@ public class TestModel {
     }
 
     @Test
-    public void checkIncrementOrDecrementDieValue_ParamAsIncrementFirstDieBy1_ResultShouldBeTheSameIfTheDieValueIs6() throws DiceContainerUnsupportedIdException {
+    public void checkIncrementOrDecrementDieValue_ParamAsIncrementFirstDieBy1_ResultShouldBeTheSameIfTheDieValueIs6()  {
         int initialValue = model.getTable().getDiceContainer().getDie(model.getTable().getDiceArena().getArena().get(0)).getRolledValue();
         int initialCost = model.getTable().getToolCardContainer().getToolCard(0).cost();
         model.incrementOrDecrementDieValue(1, 0, 1, 1);
@@ -97,7 +97,7 @@ public class TestModel {
     }
 
     @Test
-    public void checkMoveDieInsidePatternCard_ParamAs11to10_11shouldBeEmptyAnd10ShouldBeNotEmpty() throws DiceContainerUnsupportedIdException, DieRolledValueOutOfBoundException, PatternCardNoAdjacentDieException, PatternCardDidNotRespectFirstMoveException, PatternCardNotRespectingCellConstraintException, PatternCardNotRespectingNearbyDieExpection, PatternCardCellIsOccupiedException, PatternCardAdjacentDieException {
+    public void checkMoveDieInsidePatternCard_ParamAs11to10_11shouldBeEmptyAnd10ShouldBeNotEmpty() throws DieRolledValueOutOfBoundException, PatternCardNoAdjacentDieException, PatternCardDidNotRespectFirstMoveException, PatternCardNotRespectingCellConstraintException, PatternCardNotRespectingNearbyDieExpection, PatternCardCellIsOccupiedException, PatternCardAdjacentDieException {
         model.getTable().getDiceContainer().getDie(0).setRolledValue(5);
         model.getTable().getDiceContainer().getDie(20).setRolledValue(3);
         model.getTable().getPlayers(1).getChosenPatternCard().setDieInPatternCard(0, 0, 0, true, true, false);
@@ -122,8 +122,67 @@ public class TestModel {
     }
 
     @Test
-    public void checkTwoDiceInsidePatternCard_ParamAs11to10and22to11_22ShouldBeEmpty(){
+    public void checkTwoDiceInsidePatternCard_ParamAs11to10and22to11_22ShouldBeEmpty() throws DieRolledValueOutOfBoundException, PatternCardNoAdjacentDieException, PatternCardDidNotRespectFirstMoveException, PatternCardNotRespectingCellConstraintException, PatternCardNotRespectingNearbyDieExpection, PatternCardCellIsOccupiedException, PatternCardAdjacentDieException {
+        model.getTable().getDiceContainer().getDie(0).setRolledValue(5);
+        model.getTable().getDiceContainer().getDie(20).setRolledValue(3);
+        model.getTable().getDiceContainer().getDie(40).setRolledValue(3);
+        model.getTable().getPlayers(1).getChosenPatternCard().setDieInPatternCard(0, 0, 0, true, true, false);
+        model.getTable().getPlayers(1).getChosenPatternCard().setFirstMove();
+        model.getTable().getPlayers(1).getChosenPatternCard().setDieInPatternCard(20, 1, 1, true, true, false);
+        model.getTable().getPlayers(1).getChosenPatternCard().setDieInPatternCard(40, 2, 2, true, true, false);
 
+
+        ArrayList<Integer> positions = new ArrayList<>();
+        positions.add(1);
+        positions.add(1);
+        positions.add(1);
+        positions.add(0);
+        ArrayList<Integer> positions2 = new ArrayList<>();
+        positions2.add(2);
+        positions2.add(2);
+        positions2.add(1);
+        positions2.add(1);
+
+        assertEquals(false, model.getTable().getPlayers(1).getChosenPatternCard().getPatternCardCell(0, 0).isEmpty());
+        assertEquals(false, model.getTable().getPlayers(1).getChosenPatternCard().getPatternCardCell(1, 1).isEmpty());
+        assertEquals(false, model.getTable().getPlayers(1).getChosenPatternCard().getPatternCardCell(2, 2).isEmpty());
+        assertEquals(true, model.getTable().getPlayers(1).getChosenPatternCard().getPatternCardCell(1, 0).isEmpty());
+
+        model.moveTwoDiceInsidePatternCard(1, positions, positions2, 1);
+
+        if(!model.getTable().getPlayers(1).getChosenPatternCard().getPatternCardCell(1, 0).isEmpty()) {
+            assertEquals(false, model.getTable().getPlayers(1).getChosenPatternCard().getPatternCardCell(0, 0).isEmpty());
+            assertEquals(true, model.getTable().getPlayers(1).getChosenPatternCard().getPatternCardCell(1, 1).isEmpty());
+            assertEquals(false, model.getTable().getPlayers(1).getChosenPatternCard().getPatternCardCell(1, 0).isEmpty());
+            assertEquals(false, model.getTable().getPlayers(1).getChosenPatternCard().getPatternCardCell(2, 2).isEmpty());
+        } else {
+            assertEquals(false, model.getTable().getPlayers(1).getChosenPatternCard().getPatternCardCell(0, 0).isEmpty());
+            assertEquals(false, model.getTable().getPlayers(1).getChosenPatternCard().getPatternCardCell(1, 1).isEmpty());
+            assertEquals(false, model.getTable().getPlayers(1).getChosenPatternCard().getPatternCardCell(2, 2).isEmpty());
+            assertEquals(true, model.getTable().getPlayers(1).getChosenPatternCard().getPatternCardCell(1, 0).isEmpty());
+        }
     }
+
+    @Test
+    public void checkTurnDieAround_ParamAreRandoms_ResultShouldBeTrue(){
+        DiceContainer diceContainer = model.getTable().getDiceContainer();
+        model.getTable().getPlayers(1).setTokens(100);
+
+        for(int i = 0; i < model.getTable().getDiceArena().getArena().size(); i++) {
+            int dieValue = diceContainer.getDie(model.getTable().getDiceArena().getArena().get(i)).getRolledValue();
+            model.turnDieAround(1, i, 7);
+            int newDieValue = diceContainer.getDie(model.getTable().getDiceArena().getArena().get(i)).getRolledValue();
+            switch (dieValue){
+                case 1: assertEquals(6, newDieValue); break;
+                case 2: assertEquals(5, newDieValue); break;
+                case 3: assertEquals(4, newDieValue); break;
+                case 4: assertEquals(3, newDieValue); break;
+                case 5: assertEquals(2, newDieValue); break;
+                case 6: assertEquals(1, newDieValue); break;
+                default: ; break;
+            }
+        }
+    }
+
 
 }

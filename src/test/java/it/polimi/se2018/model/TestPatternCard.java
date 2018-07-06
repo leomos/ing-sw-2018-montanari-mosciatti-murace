@@ -77,7 +77,7 @@ public class TestPatternCard {
     }
 
     @Test
-    public void checkProximityCellsValidity_FirstParamAs2SecondParamAs2_returnShouldBeTrue() throws DiceContainerUnsupportedIdException {
+    public void checkProximityCellsValidity_FirstParamAs2SecondParamAs2_returnShouldBeTrue()   {
         try {
             diceContainer.getDie(5).setRolledValue(4);  //red
             diceContainer.getDie(50).setRolledValue(3); //blue
@@ -153,7 +153,7 @@ public class TestPatternCard {
     }
 
     @Test
-    public void checkUpdateDiceRepresentation_UsePatternCardVirtus_NumberOfDiceOnPatternCardAs17() throws DiceContainerUnsupportedIdException, DieRolledValueOutOfBoundException {
+    public void checkUpdateDiceRepresentation_UsePatternCardVirtus_NumberOfDiceOnPatternCardAs17()  throws DieRolledValueOutOfBoundException {
         diceContainer = new DiceContainer();
         patternCard = new PatternCard(diceContainer, 13,"FractalDrop",3,"040y6r020000rp1by000");
         //RED
@@ -220,7 +220,7 @@ public class TestPatternCard {
     }
 
     @Test
-    public void getAvailablePosition_EmptyPatternCard_Expected8Positions() throws DiceContainerUnsupportedIdException, DieRolledValueOutOfBoundException {
+    public void getAvailablePosition_EmptyPatternCard_Expected8Positions() throws DieRolledValueOutOfBoundException {
         diceContainer = new DiceContainer();
         patternCard = new PatternCard(diceContainer, 13,"FractalDrop",3,"040y6r020000rp1by000");
         diceContainer.getDie(0).setRolledValue(2);
@@ -228,7 +228,7 @@ public class TestPatternCard {
     }
 
     @Test(expected = PatternCardDidNotRespectFirstMoveException.class)
-    public void checkSetDieInPatternCard_FirstDieInMiddleOfPatternCard_ExceptionThrown() throws PatternCardDidNotRespectFirstMoveException, DiceContainerUnsupportedIdException, DieRolledValueOutOfBoundException, PatternCardNoAdjacentDieException, PatternCardNotRespectingCellConstraintException, PatternCardNotRespectingNearbyDieExpection, PatternCardAdjacentDieException, PatternCardCellIsOccupiedException {
+    public void checkSetDieInPatternCard_FirstDieInMiddleOfPatternCard_ExceptionThrown() throws PatternCardDidNotRespectFirstMoveException, DieRolledValueOutOfBoundException, PatternCardNoAdjacentDieException, PatternCardNotRespectingCellConstraintException, PatternCardNotRespectingNearbyDieExpection, PatternCardAdjacentDieException, PatternCardCellIsOccupiedException {
         diceContainer = new DiceContainer();
         patternCard = new PatternCard(diceContainer, 13,"FractalDrop",3,"040y6r020000rp1by000");
         diceContainer.getDie(0).setRolledValue(2);
@@ -236,7 +236,7 @@ public class TestPatternCard {
     }
 
     @Test(expected = PatternCardCellIsOccupiedException.class)
-    public void checkSetDieInPatternCard_RedDieOnTopOfAnotherDie_ExceptionThrown() throws PatternCardDidNotRespectFirstMoveException, DiceContainerUnsupportedIdException, DieRolledValueOutOfBoundException, PatternCardNoAdjacentDieException, PatternCardNotRespectingCellConstraintException, PatternCardNotRespectingNearbyDieExpection, PatternCardAdjacentDieException, PatternCardCellIsOccupiedException {
+    public void checkSetDieInPatternCard_RedDieOnTopOfAnotherDie_ExceptionThrown() throws PatternCardDidNotRespectFirstMoveException, DieRolledValueOutOfBoundException, PatternCardNoAdjacentDieException, PatternCardNotRespectingCellConstraintException, PatternCardNotRespectingNearbyDieExpection, PatternCardAdjacentDieException, PatternCardCellIsOccupiedException {
         diceContainer = new DiceContainer();
         patternCard = new PatternCard(diceContainer, 13,"FractalDrop",3,"040y6r020000rp1by000");
         diceContainer.getDie(0).setRolledValue(2);
@@ -246,7 +246,7 @@ public class TestPatternCard {
     }
 
     @Test(expected = PatternCardNoAdjacentDieException.class)
-    public void checkSetDieInPatternCard_RedDieAwayFromRedDie_ExceptionThrown() throws PatternCardDidNotRespectFirstMoveException, DiceContainerUnsupportedIdException, DieRolledValueOutOfBoundException, PatternCardNoAdjacentDieException, PatternCardNotRespectingCellConstraintException, PatternCardNotRespectingNearbyDieExpection, PatternCardAdjacentDieException, PatternCardCellIsOccupiedException {
+    public void checkSetDieInPatternCard_RedDieAwayFromRedDie_ExceptionThrown() throws PatternCardDidNotRespectFirstMoveException, DieRolledValueOutOfBoundException, PatternCardNoAdjacentDieException, PatternCardNotRespectingCellConstraintException, PatternCardNotRespectingNearbyDieExpection, PatternCardAdjacentDieException, PatternCardCellIsOccupiedException {
         diceContainer = new DiceContainer();
         patternCard = new PatternCard(diceContainer, 13,"FractalDrop",3,"040y6r020000rp1by000");
         diceContainer.getDie(0).setRolledValue(2);
@@ -257,7 +257,7 @@ public class TestPatternCard {
     }
 
     @Test(expected = PatternCardNotRespectingNearbyDieExpection.class)
-    public void checkSetDieInPatternCard_RedDieNextToARedDie_ExceptionThrown() throws PatternCardDidNotRespectFirstMoveException, DiceContainerUnsupportedIdException, DieRolledValueOutOfBoundException, PatternCardNoAdjacentDieException, PatternCardNotRespectingCellConstraintException, PatternCardNotRespectingNearbyDieExpection, PatternCardAdjacentDieException, PatternCardCellIsOccupiedException {
+    public void checkSetDieInPatternCard_RedDieNextToARedDie_ExceptionThrown() throws PatternCardDidNotRespectFirstMoveException, DieRolledValueOutOfBoundException, PatternCardNoAdjacentDieException, PatternCardNotRespectingCellConstraintException, PatternCardNotRespectingNearbyDieExpection, PatternCardAdjacentDieException, PatternCardCellIsOccupiedException {
         diceContainer = new DiceContainer();
         patternCard = new PatternCard(diceContainer, 13,"FractalDrop",3,"040y6r020000rp1by000");
         diceContainer.getDie(0).setRolledValue(2);
@@ -268,7 +268,7 @@ public class TestPatternCard {
     }
 
     @Test(expected = PatternCardAdjacentDieException.class)
-    public void checkSetDieInPatternCard_RedDieNextToARedDieWithIgnoreAdjency_ExceptionThrown() throws PatternCardDidNotRespectFirstMoveException, DiceContainerUnsupportedIdException, DieRolledValueOutOfBoundException, PatternCardNoAdjacentDieException, PatternCardNotRespectingCellConstraintException, PatternCardNotRespectingNearbyDieExpection, PatternCardAdjacentDieException, PatternCardCellIsOccupiedException {
+    public void checkSetDieInPatternCard_RedDieNextToARedDieWithIgnoreAdjency_ExceptionThrown() throws PatternCardDidNotRespectFirstMoveException, DieRolledValueOutOfBoundException, PatternCardNoAdjacentDieException, PatternCardNotRespectingCellConstraintException, PatternCardNotRespectingNearbyDieExpection, PatternCardAdjacentDieException, PatternCardCellIsOccupiedException {
         diceContainer = new DiceContainer();
         patternCard = new PatternCard(diceContainer, 13,"FractalDrop",3,"040y6r020000rp1by000");
         diceContainer.getDie(0).setRolledValue(2);
@@ -279,7 +279,7 @@ public class TestPatternCard {
     }
 
     @Test(expected = PatternCardNotRespectingCellConstraintException.class)
-    public void checkSetDieInPatternCard_RedDieOnYellow_ExceptionThrown() throws PatternCardDidNotRespectFirstMoveException, DiceContainerUnsupportedIdException, DieRolledValueOutOfBoundException, PatternCardNoAdjacentDieException, PatternCardNotRespectingCellConstraintException, PatternCardNotRespectingNearbyDieExpection, PatternCardAdjacentDieException, PatternCardCellIsOccupiedException {
+    public void checkSetDieInPatternCard_RedDieOnYellow_ExceptionThrown() throws PatternCardDidNotRespectFirstMoveException, DieRolledValueOutOfBoundException, PatternCardNoAdjacentDieException, PatternCardNotRespectingCellConstraintException, PatternCardNotRespectingNearbyDieExpection, PatternCardAdjacentDieException, PatternCardCellIsOccupiedException {
         diceContainer = new DiceContainer();
         patternCard = new PatternCard(diceContainer, 13,"FractalDrop",3,"040y6r020000rp1by000");
         diceContainer.getDie(0).setRolledValue(2);
