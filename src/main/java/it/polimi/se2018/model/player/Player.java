@@ -1,6 +1,5 @@
 package it.polimi.se2018.model.player;
 
-import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.patternCard.*;
 
@@ -127,11 +126,10 @@ public class Player {
      * @throws PatternCardDidNotRespectFirstMoveException
      * @throws PatternCardNotRespectingCellConstraintException
      * @throws PatternCardCellIsOccupiedException
-     * @throws DiceContainerUnsupportedIdException
      * @throws PlayerHasAlreadySetDieThisTurnException if the player has already set a die this turn
      * @throws PatternCardAdjacentDieException
      */
-    public void setDieInPatternCard(int idDie, int x, int y, boolean ignoreValueConstraint, boolean ignoreColorConstraint, boolean ignoreAdjency) throws PatternCardNotRespectingNearbyDieExpection, PatternCardNoAdjacentDieException, PatternCardDidNotRespectFirstMoveException, PatternCardNotRespectingCellConstraintException, PatternCardCellIsOccupiedException, DiceContainerUnsupportedIdException, PlayerHasAlreadySetDieThisTurnException, PatternCardAdjacentDieException {
+    public void setDieInPatternCard(int idDie, int x, int y, boolean ignoreValueConstraint, boolean ignoreColorConstraint, boolean ignoreAdjency) throws PatternCardNotRespectingNearbyDieExpection, PatternCardNoAdjacentDieException, PatternCardDidNotRespectFirstMoveException, PatternCardNotRespectingCellConstraintException, PatternCardCellIsOccupiedException, PlayerHasAlreadySetDieThisTurnException, PatternCardAdjacentDieException {
         if(!hasSetDieThisTurn){
             chosenPatternCard.setDieInPatternCard(idDie, x , y, ignoreValueConstraint, ignoreColorConstraint, ignoreAdjency);
         } else {

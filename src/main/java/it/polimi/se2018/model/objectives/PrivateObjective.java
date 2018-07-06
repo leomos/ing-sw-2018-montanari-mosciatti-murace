@@ -2,7 +2,6 @@ package it.polimi.se2018.model.objectives;
 
 import it.polimi.se2018.model.patternCard.PatternCard;
 import it.polimi.se2018.model.container.DiceContainer;
-import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.container.Die;
 import it.polimi.se2018.model.container.DieColor;
 
@@ -56,7 +55,6 @@ public class PrivateObjective implements Objective {
      * the results increments of the die rolled value
      * @param patternCard
      * @return PatternCard score at the end of the game based on private objective of card
-     * @throws DiceContainerUnsupportedIdException if die's id is not valid
      */
     public int calculateScore (PatternCard patternCard) {
         int result=0;
@@ -65,11 +63,7 @@ public class PrivateObjective implements Objective {
             for (int y=0; y<4; y++) {
                 if(!patternCard.getPatternCardCell(x,y).isEmpty()) {
                     Die d = null;
-                    try {
-                        d = diceContainer.getDie(patternCard.getPatternCardCell(x, y).getRolledDieId());
-                    } catch (DiceContainerUnsupportedIdException e) {
-                        e.printStackTrace();
-                    }
+                    d = diceContainer.getDie(patternCard.getPatternCardCell(x, y).getRolledDieId());
                     if (this.color.equals(d.getColor()))
                         result = result + d.getRolledValue();
                 }

@@ -1,7 +1,6 @@
 package it.polimi.se2018.model.patternCard;
 
 import it.polimi.se2018.model.container.DiceContainer;
-import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.container.Die;
 
 import java.util.ArrayList;
@@ -212,9 +211,8 @@ public class PatternCard {
      * @param x cell's abscissa
      * @param y cell's ordinate
      * @return true if there are no dice with the same color or the same value of the die orthogonal to the cell
-     * @throws DiceContainerUnsupportedIdException
      */
-    public boolean checkProximityCellsValidity(int rolledDieId, int x, int y)throws DiceContainerUnsupportedIdException {
+    public boolean checkProximityCellsValidity(int rolledDieId, int x, int y) {
         Die d = diceContainer.getDie(rolledDieId);
         Die app;
 
@@ -233,9 +231,8 @@ public class PatternCard {
      * @param x cell's abscissa
      * @param y cell's ordinate
      * @return true if there is a die
-     * @throws DiceContainerUnsupportedIdException if there is a die id not accepted
      */
-    public boolean checkDieInAdjacentCells(int x, int y) throws DiceContainerUnsupportedIdException {
+    public boolean checkDieInAdjacentCells(int x, int y) {
 
         for( Integer[] i : checkProximityCells(x, y) ){
             if(!this.cells[i[0]][i[1]].isEmpty())
@@ -250,43 +247,38 @@ public class PatternCard {
         return false;
     }
 
-    public void setDieInPatternCard(int idDie, int x, int y, boolean ignoreValueConstraint, boolean ignoreColorConstraint, boolean ignoreAdjency) throws DiceContainerUnsupportedIdException, PatternCardDidNotRespectFirstMoveException, PatternCardNoAdjacentDieException, PatternCardCellIsOccupiedException, PatternCardNotRespectingCellConstraintException, PatternCardNotRespectingNearbyDieExpection, PatternCardAdjacentDieException {
+    public void setDieInPatternCard(int idDie, int x, int y, boolean ignoreValueConstraint, boolean ignoreColorConstraint, boolean ignoreAdjency) throws PatternCardDidNotRespectFirstMoveException, PatternCardNoAdjacentDieException, PatternCardCellIsOccupiedException, PatternCardNotRespectingCellConstraintException, PatternCardNotRespectingNearbyDieExpection, PatternCardAdjacentDieException {
         Die d = diceContainer.getDie(idDie);
 
-        try {
-                if (this.getPatternCardCell(x, y).checkDieValidity(d.getRolledValue(), d.getColor(), ignoreValueConstraint, ignoreColorConstraint)) {
-                    if (this.getPatternCardCell(x, y).isEmpty()) {
-                        if (this.isFirstMove()) {
-                            if (this.checkFirstMove(x, y)) {
-                                cells[x][y].setRolledDieId(idDie, ignoreValueConstraint, ignoreColorConstraint);
-                            } else {
-                                throw new PatternCardDidNotRespectFirstMoveException();
-                            }
-                        } else if (this.checkProximityCellsValidity(idDie, x, y)) {
-                            if (!ignoreAdjency){
-                                if (this.checkDieInAdjacentCells(x, y))
-                                    cells[x][y].setRolledDieId(idDie, ignoreValueConstraint, ignoreColorConstraint);
-                                else {
-                                    throw new PatternCardNoAdjacentDieException();
-                                }
-                            } else {
-                                if(!this.checkDieInAdjacentCells(x, y))
-                                    cells[x][y].setRolledDieId(idDie, ignoreValueConstraint, ignoreColorConstraint);
-                                else
-                                    throw new PatternCardAdjacentDieException();
-                            }
-                        } else {
-                            throw new PatternCardNotRespectingNearbyDieExpection();
+        if (this.getPatternCardCell(x, y).checkDieValidity(d.getRolledValue(), d.getColor(), ignoreValueConstraint, ignoreColorConstraint)) {
+            if (this.getPatternCardCell(x, y).isEmpty()) {
+                if (this.isFirstMove()) {
+                    if (this.checkFirstMove(x, y)) {
+                        cells[x][y].setRolledDieId(idDie, ignoreValueConstraint, ignoreColorConstraint);
+                    } else {
+                        throw new PatternCardDidNotRespectFirstMoveException();
+                    }
+                } else if (this.checkProximityCellsValidity(idDie, x, y)) {
+                    if (!ignoreAdjency) {
+                        if (this.checkDieInAdjacentCells(x, y))
+                            cells[x][y].setRolledDieId(idDie, ignoreValueConstraint, ignoreColorConstraint);
+                        else {
+                            throw new PatternCardNoAdjacentDieException();
                         }
                     } else {
-                        throw new PatternCardCellIsOccupiedException();
+                        if (!this.checkDieInAdjacentCells(x, y))
+                            cells[x][y].setRolledDieId(idDie, ignoreValueConstraint, ignoreColorConstraint);
+                        else
+                            throw new PatternCardAdjacentDieException();
                     }
                 } else {
-                    throw new PatternCardNotRespectingCellConstraintException();
+                    throw new PatternCardNotRespectingNearbyDieExpection();
                 }
-
-        } catch (DiceContainerUnsupportedIdException e) {
-            e.printStackTrace();
+            } else {
+                throw new PatternCardCellIsOccupiedException();
+            }
+        } else {
+            throw new PatternCardNotRespectingCellConstraintException();
         }
     }
 
@@ -298,18 +290,12 @@ public class PatternCard {
      * create a list of all the available positions for a die inside this pattern card
      * @param idDie die id that the player wants to set
      * @return array list containing all the positions (in group of two)
-     * @throws DiceContainerUnsupportedIdException if there is a die id not accepted
      */
-    public ArrayList<Integer> getAvailablePositions(int idDie) throws DiceContainerUnsupportedIdException {
+    public ArrayList<Integer> getAvailablePositions(int idDie) {
 
         Die d = null;
         ArrayList<Integer> list = new ArrayList<>();
-
-        try {
-            d = diceContainer.getDie(idDie);
-        } catch (DiceContainerUnsupportedIdException e) {
-            e.printStackTrace();
-        }
+        d = diceContainer.getDie(idDie);
 
         for(int i = 0; i < 5; i++)
             for(int j = 0; j < 4; j++)
@@ -354,13 +340,9 @@ public class PatternCard {
                 else {
                     if (c.getRolledDieId() < 10)
                         diceRepresentation = diceRepresentation + "0";
-                    try {
-                        diceRepresentation = diceRepresentation + c.getRolledDieId()
-                                + diceContainer.getDie(c.getRolledDieId()).getColorChar()
-                                + diceContainer.getDie(c.getRolledDieId()).getRolledValue();
-                    } catch (DiceContainerUnsupportedIdException e) {
-                        e.printStackTrace();
-                    }
+                    diceRepresentation = diceRepresentation + c.getRolledDieId()
+                            + diceContainer.getDie(c.getRolledDieId()).getColorChar()
+                            + diceContainer.getDie(c.getRolledDieId()).getRolledValue();
                 }
             }
     }

@@ -6,7 +6,6 @@ import it.polimi.se2018.model.container.DieColor;
 import it.polimi.se2018.model.player.Player;
 import it.polimi.se2018.model.player.PlayerHasNotSetDieThisTurnException;
 import it.polimi.se2018.model.container.DiceContainer;
-import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.container.Die;
 
 import java.util.ArrayList;
@@ -131,15 +130,11 @@ public class Round {
      * Creates a single string that represents the dice left in this round. This string is gonna be sent to the player.
      * For each die left, it adds to the string the die id, followed by its color, followed by its rolled value
      */
-    public void updateRepresentation(){
+    private void updateRepresentation(){
         representation = "";
         for(int i = 0; i < rolledDiceLeft.size(); i++){
             Die d = null;
-            try {
-                d = diceContainer.getDie(rolledDiceLeft.get(i));
-            } catch (DiceContainerUnsupportedIdException e) {
-                e.printStackTrace();
-            }
+            d = diceContainer.getDie(rolledDiceLeft.get(i));
             if(rolledDiceLeft.get(i) < 10)
                 representation = representation + "0";
             representation = representation + Integer.toString(rolledDiceLeft.get(i)) + d.getColorChar() + d.getRolledValue();
@@ -209,13 +204,9 @@ public class Round {
     public boolean checkColorIsPresentInDiceLeft(DieColor color){
 
         for(int i = 0; i < rolledDiceLeft.size(); i++) {
-            try {
-                Die d = diceContainer.getDie(rolledDiceLeft.get(i));
-                if(color == d.getColor())
-                    return true;
-            } catch (DiceContainerUnsupportedIdException e) {
-                e.printStackTrace();
-            }
+            Die d = diceContainer.getDie(rolledDiceLeft.get(i));
+            if(color == d.getColor())
+                return true;
         }
 
         return false;

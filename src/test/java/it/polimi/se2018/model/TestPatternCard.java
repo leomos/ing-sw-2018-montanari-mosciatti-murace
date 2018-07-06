@@ -1,7 +1,6 @@
 package it.polimi.se2018.model;
 
 import it.polimi.se2018.model.container.DiceContainer;
-import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.container.DieRolledValueOutOfBoundException;
 import it.polimi.se2018.model.patternCard.PatternCard;
 import org.junit.After;
@@ -35,7 +34,7 @@ public class TestPatternCard {
     }
 
     @Test
-    public void checkDieInAdjacentCells_FirstParamAs3SecondParamAs3_returnShouldBeFalse() throws DiceContainerUnsupportedIdException {
+    public void checkDieInAdjacentCells_FirstParamAs3SecondParamAs3_returnShouldBeFalse() {
         try {
             diceContainer.getDie(5).setRolledValue(4);
             diceContainer.getDie(50).setRolledValue(4);
@@ -47,7 +46,7 @@ public class TestPatternCard {
     }
 
     @Test
-    public void checkDieInAdjacentCells_FirstParamAs1SecondParamAs1_returnShouldBeTrue() throws DiceContainerUnsupportedIdException {
+    public void checkDieInAdjacentCells_FirstParamAs1SecondParamAs1_returnShouldBeTrue() {
         try {
             diceContainer.getDie(5).setRolledValue(4);
             diceContainer.getDie(50).setRolledValue(4);
@@ -60,7 +59,7 @@ public class TestPatternCard {
 
 
     @Test
-    public void checkProximityCellsValidity_FirstParamAs0SecondParamAs1_returnShouldBeFalse() throws DiceContainerUnsupportedIdException {
+    public void checkProximityCellsValidity_FirstParamAs0SecondParamAs1_returnShouldBeFalse() {
         try {
             diceContainer.getDie(5).setRolledValue(4);
             diceContainer.getDie(50).setRolledValue(4);
@@ -88,7 +87,7 @@ public class TestPatternCard {
     }*/
 
     @Test
-    public void checkUpdateDiceRepresentation_UsePatternCardVirtus_jasdjasdikasol() throws DiceContainerUnsupportedIdException, DieRolledValueOutOfBoundException {
+    public void checkUpdateDiceRepresentation_UsePatternCardVirtus_jasdjasdikasol() throws DieRolledValueOutOfBoundException {
         diceContainer = new DiceContainer();
         patternCard = new PatternCard(diceContainer, 13,"FractalDrop",3,"040y6r020000rp1by000");
         //RED
@@ -150,7 +149,7 @@ public class TestPatternCard {
     }
 
     @Test
-    public void checkUpdateDiceRepresentation_PatternCardWithNoDice_ExpectedStringOf80Asterisks() throws DiceContainerUnsupportedIdException {
+    public void checkUpdateDiceRepresentation_PatternCardWithNoDice_ExpectedStringOf80Asterisks() {
         patternCard.getDiceRepresentation();
         assertEquals("********************************************************************************",
                         patternCard.getDiceRepresentation());

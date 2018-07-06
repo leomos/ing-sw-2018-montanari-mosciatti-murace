@@ -1,7 +1,6 @@
 package it.polimi.se2018.model;
 
 import it.polimi.se2018.model.container.DiceContainer;
-import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.container.DieRolledValueOutOfBoundException;
 import it.polimi.se2018.model.patternCard.CellIsEmptyException;
 import it.polimi.se2018.model.patternCard.PatternCardCell;
@@ -36,8 +35,6 @@ public class TestPatternCardCell {
             patternCardCell.setRolledDieId(3, false, false);
         } catch (DieRolledValueOutOfBoundException e) {
             fail();
-        } catch (DiceContainerUnsupportedIdException e) {
-            fail();
         }
         assertEquals(3, patternCardCell.getRolledDieId());
     }
@@ -62,14 +59,12 @@ public class TestPatternCardCell {
             patternCardCell.setRolledDieId(5, true, false);
         } catch (DieRolledValueOutOfBoundException e) {
             fail();
-        } catch (DiceContainerUnsupportedIdException e) {
-            fail();
         }
         assertEquals(5, patternCardCell.getRolledDieId());
     }
 
     @Test
-    public void removeDie() throws DiceContainerUnsupportedIdException {
+    public void removeDie() {
         patternCardCell.setRolledDieId(0, false, false);
         try {
             patternCardCell.removeDie();
