@@ -5,6 +5,7 @@ import it.polimi.se2018.model.events.ModelChangedMessageDiceArena;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class DiceArenaFrame extends ToolCardFrame {
 
@@ -63,7 +64,13 @@ public class DiceArenaFrame extends ToolCardFrame {
 
     @Override
     public int getValue() {
-        while(id==-1);
+        while(id==-1) {
+            try {
+                TimeUnit.MILLISECONDS.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         return id;
     }
 

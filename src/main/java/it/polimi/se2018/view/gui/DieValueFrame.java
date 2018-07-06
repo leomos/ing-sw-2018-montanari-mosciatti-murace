@@ -3,6 +3,7 @@ package it.polimi.se2018.view.gui;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class DieValueFrame extends ToolCardFrame {
 
@@ -55,7 +56,13 @@ public class DieValueFrame extends ToolCardFrame {
 
     @Override
     public int getValue() {
-        while (value==0);
+        while (value==0) {
+            try {
+                TimeUnit.MILLISECONDS.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         return value;
     }
 
