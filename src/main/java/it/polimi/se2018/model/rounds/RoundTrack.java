@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class RoundTrack {
 
-    public static final int NUMBER_OF_ROUNDS = 10;
+    public static final int NUMBER_OF_ROUNDS = 3;
 
     private ArrayList<Integer> players = new ArrayList<>();
 
