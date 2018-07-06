@@ -31,7 +31,7 @@ public class PatternCardCell {
         return rolledDieId;
     }
 
-    public void setRolledDieId(int rolledDieId, boolean ignoreValueConstraint, boolean ignoreColorConstraint) throws DiceContainerUnsupportedIdException {
+    public void setRolledDieId(int rolledDieId, boolean ignoreValueConstraint, boolean ignoreColorConstraint) {
         this.rolledDieId = rolledDieId;
 
     }

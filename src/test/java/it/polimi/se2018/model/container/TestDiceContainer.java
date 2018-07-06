@@ -26,21 +26,7 @@ public class TestDiceContainer {
 
     @Test
     public void getDie_50AsParam_shouldNotBeNull() {
-        try {
-            assertNotNull(diceContainer.getDie(50));
-        } catch (DiceContainerUnsupportedIdException e) {
-            fail();
-        }
-    }
-
-    @Test(expected = DiceContainerUnsupportedIdException.class)
-    public void getDie_100AsParam_ExceptionThrown() throws DiceContainerUnsupportedIdException {
-        diceContainer.getDie(100);
-    }
-
-    @Test(expected = DiceContainerUnsupportedIdException.class)
-    public void getDie_NegativeNumberAsParam_ExceptionThrown() throws DiceContainerUnsupportedIdException {
-        diceContainer.getDie(-1);
+        assertNotNull(diceContainer.getDie(50));
     }
 
     @Test
@@ -49,8 +35,6 @@ public class TestDiceContainer {
             diceContainer.getDie(0).setRolled(true);
             diceContainer.getDie(1).setRolled(true);
         } catch (DieRolledStateNotChangedException e) {
-            fail();
-        } catch (DiceContainerUnsupportedIdException e) {
             fail();
         }
         assertEquals(88, diceContainer.getUnrolledDice().size());

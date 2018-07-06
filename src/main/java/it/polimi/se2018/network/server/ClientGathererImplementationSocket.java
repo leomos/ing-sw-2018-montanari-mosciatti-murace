@@ -36,7 +36,6 @@ public class ClientGathererImplementationSocket implements ClientGathererInterfa
      */
     public ClientGathererImplementationSocket(int port) {
         this.port = port;
-        this.roomDispatcher = roomDispatcher;
         try {
             this.serverSocket = new ServerSocket(port);
         } catch (IOException e) {

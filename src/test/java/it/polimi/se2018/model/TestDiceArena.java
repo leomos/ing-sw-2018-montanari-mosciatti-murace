@@ -1,7 +1,6 @@
 package it.polimi.se2018.model;
 
 import it.polimi.se2018.model.container.DiceContainer;
-import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.rounds.DieNotPresentException;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +20,7 @@ public class TestDiceArena {
     }
 
     @Test
-    public void checkRollDiceIntoArena_NumberOfPlayersAs7_NoDiceShouldHaveValueStillAt0() throws DiceContainerUnsupportedIdException {
+    public void checkRollDiceIntoArena_NumberOfPlayersAs7_NoDiceShouldHaveValueStillAt0() {
 
         diceArena.rollDiceIntoArena();
         assertNotEquals(0, diceContainer.getDie(diceArena.getArena().get(0)).getRolledValue());
@@ -69,7 +68,7 @@ public class TestDiceArena {
 
 
     @Test
-    public void checkUpdateRepresentation_ParamsAreRandom_CheckValuesAreAcceptable() throws DiceContainerUnsupportedIdException {
+    public void checkUpdateRepresentation_ParamsAreRandom_CheckValuesAreAcceptable() {
 
         diceArena.rollDiceIntoArena();
 

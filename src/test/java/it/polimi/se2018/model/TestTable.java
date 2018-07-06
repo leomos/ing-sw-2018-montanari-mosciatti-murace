@@ -1,7 +1,6 @@
 package it.polimi.se2018.model;
 
 import it.polimi.se2018.model.container.DiceContainer;
-import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.container.DieRolledStateNotChangedException;
 import it.polimi.se2018.model.container.DieRolledValueOutOfBoundException;
 import it.polimi.se2018.model.objectives.PrivateObjective;
@@ -106,7 +105,7 @@ public class TestTable {
     }
 
     @Test
-    public void checkCalculateScore_ParamAsInstructionExample_ExpectedScoreBoardRepresentationAs2_42_0_0_40_0_1_30_0_1() throws DiceContainerUnsupportedIdException, DieRolledValueOutOfBoundException, DieRolledStateNotChangedException {
+    public void test() throws DieRolledValueOutOfBoundException, DieRolledStateNotChangedException {
 
         diceContainer = new DiceContainer();
         patternCard = new PatternCard(diceContainer, 13,"FractalDrop",3,"040y6r020000rp1by000");

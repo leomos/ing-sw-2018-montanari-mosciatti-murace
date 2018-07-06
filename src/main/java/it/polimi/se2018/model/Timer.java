@@ -32,6 +32,7 @@ public class Timer implements Runnable {
                     TimeUnit.SECONDS.sleep(1);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
+                    Thread.currentThread().interrupt();
                 }
                 i++;
                 if(i == timer-15) model.timeIsRunningOut();

@@ -2,7 +2,6 @@ package it.polimi.se2018.model.objectives;
 
 import it.polimi.se2018.model.patternCard.PatternCard;
 import it.polimi.se2018.model.container.DiceContainer;
-import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.container.Die;
 
 public class PublicObjective7 extends PublicObjective{
@@ -18,7 +17,6 @@ public class PublicObjective7 extends PublicObjective{
      * Calculates the score of the pattern card given: + 2 for each set of 5&6 anywhere
      * @param patternCard
      * @return PatternCard score at the end of the game based on public objective of card 7
-     * @throws DiceContainerUnsupportedIdException If die's id is not valid
      */
     @Override
     public int calculateScore(PatternCard patternCard) {
@@ -28,15 +26,11 @@ public class PublicObjective7 extends PublicObjective{
         for (int i=0; i<5; i++) {
             for (int j=0; j<4; j++) {
                 if (!patternCard.getPatternCardCell(i, j).isEmpty()) {
-                    try {
-                        Die d = diceContainer.getDie(patternCard.getPatternCardCell(i, j).getRolledDieId());
-                        if (d.getRolledValue() == 5)
-                            result5++;
-                        if (d.getRolledValue() == 6)
-                            result6++;
-                    } catch (DiceContainerUnsupportedIdException e) {
-                        e.printStackTrace();
-                    }
+                    Die d = diceContainer.getDie(patternCard.getPatternCardCell(i, j).getRolledDieId());
+                    if (d.getRolledValue() == 5)
+                        result5++;
+                    if (d.getRolledValue() == 6)
+                        result6++;
                 }
             }
         }

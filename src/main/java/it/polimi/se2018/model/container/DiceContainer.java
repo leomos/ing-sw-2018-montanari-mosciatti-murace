@@ -39,16 +39,9 @@ public class DiceContainer {
     /**
      * @param   id is the position of the die in the container array.
      * @return  the Die correspondent to the id.
-     * @throws  DiceContainerUnsupportedIdException if the id is a negative number
-     *                                              or if it is greater than the
-     *                                              constant NUMBER_OF_DICE
      */
-    public Die getDie(int id) throws DiceContainerUnsupportedIdException {
-        if(!isIdValid(id)) {
-            throw new DiceContainerUnsupportedIdException();
-        } else {
-            return dice[id];
-        }
+    public Die getDie(int id) {
+        return dice[id];
     }
 
     /**

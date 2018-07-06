@@ -2,7 +2,6 @@ package it.polimi.se2018.model.objectives;
 
 import it.polimi.se2018.model.patternCard.PatternCard;
 import it.polimi.se2018.model.container.DiceContainer;
-import it.polimi.se2018.model.container.DiceContainerUnsupportedIdException;
 import it.polimi.se2018.model.container.DieRolledValueOutOfBoundException;
 import org.junit.After;
 import org.junit.Before;
@@ -30,7 +29,7 @@ public class TestPublicObjective7 {
     }
 
     @Test
-    public void checkCalculateScore_ParamAsInstructionExample_ReturnShouldBe10() throws DiceContainerUnsupportedIdException, DieRolledValueOutOfBoundException {
+    public void checkCalculateScore_ParamAsInstructionExample_ReturnShouldBe10() throws DieRolledValueOutOfBoundException {
         //RED
         diceContainer.getDie(0).setRolledValue(2);
         diceContainer.getDie(1).setRolledValue(3);
