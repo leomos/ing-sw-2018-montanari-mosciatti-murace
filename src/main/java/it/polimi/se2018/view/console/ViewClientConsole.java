@@ -275,7 +275,7 @@ public class ViewClientConsole extends ViewClient  {
             ArrayList<Integer> returnValues = viewClientConsolePrint.getSinglePositionInPatternCard(listOfAvailablePositions);
             if(returnValues.isEmpty())
                 unSuspend();
-
+            return returnValues;
         }
         return null;
     }

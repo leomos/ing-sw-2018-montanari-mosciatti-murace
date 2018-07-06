@@ -14,6 +14,8 @@ public class RoundTrackFrame extends ToolCardFrame {
 
     private int die = -1;
 
+    private boolean confirm = false;
+
     public RoundTrackFrame(ArrayList<ModelChangedMessageRound> roundTrack) {
         ArrayList<SwingDiceArena> arena = new ArrayList<>();
 
@@ -54,8 +56,10 @@ public class RoundTrackFrame extends ToolCardFrame {
 
         JButton button = new JButton("CONFIRM");
         button.addActionListener(actionListener -> {
-            if (round!=-1 && die!=-1)
+            if (round!=-1 && die!=-1) {
+                confirm = true;
                 dispose();
+            }
         });
 
         setLayout(new BorderLayout());
@@ -74,7 +78,7 @@ public class RoundTrackFrame extends ToolCardFrame {
     @Override
     public ArrayList<Integer> getValues() {
         ArrayList<Integer> v = new ArrayList<>();
-        while (round==-1 && die==-1) {
+        while (!confirm) {
             try {
                 TimeUnit.MILLISECONDS.sleep(200);
             } catch (InterruptedException e) {
