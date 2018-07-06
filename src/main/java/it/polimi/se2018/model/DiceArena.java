@@ -132,11 +132,12 @@ public class DiceArena {
     private void updateRepresentation(){
         representation = "";
         for(int i = 0; i < arena.size(); i++){
-            Die d = null;
+            Die d;
             try {
                 d = diceContainer.getDie(arena.get(i));
             } catch (DiceContainerUnsupportedIdException e) {
                 e.printStackTrace();
+                return;
             }
             if(arena.get(i) < 10)
                 representation = representation + "0";

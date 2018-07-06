@@ -64,11 +64,12 @@ public class PrivateObjective implements Objective {
         for (int x=0; x<5; x++) {
             for (int y=0; y<4; y++) {
                 if(!patternCard.getPatternCardCell(x,y).isEmpty()) {
-                    Die d = null;
+                    Die d;
                     try {
                         d = diceContainer.getDie(patternCard.getPatternCardCell(x, y).getRolledDieId());
                     } catch (DiceContainerUnsupportedIdException e) {
                         e.printStackTrace();
+                        return 0;
                     }
                     if (this.color.equals(d.getColor()))
                         result = result + d.getRolledValue();

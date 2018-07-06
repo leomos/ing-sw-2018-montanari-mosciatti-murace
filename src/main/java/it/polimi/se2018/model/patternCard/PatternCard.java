@@ -302,13 +302,14 @@ public class PatternCard {
      */
     public ArrayList<Integer> getAvailablePositions(int idDie) throws DiceContainerUnsupportedIdException {
 
-        Die d = null;
+        Die d;
         ArrayList<Integer> list = new ArrayList<>();
 
         try {
             d = diceContainer.getDie(idDie);
         } catch (DiceContainerUnsupportedIdException e) {
             e.printStackTrace();
+            return new ArrayList<>();
         }
 
         for(int i = 0; i < 5; i++)
